@@ -177,6 +177,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 
 			StoryItemPageView storyView = (StoryItemPageView) mLLSharedStory.findViewById(R.id.sharedItemView);
 			storyView.populateWithItem(mItemReceived);
+			storyView.loadMedia(null);
 			mLLSharedStory.setVisibility(View.VISIBLE);
 		}
 	}

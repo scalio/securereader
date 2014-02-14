@@ -591,6 +591,7 @@ public class LeftSideMenu
 				else if (child == mMenuView)
 				{
 					canvas.translate(positionMenu, 0);
+					canvas.clipRect(0, mMenuView.getTop(), positionContent - positionMenu, mMenuView.getBottom(), Op.REPLACE);
 				}
 			}
 

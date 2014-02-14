@@ -31,12 +31,12 @@ public class HeightLimitedLinearLayout extends LinearLayout
 
 	private void initView(Context context, AttributeSet attrs)
 	{
-		mHeightLimit = 1.75f;
+		mHeightLimit = 0;
 		mDrawHeightLimit = -1;
 		if (attrs != null)
 		{
 			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.HeightLimitedLinearLayout);
-			mHeightLimit = a.getFloat(R.styleable.HeightLimitedLinearLayout_height_limit, 1.75f);
+			mHeightLimit = a.getFloat(R.styleable.HeightLimitedLinearLayout_height_limit, 0);
 			a.recycle();
 		}
 	}

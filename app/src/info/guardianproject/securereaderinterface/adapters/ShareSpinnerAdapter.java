@@ -101,7 +101,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 	{
 		// Add an intent for our secure share
 		//
-		addIntentResolver(shareIntent, null, "info.guardianproject.bigbuffalo", "info.guardianproject.bigbuffalo.installer.SecureBluetoothSenderActivity",
+		addIntentResolver(shareIntent, null, mContext.getPackageName(), mContext.getPackageName() + ".installer.SecureBluetoothSenderActivity",
 				R.string.share_via_secure_bluetooth, R.drawable.ic_share_sharer);
 	}
 	

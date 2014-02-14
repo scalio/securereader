@@ -3,10 +3,12 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
+import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.DropdownSpinner;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.paik.R;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.CacheWordSettings;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import java.security.GeneralSecurityException;
 
@@ -63,7 +65,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		mCacheWord = new CacheWordActivityHandler(this, this);
+		CacheWordSettings settings = null;
+		mCacheWord = new CacheWordActivityHandler(this, settings);
 		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -78,7 +81,6 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onResume();
 		mSetUiLanguageReceiver = new SetUiLanguageReceiver();
 		registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
-		mCacheWord.onResume();
 	}
 
 	@Override
@@ -88,9 +90,24 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	    {
 	    	unregisterReceiver(mSetUiLanguageReceiver);
 	    	mSetUiLanguageReceiver = null;
-		    mCacheWord.onPause();
 	    }
 	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		App.getInstance().onLockScreenResumed(this);
+		mCacheWord.onResume();
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		App.getInstance().onLockScreenPaused(this);
+		    mCacheWord.onPause();
+	    }
 
 	@Override
 	public boolean isInternalActivityOpened()
@@ -116,12 +133,16 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		if ((keyCode == KeyEvent.KEYCODE_BACK))
 		{
 			// Back from lock screen means quit app. So send a kill signal to
-			// any open activity
-			// and finish!
-			Intent intent = new Intent(getApplicationContext(), KillActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(intent);
+			// any open activity and finish!
+			Intent intent = new Intent(App.EXIT_BROADCAST_ACTION);
+			this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
+			{
+				@Override
+				public void onReceive(Context context, Intent intent)
+				{
 			finish();
+				}
+			}, null, Activity.RESULT_OK, null, null);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -276,18 +297,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
                 }
                 
 				App.getSettings().setCurrentNumberOfPasswordAttempts(0);
+				UIHelpers.hideSoftKeyboard(LockScreenActivity.this);
 
-				((App) getApplication()).onActivityResume(LockScreenActivity.this);
-
-				Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-				Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
-				App.getInstance().putTransitionBitmap(snap);
-
-				startActivity(intent);
-				finish();
-				LockScreenActivity.this.overridePendingTransition(0, 0);
 			}
 		});
 
@@ -358,9 +369,9 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
     public void onCacheWordOpened() {
         App.getSettings().setCurrentNumberOfPasswordAttempts(0);
 
-        ((App) getApplication()).onActivityResume(LockScreenActivity.this);
-
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
+        if (intent == null)
+        	intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
@@ -417,5 +428,22 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			tv.setText(getItem(position));
 			return v;
 		}
+	}
+	
+	public void onUnlocked()
+	{
+      App.getSettings().setCurrentNumberOfPasswordAttempts(0);
+
+      Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
+      if (intent == null)
+      	intent = new Intent(this, MainActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+      Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+      App.getInstance().putTransitionBitmap(snap);
+
+      startActivity(intent);
+      finish();
+      LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 }

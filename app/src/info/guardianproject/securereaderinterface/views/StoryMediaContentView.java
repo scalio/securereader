@@ -150,7 +150,7 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 
 	public int getCurrentItemIndex()
 	{
-		if (this.getChildCount() > 0 && mViewPager != null && this.getChildAt(0) == mViewPager)
+		if (mMediaViewCollection != null && mMediaViewCollection.getCountLoaded() > 1 && mViewPager != null)
 			return mViewPager.getCurrentItem();
 		return 0;
 	}
@@ -169,8 +169,6 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 
 	private void createMultiImageView()
 	{
-		this.removeAllViews();
-
 		View content = LayoutInflater.from(getContext()).inflate(R.layout.story_media_content_view_multi, this, false);
 
 		mCurrentPageIndicator = (DottedProgressView) content.findViewById(R.id.currentPageIndicator);

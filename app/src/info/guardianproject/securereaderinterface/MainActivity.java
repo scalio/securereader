@@ -22,14 +22,17 @@ import java.util.Iterator;
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -128,6 +131,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		createFeedSpinner();
 		updateList(FeedFilterType.ALL_FEEDS, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mUnlockReceiver, new IntentFilter(App.UNLOCKED_BROADCAST_ACTION));
 	}
 
 	private void createFeedSpinner()
@@ -142,6 +146,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	{
 		super.onDestroy();
 		removeUICallbackListener();
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnlockReceiver);
 	}
 
 	@Override
@@ -222,6 +227,24 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		removeSettingsChangeListener();
 	}
 
+	BroadcastReceiver mUnlockReceiver = new BroadcastReceiver()
+	{
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			MainActivity.this.runOnUiThread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					socialReader = ((App) getApplicationContext()).socialReader;
+					createFeedSpinner();
+					updateList(FeedFilterType.ALL_FEEDS, null);
+				}
+			});
+		}
+	};
+	
 	@Override
 	protected void onAfterResumeAnimation()
 	{
@@ -758,18 +781,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	{
 		super.onWipe();
 		UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, -1, this);
-	}
-
-	@Override
-	public void onCacheWordOpened()
-	{
-		super.onCacheWordOpened();
-		socialReader = ((App) getApplicationContext()).socialReader;
-		// socialReader.goOnline(this);
-
-		createFeedSpinner();
-		updateList(FeedFilterType.ALL_FEEDS, null);
-		// setActionBarTitle(getString(R.string.feed_filter_all_feeds));
 	}
 
 	class UpdateFeedListTask extends AsyncTask<Void, Void, ArrayList<Feed>>

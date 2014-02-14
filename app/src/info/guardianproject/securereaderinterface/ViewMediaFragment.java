@@ -30,7 +30,8 @@ public class ViewMediaFragment extends Fragment implements OnMediaOrientationLis
 	{
 		((ViewGroup) mRootView).removeAllViews();
 		boolean isVideo = mediaContent.getType().startsWith("video/");
-		if (isVideo)
+		boolean isAudio = mediaContent.getType().startsWith("audio/");
+		if (isVideo || isAudio)
 		{
 			VideoMediaContentView vmc = new VideoMediaContentView(mRootView.getContext());
 			vmc.setOnMediaOrientationListener(this);

@@ -3,19 +3,19 @@
     android:id="@+id/flRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="#ffffff" >
+    android:layout_gravity="center" >
 
     <LinearLayout
         android:id="@+id/llScan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:background="@drawable/rounded_frame"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp"
+        android:visibility="gone"
         tools:context=".SecureBluetoothSenderActivity" >
 
         <ImageView
@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:background="@drawable/rounded_frame"
         android:gravity="center"
         android:orientation="vertical"
@@ -143,38 +143,59 @@
     <LinearLayout
         android:id="@+id/llSharedStory"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_margin="20dp"
+        android:gravity="top|center_horizontal"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        tools:context=".SecureBluetoothSenderActivity" >
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="10dp"
         android:background="@drawable/rounded_frame"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:context=".SecureBluetoothSenderActivity" >
+            android:orientation="vertical" >
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+                android:layout_gravity="center"
             android:layout_margin="10dp"
             android:text="@string/bluetooth_send_success_1_story"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <info.guardianproject.securereaderinterface.views.StoryItemPageView
-                android:id="@+id/sharedItemView"
+            <ScrollView
+                android:id="@+id/svSharedItem"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                />
+                android:layout_weight="1" >
+
+                <info.guardianproject.yakreader.views.StoryItemPageView
+                    android:id="@+id/sharedItemView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:longClickable="false" >
+                </info.guardianproject.yakreader.views.StoryItemPageView>
+            </ScrollView>
 
             <LinearLayout
                 android:id="@+id/btnClose"
                 style="@style/HelpButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
                 android:background="@drawable/button_secondary_background_selector"
                 android:gravity="center"
                 android:minHeight="50dp"
@@ -198,7 +219,12 @@
                     android:textAllCaps="false"
                     android:textSize="13sp" />
             </LinearLayout>
+        </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
         </LinearLayout>
         
 </FrameLayout>

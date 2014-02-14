@@ -133,23 +133,38 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 	{
 		if (mPostListType == PostListType.PUBLISHED)
 		{
+			if (mListPosts.getAdapter() == null)
+			{
 			PostPublishedListAdapter adapter = new PostPublishedListAdapter(getActivity(), socialReporter.getPosts());
 			adapter.setOnTagClickedListener(mOnTagClickedListener);
 			adapter.setListener(mStoryListListener);
 			adapter.setTagFilter(mCurrentTagFilter);
 			mListPosts.setAdapter(adapter);
-
+			}
+			else
+			{
+				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getPosts());
+			}
 		}
 		else if (mPostListType == PostListType.OUTGOING)
 		{
+			if (mListPosts.getAdapter() == null)
+			{
 			PostOutgoingListAdapter adapter = new PostOutgoingListAdapter(getActivity(), socialReporter.getDrafts());
 			adapter.setOnTagClickedListener(mOnTagClickedListener);
 			adapter.setListener(mStoryListListener);
 			adapter.setTagFilter(mCurrentTagFilter);
 			mListPosts.setAdapter(adapter);
 		}
+			else
+			{
+				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getDrafts());
+			}
+		}
 		else if (mPostListType == PostListType.DRAFTS)
 		{
+			if (mListPosts.getAdapter() == null)
+			{
 			PostDraftsListAdapter adapter = new PostDraftsListAdapter(getActivity(), socialReporter.getDrafts());
 			adapter.setPostDraftsListAdapterListener(this);
 			adapter.setOnTagClickedListener(mOnTagClickedListener);
@@ -157,13 +172,11 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 			adapter.setTagFilter(mCurrentTagFilter);
 			mListPosts.setAdapter(adapter);
 		}
+			else
+			{
+				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getDrafts());
+			}
 	}
-
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		updateListAdapter();
 	}
 
 	@Override

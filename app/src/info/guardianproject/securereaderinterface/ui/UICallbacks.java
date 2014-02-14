@@ -445,9 +445,6 @@ public class UICallbacks
 					}
 					else
 					{
-						if (context instanceof FragmentActivityWithMenu)
-							((FragmentActivityWithMenu) context).startActivityForResultAsInternal(intent, -1);
-						else
 							context.startActivity(intent);
 					}
 				}

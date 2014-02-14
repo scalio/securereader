@@ -88,16 +88,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 			SocialReader socialReader = ((App) this.getApplication()).socialReader;
 			itemIdToSend = shareIntent.getLongExtra(SocialReader.SHARE_ITEM_ID, Item.DEFAULT_DATABASE_ID);
 			fileToSend = socialReader.packageItem(itemIdToSend);
-
-			// This code seems a bit odd to me...
-			for (Item story : socialReader.getSubscribedFeedItems().getItems())
-			{
-				if (story.getDatabaseId() == itemIdToSend)
-				{
-					mItemSent = story;
-					break;
-				}
-			}
+			mItemSent = socialReader.getItemFromId(itemIdToSend);
 		}
 		else
 		{
@@ -238,6 +229,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 
 			StoryItemPageView storyView = (StoryItemPageView) mLLSharedStory.findViewById(R.id.sharedItemView);
 			storyView.populateWithItem(mItemSent);
+			storyView.loadMedia(null);
 			mLLSharedStory.setVisibility(View.VISIBLE);
 		}
 	}

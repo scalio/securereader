@@ -18,6 +18,6 @@
                    A value of 0 represents instant timeout
                    A value < 0  represents no timeout (or infinite timeout)
     -->
-    <integer name="cacheword_timeout_minutes_default">0</integer>
+    <integer name="cacheword_timeout_minutes_default">2</integer>
 </resources>
 
