@@ -44,7 +44,7 @@ Follow these steps to setup your dev environment:
         external/bho/TibetanTextLibrary
 
     When importing app/ double click on the value "MainActivity" and change it
-    to "YakReader" under the New Project Name heading before finishing the
+    to "Secure Reader" under the New Project Name heading before finishing the
     import.
 
 
