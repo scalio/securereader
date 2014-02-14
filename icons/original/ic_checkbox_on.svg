@@ -16,12 +16,12 @@
 <metadata>
 	<sfw  xmlns="&ns_sfw;">
 		<slices></slices>
-		<sliceSourceBounds  y="371.345" x="281.5" width="50.827" height="50.156" bottomLeftOrigin="true"></sliceSourceBounds>
+		<sliceSourceBounds  height="50.156" width="50.827" y="-1.656" x="-0.5" bottomLeftOrigin="true"></sliceSourceBounds>
 	</sfw>
 </metadata>
 <g>
-	<rect y="-1.001" fill="#BA3E82" width="50.827" height="50.156"/>
+	<rect fill="#95BA55" width="50.827" height="50.156"/>
 </g>
-<path fill="#900A30" stroke="#900A30" stroke-width="3" stroke-miterlimit="10" d="M18.703,37.578L5.898,24.852l3.404-3.402
-	l9.379,9.318l20.528-20.711l3.404,3.404L22.06,34.2l0.004,0.003L18.703,37.578z"/>
+<path fill="#CFF219" stroke="#BAE24B" stroke-width="2" stroke-miterlimit="10" d="M18.703,37.578L5.898,24.852l3.404-3.403
+	l9.379,9.319l20.528-20.712l3.405,3.404L22.06,34.2l0.004,0.003L18.703,37.578z"/>
 </svg>

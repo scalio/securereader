@@ -16,9 +16,9 @@
 <metadata>
 	<sfw  xmlns="&ns_sfw;">
 		<slices></slices>
-		<sliceSourceBounds  width="25.493" height="34.954" x="946.812" y="210.24" bottomLeftOrigin="true"></sliceSourceBounds>
+		<sliceSourceBounds  x="292.812" y="379.24" width="25.492" height="34.954" bottomLeftOrigin="true"></sliceSourceBounds>
 	</sfw>
 </metadata>
-<path fill="#94103C" d="M11.312,6.306V41.26l12.747-7.876l12.746,7.876V6.306H11.312z M30.098,29.602l-6.039-3.623l-6.041,3.623
-	l1.58-6.865l-5.313-4.625l7.018-0.62l2.757-6.48l2.756,6.48l7.019,0.62l-5.312,4.625L30.098,29.602z"/>
+<path fill="#E34136" d="M11.312,6.306V41.26l12.747-7.876l12.745,7.876V6.306H11.312z M30.097,29.602l-6.038-3.624l-6.041,3.624
+	l1.58-6.865l-5.313-4.625l7.018-0.62l2.757-6.48l2.757,6.48l7.018,0.62l-5.312,4.625L30.097,29.602z"/>
 </svg>

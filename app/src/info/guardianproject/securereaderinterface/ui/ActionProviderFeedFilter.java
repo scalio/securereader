@@ -3,10 +3,6 @@ package info.guardianproject.securereaderinterface.ui;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
-import info.guardianproject.securereaderinterface.R.integer;
-import info.guardianproject.securereaderinterface.R.layout;
-import info.guardianproject.securereaderinterface.R.style;
-import info.guardianproject.securereaderinterface.R.styleable;
 
 import org.holoeverywhere.drawable.ColorDrawable;
 import org.holoeverywhere.widget.PopupWindow;

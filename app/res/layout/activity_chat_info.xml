@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ff1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android1:background="@color/grey_light_light"
+    android1:descendantFocusability="beforeDescendants"
+    android1:focusable="true"
+    android1:focusableInTouchMode="true" >
+
+    <ScrollView
+        android1:id="@+id/sv"
+        android1:layout_width="match_parent"
+        android1:layout_height="match_parent"
+        android1:layout_gravity="center"
+        android1:layout_margin="10dp" >
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_with_bottom_shadow"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:stretchMode="columnWidth"
+            android1:padding="10dp" >
+
+            <info.guardianproject.bigbuffalo.widgets.CustomFontTextView
+                android1:id="@+id/textView2"
+                style="@style/HelpTitleStyle"
+                android1:layout_width="wrap_content"
+                android1:layout_height="wrap_content"
+                android1:text="@string/chat_info_title" />
+
+            <TextView
+                android1:id="@+id/textView1"
+                style="@style/HelpTextStyle"
+                android1:layout_width="match_parent"
+                android1:layout_height="wrap_content"
+                android1:text="@string/chat_info_info" />
+
+            <Button
+                android1:id="@+id/btnJoin"
+                style="@style/PostSignInCreateButtonStyle"
+                android1:layout_width="match_parent"
+                android1:layout_height="50dp"
+                android1:layout_marginBottom="20dp"
+                android1:layout_marginLeft="5dp"
+                android1:layout_marginRight="5dp"
+                android1:layout_marginTop="20dp"
+                android1:text="@string/chat_info_join" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -5,6 +5,7 @@ import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.AddFeedActivity;
 import info.guardianproject.securereaderinterface.AddPostActivity;
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.ChatInfoActivity;
 import info.guardianproject.securereaderinterface.CreateAccountActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
@@ -375,6 +376,25 @@ public class UICallbacks
 			{
 				Intent intent = new Intent(context, CreateAccountActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intent.putExtra("parameters", commandParameters);
+				context.startActivity(intent);
+				((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			}
+			else
+			{
+				boolean showInfo = true;
+				if (commandParameters != null && commandParameters.containsKey("dont_show_info"))
+					showInfo = !(commandParameters.getBoolean("dont_show_info", false));
+				
+				int numShown = App.getSettings().chatSecureInfoShown();
+				if (showInfo && numShown < 3)
+				{
+					App.getSettings().setChatSecureInfoShown(numShown + 1);
+					
+					// Show information
+					Intent intent = new Intent(context, ChatInfoActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					intent.putExtra("parameters", commandParameters);
 				context.startActivity(intent);
 				((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 			}
@@ -430,6 +450,7 @@ public class UICallbacks
 						else
 							context.startActivity(intent);
 					}
+				}
 				/*}*/
 			}
 			break;

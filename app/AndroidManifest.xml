@@ -71,6 +71,34 @@
             
         </activity>
         <activity
+            android:name="info.guardianproject.securereaderinterface.PostActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_post"
+            android:theme="@style/AppThemeReporter" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.securereaderinterface.AddPostActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_post"
+            android:theme="@style/AppThemeReporter"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="info.guardianproject.securereaderinterface.PanicActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_panic"
@@ -108,6 +136,10 @@
         <activity 
             android:name="info.guardianproject.securereaderinterface.DownloadEpubReaderActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">            
+        </activity>
+        <activity
+            android:name="info.guardianproject.bigbuffalo.ChatInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
         <service android:name="info.guardianproject.securereader.SyncService" >
         </service>

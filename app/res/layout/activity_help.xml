@@ -141,6 +141,48 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/white_with_bottom_shadow"
+            android:weightSum="1" >
+
+            <ImageView
+                android:id="@+id/ImageView02"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:src="@drawable/img_about_discuss" />
+
+            <LinearLayout
+                android:id="@+id/LinearLayout01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:background="#ffffff"
+                android:orientation="vertical" >
+
+                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    android:id="@+id/CustomFontTextView02"
+                    style="@style/HelpTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/help_chat_title" />
+
+                <TextView
+                    android:id="@+id/TextView08"
+                    style="@style/HelpTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_chat_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
