@@ -71,7 +71,7 @@
     <info.guardianproject.securereaderinterface.widgets.PageIndicatorView
         android:id="@+id/contentPageIndicator"
         android:layout_width="match_parent"
-        android:layout_height="7dp"
+        android:layout_height="15dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="58dp"
         android:layout_marginLeft="@dimen/card_left_margin"

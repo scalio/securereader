@@ -92,7 +92,7 @@
         <info.guardianproject.securereaderinterface.widgets.PageIndicatorView
             android:id="@+id/contentPageIndicator"
             android:layout_width="wrap_content"
-            android:layout_height="7dp"
+            android:layout_height="15dp"
             android:layout_above="@id/storyToolbar"
             android:layout_gravity="bottom"
             android:layout_marginBottom="18dp"
