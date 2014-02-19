@@ -137,7 +137,7 @@
             android:layout_marginTop="20dp"
                 android:layout_weight="1" >
 
-                <info.guardianproject.yakreader.views.StoryItemPageView
+                <info.guardianproject.securereaderinterface.views.StoryItemPageView
                     android:id="@+id/sharedItemView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:longClickable="false" >
-                </info.guardianproject.yakreader.views.StoryItemPageView>
+                </info.guardianproject.securereaderinterface.views.StoryItemPageView>
             </ScrollView>
 
         <LinearLayout
