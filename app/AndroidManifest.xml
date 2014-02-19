@@ -138,8 +138,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize">            
         </activity>
         <activity
-            android:name="info.guardianproject.bigbuffalo.ChatInfoActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:name="info.guardianproject.securereaderinterface.ChatInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppTheme.Transparent"
+            >
         </activity>
         <service android:name="info.guardianproject.securereader.SyncService" >
         </service>
