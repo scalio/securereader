@@ -59,11 +59,7 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		}
 	}
 
-	public static final AppInfo[] APPS_TO_DISPLAY = {
-
-	new AppInfo("org.torproject.android", "", "", 0), new AppInfo("info.guardianproject.bigbuffalo", "", "", 0), new AppInfo("info.guardianproject.mrapp", "", "", 0),
-			new AppInfo("info.guardianproject.otr.app.im", "", "", 0), new AppInfo("info.guardianproject.browser", "", "", 0) };
-
+	public AppInfo[] APPS_TO_DISPLAY;
 	private static final HashMap<String, Integer> IMAGE_MAP;
 	static
 	{
@@ -84,6 +80,15 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
+		APPS_TO_DISPLAY = new AppInfo[] {
+					new AppInfo("org.torproject.android", "", "", 0),
+					null,
+					new AppInfo("info.guardianproject.mrapp", "", "", 0),
+					new AppInfo("info.guardianproject.otr.app.im", "", "", 0),
+					new AppInfo("info.guardianproject.browser", "", "", 0) };
+		APPS_TO_DISPLAY[1] = new AppInfo(getPackageName(), "", "", 0); 
+		
 		setContentView(R.layout.httpd_app_sender);
 		textView = (TextView) findViewById(R.id.tvUrl);
 

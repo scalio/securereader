@@ -2,7 +2,7 @@
 
 Follow these steps to setup your dev environment:
 
-1. Checkout bigbuffalo git repo
+1. Checkout securereader git repo
 2. Init and update git submodules
 
     git submodule update --init --recursive
@@ -15,6 +15,7 @@ Follow these steps to setup your dev environment:
     **Command Line**
 
         ./fix-support-library.sh
+    Ignore the `rm: external/CacheWord/cachewordlib/libs/guava-r09.jar: No such file or directory` error
 
     **Manually**
 
@@ -26,20 +27,24 @@ Follow these steps to setup your dev environment:
 
     I recommend using a new workspace in Eclipse. I recommend using the root of
     this repo.
+    
+    Run *Android SDK Manager* from [ADT-Eclipse](http://developer.android.com/sdk/index.html) and make sure that you have SDK Platform Api Level 16 installed. If not then install those and restart the eclipse environment.
 
-    Import into Eclipse (using the *"Existing Android Code Into Workspace"* option) the
+    Import into Eclipse (using the *File -> Import -> Android -> "Existing Android Code Into Workspace"* option) the
     projects in the following order. Do not check "Copy projects into workspace".
 
-    Note: The import order is crucial!
+    Note: The import order is crucial! (ps Order may not be crucial anymore)
 
         app/
-	external/CacheWord/cachewordlib
+        external/CacheWord/cachewordlib
         external/HoloEverywhere/contrib/ActionBarSherlock/actionbarsherlock
         external/HoloEverywhere/library
         external/OnionKit/libonionkit
+        external/securereaderlibrary
+        external/bho/TibetanTextLibrary
 
     When importing app/ double click on the value "MainActivity" and change it
-    to "Big Buffalo" under the New Project Name heading before finishing the
+    to "Secure Reader" under the New Project Name heading before finishing the
     import.
 
 

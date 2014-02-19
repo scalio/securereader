@@ -57,9 +57,9 @@ import com.tinymission.rss.Item;
 
 public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
 {
-	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.bigbuffalo.showThisFeedType";
-	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.bigbuffalo.showThisFeedId";
-	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.bigbuffalo.showThisItemId";
+	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
+	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
+	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.securereaderinterface.showThisItemId";
 
 	public static String LOGTAG = "MainActivity";
 

@@ -125,7 +125,7 @@
             android:noHistory="true" >
         </activity>
         <activity
-            android:name="info.guardinfo.guardianproject.yakreader.installer.HTTPDAppSender"    
+            android:name="info.guardianproject.securereaderinterface.installer.HTTPDAppSender"    
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
