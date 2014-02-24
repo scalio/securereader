@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  CHAT_ROOM_NAME moved into UI project's string file -->
+    
+	<!--  BIG_BUFFALO_FEED_URL = "http://bigbuffalo.com/feed/"  -->
+	
+	<!-- OPML_URL = "http://securereader.guardianproject.info/opml/opml.php"; // Needs to have lang=en_US or fa_IR or bo or bo_CN or zh_CN  -->
+	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
+	
+	<!-- APP_FEED_URL = "http://securereader.guardianproject.info/swfeed/swfeed.php"; -->
+	<!-- EPUB_FEED_URL = "http://securereader.guardianproject.info/opds/opds.php"; -->
+    <!-- "apps_feed_name" Applications -->
+    <!-- "epubs_feed_name" Tibet Archive -->
+    
+    <string-array name="built_in_feed_names">
+        <item>Big Buffalo</item>
+        <item>Applications</item>
+        <item>EPubs</item>
+    </string-array>
+    
+	<string-array name="built_in_feed_urls">
+	    <item>http://bigbuffalo.com/feed/</item>
+        <item>http://securereader.guardianproject.info/swfeed/swfeed.php</item>
+        <item>http://securereader.guardianproject.info/opds/opds.php</item>
+    </string-array>
+
+
+	<!-- FEED_REFRESH_AGE = 300000; // 5 minutes -->
+	<integer name="feed_refresh_age">300000</integer>
+	
+	<!-- OPML_CHECK_FREQUENCY = 43200000; // .5 day -->
+	<integer name="opml_check_frequency">43200000</integer>
+	
+	<!-- EXPIRATION_CHECK_FREQUENCY = 43200000; // .5 days -->
+	<integer name="expiration_check_frequency">43200000</integer>
+
+	<!-- XMLRPC_ENDPOINT -->
+	<string name="xmlrpc_endpoint">http://securereader.guardianproject.info/xmlrpc.php</string>
+	    
+</resources>
