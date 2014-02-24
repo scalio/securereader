@@ -172,7 +172,7 @@
         <!-- Change "authorities" when branching into distinct app -->
 		<provider 
    			android:name="info.guardianproject.securereader.SecureShareContentProvider"
-			android:authorities="info.guardianproject.securereader.secureshareprovider" 
+			android:authorities="info.guardianproject.paik.secureshareprovider" 
 			android:exported="true"
 			android:enabled="true"
 		/>
