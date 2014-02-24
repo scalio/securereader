@@ -4,6 +4,7 @@
     android:installLocation="preferExternal"
     android:versionCode="3"
     android:versionName="1.0.2" >
+    <!-- Change package when branching into distinct app -->
 
     <uses-sdk
 		android:minSdkVersion="9"
@@ -168,6 +169,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Change "authorities" when branching into distinct app -->
 		<provider 
    			android:name="info.guardianproject.securereader.SecureShareContentProvider"
 			android:authorities="info.guardianproject.securereader.secureshareprovider" 
