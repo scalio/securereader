@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--  CHAT_ROOM_NAME moved into UI project's string file -->
-    
-	<!--  BIG_BUFFALO_FEED_URL = "http://bigbuffalo.com/feed/"  -->
-	
-	<!-- OPML_URL = "http://securereader.guardianproject.info/opml/opml.php"; // Needs to have lang=en_US or fa_IR or bo or bo_CN or zh_CN  -->
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
 	
-	<!-- APP_FEED_URL = "http://securereader.guardianproject.info/swfeed/swfeed.php"; -->
-	<!-- EPUB_FEED_URL = "http://securereader.guardianproject.info/opds/opds.php"; -->
-    <!-- "apps_feed_name" Applications -->
-    <!-- "epubs_feed_name" Tibet Archive -->
-    
     <string-array name="built_in_feed_names">
         <item>Big Buffalo</item>
         <item>Applications</item>
