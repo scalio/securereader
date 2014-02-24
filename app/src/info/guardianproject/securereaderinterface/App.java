@@ -46,6 +46,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
 	public static final String SET_UI_LANGUAGE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.setuilanguage.action";
 	public static final String WIPE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.wipe.action";
+	public static final String LOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.lock.action";
 	public static final String UNLOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.unlock.action";
 
 	private static App m_singleton;
@@ -78,7 +79,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
 		socialReader.setLockListener(this);
 		socialReporter = new SocialReporter(socialReader);
-
+		applyPassphraseTimeout();
+		
 		m_settings.registerChangeListener(this);
 		
 		mCurrentLanguage = getBaseContext().getResources().getConfiguration().locale.getLanguage();
@@ -119,6 +121,10 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		if (key.equals(Settings.KEY_UI_LANGUAGE))
 		{
 			applyUiLanguage();
+		}
+		else if (key.equals(Settings.KEY_PASSPHRASE_TIMEOUT))
+		{
+			applyPassphraseTimeout();
 		}
 	}
 		
@@ -166,6 +172,11 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			{
 			}
 		}, null, Activity.RESULT_OK, null, null);
+	}
+
+	private void applyPassphraseTimeout()
+	{
+		socialReader.setCacheWordTimeout(m_settings.passphraseTimeout());
 	}
 
 	public void wipe(int wipeMethod)
@@ -227,13 +238,14 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	{
 		if (mLastResumed != null && mLockScreen == null)
 		{
-			Intent intent = new Intent(this, LockScreenActivity.class);
+			Intent intent = new Intent(App.this, LockScreenActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.putExtra("originalIntent", mLastResumed.getIntent());
 			mLastResumed.startActivity(intent);
 			mLastResumed.overridePendingTransition(0, 0);
 			mLastResumed = null;
 		}
+		LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(LOCKED_BROADCAST_ACTION));
 	}
 
 	@Override

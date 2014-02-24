@@ -131,7 +131,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		createFeedSpinner();
 		updateList(FeedFilterType.ALL_FEEDS, null);
-		LocalBroadcastManager.getInstance(this).registerReceiver(mUnlockReceiver, new IntentFilter(App.UNLOCKED_BROADCAST_ACTION));
 	}
 
 	private void createFeedSpinner()
@@ -146,7 +145,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	{
 		super.onDestroy();
 		removeUICallbackListener();
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnlockReceiver);
 	}
 
 	@Override
@@ -226,24 +224,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		super.onPause();
 		removeSettingsChangeListener();
 	}
-
-	BroadcastReceiver mUnlockReceiver = new BroadcastReceiver()
-	{
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-			MainActivity.this.runOnUiThread(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					socialReader = ((App) getApplicationContext()).socialReader;
-					createFeedSpinner();
-					updateList(FeedFilterType.ALL_FEEDS, null);
-				}
-			});
-		}
-	};
 	
 	@Override
 	protected void onAfterResumeAnimation()
@@ -917,4 +897,14 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			setIsLoading(false);
 		}
 	}
+
+	@Override
+	protected void onUnlocked() {
+		super.onUnlocked();
+		socialReader = ((App) getApplicationContext()).socialReader;
+		createFeedSpinner();
+		updateList(FeedFilterType.ALL_FEEDS, null);
+	}
+	
+	
 }

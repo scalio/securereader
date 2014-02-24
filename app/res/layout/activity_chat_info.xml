@@ -4,7 +4,6 @@
     android:id="@+id/ff1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android1:background="@color/grey_light_light"
     android1:descendantFocusability="beforeDescendants"
     android1:focusable="true"
     android1:focusableInTouchMode="true" >
@@ -20,7 +19,7 @@
             android:id="@+id/llRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/white_with_bottom_shadow"
+            android:background="@drawable/rounded_frame"
             android:descendantFocusability="beforeDescendants"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -28,7 +27,7 @@
             android:stretchMode="columnWidth"
             android1:padding="10dp" >
 
-            <info.guardianproject.bigbuffalo.widgets.CustomFontTextView
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
                 android1:id="@+id/textView2"
                 style="@style/HelpTitleStyle"
                 android1:layout_width="wrap_content"

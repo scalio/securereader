@@ -113,7 +113,13 @@
                 style="@style/SettingsOptionGroupStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_security_launch" />
+                android:text="@string/settings_security_passphrase_timeout" />
+
+            <TextView
+                style="@style/SettingsOptionInfoStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_passphrase_timeout_info" />
 
             <LinearLayout
                 android:id="@+id/llPassphrase2"
@@ -127,19 +133,42 @@
                     android:layout_weight="1" >
 
                     <RadioButton
-                        android:id="@+id/rbLaunchPassphrase"
+                        android:id="@+id/rbPassphraseTimeout1"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/settings_security_launch_require_passphrase" />
+                        android:text="@string/settings_security_passphrase_timeout1" />
 
                     <RadioButton
-                        android:id="@+id/rbLaunchNone"
+                        android:id="@+id/rbPassphraseTimeout2"
                         style="@style/SettingsRadioButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_security_launch_require_none" />
+                        android:text="@string/settings_security_passphrase_timeout2" />
+                    
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout3"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_security_passphrase_timeout3" />
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout4"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_passphrase_timeout4" />
+                    
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout5"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_passphrase_timeout5" />
+                                        
                 </RadioGroup>
 
                 <ImageView
@@ -147,7 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:src="@drawable/ic_context_password" />
+                    android:src="@drawable/ic_context_password"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

@@ -1,7 +1,6 @@
 <resources>
 
     <!-- Layout alias -->
-	<item name="story_item_page_merge_no_photo" type="layout">@layout/story_item_page_merge_landscape_photo</item>
     <item name="story_item_page_merge_portrait_photo" type="layout">@layout/story_item_page_merge_landscape_photo</item>
     <item name="post_item_draft_portrait_photo" type="layout">@layout/post_item_draft_landscape_photo</item>
     
