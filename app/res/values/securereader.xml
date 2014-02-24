@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Secure Reader Library</string>
+
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
-	
+            
     <string-array name="built_in_feed_names">
-        <item>Big Buffalo</item>
+        <item>Paik Persian News</item>
+        <item>Voice of America</item>
         <item>Applications</item>
-        <item>EPubs</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
-	    <item>http://bigbuffalo.com/feed/</item>
+	    <item>http://persianpaiknews.wordpress.com/feed/</item>
+	    <item>http://www.voanews.com/api/epiqq</item>
         <item>http://securereader.guardianproject.info/swfeed/swfeed.php</item>
-        <item>http://securereader.guardianproject.info/opds/opds.php</item>
     </string-array>
 
 
@@ -24,8 +26,8 @@
 	
 	<!-- EXPIRATION_CHECK_FREQUENCY = 43200000; // .5 days -->
 	<integer name="expiration_check_frequency">43200000</integer>
-
+	
 	<!-- XMLRPC_ENDPOINT -->
-	<string name="xmlrpc_endpoint">http://securereader.guardianproject.info/xmlrpc.php</string>
+	<string name="xmlrpc_endpoint">http://ny5y5j76ljc2dcpr.onion/wordpress/xmlrpc.php</string>
 	    
 </resources>
