@@ -128,9 +128,13 @@
     <string name="settings_panic_wipe_app">Wipe entire app</string>
     <string name="settings_panic_wipe_content">Wipe my content</string>
     <string name="settings_heading_login">Login</string>
-    <string name="settings_security_launch">Launch requirements</string>
-    <string name="settings_security_launch_require_passphrase">Passphrase</string>
-    <string name="settings_security_launch_require_none">None</string>
+    <string name="settings_security_passphrase_timeout">Passphrase timeout</string>
+    <string name="settings_security_passphrase_timeout_info">After this many minutes away from the app you will need to enter your passphrase again.</string>
+    <string name="settings_security_passphrase_timeout1">Immediate</string>
+    <string name="settings_security_passphrase_timeout2">1 minute</string>
+    <string name="settings_security_passphrase_timeout3">2 minutes</string>
+    <string name="settings_security_passphrase_timeout4">5 minutes</string>
+    <string name="settings_security_passphrase_timeout5">No timeout</string>
     <string name="settings_security_password_attempts">Wrong Passphrase Attempts</string>
     <string name="settings_security_password_attempts_label">Choose the number of times a wrong passphrase can be entered before your personal data is wiped from the app.</string>
     <string name="settings_security_password_attempts_1">2</string>

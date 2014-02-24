@@ -1,12 +1,8 @@
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.paik.R;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.onionkit.ui.OrbotHelper;
-import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
-import info.guardianproject.securereaderinterface.ui.PackageHelper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
@@ -14,7 +10,6 @@ import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -30,16 +25,14 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class FragmentActivityWithMenu extends SherlockFragmentActivity implements LeftSideMenuListener
+public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener
 {
 	private KillReceiver mKillReceiver;
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
@@ -96,20 +89,6 @@ public class FragmentActivityWithMenu extends SherlockFragmentActivity implement
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 		actionBar.setHomeButtonEnabled(true);
-
-		// If passcode is required we don't want to show the app thumbnail (the
-		// screen shot might
-		// contain sensitive information). Since onCreateThumbnail is not called
-		// correctly for 4.0
-		// devices, flag the activity as secure instead.
-		if (App.getSettings().launchRequirePassphrase())
-		{
-			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-			{
-				 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-				 WindowManager.LayoutParams.FLAG_SECURE);
-			}
-		}
 	}
 
 	public void setDisplayHomeAsUp(boolean displayHomeAsUp)
@@ -157,7 +136,6 @@ public class FragmentActivityWithMenu extends SherlockFragmentActivity implement
 	@Override
 	protected void onStart()
 	{
-		App.getInstance().onActivityResume(this);
 		super.onStart();
 		LocalBroadcastManager.getInstance(this).registerReceiver(mMenuCommandReceiver, new IntentFilter("MenuCommand"));
 	}
@@ -166,7 +144,6 @@ public class FragmentActivityWithMenu extends SherlockFragmentActivity implement
 	protected void onStop()
 	{
 		super.onStop();
-		App.getInstance().onActivityPause(this);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mMenuCommandReceiver);
 	}
 
