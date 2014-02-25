@@ -287,6 +287,8 @@ public class StoryMediaContentView extends FrameLayout implements View.OnClickLi
 			{
 				if (info.isVideo())
 					return R.drawable.ic_load_video;
+				else if (info.isApplication())
+					return R.drawable.ic_content_app;
 				else if (info.isEpub())
 					return R.drawable.ic_content_epub;
 			}

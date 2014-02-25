@@ -8,6 +8,6 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:background="#80ffffff"
-        android:src="@drawable/ic_video_play" />
+        android:src="@drawable/ic_content_app" />
 
 </FrameLayout>
