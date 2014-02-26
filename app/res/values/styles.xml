@@ -223,64 +223,12 @@
     	<item name="android:paddingBottom">0dp</item>
     </style>
     
-    <!-- Story Items (short) as shown in the news feed -->
-    <!--                                               -->
-    <!--                                               -->
-
-    <style name="StoryItemShortTitleStyle">
-        <item name="android:textColor">@color/grey_dark_dark</item>
-        <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="font">Glegoo-Regular</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-<!--         <item name="android:lineSpacingExtra">10dp</item> -->
-    </style>
-	
-    <style name="StoryItemShortTimeStyle">
-		<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/grey</item>
-	</style>
-	
-    <style name="StoryItemShortSourceStyle">
-		<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textColor">@color/button_primary</item>
-	</style>
-    	
-    <style name="StoryItemShortTagStyle" parent="android:Widget.Holo.Light.TextView">
-		<item name="android:padding">5dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/grey</item>
-    </style>
- 
     <style name="StorySearchByTagItemStyle" parent="android:Widget.Holo.Light.TextView">
 		<item name="android:padding">15dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/accent</item>
         <item name="android:background">@color/grey_light_light</item>
-    </style>
-    
-    <!-- Story Items (full screen) -->
-    <!--                                               -->
-    <!--                                               -->
-
-    <style name="StoryItemTitleStyle" parent="StoryItemShortTitleStyle">
-    </style>
-
-    <style name="StoryItemAuthorStyle">
-        <item name="android:textColor">@color/grey</item>
-        <item name="android:textSize">13sp</item>
-        <item name="font">Roboto-Light</item>
-    </style>
-    
-    <style name="StoryItemContentStyle">
-        <item name="android:textColor">@color/grey_dark_dark</item>
-        <item name="android:textSize">16sp</item>
-        <item name="font">Lucida Grande</item>
-        <item name="android:lineSpacingMultiplier">1.5</item>
-<!--         <item name="android:lineSpacingExtra">10dp</item> -->
     </style>
     
     <style name="StoryItemCommentsIndicatorStyle">
@@ -291,12 +239,6 @@
     <style name="StoryItemSwipeHintStyle">
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">19dp</item>
-        <item name="font">Roboto-Regular</item>
-    </style>
-    
-    <style name="StoryItemOrwebLinkStyle">
-        <item name="android:textColor">@color/orweb_link_selector</item>
-        <item name="android:textSize">14dp</item>
         <item name="font">Roboto-Regular</item>
     </style>
 

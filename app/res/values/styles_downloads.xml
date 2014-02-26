@@ -14,7 +14,7 @@
         <item name="android:textColor">@color/grey_dark</item>
 	</style>
 
-    <style name="DownloadsItemTitleStyle" parent="StoryItemTitleStyle">
+    <style name="DownloadsItemTitleStyle" parent="ItemTitleStyle">
         <item name="android:textColor">@color/grey_dark</item>
 	</style>
     	

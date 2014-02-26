@@ -31,7 +31,7 @@
 
         <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
             android:id="@+id/tvContent"
-            style="@style/StoryItemContentStyle"
+            style="@style/ItemContentStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/card_bottom_margin"
@@ -45,7 +45,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
-        style="@style/StoryItemTitleStyle"
+        style="@style/ItemTitleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/layout_content"

@@ -18,7 +18,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
-        style="@style/StoryItemTitleStyle"
+        style="@style/ItemTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/card_left_margin"
@@ -51,7 +51,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/tvContent"
-        style="@style/StoryItemContentStyle"
+        style="@style/ItemContentStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/card_left_margin"
@@ -61,7 +61,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/tvReadMore"
-        style="@style/StoryItemOrwebLinkStyle"
+        style="@style/ItemOrwebLinkStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
