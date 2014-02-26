@@ -15,7 +15,7 @@
 
         <info.guardianproject.securereaderinterface.widgets.UpdatingTextView
             android:id="@+id/tvTime"
-            style="@style/StoryItemShortTimeStyle"
+            style="@style/ItemTimeStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/tvSource"
-            style="@style/StoryItemShortSourceStyle"
+            style="@style/ItemSourceStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

@@ -43,7 +43,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
-        style="@style/StoryItemTitleStyle"
+        style="@style/ItemTitleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_source"

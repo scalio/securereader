@@ -13,7 +13,7 @@
     
     <TextView
         android:id="@+id/tvAuthorDate"
-        style="@style/StoryItemAuthorStyle"
+        style="@style/ItemAuthorStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/tvAuthorTime"
-        style="@style/StoryItemAuthorStyle"
+        style="@style/ItemAuthorStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -46,7 +46,7 @@
 
         <TextView
             android:id="@+id/tvAuthor"
-            style="@style/StoryItemAuthorStyle"
+            style="@style/ItemAuthorStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
