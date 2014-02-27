@@ -113,6 +113,18 @@
 
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/ivProgressIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:longClickable="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_context_load" />
+
             </FrameLayout>
 
             <EditText

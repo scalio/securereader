@@ -202,7 +202,7 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 		if (position == 0 && hasHeaderView())
 		{
 			View headerView = convertView;
-			if (headerView == null || Integer.valueOf(mResIdHeaderView).compareTo((Integer) headerView.getTag()) != 0)
+			if (headerView == null || headerView.getTag() == null || Integer.valueOf(mResIdHeaderView).compareTo((Integer) headerView.getTag()) != 0)
 			{
 				headerView = mInflater.inflate(mResIdHeaderView, parent, false);
 				headerView.setTag(Integer.valueOf(mResIdHeaderView));

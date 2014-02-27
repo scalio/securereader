@@ -1,5 +1,7 @@
 package info.guardianproject.securereaderinterface;
 
+import java.util.ArrayList;
+
 import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.securereaderinterface.adapters.PostDraftsListAdapter;
 import info.guardianproject.securereaderinterface.adapters.PostOutgoingListAdapter;
@@ -129,54 +131,87 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 		}
 	}
 
-	public void updateListAdapter()
-	{
-		if (mPostListType == PostListType.PUBLISHED)
-		{
-			if (mListPosts.getAdapter() == null)
-			{
-			PostPublishedListAdapter adapter = new PostPublishedListAdapter(getActivity(), socialReporter.getPosts());
-			adapter.setOnTagClickedListener(mOnTagClickedListener);
-			adapter.setListener(mStoryListListener);
-			adapter.setTagFilter(mCurrentTagFilter);
-			mListPosts.setAdapter(adapter);
+	public void updateListAdapter() {
+		
+		ThreadedTask<Void, Void, ArrayList<Item>> updateTask = new ThreadedTask<Void, Void, ArrayList<Item>>(){
+
+			@Override
+			protected ArrayList<Item> doInBackground(Void... values) {
+				ArrayList<Item> items = null;
+				if (mPostListType == PostListType.PUBLISHED)
+				{
+					items = socialReporter.getPosts();
+				}
+				else if (mPostListType == PostListType.OUTGOING)
+				{
+					items = socialReporter.getDrafts();
+				}
+				else if (mPostListType == PostListType.DRAFTS)
+				{
+					items = socialReporter.getDrafts();
+				}
+				return items;
 			}
-			else
-			{
-				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getPosts());
+
+			@Override
+			protected void onPostExecute(ArrayList<Item> result) {
+				super.onPostExecute(result);
+				if (mPostListType == PostListType.PUBLISHED)
+				{
+					if (mListPosts.getAdapter() == null)
+					{
+						PostPublishedListAdapter adapter = new PostPublishedListAdapter(
+								getActivity(), result);
+						adapter.setOnTagClickedListener(mOnTagClickedListener);
+						adapter.setListener(mStoryListListener);
+						adapter.setTagFilter(mCurrentTagFilter);
+						mListPosts.setAdapter(adapter);
+					}
+					else
+					{
+						((StoryListAdapter) mListPosts.getAdapter())
+								.updateItems(result);
+					}
+				}
+				else if (mPostListType == PostListType.OUTGOING) {
+					if (mListPosts.getAdapter() == null)
+					{
+						PostOutgoingListAdapter adapter = new PostOutgoingListAdapter(
+								getActivity(), result);
+						adapter.setOnTagClickedListener(mOnTagClickedListener);
+						adapter.setListener(mStoryListListener);
+						adapter.setTagFilter(mCurrentTagFilter);
+						mListPosts.setAdapter(adapter);
+					}
+					else
+					{
+						((StoryListAdapter) mListPosts.getAdapter())
+								.updateItems(result);
+					}
+				}
+				else if (mPostListType == PostListType.DRAFTS)
+				{
+					if (mListPosts.getAdapter() == null)
+					{
+						PostDraftsListAdapter adapter = new PostDraftsListAdapter(
+								getActivity(), result);
+						adapter.setPostDraftsListAdapterListener(PostListFragment.this);
+						adapter.setOnTagClickedListener(mOnTagClickedListener);
+						adapter.setListener(mStoryListListener);
+						adapter.setTagFilter(mCurrentTagFilter);
+						mListPosts.setAdapter(adapter);
+					}
+					else
+					{
+						((StoryListAdapter) mListPosts.getAdapter())
+								.updateItems(result);
+					}
+				}
 			}
-		}
-		else if (mPostListType == PostListType.OUTGOING)
-		{
-			if (mListPosts.getAdapter() == null)
-			{
-			PostOutgoingListAdapter adapter = new PostOutgoingListAdapter(getActivity(), socialReporter.getDrafts());
-			adapter.setOnTagClickedListener(mOnTagClickedListener);
-			adapter.setListener(mStoryListListener);
-			adapter.setTagFilter(mCurrentTagFilter);
-			mListPosts.setAdapter(adapter);
-		}
-			else
-			{
-				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getDrafts());
-			}
-		}
-		else if (mPostListType == PostListType.DRAFTS)
-		{
-			if (mListPosts.getAdapter() == null)
-			{
-			PostDraftsListAdapter adapter = new PostDraftsListAdapter(getActivity(), socialReporter.getDrafts());
-			adapter.setPostDraftsListAdapterListener(this);
-			adapter.setOnTagClickedListener(mOnTagClickedListener);
-			adapter.setListener(mStoryListListener);
-			adapter.setTagFilter(mCurrentTagFilter);
-			mListPosts.setAdapter(adapter);
-		}
-			else
-			{
-				((StoryListAdapter) mListPosts.getAdapter()).updateItems(socialReporter.getDrafts());
-			}
-	}
+
+			
+		};
+		updateTask.execute((Void)null);
 	}
 
 	@Override
