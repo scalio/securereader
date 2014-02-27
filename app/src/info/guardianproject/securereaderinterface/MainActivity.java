@@ -16,23 +16,16 @@ import info.guardianproject.paik.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -564,9 +557,9 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		if (mUpdateListTask != null)
 			mUpdateListTask.cancel(true);
 		mUpdateListTask = new UpdateFeedListTask(this, mFeedFilterType, optionalFeed, isUpdate);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			mUpdateListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		else
+		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		//	mUpdateListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		//else
 			mUpdateListTask.execute();
 
 		syncSpinnerToCurrentItem();
@@ -763,7 +756,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, -1, this);
 	}
 
-	class UpdateFeedListTask extends AsyncTask<Void, Void, ArrayList<Feed>>
+	class UpdateFeedListTask extends ThreadedTask<Void, Void, ArrayList<Feed>>
 	{
 		private Context mContext;
 		private FeedFilterType mFeedFilterType;

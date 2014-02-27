@@ -109,6 +109,14 @@ public class LockableActivity extends SherlockFragmentActivity {
 		}
 	};
 	private View mContentView;
+
+	private boolean mHasResult;
+
+	private int mRequestCode;
+
+	private int mResultCode;
+
+	private Intent mReturnedIntent;
 	
 	protected void onLocked()
 	{
@@ -118,6 +126,11 @@ public class LockableActivity extends SherlockFragmentActivity {
 	protected void onUnlocked()
 	{
 		mContentView.setVisibility(View.VISIBLE);
+		if (mHasResult)
+		{
+			mHasResult = false;
+			onUnlockedActivityResult(mRequestCode, mResultCode, mReturnedIntent);
+		}
 	}
 
 	@Override
@@ -131,5 +144,27 @@ public class LockableActivity extends SherlockFragmentActivity {
 	public boolean onCreateThumbnail(Bitmap outBitmap, Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
 		return true;
+	}
+
+	@Override
+	final protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent)
+	{
+		super.onActivityResult(requestCode, resultCode, returnedIntent);
+		if (App.getInstance().isActivityLocked())
+		{
+			mHasResult = true;
+			mRequestCode = requestCode;
+			mResultCode = resultCode;
+			mReturnedIntent = returnedIntent;
+		}
+		else
+		{
+			onUnlockedActivityResult(requestCode, resultCode, returnedIntent);
+		}
+	}
+	
+	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
+	{
+		
 	}
 }

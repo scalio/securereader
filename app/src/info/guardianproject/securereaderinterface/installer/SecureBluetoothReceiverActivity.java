@@ -433,9 +433,9 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		super.onActivityResult(requestCode, resultCode, data);
+		super.onUnlockedActivityResult(requestCode, resultCode, data);
 		
 		// If we don´t allow BT to be turned on, just quit out of this activity!
 		if (requestCode == SecureBluetooth.REQUEST_ENABLE_BT)

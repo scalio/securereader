@@ -16,6 +16,7 @@ import info.guardianproject.paik.R;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -88,9 +90,10 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	private View mBtnMediaView;
 	private View mBtnMediaDelete;
 	private View mOperationButtons;
+	private View mProgressIcon;
 	private java.io.File mCurrentPhotoFile;
 	private int mReplaceThisIndex;
-
+	private boolean mIsAddingMedia;
 	private AlertDialog mMediaChooserDialog;
 
 	private Intent mStartedIntent;
@@ -106,6 +109,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 		setMenuIdentifier(R.menu.activity_add_post);
 		mReplaceThisIndex = -1;
+		mIsAddingMedia = false;
 	}
 
 	@Override
@@ -130,7 +134,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 			@Override
 			public void onClick(View v)
 			{
-				if (mOperationButtons.getVisibility() == View.GONE)
+				if (!mIsAddingMedia && mOperationButtons.getVisibility() == View.GONE)
 				{
 					mOperationButtons.setVisibility(View.VISIBLE);
 					AnimationHelpers.fadeIn(mOperationButtons, 500, 5000, false);
@@ -218,19 +222,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 							@Override
 							public void run()
 							{
-								// View child = ((ViewGroup)
-								// sv.getChildAt(0)).getFocusedChild();
-								// if (child != null)
-								// {
-								// Rect rect = new Rect();
-								// child.getHitRect(rect);
-								// sv.requestChildRectangleOnScreen(sv.getChildAt(0),
-								// rect, true);
-								// }
-								// else
-								{
-									sv.scrollTo(0, sv.getBottom());
-								}
+								sv.scrollTo(0, sv.getBottom());
 							}
 						});
 					}
@@ -260,6 +252,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private void hookupMediaOperationButtons()
 	{
+		mProgressIcon = findViewById(R.id.ivProgressIcon);
+		mProgressIcon.setVisibility(View.GONE);
+		
 		mBtnMediaAdd = findViewById(R.id.btnMediaAdd);
 		mBtnMediaAdd.setOnClickListener(new View.OnClickListener()
 		{
@@ -374,7 +369,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		// Show or hide the add media button
 		if (mStory == null || mStory.getNumberOfMediaContent() == 0)
 		{
-			mMediaView.setVisibility(View.GONE);
+			mMediaView.setVisibility(View.INVISIBLE);
 			mBtnMediaAdd.setVisibility(View.VISIBLE);
 			mOperationButtons.setVisibility(View.GONE);
 		}
@@ -570,9 +565,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
+	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+		super.onUnlockedActivityResult(requestCode, resultCode, imageReturnedIntent);
 
 		switch (requestCode)
 		{
@@ -682,49 +677,73 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		// This should give us a database id if one doesn't exist already
 		saveDraft(false);
 
-		if (mediaItemStream != null || mediaItemFile != null)
-		{
-			// Now we can copy the file
-			File outputFile;
-			outputFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + newMediaContent.getDatabaseId());
+		mProgressIcon.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+		mProgressIcon.setVisibility(View.VISIBLE);
+		mBtnMediaAdd.setVisibility(View.GONE);
+		mIsAddingMedia = true;
+	
+		ThreadedTask<Void, Void, Void> addMediaTask = new ThreadedTask<Void, Void, Void>() 
+		{	
+			private InputStream mediaItemStream;
+			private java.io.File mediaItemFile;
+			private String mediaItemUrl;
+			private MediaContent mediaContent;
 
-			Log.v("AddPostActivity", "Local App Storage File: " + outputFile);
-
-			// First copy file to encrypted storage
-			try
+			public ThreadedTask<Void, Void, Void> init(java.io.InputStream mediaItemStream, java.io.File mediaItemFile, String mediaItemUrl, MediaContent mediaContent)
 			{
-				copyFileFromFStoAppFS(mediaItemStream, mediaItemFile, outputFile);
+				this.mediaItemStream = mediaItemStream;
+				this.mediaItemFile = mediaItemFile;
+				this.mediaItemUrl = mediaItemUrl;
+				this.mediaContent = mediaContent;
+				return this;
 			}
-			catch (IOException e)
+			
+			@Override
+			protected Void doInBackground(Void... values) 
 			{
-				e.printStackTrace();
+				if (mediaItemStream != null || mediaItemFile != null)
+				{
+					// Now we can copy the file
+					File outputFile;
+					outputFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
+
+					Log.v("AddPostActivity", "Local App Storage File: " + outputFile);
+
+					// First copy file to encrypted storage
+					try
+					{
+						copyFileFromFStoAppFS(mediaItemStream, mediaItemFile, outputFile);
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+
+					// Update record in media content
+					mediaContent.setUrl("file://" + outputFile.getAbsolutePath());
+				}
+				else
+				{
+					mediaContent.setUrl(mediaItemUrl);
+				}
+				Log.v("AddPostActivity", "Set Url to: " + mediaContent.getUrl());
+				return null;
 			}
 
-			// Update record in media content
-			newMediaContent.setUrl("file://" + outputFile.getAbsolutePath());
-		}
-		else
-		{
-			newMediaContent.setUrl(mediaItemUrl);
-		}
-		Log.v("AddPostActivity", "Set Url to: " + newMediaContent.getUrl());
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				mIsAddingMedia = false;
 
-		// If this was a temp capture file, delete it
-		deleteImageFile();
+				mProgressIcon.clearAnimation();
+				mProgressIcon.setVisibility(View.GONE);
 
-		onMediaChanged();
-
-		/*
-		 * if (this.mCurrentPhotoFile != null) {
-		 * MediaScannerConnection.scanFile(this, new String[] {
-		 * mCurrentPhotoFile.toString() }, null, new
-		 * MediaScannerConnection.OnScanCompletedListener() {
-		 * 
-		 * @Override public void onScanCompleted(String path, Uri uri) {
-		 * Log.i("ExternalStorage", "Scanned " + path + ":");
-		 * Log.i("ExternalStorage", "-> uri=" + uri); } }); mCurrentPhotoFile =
-		 * null; }
-		 */
+				// If this was a temp capture file, delete it
+				deleteImageFile();
+				onMediaChanged();
+			}
+		}.init(mediaItemStream, mediaItemFile, mediaItemUrl, newMediaContent);
+		addMediaTask.execute((Void)null);
 	}
 
 	private void onMediaChanged()

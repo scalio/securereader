@@ -1,6 +1,7 @@
 package info.guardianproject.securereaderinterface.adapters;
 
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.paik.R;
 
@@ -101,7 +102,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 	{
 		// Add an intent for our secure share
 		//
-		addIntentResolver(shareIntent, null, mContext.getPackageName(), mContext.getPackageName() + ".installer.SecureBluetoothSenderActivity",
+		addIntentResolver(shareIntent, null, mContext.getPackageName(), SecureBluetoothSenderActivity.class.getName(),
 				R.string.share_via_secure_bluetooth, R.drawable.ic_share_sharer);
 	}
 	

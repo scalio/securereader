@@ -217,12 +217,15 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 	private int mnResumed = 0;
 	private Activity mLastResumed;
-
+	private boolean mIsLocked = true;
+	
 	public void onActivityPause(Activity activity)
 	{
 		mnResumed--;
 		if (mnResumed == 0)
 			socialReader.onPause();
+		if (mLastResumed == activity)
+			mLastResumed = null;
 	}
 
 	public void onActivityResume(Activity activity)
@@ -231,12 +234,17 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		mnResumed++;
 		if (mnResumed == 1)
 			socialReader.onResume();
+		showLockScreenIfLocked();
 	}
 	
-	@Override
-	public void onLocked()
+	public boolean isActivityLocked()
 	{
-		if (mLastResumed != null && mLockScreen == null)
+		return mIsLocked;
+	}
+	
+	private void showLockScreenIfLocked()
+	{
+		if (mIsLocked && mLastResumed != null && mLockScreen == null)
 		{
 			Intent intent = new Intent(App.this, LockScreenActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -245,12 +253,20 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			mLastResumed.overridePendingTransition(0, 0);
 			mLastResumed = null;
 		}
+	}
+	
+	@Override
+	public void onLocked()
+	{
+		mIsLocked = true;
+		showLockScreenIfLocked();
 		LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(LOCKED_BROADCAST_ACTION));
 	}
 
 	@Override
 	public void onUnlocked()
 	{
+		mIsLocked = false;
 		if (mLockScreen != null)
 			mLockScreen.onUnlocked();
 		mLockScreen = null;
