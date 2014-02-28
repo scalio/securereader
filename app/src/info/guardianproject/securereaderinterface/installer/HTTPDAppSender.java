@@ -306,6 +306,11 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					// Remove the "/"
 					requestedPackage = uri.substring(1);
 				}
+				
+				// Strip the .apk we added to the request off
+				if (requestedPackage.endsWith(".apk")) {
+					requestedPackage = requestedPackage.substring(0, requestedPackage.length() - 4);
+				}
 
 				PackageInfo packageInfo = this.getPackageInfoFromPackageName(requestedPackage);
 				if (packageInfo != null)
@@ -378,15 +383,18 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 				title = packageInfo.applicationInfo.name;
 			if (title == null || title.length() == 0)
 				title = appFile.getName();
+						
 			CharSequence description = packageInfo.applicationInfo.loadDescription(getPackageManager());
 			if (description == null)
 				description = "";
+			
+			String downloadUrl = packageInfo.packageName + ".apk";
 
 			String template = new String(templateOriginal);
 			template = template.replaceAll("<!-- BEGIN_APP_TITLE -->(.*?)<!-- END_APP_TITLE -->(?s)", title);
 			template = template.replaceAll("<!-- BEGIN_APP_INFO -->(.*?)<!-- END_APP_INFO -->(?s)", description.toString());
 			template = template.replaceAll("<!-- APP_ICON -->(?s)", "icon/" + packageInfo.packageName);
-			template = template.replaceAll("<!-- APP_PACKAGE -->(?s)", "" + packageInfo.packageName);
+			template = template.replaceAll("<!-- APP_PACKAGE -->(?s)", "" + downloadUrl);
 
 			return template;
 		}
