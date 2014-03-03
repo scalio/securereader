@@ -30,7 +30,9 @@
         android:label="@string/app_name"
         android:description="@string/app_description"
         android:theme="@style/AppTheme" >
-                
+
+		<activity android:name="net.hockeyapp.android.UpdateActivity" />
+        
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 
 		    android:enabled="true" android:exported="false" />        
         

@@ -158,6 +158,10 @@ public class StoryItemPageView extends RelativeLayout
 		if (mItem != item)
 		{
 			mItem = item;
+			if (mMediaViewCollection != null)
+			{
+				mMediaViewCollection.recycle();
+			}
 			mMediaViewCollection = null;
 			if (mMediaViewCollection == null && item.getNumberOfMediaContent() > 0)
 				mMediaViewCollection = new MediaViewCollection(getContext(), item);

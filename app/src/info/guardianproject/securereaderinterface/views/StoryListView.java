@@ -369,34 +369,24 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 	protected void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-
-		// Remember old scroll position, so we can restore that after
-		// orientation change!
-		//
-		int oldIndex = -1;
-		int oldY = 0;
-		if (mListStories != null)
+		post(new Runnable()
 		{
-			oldIndex = mListStories.getFirstVisiblePosition();
-			// View child = mListStories.getChildAt(0);
-			// if (child != null)
-			// oldY = child.getTop();
-		}
-
-		this.removeAllViews();
-		init();
-		if (mAdapter != null)
-			mAdapter.notifyDataSetChanged();
-
-		// Restore old scroll position (if any)
-		if (oldIndex != -1)
-		{
-			mListStories.setSelectionFromTop(oldIndex, oldY);
-		}
-
-		// Tell our listener that we recreated the list view!
-		if (this.mListener != null)
-			mListener.onListViewUpdated(mListStories);
+			@Override
+			public void run() {
+				// Remember old scroll position, so we can restore that after
+				// orientation change!
+				//
+				saveListPosition();
+				removeAllViews();
+				init();
+				if (mAdapter != null)
+					mAdapter.notifyDataSetChanged();
+					
+				// Tell our listener that we recreated the list view!
+				if (mListener != null)
+					mListener.onListViewUpdated(mListStories);
+			}
+		});
 	}
 
 	private void createOrUpdateAdapter(Context context, ArrayList<Item> items, int headerView)
@@ -424,9 +414,16 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 	public void updateItems(Context context, ArrayList<Item> items, int headerView, final boolean rememberPosition)
 	{
 		// Remember old position so we can restore it after update if we want.
+		if (rememberPosition)
+			saveListPosition();
+		createOrUpdateAdapter(context, items, headerView);
+	}
+
+	private void saveListPosition() 
+	{
 		long oldItemId = -1;
 		int oldY = 0;
-		if (mListStories != null && rememberPosition && mListStories.getCount() > 0)
+		if (mListStories != null && mListStories.getCount() > 0)
 		{
 			int oldIndex = mListStories.getFirstVisiblePosition();
 			if (oldIndex != -1)
@@ -434,14 +431,13 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			View child = mListStories.getChildAt(0);
 			if (child != null)
 				oldY = child.getTop();
-			Log.v(MainActivity.LOGTAG, "Remember list position " + oldItemId + "," + oldY);
+			Log.v(MainActivity.LOGTAG, "Remember list position " + oldItemId
+					+ "," + oldY);
 		}
 		mOldItemId = oldItemId;
 		mOldY = oldY;
-		
-		createOrUpdateAdapter(context, items, headerView);
 	}
-
+	
 	private void scrollToSavedPosition()
 	{
 		if (mOldItemId != Integer.MIN_VALUE)
