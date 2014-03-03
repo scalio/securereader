@@ -48,6 +48,10 @@ import com.actionbarsherlock.view.Window;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
+// HockeyApp SDK
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
 {
 	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
@@ -55,6 +59,9 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.securereaderinterface.showThisItemId";
 
 	public static String LOGTAG = "MainActivity";
+	
+	// HockeyApp SDK
+	public static String APP_ID = "NOT FOR MASTER BRANCH";
 
 	private boolean mIsInitialized;
 	private long mShowItemId;
@@ -124,6 +131,9 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		createFeedSpinner();
 		updateList(FeedFilterType.ALL_FEEDS, null);
+		
+		// HockeyApp SDK
+		checkForUpdates();
 	}
 
 	private void createFeedSpinner()
@@ -209,7 +219,21 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		// Resume sync if we are back from Orbot
 		updateTorView();
+		
+		// HockeyApp SDK
+		checkForCrashes();
 	}
+	
+	// HockeyApp SDK
+	private void checkForCrashes() {
+		CrashManager.register(this, APP_ID);
+	}	
+	
+	// HockeyApp SDK
+	private void checkForUpdates() {
+		//Remove this for store builds!
+		UpdateManager.register(this, APP_ID);
+	}	
 
 	@Override
 	public void onPause()

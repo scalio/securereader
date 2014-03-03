@@ -370,7 +370,10 @@ public class AnimationHelpers
 		Animation previousAnimation = view.getAnimation();
 		if (previousAnimation == null || previousAnimation.getClass() == animation.getClass())
 		{
-			view.startAnimation(animation);
+			if (animation.getStartTime() == Animation.START_ON_FIRST_FRAME)
+				view.startAnimation(animation);
+			else
+				view.setAnimation(animation);
 			return;
 		}
 

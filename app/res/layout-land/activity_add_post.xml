@@ -21,10 +21,9 @@
             android:layout_weight="0.5" >
 
             <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
-				android:id="@+id/layout_media"
-        		android:layout_width="match_parent"
-        		android:layout_height="wrap_content"
-        		app:height_limit="1.75" >
+                android:id="@+id/layout_media"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
         				
             <include
                 android:id="@+id/mediaContentView"
@@ -93,6 +92,24 @@
 
                 </LinearLayout>
 
+            <FrameLayout
+                    android:id="@+id/flProgressIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" >
+
+	                <ImageView
+	                    android:id="@+id/ivProgressIcon"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="center"
+	                    android:clickable="false"
+	                    android:focusable="false"
+	                    android:focusableInTouchMode="false"
+	                    android:longClickable="false"
+	                    android:scaleType="fitCenter"
+	                    android:src="@drawable/ic_context_load" />
+				</FrameLayout>
         </RelativeLayout>
 
         <RelativeLayout
