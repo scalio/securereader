@@ -31,5 +31,5 @@
 	<string name="xmlrpc_endpoint">http://ny5y5j76ljc2dcpr.onion/wordpress/xmlrpc.php</string>
 	    
 	<!-- Default values that should be referenced in Settings.java -->
-	<bool name="require_tor_default">false</bool>
+	<bool name="require_tor_default">true</bool>
 </resources>
