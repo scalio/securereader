@@ -471,7 +471,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 		{
 			if (mListStories != null)
 			{
-				mListStories.setHeaderHeight(0);
+				mListStories.setHeaderEnabled(false);
 			}
 			if (mListHeader != null)
 			{
@@ -491,7 +491,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			if (mListStories != null && mListHeader != null)
 			{
 				mListHeader.setVisibility(View.VISIBLE);
-				mListStories.setHeaderHeight(mListHeader.getHeight());
+				mListStories.setHeaderEnabled(true);
 			}
 		}
 	}
@@ -509,6 +509,8 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 		super.onLayout(changed, left, top, right, bottom);
 		if (changed)
 			setIsLoading(mIsLoading);
+		if (mListStories != null)
+			mListStories.setHeaderHeight(mListHeader.getHeight());
 	}
 
 	@Override
