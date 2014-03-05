@@ -191,7 +191,7 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 	{
 		if (position == 0 && hasHeaderView())
 			return -1;
-		if (mFilteredStories == null)
+		if (mFilteredStories == null || mFilteredStories.size() == 0)
 			return -1;
 		return mFilteredStories.get(position - (hasHeaderView() ? 1 : 0)).getDatabaseId();
 	}

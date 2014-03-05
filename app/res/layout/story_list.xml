@@ -47,6 +47,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tvTagResults"
         android:divider="@null"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="vertical" >
 
     </info.guardianproject.securereaderinterface.widgets.SyncableListView>
