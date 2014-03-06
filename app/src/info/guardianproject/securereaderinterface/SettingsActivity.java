@@ -6,11 +6,14 @@ import info.guardianproject.securereaderinterface.widgets.GroupView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 import org.holoeverywhere.app.Dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -34,6 +37,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import info.guardianproject.paik.R;
+import info.guardianproject.cacheword.CacheWordHandler;
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {
@@ -503,7 +507,14 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 				// Check old
 				boolean matching = (editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()));
-				boolean sameAsPassphrase = (editNewPassphrase.getText().toString().equals(mSettings.launchPassphrase()));
+				boolean sameAsPassphrase = false;
+				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+				try {
+					cwh.setPassphrase(editNewPassphrase.getText().toString().toCharArray());
+					sameAsPassphrase = true;
+                } catch (GeneralSecurityException e) {
+                    Log.e(TAG, "Cacheword initialization failed: " + e.getMessage());
+                }
 				if (!matching || sameAsPassphrase)
 				{
 					editNewPassphrase.setText("");
@@ -548,9 +559,15 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	private void updateUseKillPassphrase()
 	{
 		if (!TextUtils.isEmpty(mSettings.killPassphrase()))
+		{
 			mRbUseKillPassphraseOn.setChecked(true);
+			mSettings.setUseKillPassphrase(true);
+		}
 		else
+		{
 			mRbUseKillPassphraseOff.setChecked(true);
+			mSettings.setUseKillPassphrase(false);
+		}
 	}
 
 	@Override
