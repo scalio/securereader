@@ -7,7 +7,10 @@ import info.guardianproject.securereaderinterface.uiutil.HttpTextWatcher;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -61,6 +64,15 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 		});
 		mEditManualUrl = (EditText) rootView.findViewById(R.id.editManualUrl);
 		mEditManualUrl.addTextChangedListener(new HttpTextWatcher(rootView.getContext(), mBtnAddManualUrl));
+		
+		Intent intent = getActivity().getIntent();
+		String action = intent.getAction();
+		if (Intent.ACTION_VIEW.equals(action) && intent.getData() != null)
+		{
+			mEditManualUrl.setText(intent.getData().toString());
+		}
+
+		
 		return rootView;
 	}
 

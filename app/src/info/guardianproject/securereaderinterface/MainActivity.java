@@ -6,6 +6,7 @@ import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderFeedFilter;
+import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
@@ -83,6 +84,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	ActionProviderFeedFilter mAPFeedFilter;
 	FeedFilterType mFeedFilterType;
 	Feed mFeed;
+	ActionProviderShare mShareActionProvider;
 
 	StoryListView mStoryListView;
 
@@ -318,8 +320,14 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		mMenuItemTag = menu.findItem(R.id.menu_tag);
 		mMenuItemTag.setVisible(mShowTagMenuItem);
 
+		// Locate MenuItem with ShareActionProvider
 		mMenuItemShare = menu.findItem(R.id.menu_share);
-
+		if (mMenuItemShare != null)
+		{
+			mShareActionProvider = new ActionProviderShare(this);
+			mShareActionProvider.setFeed(mFeed);
+			mMenuItemShare.setActionProvider(mShareActionProvider);
+		}
 		// Locate MenuItem with ShareActionProvider
 		// mMenuItemFeed = menu.findItem(R.id.menu_feed);
 		// if (mMenuItemFeed != null)
@@ -587,6 +595,9 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			mUpdateListTask.execute();
 
 		syncSpinnerToCurrentItem();
+		if (mShareActionProvider != null)
+			mShareActionProvider.setFeed(mFeed);
+		mStoryListView.setCurrentFeed(mFeed);
 	}
 
 	private void refreshList()

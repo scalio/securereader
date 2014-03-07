@@ -51,7 +51,6 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 	private static App m_singleton;
 
-	public Feed m_activeFeed;
 	public int m_selectedArticleId;
 	public boolean m_unreadOnly = true;
 	public boolean m_unreadArticlesOnly = true;
