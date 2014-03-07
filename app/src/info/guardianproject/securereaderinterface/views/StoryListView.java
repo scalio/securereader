@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import info.guardianproject.yakreader.R;
 
+import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
 public class StoryListView extends FrameLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
@@ -258,6 +259,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 	}
 
 	private int mHeaderState; // 0 = hidden, 1 = shown, 2 = fully shown, 3 = No net
+	private Feed mFeed;
 
 	@Override
 	public void onListPulledDown(int heightVisible)
@@ -295,10 +297,10 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			case 1:
 			{
 				TextView tv = (TextView) mListHeader.findViewById(R.id.tvHeader);
-				if (App.getInstance().m_activeFeed != null && App.getInstance().m_activeFeed.getNetworkPullDate() != null)
+				if (mFeed != null && mFeed.getNetworkPullDate() != null)
 				{
 					Date synced = new Date();
-					synced = App.getInstance().m_activeFeed.getNetworkPullDate();
+					synced = mFeed.getNetworkPullDate();
 					String lastSyncedAt = UIHelpers.dateDiffDisplayString(synced, getContext(), R.string.last_synced_never, R.string.last_synced_recently,
 							R.string.last_synced_minutes, R.string.last_synced_minute, R.string.last_synced_hours, R.string.last_synced_hour,
 							R.string.last_synced_days, R.string.last_synced_day);
@@ -376,7 +378,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 				// Remember old scroll position, so we can restore that after
 				// orientation change!
 				//
-				saveListPosition();
+				saveListPosition(false);
 				removeAllViews();
 				init();
 				if (mAdapter != null)
@@ -414,16 +416,15 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 	public void updateItems(Context context, ArrayList<Item> items, int headerView, final boolean rememberPosition)
 	{
 		// Remember old position so we can restore it after update if we want.
-		if (rememberPosition)
-			saveListPosition();
+		saveListPosition(!rememberPosition);
 		createOrUpdateAdapter(context, items, headerView);
 	}
 
-	private void saveListPosition() 
+	private void saveListPosition(boolean reset) 
 	{
 		long oldItemId = -1;
 		int oldY = 0;
-		if (mListStories != null && mListStories.getCount() > 0)
+		if (mListStories != null && !reset && mListStories.getCount() > 0)
 		{
 			int oldIndex = mListStories.getFirstVisiblePosition();
 			if (oldIndex != -1)
@@ -562,10 +563,8 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			mFrameError.collapse();
 	}
 
-//	@Override
-//	public void onMovedToScrapHeap(View view)
-//	{
-//		if (mAdapter != null)
-//			mAdapter.recycleView(view);
-//	}
+	public void setCurrentFeed(Feed feed) 
+	{
+		mFeed = feed;
+	}
 }
