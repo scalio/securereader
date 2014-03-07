@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.tinymission.rss.Feed;
 
 public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener
 {
@@ -37,7 +38,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private WipeReceiver mWipeReceiver;
 	private int mIdMenu;
-	private ActionProviderShare mShareActionProvider;
 	private Menu mOptionsMenu;
 	private boolean mDisplayHomeAsUp = false;
 
@@ -261,15 +261,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		super.onCreateOptionsMenu(menu);
 
 		getSupportMenuInflater().inflate(mIdMenu, menu);
-
-		// Locate MenuItem with ShareActionProvider
-		MenuItem item = menu.findItem(R.id.menu_share);
-		if (item != null)
-		{
-			mShareActionProvider = new ActionProviderShare(this);
-			item.setActionProvider(mShareActionProvider);
-		}
-
 		colorizeMenuItems();
 		return true;
 	}
