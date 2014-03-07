@@ -34,14 +34,4 @@
 		<item name="android:textAllCaps">true</item>
 		<item name="android:background">@drawable/add_feed_button_background_selector</item>
 	</style>
-
-    <style name="RemoveButtonStyle">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">#ffffff</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:background">@drawable/remove_feed_button_background_selector</item>
-	</style>
-    
-    	
 </resources>
