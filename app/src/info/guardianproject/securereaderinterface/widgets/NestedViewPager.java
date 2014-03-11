@@ -1,9 +1,8 @@
 package info.guardianproject.securereaderinterface.widgets;
 
-import info.guardianproject.securereaderinterface.adapters.ObservableAdapter;
-import info.guardianproject.securereaderinterface.adapters.ObservableAdapter.ObservableAdapterListener;
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -224,7 +223,7 @@ public class NestedViewPager extends ViewPager
 		}
 	}
 
-	private final ObservableAdapterListener mDataSetObserver = new ObservableAdapterListener()
+	private final DataSetObserver mDataSetObserver = new DataSetObserver()
 	{
 		@Override
 		public void onChanged()
@@ -241,13 +240,10 @@ public class NestedViewPager extends ViewPager
 	public void setAdapter(PagerAdapter adapter)
 	{
 		// Unregister old, if any
-		if (getAdapter() != null && getAdapter() instanceof ObservableAdapter)
-			((ObservableAdapter) getAdapter()).unregisterDataSetObserver(mDataSetObserver);
-
-		if (adapter instanceof ObservableAdapter)
-		{
-			((ObservableAdapter) adapter).registerDataSetObserver(mDataSetObserver);
-		}
+		if (getAdapter() != null)
+			getAdapter().unregisterDataSetObserver(mDataSetObserver);
+		if (adapter != null)
+			adapter.registerDataSetObserver(mDataSetObserver);
 		super.setAdapter(adapter);
 
 		updateViewPagerIndicator();

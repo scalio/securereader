@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import info.guardianproject.securereaderinterface.ui.OnMediaItemClickedListener;
 import info.guardianproject.securereaderinterface.views.MediaContentPreviewView;
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-public class StoryItemMediaContentPagerAdapter extends ObservablePagerAdapter
+public class StoryItemMediaContentPagerAdapter extends PagerAdapter
 {
 	private final Context mContext;
 	private ArrayList<MediaContentPreviewView> mMediaViewCollection;
