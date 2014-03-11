@@ -1,6 +1,5 @@
 package info.guardianproject.securereaderinterface.widgets;
 
-import info.guardianproject.securereaderinterface.adapters.ObservableAdapter;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 
@@ -348,10 +347,8 @@ public class PagedView extends NestedViewPager
 		}
 	}
 
-	private class PagedViewPagerAdapter extends PagerAdapter implements ObservableAdapter
+	private class PagedViewPagerAdapter extends PagerAdapter
 	{
-		ObservableAdapter.ObservableAdapterListener mObserver;
-
 		public PagedViewPagerAdapter()
 		{
 			super();
@@ -397,26 +394,6 @@ public class PagedView extends NestedViewPager
 		{
 			int count = PagedView.this.getNumberOfPages();
 			return count;
-		}
-
-		@Override
-		public void notifyDataSetChanged()
-		{
-			super.notifyDataSetChanged();
-			if (mObserver != null)
-				mObserver.onChanged();
-		}
-
-		@Override
-		public void registerDataSetObserver(ObservableAdapterListener observer)
-		{
-			mObserver = observer;
-		}
-
-		@Override
-		public void unregisterDataSetObserver(ObservableAdapterListener observer)
-		{
-			mObserver = null;
 		}
 	}
 }
