@@ -21,7 +21,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,8 +28,20 @@ import android.widget.TextView;
 import info.guardianproject.yakreader.R;
 import com.tinymission.rss.Feed;
 
-public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemClickListener
+public class FeedFilterView extends ListView implements ListAdapter, OnItemClickListener
 {
+	private enum FeedFilterItemType
+	{
+		DISPLAY_PHOTOS(0), ALL_FEEDS(1), FAVORITES(2), POPULAR(3), SHARED(4), FEED(5);
+
+		private final int value;
+
+		private FeedFilterItemType(int value)
+		{
+			this.value = value;
+		}
+	}
+	
 	public interface FeedFilterViewCallbacks
 	{
 		void viewFavorites();
@@ -62,7 +73,6 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 	}
 
 	private FeedFilterViewCallbacks mCallbacks;
-	private ListView mListView;
 	private ArrayList<Feed> mListFeeds;
 	private boolean mIsOnline; // Save this so we don't have to call it for
 								// every view!
@@ -89,15 +99,25 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 	protected void onFinishInflate()
 	{
 		super.onFinishInflate();
-		setOrientation(LinearLayout.VERTICAL);
-		mListView = (ListView) findViewById(R.id.lvFeeds);
-		mListView.setOnItemClickListener(this);
-		mListView.setItemsCanFocus(true);
-
 		if (!isInEditMode())
 		{
-			updateList();
-			mListView.setAdapter(this);
+			setOnItemClickListener(this);
+			setItemsCanFocus(true);
+			setAdapter(this);
+
+			View btnAddFeeds = this.findViewById(R.id.btnAddFeeds);
+			if (btnAddFeeds != null)
+			{
+				btnAddFeeds.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						if (mCallbacks != null)
+							mCallbacks.addNew();
+					}
+				});
+			}
 		}
 	}
 
@@ -110,27 +130,16 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 		return isOnline;
 	}
 
-	private void updateList()
+	public void updateList(ArrayList<Feed> feeds)
 	{
 		mIsOnline = isOnline();
-
-		View btnAddFeeds = this.findViewById(R.id.btnAddFeeds);
-		btnAddFeeds.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (mCallbacks != null)
-					mCallbacks.addNew();
-			}
-		});
-		mListFeeds = App.getInstance().socialReader.getSubscribedFeedsList();
-		
+		mListFeeds = feeds;
 		mCountFavorites = String.valueOf(App.getInstance().socialReader.getAllFavoritesCount());
 		mCountShared = String.valueOf(App.getInstance().socialReader.getAllSharedCount());
 		mCountNumInProgress = String.valueOf(DownloadsAdapter.getNumInProgress());
+		invalidateViews();
 	}
-
+	
 	private class RefreshFeed implements View.OnClickListener
 	{
 		private final Feed mFeed;
@@ -144,8 +153,8 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 		public void onClick(View v)
 		{
 			UICallbacks.requestResync(mFeed);
-			mListView.setAdapter(null);
-			mListView.setAdapter(FeedFilterView.this);
+			setAdapter(null);
+			setAdapter(FeedFilterView.this);
 		}
 	}
 
@@ -168,7 +177,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 
 	private int getCountSpecials()
 	{
-		return 5 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
+		return 4 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
 	}
 
 	@Override
@@ -196,29 +205,39 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 	@Override
 	public int getItemViewType(int position)
 	{
-		if (App.UI_ENABLE_POPULAR_ITEMS)
-		{
-			if (position == 1)
-				return getCountSpecials();
-			else if (position > 1)
-				position -= 1;
-		}
-		if (position < 5)
-			return position;
-		return 5;
+		return getItemFeedFilterType(position).value;
 	}
+	
+	private FeedFilterItemType getItemFeedFilterType(int position)
+	{
+		if (position == 0)
+			return FeedFilterItemType.DISPLAY_PHOTOS;
+		else if (position == 1)
+			return FeedFilterItemType.ALL_FEEDS;
+		else if (position == 2)
+			return FeedFilterItemType.FAVORITES;
+		else if (position == 3 && App.UI_ENABLE_POPULAR_ITEMS)
+			return FeedFilterItemType.POPULAR;
+		
+		if (App.UI_ENABLE_POPULAR_ITEMS)
+			position -= 1; // Offset 1 if popular is enabled
 
+		if (position == 3)
+			return FeedFilterItemType.SHARED;
+		return FeedFilterItemType.FEED;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		int type = this.getItemViewType(position);
+		FeedFilterItemType type = getItemFeedFilterType(position);
 
 		View returnView = null;
 		View.OnClickListener listener = null;
 
 		switch (type)
 		{
-		case 0:
+		case DISPLAY_PHOTOS:
 		{
 			if (convertView == null)
 				convertView = createDisplayPhotosView();
@@ -240,7 +259,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 			returnView = convertView;
 			break;
 		}
-		case 1:
+		case FAVORITES:
 		{
 			if (convertView == null)
 				convertView = createFavoritesView();
@@ -260,7 +279,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 			returnView = convertView;
 			break;
 		}
-		case 2:
+		case SHARED:
 		{
 			if (convertView == null)
 				convertView = createSharedView();
@@ -282,33 +301,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 			returnView = convertView;
 			break;
 		}
-		case 3:
-		{
-			// Media Downloads
-			//
-			if (convertView == null)
-				convertView = createFavoritesView();
-			ViewTag holder = (ViewTag) convertView.getTag();
-			
-			// Set image
-			//
-			holder.ivFeedImage.setVisibility(View.VISIBLE);
-			holder.ivFeedImage.setImageResource(R.drawable.ic_menu_downloads);
-			holder.tvName.setText(R.string.downloads_title);
-			holder.tvCount.setText(mCountNumInProgress);
-			listener = new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					if (mCallbacks != null)
-						mCallbacks.viewDownloads();
-				}
-			};
-			returnView = convertView;
-			break;
-		}
-		case 4:
+		case ALL_FEEDS:
 		{
 			if (convertView == null)
 				convertView = createAllFeedsView();
@@ -338,7 +331,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 			returnView = convertView;
 			break;
 		}
-		case 5:
+		case FEED:
 		{
 			Feed feed = mListFeeds.get(position - getCountSpecials());
 
@@ -368,7 +361,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 			returnView = convertView;
 			break;
 		}
-		case 6:
+		case POPULAR:
 		{
 			if (convertView == null)
 				convertView = createFavoritesView();
@@ -400,7 +393,7 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 	@Override
 	public int getViewTypeCount()
 	{
-		return 1 + getCountSpecials();
+		return 6;
 	}
 
 	@Override
@@ -450,28 +443,28 @@ public class FeedFilterView extends LinearLayout implements ListAdapter, OnItemC
 	public View createDisplayPhotosView()
 	{
 		// Display photos
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_display_photos, mListView, false);
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_display_photos, this, false);
 		createViewHolder(view);
 		return view;
 	}
 
 	public View createFavoritesView()
 	{
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, mListView, false);
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, this, false);
 		createViewHolder(view);
 		return view;
 	}
 
 	public View createSharedView()
 	{
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, mListView, false);
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, this, false);
 		createViewHolder(view);
 		return view;
 	}
 
 	public View createAllFeedsView()
 	{
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_item, mListView, false);
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_item, this, false);
 		createViewHolder(view);
 		return view;
 	}

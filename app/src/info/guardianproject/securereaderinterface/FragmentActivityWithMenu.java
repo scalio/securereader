@@ -1,14 +1,15 @@
 package info.guardianproject.securereaderinterface;
 
+import java.util.ArrayList;
+
 import info.guardianproject.yakreader.R;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.onionkit.ui.OrbotHelper;
-import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
-import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.views.FeedFilterView;
+import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
 import android.annotation.SuppressLint;
@@ -35,7 +36,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Feed;
 
-public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener
+public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks
 {
 	private KillReceiver mKillReceiver;
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
@@ -171,6 +172,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		
 		if (Build.VERSION.SDK_INT >= 11)
 			invalidateOptionsMenu();
+		refreshMenu();
 	}
 
 	private final class KillReceiver extends BroadcastReceiver
@@ -264,6 +266,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		super.onCreateOptionsMenu(menu);
 
 		getSupportMenuInflater().inflate(mIdMenu, menu);
+		
+		getSupportMenuInflater().inflate(R.menu.overflow_main, menu);
+		
 		colorizeMenuItems();
 		return true;
 	}
@@ -320,6 +325,42 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 
+		case R.id.menu_receive_share:
+		{
+			mMenuCommandReceiver.handleCommand(R.integer.command_receiveshare);
+			return true;
+		}
+
+		case R.id.menu_media_downloads:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_downloads, null);
+			return true;
+		}
+
+		case R.id.menu_manage_feeds:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
+			return true;
+		}
+
+		case R.id.menu_preferences:
+		{
+			mMenuCommandReceiver.handleCommand(R.integer.command_settings);
+			return true;
+		}
+
+		case R.id.menu_about:
+		{
+			mMenuCommandReceiver.handleCommand(R.integer.command_help);
+			return true;
+		}
+
+		case R.id.menu_share_app:
+		{
+			mMenuCommandReceiver.handleCommand(R.integer.command_shareapp);
+			return true;
+		}
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -329,133 +370,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	@SuppressLint("NewApi")
 	public void onMenuCreated(final View parent, final View menuRoot, final View menu)
 	{
-		// News
-		//
-		menu.findViewById(R.id.llNews).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_news_list);
-			}
-		});
-
-		menu.findViewById(R.id.btnAddFeed).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_feed_add);
-			}
-		});
-
-		// Reporter
-		//
-		if (App.UI_ENABLE_REPORTER)
-		{
-			menu.findViewById(R.id.llReporter).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_posts_list);
-				}
-			});
-
-			menu.findViewById(R.id.btnAddPost).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_post_add);
-				}
-			});
-		}
-		else
-		{
-			// Disable reporter functionality
-			menu.findViewById(R.id.llReporter).setVisibility(View.GONE);
-			menu.findViewById(R.id.llReporterSeparator).setVisibility(View.GONE);
-			menu.findViewById(R.id.btnAddPost).setVisibility(View.GONE);
-			menu.findViewById(R.id.btnAddPostSeparator).setVisibility(View.GONE);
-		}
-
-		// Chat
-		//
-		if (App.UI_ENABLE_CHAT)
-		{
-			menu.findViewById(R.id.llChat).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_chat);
-				}
-			});
-		}
-		else
-		{
-			// Disable chat functionality
-			menu.findViewById(R.id.llChat).setVisibility(View.GONE);
-			menu.findViewById(R.id.llChatSeparator).setVisibility(View.GONE);
-		}
-
-		// Help
-		//
-		menu.findViewById(R.id.llHelp).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_help);
-			}
-		});
-
-		// Connect
-		menu.findViewById(R.id.btnTorStatus).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_toggle_online, true);
-				onBeforeShow(); // update menu
-			}
-		});
-
-		// Receive share
-		menu.findViewById(R.id.llReceiveShare).setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_receiveshare);
-			}
-		});
-
-		menu.findViewById(R.id.llShareApp).setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_shareapp);
-			}
-		});
-
-		// Preferences
-		//
-		View btnSettings = menu.findViewById(R.id.llSettings);
-		btnSettings.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_settings);
-			}
-		});
-
+		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
 		performRotateTransition(parent, menuRoot);
+		refreshMenu();
 	}
 
 	@SuppressLint("NewApi")
@@ -539,6 +456,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		public TextView tvNumFeeds;
 		public TextView tvNumStories;
 		public TextView tvNumChats;
+		public FeedFilterView viewFeedFilter;
 	}
 
 	private MenuViewHolder mMenuViewHolder;
@@ -546,14 +464,24 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	@Override
 	public void onBeforeShow()
 	{
-		View menuView = mLeftSideMenu.getMenuView();
-		if (menuView != null)
-		{
-			UpdateMenuTask task = new UpdateMenuTask();
-			task.execute((Void) null);
-		}
+		if (mMenuViewHolder != null)
+			mMenuViewHolder.viewFeedFilter.setSelectionFromTop(0, 0);
+		mMenuViewHolder.viewFeedFilter.invalidateViews();
 	}
 
+	protected void refreshMenu()
+	{
+		if (mLeftSideMenu != null)
+		{
+			View menuView = mLeftSideMenu.getMenuView();
+			if (menuView != null)
+			{
+				UpdateMenuTask task = new UpdateMenuTask();
+				task.execute((Void) null);
+			}
+		}
+	}
+	
 	class UpdateMenuTask extends ThreadedTask<Void, Void, Void>
 	{
 		private boolean isUsingTor;
@@ -561,6 +489,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		// private boolean isSignedIn;
 		private int numFeeds;
 		private int numPosts;
+		private ArrayList<Feed> feeds;
 
 		@Override
 		protected Void doInBackground(Void... values)
@@ -569,18 +498,20 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			{
 				mMenuViewHolder = new MenuViewHolder();
 				View menuView = mLeftSideMenu.getMenuView();
-				mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
-				mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
-				mMenuViewHolder.tvNumFeeds = (TextView) menuView.findViewById(R.id.tvNumFeeds);
-				mMenuViewHolder.tvNumStories = (TextView) menuView.findViewById(R.id.tvNumStories);
-				mMenuViewHolder.tvNumChats = (TextView) menuView.findViewById(R.id.tvNumChats);
+//				mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
+//				mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
+//				mMenuViewHolder.tvNumFeeds = (TextView) menuView.findViewById(R.id.tvNumFeeds);
+//				mMenuViewHolder.tvNumStories = (TextView) menuView.findViewById(R.id.tvNumStories);
+//				mMenuViewHolder.tvNumChats = (TextView) menuView.findViewById(R.id.tvNumChats);
+				mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
 			}
 
 			isUsingTor = App.getInstance().socialReader.useTor();
 			isOnline = App.getInstance().socialReader.isTorOnline();
 			// isSignedIn = App.getInstance().socialReporter.isSignedIn();
 
-			numFeeds = App.getInstance().socialReader.getSubscribedFeedsList().size();
+			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
+			numFeeds = feeds.size();
 			numPosts = 0;
 			// if (isSignedIn)
 			numPosts = App.getInstance().socialReporter.getPosts().size();
@@ -592,29 +523,31 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			// Update TOR connection status
 			//
-			if (isOnline)
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
-			}
-			else
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
-			}
-			if (isUsingTor)
-			{
-				mMenuViewHolder.tvTorStatus.setVisibility(View.VISIBLE);
-				mMenuViewHolder.ivTorStatus.setVisibility(View.VISIBLE);
-			}
-			else
-			{
-				mMenuViewHolder.tvTorStatus.setVisibility(View.INVISIBLE);
-				mMenuViewHolder.ivTorStatus.setVisibility(View.INVISIBLE);
-			}
-			mMenuViewHolder.tvNumFeeds.setText(getString(R.string.menu_num_feeds, numFeeds));
-			mMenuViewHolder.tvNumStories.setText(getString(R.string.menu_num_stories, numPosts));
-			mMenuViewHolder.tvNumChats.setText(getString(R.string.menu_num_chats, 0));
+//			if (isOnline)
+//			{
+//				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
+//				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
+//			}
+//			else
+//			{
+//				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
+//				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
+//			}
+//			if (isUsingTor)
+//			{
+//				mMenuViewHolder.tvTorStatus.setVisibility(View.VISIBLE);
+//				mMenuViewHolder.ivTorStatus.setVisibility(View.VISIBLE);
+//			}
+//			else
+//			{
+//				mMenuViewHolder.tvTorStatus.setVisibility(View.INVISIBLE);
+//				mMenuViewHolder.ivTorStatus.setVisibility(View.INVISIBLE);
+//			}
+//			mMenuViewHolder.tvNumFeeds.setText(getString(R.string.menu_num_feeds, numFeeds));
+//			mMenuViewHolder.tvNumStories.setText(getString(R.string.menu_num_stories, numPosts));
+//			mMenuViewHolder.tvNumChats.setText(getString(R.string.menu_num_chats, 0));
+			
+			mMenuViewHolder.viewFeedFilter.updateList(feeds);
 		}
 	}
 
@@ -704,5 +637,45 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return inflater;
 		}
 		return super.getSystemService(name);
+	}
+
+	@Override
+	public void viewFavorites() {
+		mLeftSideMenu.hide();
+		UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, this);
+	}
+
+	@Override
+	public void viewPopular() {
+		mLeftSideMenu.hide();
+		UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, this);
+	}
+
+	@Override
+	public void viewDownloads() {
+		mLeftSideMenu.hide();
+		UICallbacks.handleCommand(this, R.integer.command_downloads, null);
+	}
+
+	@Override
+	public void viewShared() {
+		mLeftSideMenu.hide();
+		UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, this);
+	}
+
+	@Override
+	public void viewFeed(Feed feedToView) {
+		mLeftSideMenu.hide();
+		if (feedToView == null)
+			UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		else
+			UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedToView.getDatabaseId(), this);
+		UICallbacks.handleCommand(this, R.integer.command_news_list, null);
+	}
+
+	@Override
+	public void addNew() {
+		mLeftSideMenu.hide();
+		UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
 	}
 }

@@ -21,7 +21,6 @@ import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -59,10 +58,6 @@ public class LeftSideMenu
 																// animation in
 																// ms
 	private static final float ANIMATION_DECELERATION = 2f;
-
-	private static final float MENU_SPEED = 0.5f; // 0 for REVEAL, 1 for SLIDE
-													// and in between for cool
-													// effects
 
 	private static final float RUBBERBAND_LIMIT = 30.0f;
 	private static final boolean USE_SHADOW = true;
@@ -196,12 +191,13 @@ public class LeftSideMenu
 			mMenuView = inflater.inflate(mResIdMenuLayout, mRoot, false);
 			mMenuView.setTag(this);
 
+			int actionBarHeight = mActionBar.getHeight();
+
 			FrameLayout.LayoutParams lays = (LayoutParams) mMenuView.getLayoutParams();
-			lays.setMargins(0, 0, 0, 0);
+			lays.setMargins(0, actionBarHeight, 0, 0);
 			mMenuView.setLayoutParams(lays);
 			mMenuView.setVisibility(View.GONE);
-			mMenuWidth = lays.width;
-			mRoot.addView(mMenuView);
+			mMenuWidth = lays.width + 30;
 
 			// Then move the content over to our new root
 			//
@@ -215,6 +211,7 @@ public class LeftSideMenu
 			mContent.setLayoutParams(lpContent);
 
 			mRoot.addView(mContent);
+			mRoot.addView(mMenuView);
 			mParent.addView(mRoot);
 		}
 		return mMenuView;
@@ -463,8 +460,8 @@ public class LeftSideMenu
 
 		createMenuView();
 
-		int contentPercentage = (int) ((mMenuWidth * percent) / 100.0f);
-		int menuPercentage = -(int) ((MENU_SPEED * mMenuWidth * (100.0f - percent)) / 100.0f);
+		int contentPercentage = (int) (0 * ((mMenuWidth * percent) / 100.0f));
+		int menuPercentage = -(int) ((mMenuWidth * (100.0f - percent)) / 100.0f);
 
 		if (mIsInteractive)
 		{
@@ -544,7 +541,7 @@ public class LeftSideMenu
 			mShadowPaint.setAntiAlias(true);
 			mShadowPaint.setDither(true);
 			mShadowPaint.setStyle(Paint.Style.FILL);
-			mShadowPaint.setShader(new LinearGradient(0f, 0f, 30f, 0f, new int[] { 0x00000000, 0x60000000, 0xff000000 }, new float[] { 0f, 0.8f, 1f },
+			mShadowPaint.setShader(new LinearGradient(0f, 0f, 30f, 0f, new int[] { 0xff000000, 0x60000000, 0x00000000 }, new float[] { 0f, 0.2f, 1f },
 					Shader.TileMode.CLAMP));
 
 			updateMenuIcon();
@@ -591,7 +588,7 @@ public class LeftSideMenu
 				else if (child == mMenuView)
 				{
 					canvas.translate(positionMenu, 0);
-					canvas.clipRect(0, mMenuView.getTop(), positionContent - positionMenu, mMenuView.getBottom(), Op.REPLACE);
+					canvas.clipRect(0, mMenuView.getTop(), mMenuWidth, mMenuView.getBottom(), Op.REPLACE);
 				}
 			}
 
@@ -600,10 +597,10 @@ public class LeftSideMenu
 			// Draw shadow?
 			if (child == mMenuView && USE_SHADOW)
 			{
-				int offset = positionContent - positionMenu;
-				if (offset > 0)
+				int offset = -positionMenu;
+				if (offset > -mMenuWidth)
 				{
-					canvas.translate(offset - 30, 0);
+					canvas.translate(mMenuWidth - 30, 0);
 					canvas.drawRect(0, mMenuView.getTop(), 30f, mMenuView.getBottom(), mShadowPaint);
 				}
 			}
