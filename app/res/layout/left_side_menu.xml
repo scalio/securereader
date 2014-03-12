@@ -1,23 +1,13 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollViewMenu"
+<info.guardianproject.securereaderinterface.views.FeedFilterView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewFeedFilter"
     android:layout_width="250dp"
     android:layout_height="fill_parent"
-    android:fillViewport="true" >
-
-    <LinearLayout
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/left_menu_background"
-        android:orientation="vertical"
-        android:paddingRight="2dp" >
-
-        <include
-            android:id="@+id/viewFeedFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            layout="@layout/feed_list" />
-
-    </LinearLayout>
-
-</ScrollView>
+    android:layout_gravity="top|left"
+    android:fillViewport="true"
+    android:background="@drawable/left_menu_background"
+	android:choiceMode="singleChoice"
+    android:divider="@color/grey_light"
+    android:dividerHeight="1px"
+>
+</info.guardianproject.securereaderinterface.views.FeedFilterView>

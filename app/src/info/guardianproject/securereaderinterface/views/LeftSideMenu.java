@@ -195,6 +195,7 @@ public class LeftSideMenu
 
 			FrameLayout.LayoutParams lays = (LayoutParams) mMenuView.getLayoutParams();
 			lays.setMargins(0, actionBarHeight, 0, 0);
+			lays.gravity = Gravity.LEFT | Gravity.TOP;
 			mMenuView.setLayoutParams(lays);
 			mMenuView.setVisibility(View.GONE);
 			mMenuWidth = lays.width + 30;
