@@ -465,7 +465,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	public void onBeforeShow()
 	{
 		if (mMenuViewHolder != null)
-			mMenuViewHolder.viewFeedFilter.setSelectionFromTop(0, 0);
+		{
+			mMenuViewHolder.viewFeedFilter.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();	
+				}
+			});
+		}
 		mMenuViewHolder.viewFeedFilter.invalidateViews();
 	}
 
