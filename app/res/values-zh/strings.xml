@@ -168,8 +168,6 @@
   <string name="lock_screen_passphrase_not_set_enter">输入新的密码短语</string>
   <string name="lock_screen_passphrase_not_set_confirm">确认新的密码短语</string>
   <string name="lock_screen_passphrases_not_matching">密码短语不匹配，请重试</string>
-  <string name="lock_screen_language_farsi">波斯语</string>
-  <string name="lock_screen_language_english">英语</string>
   <string name="lock_screen_wrong_password">糟糕！请重试。</string>
   <string name="httpd_app_sender_instructions">要本地分享YakReader应用或它支持的应用（Orbot和ChatSecure），请采取以下步骤：</string>
   <string name="httpd_app_sender_sender">要分享</string>

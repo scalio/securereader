@@ -176,11 +176,7 @@
     <string name="lock_screen_passphrase_hint">passphrase</string>
     <string name="lock_screen_passphrase_not_set_enter">Enter new passphrase</string>
     <string name="lock_screen_passphrase_not_set_confirm">Confirm new passphrase</string>
-    <string name="lock_screen_passphrases_not_matching">Passphrases did not match, please try again</string>
-    <string name="lock_screen_language_farsi">Farsi</string>
-    <string name="lock_screen_language_english">English</string>
-	<string name="lock_screen_language_chinese">Chinese</string>
-	<string name="lock_screen_language_Tibetan">Tibetan</string>    
+    <string name="lock_screen_passphrases_not_matching">Passphrases did not match, please try again</string> 
     <string name="lock_screen_wrong_password">Oops! Try again.</string>
     <string name="post_item_no_title">Untitled</string>
     <string name="add_post_menu_post">POST</string>
