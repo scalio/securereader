@@ -1,13 +1,49 @@
-<info.guardianproject.securereaderinterface.views.FeedFilterView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/viewFeedFilter"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menuRoot"
     android:layout_width="250dp"
     android:layout_height="fill_parent"
     android:layout_gravity="top|left"
-    android:fillViewport="true"
-    android:background="@drawable/left_menu_background"
-	android:choiceMode="singleChoice"
-    android:divider="@color/grey_light"
-    android:dividerHeight="1px"
->
-</info.guardianproject.securereaderinterface.views.FeedFilterView>
+    android:background="@drawable/left_menu_background" >
+
+    <RelativeLayout
+        android:id="@+id/llTorStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/popup_item_background_selector"
+        android:orientation="vertical" >
+
+    	<ImageView
+    	    android:id="@+id/btnTorStatus"
+    	    android:layout_width="48dp"
+    	    android:layout_height="48dp"
+    	    android:layout_centerVertical="true"
+    	    android:src="@drawable/ic_menu_tor_off" />
+
+        <TextView
+            android:id="@+id/tvTorStatus"
+            style="@style/LeftMenuLabelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/btnTorStatus"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:text="@string/menu_tor_not_connected"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+        
+    <info.guardianproject.securereaderinterface.views.FeedFilterView
+        android:id="@+id/viewFeedFilter"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/llTorStatus"
+        android:choiceMode="singleChoice"
+        android:divider="@color/grey_light"
+        android:dividerHeight="1px"
+        android:fillViewport="true" >
+
+    </info.guardianproject.securereaderinterface.views.FeedFilterView>
+
+</RelativeLayout>

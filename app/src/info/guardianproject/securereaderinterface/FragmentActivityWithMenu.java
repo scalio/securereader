@@ -451,11 +451,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	private class MenuViewHolder
 	{
+		public View llTorStatus;
 		public TextView tvTorStatus;
 		public ImageView ivTorStatus;
-		public TextView tvNumFeeds;
-		public TextView tvNumStories;
-		public TextView tvNumChats;
 		public FeedFilterView viewFeedFilter;
 	}
 
@@ -476,6 +474,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			});
 		}
 		mMenuViewHolder.viewFeedFilter.invalidateViews();
+		new UpdateTorStatusTask().execute();
 	}
 
 	protected void refreshMenu()
@@ -485,45 +484,54 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			View menuView = mLeftSideMenu.getMenuView();
 			if (menuView != null)
 			{
-				UpdateMenuTask task = new UpdateMenuTask();
-				task.execute((Void) null);
+				new UpdateMenuFeedsTask().execute();
 			}
 		}
 	}
-	
-	class UpdateMenuTask extends ThreadedTask<Void, Void, Void>
+
+	private void createMenuViewHolder()
 	{
-		private boolean isUsingTor;
-		private boolean isOnline;
-		// private boolean isSignedIn;
-		private int numFeeds;
-		private int numPosts;
+		if (mMenuViewHolder == null)
+		{
+			mMenuViewHolder = new MenuViewHolder();
+			View menuView = mLeftSideMenu.getMenuView();
+			mMenuViewHolder.llTorStatus = menuView.findViewById(R.id.llTorStatus);
+			mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
+			mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
+			mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
+		}
+	}
+	
+	class UpdateMenuFeedsTask extends ThreadedTask<Void, Void, Void>
+	{
 		private ArrayList<Feed> feeds;
 
 		@Override
 		protected Void doInBackground(Void... values)
 		{
-			if (mMenuViewHolder == null)
-			{
-				mMenuViewHolder = new MenuViewHolder();
-				View menuView = mLeftSideMenu.getMenuView();
-//				mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
-//				mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
-//				mMenuViewHolder.tvNumFeeds = (TextView) menuView.findViewById(R.id.tvNumFeeds);
-//				mMenuViewHolder.tvNumStories = (TextView) menuView.findViewById(R.id.tvNumStories);
-//				mMenuViewHolder.tvNumChats = (TextView) menuView.findViewById(R.id.tvNumChats);
-				mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
-			}
+			createMenuViewHolder();
+			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
+			return null;
+		}
 
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			mMenuViewHolder.viewFeedFilter.updateList(feeds);
+		}
+	}
+
+	class UpdateTorStatusTask extends ThreadedTask<Void, Void, Void>
+	{
+		private boolean isUsingTor;
+		private boolean isOnline;
+
+		@Override
+		protected Void doInBackground(Void... values)
+		{
+			createMenuViewHolder();
 			isUsingTor = App.getInstance().socialReader.useTor();
 			isOnline = App.getInstance().socialReader.isTorOnline();
-			// isSignedIn = App.getInstance().socialReporter.isSignedIn();
-
-			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
-			numFeeds = feeds.size();
-			numPosts = 0;
-			// if (isSignedIn)
-			numPosts = App.getInstance().socialReporter.getPosts().size();
 			return null;
 		}
 
@@ -532,34 +540,27 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			// Update TOR connection status
 			//
-//			if (isOnline)
-//			{
-//				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
-//				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
-//			}
-//			else
-//			{
-//				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
-//				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
-//			}
-//			if (isUsingTor)
-//			{
-//				mMenuViewHolder.tvTorStatus.setVisibility(View.VISIBLE);
-//				mMenuViewHolder.ivTorStatus.setVisibility(View.VISIBLE);
-//			}
-//			else
-//			{
-//				mMenuViewHolder.tvTorStatus.setVisibility(View.INVISIBLE);
-//				mMenuViewHolder.ivTorStatus.setVisibility(View.INVISIBLE);
-//			}
-//			mMenuViewHolder.tvNumFeeds.setText(getString(R.string.menu_num_feeds, numFeeds));
-//			mMenuViewHolder.tvNumStories.setText(getString(R.string.menu_num_stories, numPosts));
-//			mMenuViewHolder.tvNumChats.setText(getString(R.string.menu_num_chats, 0));
-			
-			mMenuViewHolder.viewFeedFilter.updateList(feeds);
+			if (isOnline)
+			{
+				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
+				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
+			}
+			else
+			{
+				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
+				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
+			}
+			if (isUsingTor)
+			{
+				mMenuViewHolder.llTorStatus.setVisibility(View.VISIBLE);
+			}
+			else
+			{
+				mMenuViewHolder.llTorStatus.setVisibility(View.GONE);
+			}
 		}
 	}
-
+	
 	private class MenuBroadcastReceiver extends BroadcastReceiver
 	{
 		@Override
