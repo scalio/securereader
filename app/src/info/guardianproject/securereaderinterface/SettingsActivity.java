@@ -204,7 +204,11 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		this.hookupRadioButton(tabView, "readerSwipeDirection", Settings.ReaderSwipeDirection.class, R.id.rbSwipeDirectionRtl, R.id.rbSwipeDirectionLtr,
 				R.id.rbSwipeDirectionAutomatic);
 
-		this.hookupRadioButton(tabView, "uiLanguage", Settings.UiLanguage.class, R.id.rbUiLanguageEnglish, 0, R.id.rbUiLanguageTibetan, R.id.rbUiLanguageChinese);
+		this.hookupRadioButtonWithArray(tabView, "uiLanguage", Settings.UiLanguage.class, new ResourceValueMapping[] {
+			new ResourceValueMapping(R.id.rbUiLanguageEnglish, Settings.UiLanguage.English),
+			new ResourceValueMapping(R.id.rbUiLanguageTibetan, Settings.UiLanguage.Tibetan),
+			new ResourceValueMapping(R.id.rbUiLanguageChinese, Settings.UiLanguage.Chinese),
+			new ResourceValueMapping(R.id.rbUiLanguageUkrainian, Settings.UiLanguage.Ukrainian)});
 
 		this.hookupRadioButtonWithArray(tabView, "numberOfPasswordAttempts", int.class, new ResourceValueMapping[] {
 				new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts1, 2), new ResourceValueMapping(R.id.rbNumberOfPasswordAttempts2, 3),

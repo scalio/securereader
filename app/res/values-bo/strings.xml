@@ -168,8 +168,6 @@
   <string name="lock_screen_passphrase_not_set_enter">གསང་ཚིག་གསར་པ་ནང་འཇུག་བྱོས། </string>
   <string name="lock_screen_passphrase_not_set_confirm">གསང་ཚིག་གསར་པ་གཏན་འཇགས་བཟོས།</string>
   <string name="lock_screen_passphrases_not_matching">གསང་ཚིག་མི་མཚུངས། བསྐྱར་དུ་ནང་ཞུགས་བྱེད་རོགས།</string>
-  <string name="lock_screen_language_farsi">པར་ཤི་ཡའི་སྐད་ཡིག</string>
-  <string name="lock_screen_language_english">དབྱིན་སྐད།</string>
   <string name="lock_screen_wrong_password">བསྐྱར་དུ་ཚོད་ལྟ་བྱོས།</string>
   <string name="httpd_app_sender_instructions">ཉེ་འཁོར་དུ་གཡག་ཀློག་པ་པོའི་ཉེར་སྤྱོད་མ་ལག་གམ་ཡང་ན་ཨོར་སྦོ་ཁྲི་(Orbot)ལྟ་བུས་རོགས་འདེགས་བྱེད་པའི་ཉེར་སྤྱོད་མ་ལག་རིགས་བགོ་བཤའ་བྱེད་པ་ལ། གཤམ་གྱི་དོན་ཚན་འདི་དག་ངེས་པར་གྱིས། </string>
   <string name="httpd_app_sender_sender">འགྲེམས་སྤེལ་ཆེད།</string>

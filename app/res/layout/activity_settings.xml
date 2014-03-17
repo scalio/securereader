@@ -471,6 +471,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_language_tibetan" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageUkrainian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_ukrainian" />
                 
             </RadioGroup>
 
