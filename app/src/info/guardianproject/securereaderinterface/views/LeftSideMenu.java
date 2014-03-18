@@ -103,6 +103,10 @@ public class LeftSideMenu
 			@Override
 			public void onGlobalLayout()
 			{
+				int actionBarHeight = mActionBar.getHeight();
+				if (actionBarHeight == 0)
+					return; // No action bar height yet
+				
 				try
 				{
 					// remove the listener... or we'll be doing this a lot.
