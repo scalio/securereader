@@ -3,11 +3,12 @@
     android:layout_width="250dp"
     android:layout_height="fill_parent"
     android:layout_gravity="top|left"
-    android:background="@drawable/left_menu_background" >
+    android:background="@drawable/left_menu_background"
+    android:paddingRight="1dp" >
 
     <RelativeLayout
         android:id="@+id/llTorStatus"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/popup_item_background_selector"
         android:orientation="vertical" >
@@ -37,7 +38,7 @@
     <info.guardianproject.securereaderinterface.views.FeedFilterView
         android:id="@+id/viewFeedFilter"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/llTorStatus"
         android:choiceMode="singleChoice"
         android:divider="@color/grey_light"

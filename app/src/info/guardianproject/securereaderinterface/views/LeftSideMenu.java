@@ -60,7 +60,7 @@ public class LeftSideMenu
 	private static final float ANIMATION_DECELERATION = 2f;
 
 	private static final float RUBBERBAND_LIMIT = 30.0f;
-	private static final boolean USE_SHADOW = true;
+	private static final boolean USE_SHADOW = false;
 
 	private final Activity mActivity;
 	private final ActionBar mActionBar;
@@ -202,7 +202,9 @@ public class LeftSideMenu
 			lays.gravity = Gravity.LEFT | Gravity.TOP;
 			mMenuView.setLayoutParams(lays);
 			mMenuView.setVisibility(View.GONE);
-			mMenuWidth = lays.width + 30;
+			mMenuWidth = lays.width;
+			if (USE_SHADOW)
+				mMenuWidth += 30;
 
 			// Then move the content over to our new root
 			//
