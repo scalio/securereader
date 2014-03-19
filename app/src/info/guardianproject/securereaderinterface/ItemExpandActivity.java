@@ -155,6 +155,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				{
 					removeFullStoryView();
 					mLeftSideMenu.setDragEnabled(true);
+					refreshMenu();
 				}
 			});
 

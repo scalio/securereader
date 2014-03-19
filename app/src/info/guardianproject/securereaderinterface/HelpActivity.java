@@ -20,6 +20,8 @@ public class HelpActivity extends FragmentActivityWithMenu
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		if (useLeftSideMenu())
+			setDisplayHomeAsUp(true);
 		setContentView(R.layout.activity_help);
 		setMenuIdentifier(R.menu.activity_help);
 

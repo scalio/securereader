@@ -5,7 +5,6 @@ import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import info.guardianproject.securereaderinterface.ui.ActionProviderFeedFilter;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -81,7 +80,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	MenuItem mMenuItemShare;
 	MenuItem mMenuItemFeed;
 
-	ActionProviderFeedFilter mAPFeedFilter;
 	FeedFilterType mFeedFilterType;
 	Feed mFeed;
 	ActionProviderShare mShareActionProvider;
@@ -131,18 +129,10 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			}
 		});
 
-		createFeedSpinner();
 		updateList(FeedFilterType.ALL_FEEDS, null);
 		
 		// HockeyApp SDK
 		checkForUpdates();
-	}
-
-	private void createFeedSpinner()
-	{
-		mAPFeedFilter = new ActionProviderFeedFilter(this);
-		getSupportActionBar().setCustomView(mAPFeedFilter.onCreateActionView());
-		getSupportActionBar().setDisplayShowCustomEnabled(true);
 	}
 
 	@Override
@@ -287,17 +277,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	private void syncSpinnerToCurrentItem()
 	{
 		if (mFeedFilterType == FeedFilterType.ALL_FEEDS)
-			mAPFeedFilter.setCurrentTitle(getString(R.string.feed_filter_all_feeds));
+			setActionBarTitle(getString(R.string.feed_filter_all_feeds));
 		else if (mFeedFilterType == FeedFilterType.POPULAR)
-			mAPFeedFilter.setCurrentTitle(getString(R.string.feed_filter_popular));
+			setActionBarTitle(getString(R.string.feed_filter_popular));
 		else if (mFeedFilterType == FeedFilterType.SHARED)
-			mAPFeedFilter.setCurrentTitle(getString(R.string.feed_filter_shared_stories));
+			setActionBarTitle(getString(R.string.feed_filter_shared_stories));
 		else if (mFeedFilterType == FeedFilterType.FAVORITES)
-			mAPFeedFilter.setCurrentTitle(getString(R.string.feed_filter_favorites));
+			setActionBarTitle(getString(R.string.feed_filter_favorites));
 		else if (mFeed != null)
-			mAPFeedFilter.setCurrentTitle(mFeed.getTitle());
+			setActionBarTitle(mFeed.getTitle());
 		else
-			mAPFeedFilter.setCurrentTitle(getString(R.string.feed_filter_all_feeds));
+			setActionBarTitle(getString(R.string.feed_filter_all_feeds));
 	}
 
 	private Feed getFeedById(long idFeed)
@@ -930,7 +920,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	protected void onUnlocked() {
 		super.onUnlocked();
 		socialReader = ((App) getApplicationContext()).socialReader;
-		createFeedSpinner();
 		updateList(FeedFilterType.ALL_FEEDS, null);
 	}
 	

@@ -20,7 +20,10 @@
 		
 		<item name="actionBarMenuIcon">@drawable/ic_action_menu</item>
 		<item name="actionBarMenuIconInset">6dp</item>
-						    	    				
+
+		<item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
+    	<item name="android:actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
+								    	    				
 <!-- 		<item name="android:actionBarSize">54dp</item> -->
 	    <item name="android:actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
         <item name="android:actionBarTabStyle">@style/AppActionBarTabStyle</item>
@@ -120,6 +123,13 @@
         <item name="android:textColor">?attr/actionBarThemeColorTitle</item>
         <item name="font">Glegoo-Regular</item>
     </style>
+    
+ 	<style name="AppActionBarOverflowButtonStyle" parent="Widget.Sherlock.ActionButton.Overflow">
+		<item name="android:src">@drawable/ic_context_menu</item>
+		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
+		<item name="android:minWidth">20dip</item>
+    </style>
+    
     
     <!-- Shared styles                                 -->
     <!--                                               -->
