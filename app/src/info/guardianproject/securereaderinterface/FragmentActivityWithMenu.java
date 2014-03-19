@@ -325,12 +325,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 
-		case R.id.menu_receive_share:
-		{
-			mMenuCommandReceiver.handleCommand(R.integer.command_receiveshare);
-			return true;
-		}
-
 		case R.id.menu_media_downloads:
 		{
 			UICallbacks.handleCommand(this, R.integer.command_downloads, null);
@@ -649,6 +643,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		return super.getSystemService(name);
 	}
 
+	@Override
+	public void receiveShare() {
+		mLeftSideMenu.hide();
+		UICallbacks.handleCommand(this, R.integer.command_receiveshare, null);
+	}
+	
 	@Override
 	public void viewFavorites() {
 		mLeftSideMenu.hide();

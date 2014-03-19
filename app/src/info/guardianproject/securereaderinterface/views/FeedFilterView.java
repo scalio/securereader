@@ -32,7 +32,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 {
 	private enum FeedFilterItemType
 	{
-		DISPLAY_PHOTOS(0), ALL_FEEDS(1), FAVORITES(2), POPULAR(3), SHARED(4), FEED(5);
+		DISPLAY_PHOTOS(0), RECEIVE_SHARE(1), ALL_FEEDS(2), FAVORITES(3), POPULAR(4), SHARED(5), FEED(6);
 
 		private final int value;
 
@@ -44,6 +44,8 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	
 	public interface FeedFilterViewCallbacks
 	{
+		void receiveShare();
+		
 		void viewFavorites();
 
 		void viewPopular();
@@ -177,7 +179,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
 	private int getCountSpecials()
 	{
-		return 4 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
+		return 5 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
 	}
 
 	@Override
@@ -213,16 +215,18 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		if (position == 0)
 			return FeedFilterItemType.DISPLAY_PHOTOS;
 		else if (position == 1)
-			return FeedFilterItemType.ALL_FEEDS;
+			return FeedFilterItemType.RECEIVE_SHARE;
 		else if (position == 2)
+			return FeedFilterItemType.ALL_FEEDS;
+		else if (position == 3)
 			return FeedFilterItemType.FAVORITES;
-		else if (position == 3 && App.UI_ENABLE_POPULAR_ITEMS)
+		else if (position == 4 && App.UI_ENABLE_POPULAR_ITEMS)
 			return FeedFilterItemType.POPULAR;
 		
 		if (App.UI_ENABLE_POPULAR_ITEMS)
 			position -= 1; // Offset 1 if popular is enabled
 
-		if (position == 3)
+		if (position == 4)
 			return FeedFilterItemType.SHARED;
 		return FeedFilterItemType.FEED;
 	}
@@ -256,6 +260,28 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 					App.getSettings().setSyncMode(view.isChecked() ? SyncMode.LetItFlow : SyncMode.BitWise);
 				}
 			};
+			returnView = convertView;
+			break;
+		}
+		case RECEIVE_SHARE:
+		{
+			if (convertView == null)
+				convertView = createReceiveShareView();
+			ViewTag holder = (ViewTag) convertView.getTag();
+			
+			holder.ivFeedImage.setImageResource(R.drawable.ic_share_receiver);
+			holder.tvCount.setText("");
+			holder.tvName.setText(R.string.menu_receive_share);
+			listener = new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (mCallbacks != null)
+						mCallbacks.receiveShare();
+				}
+			};
+
 			returnView = convertView;
 			break;
 		}
@@ -393,7 +419,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	@Override
 	public int getViewTypeCount()
 	{
-		return 6;
+		return 7;
 	}
 
 	@Override
@@ -455,6 +481,13 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		return view;
 	}
 
+	public View createReceiveShareView()
+	{
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, this, false);
+		createViewHolder(view);
+		return view;
+	}
+	
 	public View createSharedView()
 	{
 		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, this, false);
