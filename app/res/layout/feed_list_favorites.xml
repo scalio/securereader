@@ -16,7 +16,7 @@
         
     <TextView
         android:id="@+id/tvFeedName"
-        style="@style/PopupListItemStyle"
+        style="@style/LeftSideMenuItemStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -26,12 +26,12 @@
 
     <TextView
         android:id="@+id/tvCount"
+        style="@style/LeftSideMenuItemSubStyle"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="10dp"
-        android:text="12"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="12" />
 
 </LinearLayout>

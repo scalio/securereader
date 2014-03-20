@@ -6,7 +6,7 @@
     android:descendantFocusability="blocksDescendants" >
 
     <TextView
-        style="@style/PopupListItemStyle"
+        style="@style/LeftSideMenuItemStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
