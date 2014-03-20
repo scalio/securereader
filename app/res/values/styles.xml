@@ -218,10 +218,6 @@
         <item name="android:textColor">@color/grey_dark</item>
     </style>
     
-    <style name="LeftMenuDropDownItemStyle">
-        <item name="android:textColor">@color/grey_light_medium</item>
-	</style>
-    
     <!--  Bottom toolbar -->
     <style name="BottomToolbarStyle">
         <item name="android:background">@drawable/bottom_bar_background</item>
