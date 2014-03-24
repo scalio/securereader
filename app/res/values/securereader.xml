@@ -4,15 +4,9 @@
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
 	
     <string-array name="built_in_feed_names">
-        <item></item>
-        <item></item>
-        <item></item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
-	    <item></item>
-        <item></item>
-        <item></item>
     </string-array>
 
 
