@@ -119,11 +119,11 @@
   <string name="settings_heading_login">ནང་འཛུལ་བྱོས། </string>
   <string name="settings_security_passphrase_timeout">Lock Automatically</string>
   <string name="settings_security_passphrase_timeout_info">Locking allows your information to be encrypted and stored safely on your device. Choose timeout.</string>
-  <string name="settings_security_passphrase_timeout1">5 seconds</string>
-  <string name="settings_security_passphrase_timeout2">20 seconds</string>
-  <string name="settings_security_passphrase_timeout3">5 minutes</string>
-  <string name="settings_security_passphrase_timeout4">1 week</string>
-  <string name="settings_security_passphrase_timeout5">11 days</string>
+  <string name="settings_security_passphrase_timeout1">Immediate</string>
+    <string name="settings_security_passphrase_timeout2">1 minute</string>
+    <string name="settings_security_passphrase_timeout3">1 hour</string>
+    <string name="settings_security_passphrase_timeout4">1 day</string>
+    <string name="settings_security_passphrase_timeout5">1 week</string>  
   <string name="settings_security_password_attempts">གསང་ཚིག་ནོར་བ་ནང་འཇུག་ཁག </string>
   <string name="settings_security_password_attempts_label">ཁྱེད་རང་སྒེར་གྱི་གནས་ཚུལ་ཁག་ཉེར་སྤྱོད་མ་ལག་ནས་མ་གསུབ་པའི་སྔོན་ལ། གསང་གྲངས་ནོར་བ་ཞིག་ནང་འཇུག་ཐེངས་ག་ཚོད་ལ་བྱེད་སྲིད་པའི་གྲངས་ཀ་དེ་འདེམས། </string>
   <string name="settings_security_password_attempts_1">༢</string>
