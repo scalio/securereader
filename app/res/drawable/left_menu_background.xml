@@ -10,7 +10,7 @@
         		android:right="1dp" android:bottom="0dp">
         <shape>
             <!-- This makes up the background of the menu -->
-    		<solid android:color="@color/grey_light"/>
+    		<solid android:color="#000"/>
 		</shape>
     </item>
 </layer-list> 

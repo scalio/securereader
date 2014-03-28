@@ -3,6 +3,8 @@ package info.guardianproject.securereaderinterface;
 import java.util.ArrayList;
 
 import info.guardianproject.courier.R;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -12,6 +14,8 @@ import info.guardianproject.securereaderinterface.views.FeedFilterView;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
+import info.guardianproject.securereaderinterface.widgets.CheckableButton;
+import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +32,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -445,9 +450,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	private class MenuViewHolder
 	{
-		public View llTorStatus;
-		public TextView tvTorStatus;
-		public ImageView ivTorStatus;
+		public CheckableButton btnTorStatus;
+		public CheckableButton btnShowPhotos;
 		public FeedFilterView viewFeedFilter;
 	}
 
@@ -489,10 +493,39 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			mMenuViewHolder = new MenuViewHolder();
 			View menuView = mLeftSideMenu.getMenuView();
-			mMenuViewHolder.llTorStatus = menuView.findViewById(R.id.llTorStatus);
-			mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
-			mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
+			mMenuViewHolder.btnTorStatus = (CheckableButton) menuView.findViewById(R.id.btnMenuTor);
+			mMenuViewHolder.btnShowPhotos = (CheckableButton) menuView.findViewById(R.id.btnMenuPhotos);
 			mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
+			
+			// Hookup events
+			mMenuViewHolder.btnTorStatus.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (App.getSettings().requireTor())
+					{
+						if (App.getInstance().socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
+						{
+							mLeftSideMenu.hide();
+							App.getInstance().socialReader.connectTor(FragmentActivityWithMenu.this);
+						}
+					}
+				}
+			});
+			
+			mMenuViewHolder.btnShowPhotos.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (App.getSettings().syncMode() == SyncMode.LetItFlow)
+						App.getSettings().setSyncMode(SyncMode.BitWise);
+					else
+						App.getSettings().setSyncMode(SyncMode.LetItFlow);
+					mMenuViewHolder.btnShowPhotos.setChecked(App.getSettings().syncMode() == SyncMode.LetItFlow);
+				}
+			});
 		}
 	}
 	
@@ -518,6 +551,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	class UpdateTorStatusTask extends ThreadedTask<Void, Void, Void>
 	{
 		private boolean isUsingTor;
+		private boolean showImages;
 		private boolean isOnline;
 
 		@Override
@@ -526,6 +560,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			createMenuViewHolder();
 			isUsingTor = App.getInstance().socialReader.useTor();
 			isOnline = App.getInstance().socialReader.isTorOnline();
+			showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
 			return null;
 		}
 
@@ -534,24 +569,17 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			// Update TOR connection status
 			//
-			if (isOnline)
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
-			}
-			else
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
-			}
 			if (isUsingTor)
 			{
-				mMenuViewHolder.llTorStatus.setVisibility(View.VISIBLE);
+				mMenuViewHolder.btnTorStatus.setChecked(isOnline);
+				mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
 			}
 			else
 			{
-				mMenuViewHolder.llTorStatus.setVisibility(View.GONE);
+				mMenuViewHolder.btnTorStatus.setChecked(false);
+				mMenuViewHolder.btnTorStatus.setText(R.string.menu_tor_not_connected);
 			}
+			mMenuViewHolder.btnShowPhotos.setChecked(showImages);
 		}
 	}
 	

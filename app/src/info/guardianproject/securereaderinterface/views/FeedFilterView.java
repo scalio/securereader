@@ -14,6 +14,7 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,8 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import info.guardianproject.courier.R;
+
 import com.tinymission.rss.Feed;
 
 public class FeedFilterView extends ListView implements ListAdapter, OnItemClickListener
@@ -72,6 +73,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		public TextView tvCount;
 		public ImageView ivFeedImage;
 		public View ivRefresh;
+		public View shortcutView;
 	}
 
 	private FeedFilterViewCallbacks mCallbacks;
@@ -179,7 +181,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
 	private int getCountSpecials()
 	{
-		return 5 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
+		return 3 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
 	}
 
 	@Override
@@ -213,20 +215,15 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	private FeedFilterItemType getItemFeedFilterType(int position)
 	{
 		if (position == 0)
-			return FeedFilterItemType.DISPLAY_PHOTOS;
-		else if (position == 1)
-			return FeedFilterItemType.RECEIVE_SHARE;
-		else if (position == 2)
 			return FeedFilterItemType.ALL_FEEDS;
-		else if (position == 3)
+		else if (position == 1)
 			return FeedFilterItemType.FAVORITES;
-		else if (position == 4 && App.UI_ENABLE_POPULAR_ITEMS)
+		else if (position == 2 && App.UI_ENABLE_POPULAR_ITEMS)
 			return FeedFilterItemType.POPULAR;
-		
 		if (App.UI_ENABLE_POPULAR_ITEMS)
 			position -= 1; // Offset 1 if popular is enabled
-
-		if (position == 4)
+		
+		if (position == 2)
 			return FeedFilterItemType.SHARED;
 		return FeedFilterItemType.FEED;
 	}
@@ -311,7 +308,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				convertView = createSharedView();
 			ViewTag holder = (ViewTag) convertView.getTag();
 			
-			holder.ivFeedImage.setImageResource(R.drawable.ic_share_receiver);
+			holder.ivFeedImage.setImageResource(R.drawable.ic_filter_secure_share);
 			holder.tvCount.setText(mCountShared);
 			holder.tvName.setText(R.string.feed_filter_shared_stories);
 			listener = new View.OnClickListener()
@@ -324,6 +321,16 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
+			holder.shortcutView.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (mCallbacks != null)
+						mCallbacks.receiveShare();
+				}
+			});
+			
 			returnView = convertView;
 			break;
 		}
@@ -336,7 +343,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			holder.ivFeedImage.setImageResource(R.drawable.ic_menu_news);
 			// ivFeedImage.setVisibility(View.GONE);
 
-			holder.ivRefresh.setVisibility(App.getSettings().syncFrequency() == SyncFrequency.Manual ? View.VISIBLE : View.GONE);
+			holder.ivRefresh.setVisibility(App.getSettings().syncFrequency() == SyncFrequency.Manual ? View.VISIBLE : View.INVISIBLE);
 			holder.ivRefresh.setEnabled(mIsOnline);
 			holder.ivRefresh.setOnClickListener(new RefreshFeed(null));
 			if (holder.ivRefresh.getVisibility() == View.VISIBLE && App.getInstance().socialReader.manualSyncInProgress())
@@ -375,7 +382,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			if (TextUtils.isEmpty(feed.getTitle()))
 				holder.tvName.setText(R.string.add_feed_not_loaded);
 
-			holder.ivRefresh.setVisibility(App.getSettings().syncFrequency() == SyncFrequency.Manual ? View.VISIBLE : View.GONE);
+			holder.ivRefresh.setVisibility(App.getSettings().syncFrequency() == SyncFrequency.Manual ? View.VISIBLE : View.INVISIBLE);
 			holder.ivRefresh.setEnabled(mIsOnline);
 			holder.ivRefresh.setOnClickListener(new RefreshFeed(feed));
 			if (holder.ivRefresh.getVisibility() == View.VISIBLE && feed.getStatus() == Feed.STATUS_SYNC_IN_PROGRESS)
@@ -490,7 +497,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	
 	public View createSharedView()
 	{
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_favorites, this, false);
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_shared, this, false);
 		createViewHolder(view);
 		return view;
 	}
@@ -510,6 +517,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		holder.tvCount = (TextView) view.findViewById(R.id.tvCount);
 		holder.ivRefresh = view.findViewById(R.id.ivRefresh);
 		holder.checkView = (CheckableImageView) view.findViewById(R.id.chkShowImages);
+		holder.shortcutView = view.findViewById(R.id.shortcutView);
 		view.setTag(holder);
 	}
 }

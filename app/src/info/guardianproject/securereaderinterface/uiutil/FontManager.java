@@ -45,6 +45,7 @@ public class FontManager
 	
 	private static Pattern gTibetanPattern = null;
 	private static Pattern gTibetanTransformedPattern = null;
+	private static Pattern gCyrillicPattern = null;
 	
 	public static boolean isTibetan(CharSequence text)
 	{
@@ -54,6 +55,21 @@ public class FontManager
 				gTibetanPattern = Pattern.compile("[\u0F00-\u0FFF]+", 0);
 	        Matcher unicodeTibetanMatcher = gTibetanPattern.matcher(text);
 	        if (unicodeTibetanMatcher.find())
+	        {
+	        	return true;
+	        }
+		}
+		return false;
+	}
+
+	public static boolean isCyrillic(CharSequence text)
+	{
+		if (!TextUtils.isEmpty(text))
+		{
+			if (gCyrillicPattern == null)
+				gCyrillicPattern = Pattern.compile("[\u0400-\u04FF]+", 0);
+	        Matcher unicodeCyrillicMatcher = gCyrillicPattern.matcher(text);
+	        if (unicodeCyrillicMatcher.find())
 	        {
 	        	return true;
 	        }
@@ -97,6 +113,13 @@ public class FontManager
 			ssb.clearSpans();
 			getTibetanSpans(view.getContext(), ssb);
 			return ssb;
+		}
+		else if (isCyrillic(text))
+		{
+			if (view.getTypeface() == FontManager.getFontByName(view.getContext(), "Lato-Light"))
+			{
+				view.setTypeface(Typeface.DEFAULT);
+			}
 		}
 		return text;
 	}
