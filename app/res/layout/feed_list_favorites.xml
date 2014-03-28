@@ -1,37 +1,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:background="@drawable/popup_item_background_selector"
-    android:descendantFocusability="blocksDescendants" >
+    android:layout_height="wrap_content"
+    android:background="@drawable/left_menu_item_background"
+    android:descendantFocusability="blocksDescendants"
+    android:minHeight="54dp" >
 
     <ImageView
         android:id="@+id/ivFeedImage"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="10dp"
         android:scaleType="center"
         android:src="@drawable/ic_filter_favorites" />
-        
+
     <TextView
         android:id="@+id/tvFeedName"
         style="@style/LeftSideMenuItemStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="21dp"
         android:layout_weight="1"
         android:text="@string/feed_filter_favorites" />
 
-    <TextView
-        android:id="@+id/tvCount"
-        style="@style/LeftSideMenuItemSubStyle"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="12" />
+    <FrameLayout
+        android:id="@+id/fl0"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="14dp" >
+
+        <TextView
+            android:id="@+id/tvCount"
+            style="@style/LeftSideMenuItemSubStyle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/feed_list_circle_background"
+            android:gravity="center"
+            android:text="12" />
+    </FrameLayout>
 
 </LinearLayout>
