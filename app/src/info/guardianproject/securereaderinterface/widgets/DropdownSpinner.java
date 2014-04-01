@@ -107,12 +107,11 @@ public class DropdownSpinner extends RelativeLayout implements OnItemClickListen
 				mPopup.setOutsideTouchable(true);
 				mPopup.setBackgroundDrawable(mDropDownBackground);
 				mPopup.showAtLocation(this, Gravity.TOP | Gravity.LEFT, rectGlobal.left, rectGlobal.top);
-				mPopup.getContentView().setOnClickListener(new View.OnClickListener()
+				mPopup.setOnDismissListener(new PopupWindow.OnDismissListener()
 				{
 					@Override
-					public void onClick(View v)
+					public void onDismiss()
 					{
-						mPopup.dismiss();
 						mPopup = null;
 					}
 				});
@@ -121,7 +120,6 @@ public class DropdownSpinner extends RelativeLayout implements OnItemClickListen
 			{
 				e.printStackTrace();
 			}
-
 		}
 	}
 
@@ -151,7 +149,6 @@ public class DropdownSpinner extends RelativeLayout implements OnItemClickListen
 		if (mPopup != null)
 		{
 			mPopup.dismiss();
-			mPopup = null;
 		}
 		setCurrentSelection(position, true);
 	}
