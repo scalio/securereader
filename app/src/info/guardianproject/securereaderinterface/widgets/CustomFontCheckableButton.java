@@ -37,4 +37,11 @@ public class CustomFontCheckableButton extends CheckableButton {
 	{
 		super.setText(FontManager.transformText(this, text), type);
 	}
+	
+	@Override
+	public void setTextAppearance(Context context, int resid)
+	{
+		super.setTextAppearance(context, resid);
+		mHelper.setTextAppearance(resid);
+	}
 }

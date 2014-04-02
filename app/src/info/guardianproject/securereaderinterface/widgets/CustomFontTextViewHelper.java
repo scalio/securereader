@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 public class CustomFontTextViewHelper implements TextWatcher {
 	private TextView mView;
-	private Typeface mFont;
 	private boolean mUseAllCaps = false;
 	private boolean mInTransform;
 	
@@ -29,9 +28,9 @@ public class CustomFontTextViewHelper implements TextWatcher {
 			String fontName = a.getString(R.styleable.CustomFontTextView_font);
 			if (fontName != null && !mView.isInEditMode())
 			{
-				mFont = FontManager.getFontByName(mView.getContext(), fontName);
-				if (mFont != null)
-					mView.setTypeface(mFont);
+				Typeface font = FontManager.getFontByName(mView.getContext(), fontName);
+				if (font != null)
+					mView.setTypeface(font);
 			}
 			a.recycle();
 			
@@ -39,8 +38,6 @@ public class CustomFontTextViewHelper implements TextWatcher {
 			mUseAllCaps = a.getBoolean(0, false);
 			a.recycle();
 		}
-		if (mFont == null)
-			mFont = mView.getTypeface();
 		
 		// All caps does not work with Spanned text, so turn it off and handle in setText()
 		if (mUseAllCaps)
@@ -87,5 +84,28 @@ public class CustomFontTextViewHelper implements TextWatcher {
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count)
 	{
+	}
+	
+	public void setTextAppearance(int resid)
+	{
+		TypedArray a = mView.getContext().getTheme().obtainStyledAttributes(resid, R.styleable.CustomFontTextView);
+		if (a != null)
+		{
+			String fontName = a.getString(R.styleable.CustomFontTextView_font);
+			if (fontName != null)
+			{
+				Typeface font = FontManager.getFontByName(mView.getContext(), fontName);
+				if (font != null)
+				{
+					mView.setTypeface(font);
+					mView.setText(FontManager.transformText(mView, mView.getText()));
+					if (mView.getHint() != null)
+					{
+						mView.setHint(FontManager.transformText(mView, mView.getHint()));
+					}
+				}
+			}
+			a.recycle();
+		}
 	}
 }
