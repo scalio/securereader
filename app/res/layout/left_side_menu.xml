@@ -13,6 +13,7 @@
         android:layout_height="75dp"
         android:background="@drawable/button_tor_background_selector"
         android:drawableTop="@drawable/button_tor_icon_selector"
+        android:padding="10dp"
         android:text="@string/menu_tor_connected"
         android:textColor="@drawable/button_tor_text_selector" />
 
@@ -24,6 +25,7 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/button_photos_background_selector"
         android:drawableTop="@drawable/button_photos_icon_selector"
+        android:padding="10dp"
         android:text="@string/feed_filter_display_photos"
         android:textColor="@drawable/button_photos_text_selector" />
 

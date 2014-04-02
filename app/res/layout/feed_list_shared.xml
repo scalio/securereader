@@ -2,10 +2,10 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
     android:background="@drawable/left_menu_item_background"
     android:descendantFocusability="blocksDescendants"
-    android:minHeight="54dp" >
+    android:minHeight="54dp"
+    android:paddingBottom="8dp" >
 
     <ImageView
         android:id="@+id/ivFeedImage"
