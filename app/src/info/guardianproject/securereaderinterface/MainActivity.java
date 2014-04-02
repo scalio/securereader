@@ -680,18 +680,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	};
 	private StoryListHintTorView mTorView;
 
-
-	@Override
-	protected boolean onCommand(int command, Bundle commandParameters)
-	{
-		if (command == R.integer.command_resync)
-		{
-			onResync();
-			return true;
-		}
-		return super.onCommand(command, commandParameters);
-	}
-
 	@Override
 	public void onHeaderCreated(View headerView, int resIdHeader)
 	{

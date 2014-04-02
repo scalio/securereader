@@ -15,7 +15,6 @@ import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilte
 import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
-import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,12 +26,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,7 +52,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	 */
 	LeftSideMenu mLeftSideMenu;
 
-	int mDeferedCommand;
+	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
 	protected boolean mResumed;
 	private boolean mNeedToRecreate;
 
@@ -145,16 +142,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected void onStart()
 	{
 		super.onStart();
-		LocalBroadcastManager.getInstance(this).registerReceiver(mMenuCommandReceiver, new IntentFilter("MenuCommand"));
 		if (mLeftSideMenu != null)
 			mLeftSideMenu.checkMenuCreated();
-	}
-
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mMenuCommandReceiver);
 	}
 
 	@Override
@@ -344,19 +333,19 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 		case R.id.menu_preferences:
 		{
-			mMenuCommandReceiver.handleCommand(R.integer.command_settings);
+			UICallbacks.handleCommand(this, R.integer.command_settings, null);
 			return true;
 		}
 
 		case R.id.menu_about:
 		{
-			mMenuCommandReceiver.handleCommand(R.integer.command_help);
+			UICallbacks.handleCommand(this, R.integer.command_help, null);
 			return true;
 		}
 
 		case R.id.menu_share_app:
 		{
-			mMenuCommandReceiver.handleCommand(R.integer.command_shareapp);
+			UICallbacks.handleCommand(this, R.integer.command_shareapp, null);
 			return true;
 		}
 
@@ -583,57 +572,10 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		}
 	}
 	
-	private class MenuBroadcastReceiver extends BroadcastReceiver
-	{
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-			int commandId = intent.getIntExtra("command", 0);
-			handleCommand(commandId);
-		}
-
-		public void handleCommand(int commandId)
-		{
-			handleCommand(commandId, false);
-		}
-
-		public void handleCommand(int commandId, boolean forceNow)
-		{
-			mDeferedCommand = commandId;
-			if (mLeftSideMenu != null && mLeftSideMenu.isOpen() && !forceNow)
-			{
-				mLeftSideMenu.hide();
-			}
-			else
-			{
-				doHandleCommand();
-			}
-		}
-	};
-
-	private final MenuBroadcastReceiver mMenuCommandReceiver = new MenuBroadcastReceiver();
-
-	private void doHandleCommand()
-	{
-		if (mDeferedCommand != 0)
-		{
-			int command = mDeferedCommand;
-			mDeferedCommand = 0;
-
-			onCommand(command, null);
-		}
-	}
-
 	@Override
 	public void onHide()
 	{
-		doHandleCommand(); // Handle command, if any
-	}
-
-	protected boolean onCommand(int command, Bundle commandParameters)
-	{
-		UICallbacks.handleCommand(this, command, null);
-		return true;
+		runDeferredCommands();
 	}
 
 	@Override
@@ -673,47 +615,110 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	@Override
 	public void receiveShare() {
-		mLeftSideMenu.hide();
-		UICallbacks.handleCommand(this, R.integer.command_receiveshare, null);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_receiveshare, null);
+			}
+		});
 	}
 	
 	@Override
 	public void viewFavorites() {
-		mLeftSideMenu.hide();
-		UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, this);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, FragmentActivityWithMenu.this);
+			}
+		});
 	}
 
 	@Override
 	public void viewPopular() {
-		mLeftSideMenu.hide();
-		UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, this);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, FragmentActivityWithMenu.this);
+			}
+		});
 	}
 
 	@Override
 	public void viewDownloads() {
-		mLeftSideMenu.hide();
-		UICallbacks.handleCommand(this, R.integer.command_downloads, null);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_downloads, null);
+			}
+		});
 	}
 
 	@Override
 	public void viewShared() {
-		mLeftSideMenu.hide();
-		UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, this);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, FragmentActivityWithMenu.this);
+			}
+		});
 	}
 
 	@Override
-	public void viewFeed(Feed feedToView) {
-		mLeftSideMenu.hide();
-		if (feedToView == null)
-			UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
-		else
-			UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedToView.getDatabaseId(), this);
-		UICallbacks.handleCommand(this, R.integer.command_news_list, null);
+	public void viewFeed(final Feed feedToView) {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if (feedToView == null)
+					UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+				else
+					UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedToView.getDatabaseId(), this);
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
+			}
+		});
 	}
 
 	@Override
 	public void addNew() {
-		mLeftSideMenu.hide();
-		UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_feed_add, null);
+			}
+		});
 	}
+	
+	private void waitForMenuCloseAndRunCommand(Runnable runnable)
+	{
+		mDeferredCommands.add(runnable);
+		if (mLeftSideMenu != null && mLeftSideMenu.isOpen())
+		{
+			mLeftSideMenu.hide();
+		}
+		else
+		{
+			runDeferredCommands();
+		}
+	}
+	
+	private void runDeferredCommands()
+	{
+		for (Runnable r : mDeferredCommands)
+			r.run();
+		mDeferredCommands.clear();
+	}
+	
 }
