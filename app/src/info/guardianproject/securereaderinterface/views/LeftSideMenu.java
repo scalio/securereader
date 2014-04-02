@@ -205,7 +205,8 @@ public class LeftSideMenu
 			mMenuWidth = lays.width;
 			if (USE_SHADOW)
 				mMenuWidth += 30;
-
+			positionMenu = -mMenuWidth;
+			
 			// Then move the content over to our new root
 			//
 			mParent.removeView(mContent);
@@ -708,7 +709,11 @@ public class LeftSideMenu
 			mIsBeingDragged = true;
 			if (mListener != null)
 				mListener.onBeforeShow();
-			mTranslationAtStartOfDrag = AnimationHelpers.getTranslationX(mContent);
+			
+			if (mIsInteractive)
+				mTranslationAtStartOfDrag = AnimationHelpers.getTranslationX(mMenuView) + mMenuWidth;
+			else
+				mTranslationAtStartOfDrag = positionMenu + mMenuWidth;
 
 			setInteractive(false);
 			enableHardwareLayering(true);
