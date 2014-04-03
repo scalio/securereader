@@ -125,7 +125,7 @@
     </style>
     
  	<style name="AppActionBarOverflowButtonStyle" parent="Widget.Sherlock.ActionButton.Overflow">
-		<item name="android:src">@drawable/ic_context_menu</item>
+		<item name="android:src">@drawable/ic_action_overflow</item>
 		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
 		<item name="android:minWidth">20dip</item>
     </style>
