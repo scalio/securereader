@@ -264,22 +264,22 @@ public class MediaViewCollection
 
 		public boolean isVideo()
 		{
-			return mContent.getType().startsWith("video/");
+			return mContent.getMediaContentType() == MediaContent.MediaContentType.VIDEO;
 		}
 		
 		public boolean isAudio()
 		{
-			return mContent.getType().startsWith("audio/");
+			return mContent.getMediaContentType() == MediaContent.MediaContentType.AUDIO;
 		}
 		
 		public boolean isApplication()
 		{
-			return mContent.getType().startsWith("application/vnd.android.package-archive");
+			return mContent.getMediaContentType() == MediaContent.MediaContentType.APPLICATION;
 		}
 		
 		public boolean isEpub()
 		{
-			return mContent.getType().startsWith("application/epub+zip"); 
+			return mContent.getMediaContentType() == MediaContent.MediaContentType.EPUB;
 		}
 		
 		@Override
