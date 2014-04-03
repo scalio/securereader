@@ -198,14 +198,22 @@
     <!--                                               -->
     
     <style name="LeftSideMenuItemStyle">
-        <item name="font">Lato-Light</item>
         <item name="android:gravity">center_vertical</item>
        	<item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/LeftSideMenuItemAppearance</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textAllCaps">true</item>
-	</style>
+    </style>
 
+    <style name="LeftSideMenuItemAppearance">
+        <item name="font">Lato-Light</item>
+	</style>  
+    
+    <style name="LeftSideMenuItemCurrentAppearance">
+        <item name="font">Lato-Bold</item>
+	</style>  
+        
     <style name="LeftSideMenuShortcutItemStyle">
         <item name="font">Lato-Light</item>
         <item name="android:gravity">center_vertical</item>
