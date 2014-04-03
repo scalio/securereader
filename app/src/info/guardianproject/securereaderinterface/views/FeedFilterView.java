@@ -4,6 +4,7 @@ import info.guardianproject.securereader.Settings.SyncFrequency;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereader.SocialReader;
@@ -14,7 +15,6 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -299,6 +299,9 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
+			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+			
 			returnView = convertView;
 			break;
 		}
@@ -331,6 +334,9 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			});
 			
+			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+
 			returnView = convertView;
 			break;
 		}
@@ -360,7 +366,10 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 						mCallbacks.viewFeed(null);
 				}
 			};
-
+			
+			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS);
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+			
 			returnView = convertView;
 			break;
 		}
@@ -391,6 +400,11 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				holder.ivRefresh.clearAnimation();
 			listener = new ViewFeed(feed);
 
+			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
+					App.getInstance().getCurrentFeed() != null 
+					&& App.getInstance().getCurrentFeed().getDatabaseId() == feed.getDatabaseId());
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+			
 			returnView = convertView;
 			break;
 		}
@@ -412,6 +426,9 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 						mCallbacks.viewPopular();
 				}
 			};
+
+			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.POPULAR);
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
 			break;

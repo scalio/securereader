@@ -6,9 +6,7 @@ import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
-import info.guardianproject.securereaderinterface.ui.UICallbackListener;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
-import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView;
 import info.guardianproject.securereaderinterface.views.StoryListView;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView.OnButtonClickedListener;
@@ -48,6 +46,9 @@ import com.actionbarsherlock.view.Window;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
+
+
+
 // HockeyApp SDK
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.UpdateManager;
@@ -69,8 +70,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	private FeedFilterType mShowFeedFilterType;
 	SocialReader socialReader;
 
-	OnCallbackListener mCallbackListener;
-
 	/*
 	 * The action bar menu item for the "TAG" option. Only show this when a feed
 	 * filter is set.
@@ -80,8 +79,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	MenuItem mMenuItemShare;
 	MenuItem mMenuItemFeed;
 
-	FeedFilterType mFeedFilterType;
-	Feed mFeed;
 	ActionProviderShare mShareActionProvider;
 
 	StoryListView mStoryListView;
@@ -107,8 +104,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().hide();
 
-		addUICallbackListener();
-
 		setContentView(R.layout.activity_main);
 		setMenuIdentifier(R.menu.activity_main);
 
@@ -129,17 +124,10 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			}
 		});
 
-		updateList(FeedFilterType.ALL_FEEDS, null);
+		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
 		
 		// HockeyApp SDK
 		checkForUpdates();
-	}
-
-	@Override
-	protected void onDestroy()
-	{
-		super.onDestroy();
-		removeUICallbackListener();
 	}
 
 	@Override
@@ -276,29 +264,18 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 	private void syncSpinnerToCurrentItem()
 	{
-		if (mFeedFilterType == FeedFilterType.ALL_FEEDS)
+		if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS)
 			setActionBarTitle(getString(R.string.feed_filter_all_feeds));
-		else if (mFeedFilterType == FeedFilterType.POPULAR)
+		else if (getCurrentFeedFilterType() == FeedFilterType.POPULAR)
 			setActionBarTitle(getString(R.string.feed_filter_popular));
-		else if (mFeedFilterType == FeedFilterType.SHARED)
+		else if (getCurrentFeedFilterType() == FeedFilterType.SHARED)
 			setActionBarTitle(getString(R.string.feed_filter_shared_stories));
-		else if (mFeedFilterType == FeedFilterType.FAVORITES)
+		else if (getCurrentFeedFilterType() == FeedFilterType.FAVORITES)
 			setActionBarTitle(getString(R.string.feed_filter_favorites));
-		else if (mFeed != null)
-			setActionBarTitle(mFeed.getTitle());
+		else if (getCurrentFeed() != null)
+			setActionBarTitle(getCurrentFeed().getTitle());
 		else
 			setActionBarTitle(getString(R.string.feed_filter_all_feeds));
-	}
-
-	private Feed getFeedById(long idFeed)
-	{
-		ArrayList<Feed> items = socialReader.getSubscribedFeedsList();
-		for (Feed feed : items)
-		{
-			if (feed.getDatabaseId() == idFeed)
-				return feed;
-		}
-		return null;
 	}
 
 	@Override
@@ -315,7 +292,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		if (mMenuItemShare != null)
 		{
 			mShareActionProvider = new ActionProviderShare(this);
-			mShareActionProvider.setFeed(mFeed);
+			mShareActionProvider.setFeed(getCurrentFeed());
 			mMenuItemShare.setActionProvider(mShareActionProvider);
 		}
 		// Locate MenuItem with ShareActionProvider
@@ -353,76 +330,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			if (Build.VERSION.SDK_INT >= 11)
 				invalidateOptionsMenu();
 		}
-	}
-
-	@SuppressLint("NewApi")
-	private void addUICallbackListener()
-	{
-		mCallbackListener = new UICallbackListener()
-		{
-			@SuppressLint("NewApi")
-			@Override
-			public void onFeedSelect(FeedFilterType type, long feedId, Object source)
-			{
-				Feed feed = null;
-				boolean visibleTags = false;
-				if (type == FeedFilterType.SINGLE_FEED)
-				{
-					feed = getFeedById(feedId);
-					if (feed != null)
-					{
-						visibleTags = true;
-					}
-				}
-				setTagItemVisible(visibleTags);
-				updateList(type, feed);
-			}
-
-			@Override
-			public void onItemFavoriteStatusChanged(Item item)
-			{
-				// An item has been marked/unmarked as favorite. Update the list
-				// of favorites to pick
-				// up this change!
-				if (mFeedFilterType == FeedFilterType.FAVORITES)
-					refreshList();
-			}
-
-			@Override
-			public void onCommand(int command, Bundle commandParameters)
-			{
-				switch (command)
-				{
-				case R.integer.command_add_feed_manual:
-				{
-					// First add it to reader!
-					App.getInstance().socialReader.addFeedByURL(commandParameters.getString("uri"), MainActivity.this.mFeedFetchedCallback);
-					refreshList();
-					break;
-				}
-				}
-			}
-
-			@Override
-			public void onRequestResync(Feed feed)
-			{
-				onResync(feed, (mFeedFilterType == FeedFilterType.ALL_FEEDS || mFeedFilterType == FeedFilterType.SINGLE_FEED)
-						&& mFeed == feed); // Only show
-																	// spinner
-																	// if
-																	// updating
-																	// current
-																	// feed
-			}
-		};
-		UICallbacks.getInstance().addListener(mCallbackListener);
-	}
-
-	private void removeUICallbackListener()
-	{
-		if (mCallbackListener != null)
-			UICallbacks.getInstance().removeListener(mCallbackListener);
-		mCallbackListener = null;
 	}
 
 	private void addSettingsChangeListener()
@@ -501,10 +408,10 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	@Override
 	public void onResync()
 	{
-		if (mFeedFilterType == FeedFilterType.SHARED)
+		if (getCurrentFeedFilterType() == FeedFilterType.SHARED)
 			refreshList();
 		else
-			onResync(mFeed, true);
+			onResync(getCurrentFeed(), true);
 	}
 
 	private void onResync(Feed feed, boolean showLoadingSpinner)
@@ -566,44 +473,47 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	private UpdateFeedListTask mUpdateListTask;
 	
 	@SuppressLint({ "InlinedApi", "NewApi" })
-	private void updateList(FeedFilterType feedFilterType, Feed optionalFeed)
+	private void updateList(boolean isUpdate)
 	{
-		boolean isUpdate = (feedFilterType == mFeedFilterType);
-		
-		mFeedFilterType = feedFilterType;
-		mFeed = optionalFeed;
-		
 		if (!isUpdate)
 			setIsLoading(true);
 		
-		if (mUpdateListTask != null)
-			mUpdateListTask.cancel(true);
-		mUpdateListTask = new UpdateFeedListTask(this, mFeedFilterType, optionalFeed, isUpdate);
-		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		//	mUpdateListTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		//else
+		if (mUpdateListTask == null || !mUpdateListTask.isForTypeAndFeed(getCurrentFeedFilterType(), getCurrentFeed()))
+		{
+			if (mUpdateListTask != null)
+			{
+				mUpdateListTask.cancel(true);
+			}
+			mUpdateListTask = new UpdateFeedListTask(this, getCurrentFeedFilterType(), getCurrentFeed(), isUpdate);
 			mUpdateListTask.execute();
-
+		}
+		else
+		{
+			Log.v(LOGTAG, "Already updating feed list, ignore event for same feed");
+		}
+		
 		syncSpinnerToCurrentItem();
 		if (mShareActionProvider != null)
-			mShareActionProvider.setFeed(mFeed);
-		mStoryListView.setCurrentFeed(mFeed);
+			mShareActionProvider.setFeed(getCurrentFeed());
+		mStoryListView.setCurrentFeed(getCurrentFeed());
 	}
 
 	private void refreshList()
 	{
-		updateList(mFeedFilterType, mFeed);
+		updateList(true);
 	}
 	
 	private void refreshListIfCurrent(Feed feed)
 	{
-		if (mFeedFilterType == FeedFilterType.ALL_FEEDS)
+		if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS)
 		{
 			refreshList();
 		}
-		else if (mFeedFilterType == FeedFilterType.SINGLE_FEED && mFeed != null && mFeed.getDatabaseId() == feed.getDatabaseId())
+		else if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED && 
+				getCurrentFeed() != null && getCurrentFeed().getDatabaseId() == feed.getDatabaseId())
 		{
-			mFeed = feed;
+			//TODO - this seems a little ugly
+			App.getInstance().updateCurrentFeed(feed);
 			refreshList();
 		}
 	}
@@ -679,6 +589,20 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		}
 	};
 	private StoryListHintTorView mTorView;
+	private FeedFilterType mCurrentShownFeedFilterType = null;
+	private Feed mCurrentShownFeed = null;
+
+	@Override
+	public void onCommand(int command, Bundle commandParameters)
+	{
+		if (command == R.integer.command_add_feed_manual)
+		{
+			// First add it to reader!
+			App.getInstance().socialReader.addFeedByURL(commandParameters.getString("uri"), MainActivity.this.mFeedFetchedCallback);
+			refreshList();
+		}
+		super.onCommand(command, commandParameters);
+	}
 
 	@Override
 	public void onHeaderCreated(View headerView, int resIdHeader)
@@ -780,10 +704,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		{
 			mContext = context;
 			mFeedFilterType = feedFilterType;
-			mFeed = feed;
+			mFeed = (feed != null) ? new Feed(feed) : null;
 			mIsUpdate = isUpdate;
 		}
 
+		public boolean isForTypeAndFeed(FeedFilterType feedFilterType, Feed feed)
+		{
+			return mFeedFilterType == feedFilterType &&
+					((mFeed == null && feed == null) ||
+					 (mFeed != null && feed != null && mFeed.getDatabaseId() == feed.getDatabaseId()));
+		}
+		
 		@Override
 		protected ArrayList<Feed> doInBackground(Void... values)
 		{
@@ -901,6 +832,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 				break;
 			}
 			setIsLoading(false);
+			mUpdateListTask = null;
 		}
 	}
 
@@ -908,8 +840,50 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	protected void onUnlocked() {
 		super.onUnlocked();
 		socialReader = ((App) getApplicationContext()).socialReader;
-		updateList(FeedFilterType.ALL_FEEDS, null);
+		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+	}
+
+	@Override
+	public void onFeedSelect(FeedFilterType type, long feedId, Object source)
+	{
+		super.onFeedSelect(type, feedId, source);
+		boolean visibleTags = false;
+		if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED && getCurrentFeed() != null)
+		{
+			visibleTags = true;
+		}
+		setTagItemVisible(visibleTags);
+		
+		boolean isUpdate = true;
+		if (mCurrentShownFeedFilterType != getCurrentFeedFilterType())
+			isUpdate = false;
+		else if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED
+				&& (mCurrentShownFeed == null || getCurrentFeed() == null || mCurrentShownFeed.getDatabaseId() != getCurrentFeed().getDatabaseId()))
+			isUpdate = false;
+
+		mCurrentShownFeedFilterType = getCurrentFeedFilterType();
+		mCurrentShownFeed = getCurrentFeed();
+
+		updateList(isUpdate);
 	}
 	
-	
+	@Override
+	public void onItemFavoriteStatusChanged(Item item)
+	{
+		// An item has been marked/unmarked as favorite. Update the list
+		// of favorites to pick
+		// up this change!
+		if (getCurrentFeedFilterType() == FeedFilterType.FAVORITES)
+			refreshList();
+	}
+
+	@Override
+	public void onRequestResync(Feed feed)
+	{
+		// Only show spinner if updating current feed
+		boolean showLoader = ((getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS && feed == null) ||
+							  (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED && getCurrentFeed() != null && feed != null && getCurrentFeed().getDatabaseId() == feed.getDatabaseId()));
+		onResync(feed, showLoader);
+	}
+
 }

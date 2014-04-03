@@ -5,6 +5,7 @@ import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.iocipher.File;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 	private Thread mSetImageThread;
 	private Handler mHandler;
 	private boolean mUseThisThread;
+	private boolean mIsUpdate; // true if this view has already shown this content previously
 
 	public ImageMediaContentPreviewView(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -59,10 +61,10 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 		// If we, however, set it from this thread (as we do when closing the
 		// full screen mode
 		// view) we want it to show immediately!
-		if (bm != null && !mUseThisThread)
+		if (bm != null && !mUseThisThread && !mIsUpdate)
 			AnimationHelpers.fadeOut(this, 0, 0, false);
 		super.setImageBitmap(bm);
-		if (bm != null && !mUseThisThread)
+		if (bm != null && !mUseThisThread && !mIsUpdate)
 			AnimationHelpers.fadeIn(this, 500, 0, false);
 		else if (bm != null)
 			AnimationHelpers.fadeIn(this, 0, 0, false);
@@ -151,6 +153,7 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 	@Override
 	public void setMediaContent(MediaContent mediaContent, File mediaFile, java.io.File mediaFileNonVFS, boolean useThisThread)
 	{
+		mIsUpdate = (mediaContent == mMediaContent && mMediaFile != null && mMediaFile.equals(mediaFile));
 		mMediaContent = mediaContent;
 		mMediaFile = mediaFile;
 		mUseThisThread = useThisThread;

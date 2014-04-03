@@ -8,6 +8,7 @@ import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
@@ -37,8 +38,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Feed;
+import com.tinymission.rss.Item;
 
-public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks
+public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks, OnCallbackListener
 {
 	private KillReceiver mKillReceiver;
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
@@ -71,6 +73,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	{
 		super.onCreate(savedInstanceState);
 		this.getWindow().setBackgroundDrawable(null);
+
+		UICallbacks.getInstance().addListener(this);
 
 		mKillReceiver = new KillReceiver();
 		registerReceiver(mKillReceiver, new IntentFilter(App.EXIT_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
@@ -246,6 +250,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		UICallbacks.getInstance().removeListener(this);
 		unregisterReceiver(mKillReceiver);
 		unregisterReceiver(mSetUiLanguageReceiver);
 		unregisterReceiver(mWipeReceiver);
@@ -721,4 +726,48 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		mDeferredCommands.clear();
 	}
 	
+	@Override
+	public void onFeedSelect(FeedFilterType type, long feedId, Object source)
+	{
+		if (mMenuViewHolder != null)
+			mMenuViewHolder.viewFeedFilter.invalidateViews();
+	}
+	
+	@Override
+	public void onTagSelect(String tag)
+	{
+	}
+
+	@Override
+	public void onRequestResync(Feed feed)
+	{
+	}
+
+	@Override
+	public void onItemFavoriteStatusChanged(Item item)
+	{
+	}
+
+	@Override
+	public void onCommand(int command, Bundle commandParameters)
+	{
+	}
+	
+	/**
+	 * This is a shortcut to {@link App#getCurrentFeedFeedFilterType()} }
+	 * @return the currently displayed feed type
+	 */
+	protected FeedFilterType getCurrentFeedFilterType()
+	{
+		return App.getInstance().getCurrentFeedFilterType();
+	}
+	
+	/**
+	 * This is a shortcut to {@link App#getCurrentFeed()} }
+	 * @return the currently displayed feed (if any)
+	 */
+	protected Feed getCurrentFeed()
+	{
+		return App.getInstance().getCurrentFeed();
+	}
 }
