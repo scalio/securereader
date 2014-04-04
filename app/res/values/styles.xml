@@ -140,8 +140,14 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
-    </style>    
-    
+    </style> 
+       
+    <style name="AddFeedUrlStyle" parent="SearchFieldStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>  
+       
    <style name="LockScreenEditStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
