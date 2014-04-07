@@ -815,11 +815,13 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 			if (mFeedFilterType == FeedFilterType.SHARED)
 			{
-				listOfFeeds = socialReader.getAllShared();
+				listOfFeeds = new ArrayList<Feed>();
+				listOfFeeds.add(socialReader.getAllShared());
 			}
 			else if (mFeedFilterType == FeedFilterType.FAVORITES)
 			{
-				listOfFeeds = socialReader.getAllFavorites();
+				listOfFeeds = new ArrayList<Feed>();
+				listOfFeeds.add(socialReader.getAllFavorites());
 			}
 			else if (mFeedFilterType == FeedFilterType.ALL_FEEDS || mFeed == null)
 			{
