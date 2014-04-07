@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.courier"
-	android:versionCode="10"
-	android:versionName="0.1.4">
+	android:versionCode="12"
+	android:versionName="0.1.6">
     <!-- Change package when branching into distinct app -->
 
     <uses-sdk
