@@ -264,7 +264,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		mShareAdapter.clear();
 		Intent shareIntent = App.getInstance().socialReader.getShareIntent(getCurrentStory());
 		mShareAdapter.addSecureBTShareResolver(shareIntent);
-		mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
+		//mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
 		// mShareAdapter.addIntentResolvers(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory()),
 		// PackageHelper.URI_CHATSECURE,
 		// R.string.share_via_secure_chat, R.drawable.ic_share_sharer);
