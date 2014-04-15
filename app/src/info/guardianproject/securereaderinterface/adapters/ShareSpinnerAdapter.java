@@ -3,13 +3,12 @@ package info.guardianproject.securereaderinterface.adapters;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.courier.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.holoeverywhere.widget.Spinner;
 
 import android.content.ComponentName;
 import android.content.Context;
