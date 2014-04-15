@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/button_secondary_background_selector"
+            android:minHeight="48dp"
             android:text="@android:string/cancel" />
 
         <Button
@@ -75,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/button_primary_background_selector"
+            android:minHeight="48dp"
             android:text="@android:string/ok" />
 
     </LinearLayout>
