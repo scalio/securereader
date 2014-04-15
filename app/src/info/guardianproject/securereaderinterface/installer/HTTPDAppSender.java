@@ -30,8 +30,10 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -120,46 +122,40 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		// http://www.whitebyte.info/android/android-wifi-hotspot-manager-class
 		// https://github.com/nickrussler/Android-Wifi-Hotspot-Manager-Class
 
-		// WifiManager wifiManager = (WifiManager)
-		// getSystemService(WIFI_SERVICE);
-		// int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+		// This doesn't work with tethering
+		WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
+		int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+		Log.v(LOGTAG, "WifiManager Raw IP:" + ipAddress);
+		final String formatedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
+		Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
+		textView.setText("http://" + formatedIpAddress + ":" + PORT );
 
-		// final String formatedIpAddress = String.format("%d.%d.%d.%d",
-		// (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
-		// (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
-
-		// Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
-		// textView.setText("http://" + formatedIpAddress + ":" + PORT );
-
-		try
-		{
-			List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-			for (NetworkInterface intf : interfaces)
+		// WifiManager not giving info about hotspot, loop through networks, look for 192.
+		if (ipAddress < 1) {
+			try
 			{
-				List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-				for (InetAddress addr : addrs)
+				List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+				for (NetworkInterface intf : interfaces)
 				{
-					if (!addr.isLoopbackAddress() && addr.getAddress().length == 4 && !addr.getHostAddress().contains("0.0.0.0"))
+					List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+					for (InetAddress addr : addrs)
 					{
-
-						String sAddr = addr.getHostAddress();
-						Log.v(LOGTAG, "Other IP: " + sAddr);
-
-						// String aFormattedIP = String.format("%d.%d.%d.%d",
-						// (sAddr & 0xff), (sAddr >> 8 & 0xff),
-						// (sAddr >> 16 & 0xff), (sAddr >> 24 & 0xff));
-
-						textView.setText("http://" + sAddr + ":" + PORT);
-
+						if (!addr.isLoopbackAddress() && addr.getAddress().length == 4 
+								&& !addr.getHostAddress().contains("0.0.0.0") 
+								&& addr.getHostAddress().startsWith("192"))
+						{
+							textView.setText("http://" + addr.getHostAddress() + ":" + PORT);	
+							break;
+						}
 					}
 				}
 			}
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
+			}
 		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		} // for now eat exceptions
-
+		
 		try
 		{
 			server = new MyHTTPD();

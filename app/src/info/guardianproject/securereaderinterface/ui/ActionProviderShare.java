@@ -73,7 +73,7 @@ public class ActionProviderShare extends ActionProvider
 			}
 			mAdapter.clear();
 			Intent shareIntent = App.getInstance().socialReader.getShareIntent(mFeed);
-			mAdapter.addSecureBTShareResolver(shareIntent);
+			//mAdapter.addSecureBTShareResolver(shareIntent);
 			mAdapter.addIntentResolvers(shareIntent);
 			mAdapter.notifyDataSetChanged();
 		}

@@ -125,7 +125,7 @@
     </style>
     
  	<style name="AppActionBarOverflowButtonStyle" parent="Widget.Sherlock.ActionButton.Overflow">
-		<item name="android:src">@drawable/ic_context_menu</item>
+		<item name="android:src">@drawable/ic_action_overflow</item>
 		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
 		<item name="android:minWidth">20dip</item>
     </style>
@@ -140,8 +140,14 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
-    </style>    
-    
+    </style> 
+       
+    <style name="AddFeedUrlStyle" parent="SearchFieldStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>  
+       
    <style name="LockScreenEditStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
