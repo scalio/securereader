@@ -1,7 +1,5 @@
 package info.guardianproject.securereaderinterface.adapters;
 
-import org.holoeverywhere.widget.Spinner;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-
 import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 
 public class TextSizeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
