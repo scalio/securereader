@@ -306,7 +306,9 @@
     
     <string name="cacheword_notification_cached_title">Courier Unlocked</string>
     <string name="cacheword_notification_cached">Courier passcode stored in memory</string>
+    <string name="cacheword_notification_cached_new">Tap to lock</string>
     <string name="cacheword_notification_cached_message">Courier passcode stored in memory</string>
+    <string name="cacheword_notification_cached_message_new">Tap to lock</string>
     <string name="download_epub_hint">Download ePub</string>
     <string name="download_epub_reader_title">Download ePub Reader</string>
     <string name="download_epub_reader_info">You need an ePub reader to see the story. We recommend FBReader. Get it on:</string>
