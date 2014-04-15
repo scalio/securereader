@@ -18,6 +18,7 @@ import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,8 +30,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.holoeverywhere.widget.Toast;
 
 import android.app.Activity;
 import android.app.AlertDialog;

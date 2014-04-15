@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	
-    <style name="AppTheme" parent="Holo.Theme.Light.DarkActionBar">          
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">          
         
         <item name="actionBarThemeColorTitle">#888888</item>
         <item name="actionBarThemeColorIconTint">#888888</item>
