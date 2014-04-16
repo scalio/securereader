@@ -11,6 +11,8 @@ import info.guardianproject.securereaderinterface.views.StoryItemPageView.ViewTy
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -304,12 +306,13 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 						{
 							if (constraint != null)
 							{
+								Pattern pattern = Pattern.compile(Pattern.quote(constraint.toString()), Pattern.CASE_INSENSITIVE);
 								if (item.getTags() != null)
 								{
 									boolean bFoundTag = false;
 									for (String tag : item.getTags())
 									{
-										if (tag.contains(constraint))
+										if (pattern.matcher(tag).find())
 										{
 											bFoundTag = true;
 											break;
