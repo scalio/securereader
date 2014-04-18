@@ -47,7 +47,9 @@ import android.widget.Toast;
 
 public class LockScreenActivity extends Activity implements LockScreenCallbacks, OnFocusChangeListener, ICacheWordSubscriber
 {
-    private static final String TAG = "LockScreenActivity";
+    private static final String LOGTAG = "LockScreenActivity";
+	public static final boolean LOGGING = false;
+	
 	private EditText mEnterPassphrase;
 	private EditText mNewPassphrase;
 	private EditText mConfirmNewPassphrase;
@@ -248,7 +250,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 				try {
                     mCacheWord.setPassphrase(mNewPassphrase.getText().toString().toCharArray());
                 } catch (GeneralSecurityException e) {
-                    Log.e(TAG, "Cacheword initialization failed: " + e.getMessage());
+                	if (LOGGING)
+                		Log.e(LOGTAG, "Cacheword initialization failed: " + e.getMessage());
                 }
 			}
 		});
@@ -289,7 +292,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			    try {
                     mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
                 } catch (GeneralSecurityException e) {
-                    Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
+                	if (LOGGING)
+                		Log.e(LOGTAG, "Cacheword pass verification failed: " + e.getMessage());
                     int failedAttempts = App.getSettings().currentNumberOfPasswordAttempts();
                     failedAttempts++;
                     App.getSettings().setCurrentNumberOfPasswordAttempts(failedAttempts);

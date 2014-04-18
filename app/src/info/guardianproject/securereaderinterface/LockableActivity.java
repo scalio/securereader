@@ -18,6 +18,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class LockableActivity extends SherlockFragmentActivity {
 
+	public static final String LOGTAG = "LockableActivity";
+	public static final boolean LOGGING = false;
+	
 	private boolean mLockedInOnPause;
 
 	@Override

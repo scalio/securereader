@@ -28,7 +28,8 @@ public class MediaViewCollection
 		void onViewLoaded(MediaViewCollection collection, int index, boolean wasCached);
 	}
 
-	public static final String LOG = "MediaContentLoader";
+	public static final String LOGTAG = "MediaContentLoader";
+	public static final boolean LOGGING = false;
 	
 	private Context mContext;
 	private Item mStory;
@@ -337,7 +338,8 @@ public class MediaViewCollection
 	{
 		if (mHasBeenRecycled)
 		{
-			Log.v(LOG, "Media downloaded, but already recycled. Ignoring.");
+			if (LOGGING)
+				Log.v(LOGTAG, "Media downloaded, but already recycled. Ignoring.");
 			return;
 		}
 		

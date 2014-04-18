@@ -20,6 +20,9 @@ import android.widget.TextView;
 
 public class FontManager
 {
+	public static final String LOGTAG = "FontManager";
+	public static final boolean LOGGING = false;
+	
 	private static HashMap<String, Typeface> gFonts = new HashMap<String, Typeface>();
 	
 	public static Typeface getFontByName(Context context, String name)
@@ -38,7 +41,8 @@ public class FontManager
 		}
 		catch (Exception ex)
 		{
-			Log.e(MainActivity.LOGTAG, "Failed to get font: " + name);
+			if (LOGGING)
+				Log.e(LOGTAG, "Failed to get font: " + name);
 		}
 		return null;
 	}

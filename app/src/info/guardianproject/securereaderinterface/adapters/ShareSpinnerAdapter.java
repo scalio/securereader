@@ -28,6 +28,9 @@ import android.widget.TextView;
 
 public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
+	public static final String LOGTAG = "ShareSpinnerAdapter";
+	public static final boolean LOGGING = false;	
+	
 	private final String TITLE_TAG = "TITLE";
 
 	private final Spinner mSpinner;

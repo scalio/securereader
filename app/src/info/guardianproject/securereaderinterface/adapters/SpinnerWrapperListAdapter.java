@@ -8,6 +8,9 @@ import android.widget.SpinnerAdapter;
 
 public class SpinnerWrapperListAdapter implements ListAdapter
 {
+	public static final String LOGTAG = "SpinnerWrapperListAdapter";
+	public static final boolean LOGGING = false;	
+
 	private SpinnerAdapter mAdapter;
 
 	public SpinnerWrapperListAdapter(SpinnerAdapter adapter)

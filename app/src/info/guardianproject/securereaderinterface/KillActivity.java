@@ -8,6 +8,9 @@ import android.os.Bundle;
 
 public class KillActivity extends Activity
 {
+	public static final String LOGTAG = "KillActivity";
+	public static final boolean LOGGING = false;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

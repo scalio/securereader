@@ -27,6 +27,9 @@ import com.tinymission.rss.Item;
 
 public class PostListFragment extends Fragment implements PostDraftsListAdapterListener
 {
+	public static final String LOGTAG = "PostListFragment";
+	public static final boolean LOGGING = false;
+	
 	public static final String ARG_POST_LIST_TYPE = "post_list_type";
 
 	public enum PostListType

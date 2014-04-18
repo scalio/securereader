@@ -12,6 +12,9 @@ import com.tinymission.rss.MediaContent;
 
 public class EPubMediaContentPreviewView extends FrameLayout implements MediaContentPreviewView
 {
+	public static final String LOGTAG = "EPubMediaContentPreviewView";
+	public static final boolean LOGGING = false;	
+	
 	private MediaContent mMediaContent;
 	private java.io.File mMediaFile;
 
@@ -46,7 +49,8 @@ public class EPubMediaContentPreviewView extends FrameLayout implements MediaCon
 		mMediaFile = mediaFileNonVFS;
 		if (mMediaFile == null)
 		{
-			Log.v("EPubMediaContentPreviewView", "Failed to download media, no file.");
+			if (LOGGING)
+				Log.v(LOGTAG, "Failed to download media, no file.");
 			return;
 		}
 	}

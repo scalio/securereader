@@ -23,6 +23,9 @@ import android.widget.TextView;
 
 public class PanicActivity extends Activity implements OnTouchListener
 {
+	public static final String LOGTAG = "PanicActivity";
+	public static final boolean LOGGING = false;
+	
 	private View mArrow;
 	private ImageView mSymbol;
 	private boolean mOnlyTesting;

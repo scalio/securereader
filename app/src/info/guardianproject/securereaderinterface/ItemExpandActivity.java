@@ -31,7 +31,8 @@ import com.tinymission.rss.Item;
 
 public class ItemExpandActivity extends FragmentActivityWithMenu implements StoryListListener
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "ItemExpandActivity";
+	public static final boolean LOGGING = false;
 
 	private ExpandingFrameLayout mFullStoryView;
 	private FullScreenStoryItemView mFullView;
@@ -203,7 +204,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		}
 		catch (Exception ex)
 		{
-			Log.e(LOGTAG, "Failed to get top level frame: " + ex.toString());
+			if (LOGGING)
+				Log.e(LOGTAG, "Failed to get top level frame: " + ex.toString());
 		}
 		return null;
 	}
@@ -219,7 +221,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			}
 			catch (Exception ex)
 			{
-				Log.e(LOGTAG, "Failed to remove full story view from view tree: " + ex.toString());
+				if (LOGGING)
+					Log.e(LOGTAG, "Failed to remove full story view from view tree: " + ex.toString());
 			}
 		}
 	}

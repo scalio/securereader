@@ -11,7 +11,9 @@ import info.guardianproject.courier.R;
 
 public class DownloadEpubReaderActivity extends FragmentActivityWithMenu implements OnClickListener 
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "DownloadEpubReaderActivity";
+	public static final boolean LOGGING = false;
+	
 	private View mBtnClose;
 	private View mBtnGetFromPlay;
 	private View mBtnGetFromWeb;

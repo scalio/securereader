@@ -42,6 +42,9 @@ import com.tinymission.rss.Item;
 
 public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks, OnCallbackListener
 {
+	public static final String LOGTAG = "FragmentActivityWithMenu";
+	public static final boolean LOGGING = false;
+	
 	private KillReceiver mKillReceiver;
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private WipeReceiver mWipeReceiver;

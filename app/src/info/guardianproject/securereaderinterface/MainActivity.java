@@ -59,7 +59,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
 	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.securereaderinterface.showThisItemId";
 
-	public static String LOGTAG = "MainActivity";
+	public static final boolean LOGGING = false;
+	public static final String LOGTAG = "MainActivity";
 	
 	// HockeyApp SDK
 	public static String APP_ID = "3fa04d8b0a135d7f3bf58026cb125866";
@@ -116,7 +117,9 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			@Override
 			public void syncEvent(SyncService.SyncTask syncTask)
 			{
-				Log.v(LOGTAG, "Got a syncEvent");
+				if (LOGGING)
+					Log.v(LOGTAG, "Got a syncEvent");
+				
 				if (syncTask.type == SyncService.SyncTask.TYPE_FEED && syncTask.status == SyncService.SyncTask.FINISHED)
 				{
 					refreshListIfCurrent(syncTask.feed);
@@ -187,13 +190,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		if (this.mShowFeedFilterType != null)
 		{
-			Log.d(LOGTAG, "INTENT_EXTRA_SHOW_THIS_TYPE was set, show type " + this.mShowFeedFilterType.toString());
+			if (LOGGING) 
+				Log.d(LOGTAG, "INTENT_EXTRA_SHOW_THIS_TYPE was set, show type " + this.mShowFeedFilterType.toString());
+			
 			UICallbacks.setFeedFilter(this.mShowFeedFilterType, -1, MainActivity.this);
 			this.mShowFeedFilterType = null;
 		}
 		else if (this.mShowFeedId != 0)
 		{
-			Log.d(LOGTAG, "INTENT_EXTRA_SHOW_THIS_FEED was set, show feed id " + this.mShowFeedId);
+			if (LOGGING)
+				Log.d(LOGTAG, "INTENT_EXTRA_SHOW_THIS_FEED was set, show feed id " + this.mShowFeedId);
+			
 			UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, this.mShowFeedId, MainActivity.this);
 		}
 
@@ -489,7 +496,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		}
 		else
 		{
-			Log.v(LOGTAG, "Already updating feed list, ignore event for same feed");
+			if (LOGGING) 
+				Log.v(LOGTAG, "Already updating feed list, ignore event for same feed");
 		}
 		
 		syncSpinnerToCurrentItem();
@@ -522,13 +530,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	{
 		if (mShowItemId != 0)
 		{
-			Log.v(LOGTAG, "Loaded feed and INTENT_EXTRA_SHOW_THIS_ITEM was set to " + mShowItemId + ". Try to show it");
+			if (LOGGING)
+				Log.v(LOGTAG, "Loaded feed and INTENT_EXTRA_SHOW_THIS_ITEM was set to " + mShowItemId + ". Try to show it");
+			
 			for (int itemIndex = 0; itemIndex < items.size(); itemIndex++)
 			{
 				Item item = items.get(itemIndex);
 				if (item.getDatabaseId() == mShowItemId)
 				{
-					Log.v(LOGTAG, "Found item at index " + itemIndex);
+					if (LOGGING) 
+						Log.v(LOGTAG, "Found item at index " + itemIndex);
+					
 					this.openStoryFullscreen(items, itemIndex, mStoryListView.getListView(), null);
 				}
 			}
@@ -546,11 +558,13 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			while (itFeed.hasNext())
 			{
 				Feed feed = itFeed.next();
-				Log.v(LOGTAG, "Adding " + feed.getItemCount() + " items");
+				if (LOGGING) 
+					Log.v(LOGTAG, "Adding " + feed.getItemCount() + " items");
 				items.addAll(feed.getItems());
 			}
 		}
-		Log.v(LOGTAG, "There are " + items.size() + " items total");
+		if (LOGGING) 
+			Log.v(LOGTAG, "There are " + items.size() + " items total");
 		return items;
 	}
 
@@ -584,7 +598,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		@Override
 		public void feedFetched(Feed _feed)
 		{
-			Log.v(LOGTAG, "feedFetched Callback");
+			if (LOGGING) 
+				Log.v(LOGTAG, "feedFetched Callback");
 			refreshListIfCurrent(_feed);
 		}
 	};
@@ -617,7 +632,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
 	{
-		Log.v(LOGTAG, "The setting " + key + " has changed.");
+		if (LOGGING) 
+			Log.v(LOGTAG, "The setting " + key + " has changed.");
 		// if (Settings.KEY_SYNC_MODE.equals(key))
 		// {
 		// }
@@ -718,7 +734,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		@Override
 		protected ArrayList<Feed> doInBackground(Void... values)
 		{
-			Log.v(LOGTAG, "UpdateFeedListTask: doInBackground");
+			if (LOGGING)
+				Log.v(LOGTAG, "UpdateFeedListTask: doInBackground");
 
 			ArrayList<Feed> listOfFeeds = null;
 
@@ -734,13 +751,15 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			}
 			else if (mFeedFilterType == FeedFilterType.ALL_FEEDS || mFeed == null)
 			{
-				Log.v(LOGTAG, "UpdateFeedsTask: all subscribed");
+				if (LOGGING) 
+					Log.v(LOGTAG, "UpdateFeedsTask: all subscribed");
 				listOfFeeds = new ArrayList<Feed>();
 				listOfFeeds.add(socialReader.getSubscribedFeedItems());
 			}
 			else
 			{
-				Log.v(LOGTAG, "UpdateFeedsTask: " + mFeed.getTitle());
+				if (LOGGING)
+					Log.v(LOGTAG, "UpdateFeedsTask");
 				listOfFeeds = new ArrayList<Feed>();
 				listOfFeeds.add(socialReader.getFeed(mFeed));
 			}
@@ -750,7 +769,8 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		@Override
 		protected void onPostExecute(ArrayList<Feed> result)
 		{
-			Log.v(LOGTAG, "RefreshFeedsTask: finished");
+			if (LOGGING)
+				Log.v(LOGTAG, "RefreshFeedsTask: finished");
 
 			switch (mFeedFilterType)
 			{

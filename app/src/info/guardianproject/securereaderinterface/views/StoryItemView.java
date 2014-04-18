@@ -42,6 +42,9 @@ import com.tinymission.rss.Item;
 
 public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMediaLoadedListener
 {
+	public static final String LOGTAG = "StoryItemView";
+	public static final boolean LOGGING = false;
+	
 	private PagedView mPagedView;
 	private final Item mItem;
 	private MediaViewCollection mMediaViewCollection;
@@ -570,7 +573,8 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 	@Override
 	public void onViewLoaded(MediaViewCollection collection, int index, boolean wasCached)
 	{
-		Log.v("StoryItemView", "Media content has requested relayout.");
+		if (LOGGING)
+			Log.v(LOGTAG, "Media content has requested relayout.");
 		mPagedView.recreateViewsForContent(this);
 	}
 
@@ -595,7 +599,8 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 			}
 			catch (Exception e)
 			{
-				Log.d(MainActivity.LOGTAG, "Error trying to open read more link: " + mItem.getLink());
+				if (LOGGING)
+					Log.d(LOGTAG, "Error trying to open read more link: " + mItem.getLink());
 			}
 		}
 

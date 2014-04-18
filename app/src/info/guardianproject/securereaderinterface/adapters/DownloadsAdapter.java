@@ -23,6 +23,9 @@ import com.tinymission.rss.Item;
 
 public class DownloadsAdapter extends BaseAdapter
 {
+	public static final String LOGTAG = "DownloadsAdapter";
+	public static final boolean LOGGING = false;
+	
 	private static final int VIEW_TYPE_HEADER_COMPLETE = 0;
 	private static final int VIEW_TYPE_HEADER_IN_PROGRESS = 1;
 	private static final int VIEW_TYPE_ITEM_COMPLETE = 2;
@@ -254,26 +257,30 @@ public class DownloadsAdapter extends BaseAdapter
 
 	public static int getNumComplete()
 	{
-		Log.v("DownloadsAdapter", "getNumComplete");
+		if (LOGGING)
+			Log.v(LOGTAG, "getNumComplete");
 		return gComplete.size();
 	}
 
 	private Item getCompleteAtIndex(int index)
 	{
-		Log.v("DownloadsAdapter", "getCompleteAtIndex " + index);
+		if (LOGGING)
+			Log.v(LOGTAG, "getCompleteAtIndex " + index);
 		Long l = gComplete.get(index);
 		return App.getInstance().socialReader.getItemFromId(l.longValue());
 	}
 
 	public static int getNumInProgress()
 	{
-		Log.v("DownloadsAdapter", "getNumInProgress");
+		if (LOGGING)
+			Log.v(LOGTAG, "getNumInProgress");
 		return gInProgress.size();
 	}
 
 	private Item getInProgressAtIndex(int index)
 	{
-		Log.v("DownloadsAdapter", "getInProgressAtIndex " + index);
+		if (LOGGING)
+			Log.v(LOGTAG, "getInProgressAtIndex " + index);
 		Long l = (Long) gInProgress.keySet().toArray()[index];
 		return App.getInstance().socialReader.getItemFromId(l.longValue());
 	}
@@ -309,7 +316,8 @@ public class DownloadsAdapter extends BaseAdapter
 		Long itemLong = Long.valueOf(itemId);
 		if (gInProgress.containsKey(itemLong))
 		{
-			Log.v(MainActivity.LOGTAG, "Cancel media load for item id " + itemId);
+			if (LOGGING)
+				Log.v(LOGTAG, "Cancel media load for item id " + itemId);
 			MediaViewCollection mvc = gInProgress.get(itemLong);
 			mvc.recycle();
 			gInProgress.remove(itemLong);
@@ -323,7 +331,8 @@ public class DownloadsAdapter extends BaseAdapter
 		Long itemLong = Long.valueOf(itemId);
 		if (gInProgress.containsKey(itemLong))
 		{
-			Log.v(MainActivity.LOGTAG, "Retry media load for item id " + itemId);
+			if (LOGGING) 
+				Log.v(LOGTAG, "Retry media load for item id " + itemId);
 			MediaViewCollection mvc = gInProgress.get(itemLong);
 			mvc.load(true, false);
 		}

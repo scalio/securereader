@@ -35,6 +35,9 @@ import com.tinymission.rss.Feed;
 
 public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
+	public static final String LOGTAG = "App";
+	public static final boolean LOGGING = false;
+	
 	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
 			
 	public static final boolean UI_ENABLE_COMMENTS = false;

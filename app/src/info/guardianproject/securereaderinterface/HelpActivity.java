@@ -1,7 +1,5 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
-import info.guardianproject.securereader.SyncServiceFeedFetcher.SyncServiceFeedFetchedCallback;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +8,11 @@ import android.widget.Button;
 
 import com.actionbarsherlock.app.ActionBar;
 import info.guardianproject.courier.R;
-import com.tinymission.rss.Feed;
 
 public class HelpActivity extends FragmentActivityWithMenu
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "HelpActivity";
+	public static final boolean LOGGING = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)

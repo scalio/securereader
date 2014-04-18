@@ -74,6 +74,10 @@ import com.tinymission.rss.MediaContent;
 public class AddPostActivity extends FragmentActivityWithMenu implements OnActionListener, OnFocusChangeListener, OnAgreeListener,
 		FadeInFadeOutListener
 {
+	
+	public static final String LOGTAG = "AddPostActivity";
+	public static final boolean LOGGING = false;
+	
 	ProgressDialog loadingDialog;
 
 	private static final int REQ_CODE_PICK_IMAGE = 1;
@@ -356,12 +360,14 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		while ((len = in.read(buf)) > 0)
 		{
 			out.write(buf, 0, len);
-			// Log.v("WRITING", ""+len);
+			if (LOGGING)
+				Log.v(LOGTAG, "Writing:"+len);
 		}
 		in.close();
 		out.close();
 
-		Log.v("copyFileFromFStoAppFS", "Copied from " + ((src == null) ? "stream" : src.toString()) + " to " + dst.toString());
+		if (LOGGING)
+			Log.v(LOGTAG, "copyFileFromFStoAppFS Copied from " + ((src == null) ? "stream" : src.toString()) + " to " + dst.toString());
 	}
 
 	private void updateMediaControls()
@@ -632,7 +638,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 				}
 				catch (Exception ex)
 				{
-					Log.e(MainActivity.LOGTAG, "Failed to add image/video: " + ex.toString());
+					if (LOGGING)
+						Log.e(LOGTAG, "Failed to add image/video: " + ex.toString());
 				}
 			}
 			else
@@ -706,8 +713,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 					// Now we can copy the file
 					File outputFile;
 					outputFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
-
-					Log.v("AddPostActivity", "Local App Storage File: " + outputFile);
+					
+					if (LOGGING)
+						Log.v(LOGTAG, "Local App Storage File: " + outputFile);
 
 					// First copy file to encrypted storage
 					try
@@ -726,7 +734,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 				{
 					mediaContent.setUrl(mediaItemUrl);
 				}
-				Log.v("AddPostActivity", "Set Url to: " + mediaContent.getUrl());
+				if (LOGGING)
+					Log.v(LOGTAG, "Set Url to: " + mediaContent.getUrl());
 				return null;
 			}
 
@@ -771,7 +780,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 
 	private boolean saveDraft(boolean forceCreate)
 	{
-		Log.v("AddPostActivity", "Saving draft");
+		if (LOGGING) 
+			Log.v(LOGTAG, "Saving draft");
+		
 		if (mStory == null)
 		{
 			// If nothing had been changed yet, no need to save!
@@ -792,7 +803,8 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		}
 		App.getInstance().socialReporter.saveDraft(mStory);
 
-		Log.v("SaveDraft", "Story Database Id: " + mStory.getDatabaseId());
+		if (LOGGING)
+			Log.v(LOGTAG, "SaveDraft: Story Database Id: " + mStory.getDatabaseId());
 
 		return true;
 	}

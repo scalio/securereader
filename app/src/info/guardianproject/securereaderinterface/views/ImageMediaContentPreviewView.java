@@ -15,6 +15,9 @@ import com.tinymission.rss.MediaContent;
 
 public class ImageMediaContentPreviewView extends ImageView implements MediaContentPreviewView
 {
+	public static final String LOGTAG = "ImageMediaContentPreviewView";
+	public static final boolean LOGGING = false;
+	
 	private MediaContent mMediaContent;
 	private File mMediaFile;
 	private Bitmap mRealBitmap;
@@ -159,7 +162,8 @@ public class ImageMediaContentPreviewView extends ImageView implements MediaCont
 		mUseThisThread = useThisThread;
 		if (mMediaFile == null)
 		{
-			Log.v("ImageMediaContentPreviewView", "Failed to download media, no file.");
+			if (LOGGING)
+				Log.v(LOGTAG, "Failed to download media, no file.");
 			return;
 		}
 		

@@ -21,9 +21,11 @@ import android.util.Log;
 
 public class SecureBluetooth
 {
-
 	public final static String LOGTAG = "SecureBluetooth";
-
+	public final static boolean LOGGING = false;
+	
+	public final static String BLUETOOTH_UUID = "00001101-0000-1000-8000-00805F9B31337";
+	
 	public final static int EVENT_DATA_RECEIVED = 0;
 	public final static int EVENT_CONNECTED = 1;
 	public final static int EVENT_DISCONNECTED = 2;
@@ -37,7 +39,7 @@ public class SecureBluetooth
 	private BluetoothDevice btDevice;
 
 	// I made this up
-	private final UUID uuidSpp = UUID.fromString("00001101-0000-1000-8000-00805F9B31337");
+	private final UUID uuidSpp = UUID.fromString(BLUETOOTH_UUID);
 
 	private BluetoothSocket socket;
 	private ConnectedThread connectedThread;
@@ -53,12 +55,14 @@ public class SecureBluetooth
 			btAdapter = BluetoothAdapter.getDefaultAdapter();
 			if (btAdapter == null)
 			{
-				Log.e(LOGTAG, "No Bluetooth Adapter found");
+				if (LOGGING)
+					Log.e(LOGTAG, "No Bluetooth Adapter found");
 			}
 		}
 		catch (Exception e)
 		{
-			Log.e(LOGTAG, "Couldn't get Bluetooth Adapter");
+			if (LOGGING)
+				Log.e(LOGTAG, "Couldn't get Bluetooth Adapter");
 			e.printStackTrace();
 		}
 
@@ -88,7 +92,8 @@ public class SecureBluetooth
 					}
 					else
 					{
-						Log.v(LOGTAG, "propigating event " + msg.what);
+						if (LOGGING) 
+							Log.v(LOGTAG, "propigating event " + msg.what);
 						sbel.secureBluetoothEvent(msg.what, -1, null);
 					}
 				}
@@ -170,11 +175,13 @@ public class SecureBluetooth
 		}
 		catch (UnsatisfiedLinkError e)
 		{
-			Log.e(LOGTAG, Log.getStackTraceString(e));
+			if (LOGGING) 
+				Log.e(LOGTAG, Log.getStackTraceString(e));
 		}
 		catch (Exception e)
 		{
-			Log.e(LOGTAG, Log.getStackTraceString(e));
+			if (LOGGING) 
+				Log.e(LOGTAG, Log.getStackTraceString(e));
 		}
 
 		String outgoing[] = new String[list.size()];
@@ -287,33 +294,41 @@ public class SecureBluetooth
 		if (btAdapter.isDiscovering())
 		{
 			btAdapter.cancelDiscovery();
-			Log.i(LOGTAG, "Cancelled ongoing discovery");
+			if (LOGGING) 
+				Log.i(LOGTAG, "Cancelled ongoing discovery");
 		}
 
-		Log.v(LOGTAG, "About to connect to " + mac);
+		if (LOGGING)
+			Log.v(LOGTAG, "About to connect to " + mac);
 
 		/* Make sure we're using a real bluetooth address to connect with */
 		if (BluetoothAdapter.checkBluetoothAddress(mac))
 		{
-			Log.v(LOGTAG, "It's a bluetooth device");
+			if (LOGGING)
+				Log.v(LOGTAG, "It's a bluetooth device");
 
 			/* Get the remote device we're trying to connect to */
 			btDevice = btAdapter.getRemoteDevice(mac);
-			Log.v(LOGTAG, "Have the device");
+			if (LOGGING)
+				Log.v(LOGTAG, "Have the device");
 
 			/* Create the RFCOMM sockets */
 			try
 			{
 
-				Log.v(LOGTAG, "Trying the service");
+				if (LOGGING)
+					Log.v(LOGTAG, "Trying the service");
 
 				socket = btDevice.createRfcommSocketToServiceRecord(uuidSpp);
-				Log.i(LOGTAG, "connecting to service " + uuidSpp);
+				if (LOGGING)
+					Log.i(LOGTAG, "connecting to service " + uuidSpp);
 
 				socket.connect();
-				Log.v(LOGTAG, "Connected, moving on");
+				if (LOGGING)
+					Log.v(LOGTAG, "Connected, moving on");
 
-				Log.i(LOGTAG, "Connected to device " + btDevice.getName() + " [" + btDevice.getAddress() + "]");
+				if (LOGGING)
+					Log.i(LOGTAG, "Connected to device " + btDevice.getName() + " [" + btDevice.getAddress() + "]");
 
 				connected = true;
 
@@ -337,7 +352,8 @@ public class SecureBluetooth
 			}
 			catch (IOException e)
 			{
-				Log.e(LOGTAG, "Couldn't get a connection");
+				if (LOGGING)
+					Log.e(LOGTAG, "Couldn't get a connection");
 				e.printStackTrace();
 
 				Message msg = eventHandler.obtainMessage(SecureBluetooth.EVENT_DISCONNECTED);
@@ -349,7 +365,8 @@ public class SecureBluetooth
 		}
 		else
 		{
-			Log.i(LOGTAG, "Address is not Bluetooth, please verify MAC.");
+			if (LOGGING)
+				Log.i(LOGTAG, "Address is not Bluetooth, please verify MAC.");
 
 			Message msg = eventHandler.obtainMessage(SecureBluetooth.EVENT_DISCONNECTED);
 			eventHandler.sendMessage(msg);
@@ -393,21 +410,24 @@ public class SecureBluetooth
 			}
 			catch (IOException e)
 			{
-				Log.e(LOGTAG, "Socket listen() failed", e);
+				if (LOGGING)
+					Log.e(LOGTAG, "Socket listen() failed", e);
 			}
 		}
 
 		@Override
 		public void run()
 		{
-			Log.v(LOGTAG, "running AcceptThread");
+			if (LOGGING)
+				Log.v(LOGTAG, "running AcceptThread");
 
 			socket = null;
 
 			// Listen to the server socket if we're not connected
 			while (!connected)
 			{
-				Log.v(LOGTAG, "waiting for connection");
+				if (LOGGING)
+					Log.v(LOGTAG, "waiting for connection");
 
 				try
 				{
@@ -419,7 +439,8 @@ public class SecureBluetooth
 				}
 				catch (Exception e)
 				{
-					Log.e(LOGTAG, "Socket accept() failed", e);
+					if (LOGGING)
+						Log.e(LOGTAG, "Socket accept() failed", e);
 					break;
 				}
 
@@ -427,7 +448,8 @@ public class SecureBluetooth
 				if (socket != null)
 				{
 
-					Log.v(LOGTAG, "Socket accept() succeeded, moving on");
+					if (LOGGING)
+						Log.v(LOGTAG, "Socket accept() succeeded, moving on");
 
 					try
 					{
@@ -442,12 +464,14 @@ public class SecureBluetooth
 						// Set the status
 						connected = true;
 
-						Log.i(LOGTAG, "Connected to device " + btDevice.getName() + " [" + btDevice.getAddress() + "]");
+						if (LOGGING)
+							Log.i(LOGTAG, "Connected to device " + btDevice.getName() + " [" + btDevice.getAddress() + "]");
 
 					}
 					catch (Exception ex)
 					{
-						Log.i(LOGTAG, "Couldn't get a connection");
+						if (LOGGING)
+							Log.i(LOGTAG, "Couldn't get a connection");
 						ex.printStackTrace();
 						connected = false;
 					}
@@ -463,12 +487,14 @@ public class SecureBluetooth
 	 */
 	public void write(byte[] buffer)
 	{
-		Log.v(LOGTAG, "Writing buffer " + buffer.length);
+		if (LOGGING)
+			Log.v(LOGTAG, "Writing buffer " + buffer.length);
 		connectedThread.write(buffer);
 	}
 	
 	public void writeLength(long length) {
-		Log.v(LOGTAG, "Writing length " + length);
+		if (LOGGING)
+			Log.v(LOGTAG, "Writing length " + length);
 		connectedThread.writeLength(length);
 	}
 
@@ -484,13 +510,15 @@ public class SecureBluetooth
 	 */
 	public void disconnect()
 	{
-		Log.v(LOGTAG, "Disconnect Called");
+		if (LOGGING)
+			Log.v(LOGTAG, "Disconnect Called");
 		if (connected)
 		{
 			// This should do it..
 			if (connectedThread != null)
 			{
-				Log.v(LOGTAG, "Calling cancel on connectThread");
+				if (LOGGING)
+					Log.v(LOGTAG, "Calling cancel on connectThread");
 				connectedThread.cancel();
 			}
 			connected = false;
@@ -523,8 +551,10 @@ public class SecureBluetooth
 			}
 			catch (IOException e)
 			{
-				Log.e(LOGTAG, "Error getting Input or Output stream");
-				e.printStackTrace();
+				if (LOGGING) {
+					Log.e(LOGTAG, "Error getting Input or Output stream");
+					e.printStackTrace();
+				}
 			}
 
 			inStream = tmpIn;
@@ -537,7 +567,8 @@ public class SecureBluetooth
 		@Override
 		public void run()
 		{
-			Log.i(LOGTAG, "ConnectedThread running");
+			if (LOGGING)
+				Log.i(LOGTAG, "ConnectedThread running");
 			
 			// first going to read the first 4 bytes to get length
 			try {
@@ -558,11 +589,13 @@ public class SecureBluetooth
 				try
 				{
 					// Read from the InputStream
-					Log.v(LOGTAG, "going to read from inStream");
+					if (LOGGING)
+						Log.v(LOGTAG, "going to read from inStream");
 					//bytes = inStream.read(buffer);
 					bytes = dataIn.read(buffer);
 					totalRead += bytes;
-					Log.v(LOGTAG, "got " + bytes + " bytes, total " + totalRead + " of " + readLength);
+					if (LOGGING)
+						Log.v(LOGTAG, "got " + bytes + " bytes, total " + totalRead + " of " + readLength);
 					
 					transfer = new byte[bytes];
 					System.arraycopy(buffer, 0, transfer, 0, bytes);
@@ -572,46 +605,55 @@ public class SecureBluetooth
 					eventHandler.sendMessage(msg);
 					
 					if (totalRead >= readLength) {
-						Log.v(LOGTAG,"totalRead >= readLength, finished reading");
+						if (LOGGING)
+							Log.v(LOGTAG,"totalRead >= readLength, finished reading");
 						break;
 					}
 				}
 				catch (IOException e)
 				{
-					Log.v(LOGTAG, "Got IOException, closing things up");
-					e.printStackTrace();
+					if (LOGGING) {
+						Log.v(LOGTAG, "Got IOException, closing things up");
+						e.printStackTrace();
+					}
 					break;
 				}
 			}
-			Log.v(LOGTAG, "Calling cancel");
+			if (LOGGING)
+				Log.v(LOGTAG, "Calling cancel");
 			cancel();
 		}
 
 		/* Call this from the main activity to shutdown the connection */
 		public void cancel()
 		{
-			Log.v(LOGTAG,"ConnectedThread cancel");
+			if (LOGGING)
+				Log.v(LOGTAG,"ConnectedThread cancel");
 			/* Close the streams */
 			try
 			{
-				Log.v(LOGTAG, "Closing the streams");
+				if (LOGGING)
+					Log.v(LOGTAG, "Closing the streams");
 				outStream.flush();
 				dataIn.close();
 				inStream.close();
 				outStream.close();
 
-				Log.v(LOGTAG, "Closed Streams");
+				if (LOGGING)
+					Log.v(LOGTAG, "Closed Streams");
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				if (LOGGING) 
+					e.printStackTrace();
 			}
 			finally
 			{
 				try
 				{
 					socket.close();
-					Log.v(LOGTAG, "Closed socket");
+					if (LOGGING)
+						Log.v(LOGTAG, "Closed socket");
 
 					Message msg = eventHandler.obtainMessage(EVENT_DISCONNECTED);
 					eventHandler.sendMessage(msg);
@@ -620,7 +662,8 @@ public class SecureBluetooth
 				catch (IOException e)
 				{
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if (LOGGING)
+						e.printStackTrace();
 				}
 			}		
 		}
@@ -639,11 +682,13 @@ public class SecureBluetooth
 			{
 				//outStream.write(bytes);
 				dataOut.write(bytes);
-				Log.v(LOGTAG, "wrote " + bytes.length);
+				if (LOGGING)
+					Log.v(LOGTAG, "wrote " + bytes.length);
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				if (LOGGING)
+					e.printStackTrace();
 			}
 		}
 		
@@ -651,7 +696,8 @@ public class SecureBluetooth
 			try {
 				dataOut.writeLong(length);
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (LOGGING)
+					e.printStackTrace();
 			}
 			
 		}

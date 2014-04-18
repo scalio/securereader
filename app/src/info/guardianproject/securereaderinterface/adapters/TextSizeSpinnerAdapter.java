@@ -12,6 +12,9 @@ import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 
 public class TextSizeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
+	public static final String LOGTAG = "TextSizeSpinnerAdapter";
+	public static final boolean LOGGING = false;		
+	
 	private final String TITLE_TAG = "TITLE";
 
 	private final Spinner mSpinner;

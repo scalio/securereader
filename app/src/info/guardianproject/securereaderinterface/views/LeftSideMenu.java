@@ -43,7 +43,8 @@ import com.actionbarsherlock.app.ActionBar;
 public class LeftSideMenu
 {
 	public static final String LOGTAG = "LeftSideMenu";
-
+	public static final boolean LOGGING = false;
+	
 	public interface LeftSideMenuListener
 	{
 		void onMenuCreated(View parent, View menuRoot, View menu);

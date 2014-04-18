@@ -36,7 +36,8 @@ import com.tinymission.rss.Item;
 public class FullScreenStoryItemView extends FrameLayout implements PagedViewListener
 {
 	protected static final String LOGTAG = "FullScreenStoryItemView";
-
+	public static final boolean LOGGING = false;
+	
 	private View mBtnRead;
 	private View mBtnComments;
 	private CheckableImageView mBtnFavorite;
@@ -306,7 +307,8 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			String roomName = "story_" + MD5_Hash(currentStory.getGuid());
 			Bundle params = new Bundle();
 			params.putString("room_name", roomName);
-			Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
+			if (LOGGING)
+				Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
 			UICallbacks.handleCommand(getContext(), R.integer.command_chat, params);
 		}
 		// mBtnRead.setSelected(false);

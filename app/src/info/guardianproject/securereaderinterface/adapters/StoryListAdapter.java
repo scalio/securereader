@@ -27,6 +27,9 @@ import com.tinymission.rss.MediaContent;
 
 public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListener, Filterable, StoryItemPageViewListener
 {
+	public static final String LOGTAG = "StoryListAdapter";
+	public static final boolean LOGGING = false;	
+	
 	public interface OnTagClickedListener
 	{
 		void onTagClicked(String tag);

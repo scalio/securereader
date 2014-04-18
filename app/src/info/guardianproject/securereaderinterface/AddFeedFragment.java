@@ -28,6 +28,9 @@ import com.tinymission.rss.Feed;
 
 public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback
 {
+	public static final String LOGTAG = "AddFeedFragment";
+	public static final boolean LOGGING = false;
+	
 	private ListView mListFeeds;
 	private FocusNoHintEditText mEditManualUrl;
 	private Button mBtnAddManualUrl;
@@ -121,7 +124,8 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 	{
 		// We have now downloaded information about manually added feed, so
 		// update list!
-		Log.v("AddFeedFragment", "Feed " + _feed.getFeedURL() + " loaded, update list");
+		if (LOGGING)
+			Log.v(LOGTAG, "Feed " + _feed.getFeedURL() + " loaded, update list");
 		App.getInstance().socialReader.subscribeFeed(_feed);
 		updateList();
 	}
