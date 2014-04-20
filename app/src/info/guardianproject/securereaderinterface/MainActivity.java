@@ -46,12 +46,9 @@ import com.actionbarsherlock.view.Window;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-
-
-
 // HockeyApp SDK
-import net.hockeyapp.android.CrashManager;
-import net.hockeyapp.android.UpdateManager;
+//import net.hockeyapp.android.CrashManager;
+//import net.hockeyapp.android.UpdateManager;
 
 public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
 {
@@ -63,7 +60,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	public static final String LOGTAG = "MainActivity";
 	
 	// HockeyApp SDK
-	public static String APP_ID = "3fa04d8b0a135d7f3bf58026cb125866";
+	//public static String APP_ID = "3fa04d8b0a135d7f3bf58026cb125866";
 
 	private boolean mIsInitialized;
 	private long mShowItemId;
@@ -130,7 +127,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
 		
 		// HockeyApp SDK
-		checkForUpdates();
+		//checkForUpdates();
 	}
 
 	@Override
@@ -208,19 +205,19 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		updateTorView();
 		
 		// HockeyApp SDK
-		checkForCrashes();
+		//checkForCrashes();
 	}
 	
 	// HockeyApp SDK
-	private void checkForCrashes() {
+	/*private void checkForCrashes() {
 		CrashManager.register(this, APP_ID);
-	}	
+	}*/	
 	
 	// HockeyApp SDK
-	private void checkForUpdates() {
+	/*private void checkForUpdates() {
 		//Remove this for store builds!
 		UpdateManager.register(this, APP_ID);
-	}	
+	}*/	
 
 	@Override
 	public void onPause()
