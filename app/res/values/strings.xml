@@ -46,9 +46,9 @@
     <string name="help_data_content">Tips to reduce your data consumption:\n\n1. Sync only the feeds that matter to you most. Courier allows you to sync individual feeds.\n\n2. Choose Bit Wise syncing mode in your preferences. This syncs only text, with the ability to load photos on a story by story basis.\n\n3. Expire your articles in a timely manner. Choose your time frame in your preferences.</string>
 	<string name="about_guardian_title">About Guardian Project</string>
     <string name="about_guardian_content">The Guardian Project creates easy to use apps, open-source software libraries, operating system modifications, and customized mobile devices useful to any person looking to protect their communications and personal data from unjust intrusion and monitoring. Visit us at https://guardianproject.info</string>
-    <string name="help_terms_group_title">Terms and Software Licenses</string>
-    <string name="help_terms_title">Terms and Software Licenses</string>
-    <string name="help_terms_content"></string>
+    <string name="help_terms_group_title">Terms and Licenses</string>
+    <string name="help_terms_title">Terms and Licenses</string>
+    <string name="help_terms_content">Software licenses and more information available online at: https://guardianproject.info/apps/courier</string>
     <string name="help_show_news">Got it. Show me the news!</string>
     <string name="downloads_title">Media Downloads</string>
     <string name="downloads_complete">COMPLETE</string>
@@ -305,10 +305,8 @@
     <string name="epubs_feed_name">Tibet Archive</string>
     
     <string name="cacheword_notification_cached_title">Courier Unlocked</string>
-    <string name="cacheword_notification_cached">Courier passcode stored in memory</string>
-    <string name="cacheword_notification_cached_new">Tap to lock</string>
-    <string name="cacheword_notification_cached_message">Courier passcode stored in memory</string>
-    <string name="cacheword_notification_cached_message_new">Tap to lock</string>
+    <string name="cacheword_notification_cached">Tap to lock</string>
+    <string name="cacheword_notification_cached_message">Tap to lock</string>
     <string name="download_epub_hint">Download ePub</string>
     <string name="download_epub_reader_title">Download ePub Reader</string>
     <string name="download_epub_reader_info">You need an ePub reader to see the story. We recommend FBReader. Get it on:</string>
