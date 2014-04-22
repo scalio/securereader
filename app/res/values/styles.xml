@@ -289,7 +289,13 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
-        
+
+    <style name="HelpTextLinkedStyle" parent="HelpTextStyle">
+        <item name="android:autoLink">web</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:textColorLink">#000000</item>
+    </style>
+    
     <style name="HelpButtonStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>

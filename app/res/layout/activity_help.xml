@@ -183,7 +183,7 @@
 
             <TextView
                 android:id="@+id/TextView07"
-                style="@style/HelpTextStyle"
+                style="@style/HelpTextLinkedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_guardian_content" />
@@ -207,7 +207,7 @@
 
             <TextView
                 android:id="@+id/tvTerms"
-                style="@style/HelpTextStyle"
+                style="@style/HelpTextLinkedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_terms_content" />
