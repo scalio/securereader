@@ -3,10 +3,13 @@ package info.guardianproject.securereaderinterface.views;
 import info.guardianproject.courier.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
+import info.guardianproject.securereaderinterface.ItemExpandActivity;
 import info.guardianproject.securereaderinterface.MainActivity;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.PackageHelper;
+import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout;
@@ -33,6 +36,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -446,6 +450,20 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 		if (tv != null)
 		{
 			tv.setText(story.getSource());
+			tv.setTag(Long.valueOf(story.getFeedId()));
+			tv.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					long feedId = ((Long) v.getTag()).longValue();
+					if (feedId != -1 && mPagedView.getContext() instanceof ItemExpandActivity)
+					{
+						((ItemExpandActivity)mPagedView.getContext()).onBackPressed();
+						UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedId, this);
+					}
+				}
+			});
 		}
 
 		// Time
