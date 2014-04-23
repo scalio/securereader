@@ -10,8 +10,8 @@ import info.guardianproject.courier.R;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordSettings;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import java.security.GeneralSecurityException;
 
+import java.security.GeneralSecurityException;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,6 +24,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -82,7 +83,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onResume();
 		mSetUiLanguageReceiver = new SetUiLanguageReceiver();
-		registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
 	}
 
 	@Override
@@ -90,7 +91,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	    super.onPause();
 	    if (mSetUiLanguageReceiver != null)
 	    {
-	    	unregisterReceiver(mSetUiLanguageReceiver);
+	    	LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetUiLanguageReceiver);
 	    	mSetUiLanguageReceiver = null;
 	    }
 	}
@@ -135,16 +136,9 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		if ((keyCode == KeyEvent.KEYCODE_BACK))
 		{
 			// Back from lock screen means quit app. So send a kill signal to
-			// any open activity and finish!
-			Intent intent = new Intent(App.EXIT_BROADCAST_ACTION);
-			this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-			{
-				@Override
-				public void onReceive(Context context, Intent intent)
-				{
+			// any open activity and finish!	
+			LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
 			finish();
-				}
-			}, null, Activity.RESULT_OK, null, null);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
