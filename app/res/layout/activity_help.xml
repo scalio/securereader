@@ -223,6 +223,16 @@
             android:minHeight="50dp"
             android:text="@string/help_show_news" />
 
+        <TextView
+            android:id="@+id/tvVersion"
+            style="@style/HelpTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Version 1.0"
+            android:textColor="#888888"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
 </ScrollView>
