@@ -1,7 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.courier.R;
-
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
@@ -12,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -188,10 +188,8 @@ public class PanicActivity extends Activity implements OnTouchListener
 			// Do the wipe
 			App.getInstance().wipe(App.getSettings().wipeApp() ? SocialReader.FULL_APP_WIPE : SocialReader.DATA_WIPE);
 
-			Intent intent = new Intent(getApplicationContext(), KillActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(intent);
-			PanicActivity.this.finish();
+			LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
+			finish();
 		}
 	}
 	

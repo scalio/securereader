@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,11 +81,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		UICallbacks.getInstance().addListener(this);
 
 		mKillReceiver = new KillReceiver();
-		registerReceiver(mKillReceiver, new IntentFilter(App.EXIT_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mKillReceiver, new IntentFilter(App.EXIT_BROADCAST_ACTION));
 		mSetUiLanguageReceiver = new SetUiLanguageReceiver();
-		registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
 		mWipeReceiver = new WipeReceiver();
-		registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION));
 
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -254,9 +255,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	{
 		super.onDestroy();
 		UICallbacks.getInstance().removeListener(this);
-		unregisterReceiver(mKillReceiver);
-		unregisterReceiver(mSetUiLanguageReceiver);
-		unregisterReceiver(mWipeReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mKillReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetUiLanguageReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mWipeReceiver);
 	}
 
 	@Override

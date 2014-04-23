@@ -47,7 +47,6 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final boolean UI_ENABLE_CHAT = false;
 	public static final boolean UI_ENABLE_LANGUAGE_CHOICE = true;
 	
-	public static final String EXIT_BROADCAST_PERMISSION = "info.guardianproject.securereaderinterface.exit.permission";
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
 	public static final String SET_UI_LANGUAGE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.setuilanguage.action";
 	public static final String WIPE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.wipe.action";
@@ -182,15 +181,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 	
 		// Notify activities (if any)
-		Intent intent = new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
-	}
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
+}
 
 	private void applyPassphraseTimeout()
 	{
@@ -202,14 +194,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader.doWipe(wipeMethod);
 
 		// Notify activities (if any)
-		Intent intent = new Intent(App.WIPE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
 	}
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
