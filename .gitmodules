@@ -3,7 +3,7 @@
 	url = https://github.com/guardianproject/OnionKit.git
 [submodule "external/CacheWord"]
 	path = external/CacheWord
-	url = https://github.com/vanevery/cacheword.git
+	url = https://github.com/guardianproject/cacheword.git
 [submodule "external/bho"]
 	path = external/bho
 	url = https://code.google.com/p/bho/
