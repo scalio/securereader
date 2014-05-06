@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -167,7 +168,18 @@ public class LockableActivity extends ActionBarActivity {
 	
 	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		
+		// Call our fragments
+		//
+		if (getSupportFragmentManager().getFragments() != null)
+		{
+			for (Fragment f : getSupportFragmentManager().getFragments())
+			{
+				if (f instanceof LockableFragment)
+				{
+					((LockableFragment) f).onUnlockedActivityResult(requestCode, resultCode, imageReturnedIntent);
+				}
+			}
+		}
 	}
 	
 	
