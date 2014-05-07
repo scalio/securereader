@@ -14,3 +14,6 @@
 [submodule "external/HoloEverywhere"]
 	path = external/HoloEverywhere
 	url = https://github.com/Prototik/HoloEverywhere.git
+[submodule "external/ActionBarSherlock"]
+	path = external/ActionBarSherlock
+	url = https://github.com/JakeWharton/ActionBarSherlock.git

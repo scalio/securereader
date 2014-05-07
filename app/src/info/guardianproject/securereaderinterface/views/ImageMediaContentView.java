@@ -27,7 +27,8 @@ import com.tinymission.rss.MediaContent;
 
 public class ImageMediaContentView extends FrameLayout implements MediaDownloaderCallback, OnTouchListener
 {
-	private static final String TAG = "IMAGEVIEWERMATRIX";
+	private static final String LOGTAG = "IMAGEVIEWERMATRIX";
+	public static final boolean LOGGING = false;
 
 	// Image Matrix
 	Matrix matrix = new Matrix();
@@ -120,7 +121,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 			// Save the Start point. We have a single finger so it is drag
 			startPoint.set(event.getX(), event.getY());
 			mode = DRAG;
-			Log.d(TAG, "mode=DRAG");
+			if (LOGGING)
+				Log.d(LOGTAG, "mode=DRAG");
 
 			break;
 
@@ -131,7 +133,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 			float sy = event.getY(0) - event.getY(1);
 			startFingerSpacing = (float) Math.sqrt(sx * sx + sy * sy);
 
-			Log.d(TAG, "Start Finger Spacing=" + startFingerSpacing);
+			if (LOGGING)
+				Log.d(LOGTAG, "Start Finger Spacing=" + startFingerSpacing);
 
 			if (startFingerSpacing > 10f)
 			{
@@ -141,7 +144,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 				startFingerSpacingMidPoint.set(xsum / 2, ysum / 2);
 
 				mode = ZOOM;
-				Log.d(TAG, "mode=ZOOM");
+				if (LOGGING)
+					Log.d(LOGTAG, "mode=ZOOM");
 			}
 
 			break;
@@ -152,7 +156,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 		case MotionEvent.ACTION_POINTER_UP:
 
 			mode = NONE;
-			Log.d(TAG, "mode=NONE");
+			if (LOGGING) 
+				Log.d(LOGTAG, "mode=NONE");
 			break;
 
 		case MotionEvent.ACTION_MOVE:
@@ -174,7 +179,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 				float ey = event.getY(0) - event.getY(1);
 				endFingerSpacing = (float) Math.sqrt(ex * ex + ey * ey);
 
-				Log.d(TAG, "End Finger Spacing=" + endFingerSpacing);
+				if (LOGGING)
+					Log.d(LOGTAG, "End Finger Spacing=" + endFingerSpacing);
 
 				if (endFingerSpacing > 10f)
 				{
@@ -188,9 +194,13 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 
 					float[] matrixValues = new float[9];
 					matrix.getValues(matrixValues);
-					Log.v(TAG, "Total Scale: " + matrixValues[0]);
-					Log.v(TAG, "" + matrixValues[0] + " " + matrixValues[1] + " " + matrixValues[2] + " " + matrixValues[3] + " " + matrixValues[4] + " "
+					
+					if (LOGGING) {
+						Log.v(LOGTAG, "Total Scale: " + matrixValues[0]);
+						Log.v(LOGTAG, "" + matrixValues[0] + " " + matrixValues[1] + " " + matrixValues[2] + " " + matrixValues[3] + " " + matrixValues[4] + " "
 							+ matrixValues[5] + " " + matrixValues[6] + " " + matrixValues[7] + " " + matrixValues[8]);
+					}
+					
 					if (matrixValues[0] > MAX_SCALE)
 					{
 						matrix.set(savedMatrix);
@@ -219,7 +229,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 		RectF theRect = new RectF(0, 0, realBmp.getWidth(), realBmp.getHeight());
 		currentDisplayMatrix.mapRect(theRect);
 
-		Log.v(TAG, theRect.width() + " " + theRect.height());
+		if (LOGGING) 
+			Log.v(LOGTAG, theRect.width() + " " + theRect.height());
 
 		float deltaX = 0, deltaY = 0;
 		if (theRect.width() < mImageView.getWidth())
@@ -250,7 +261,8 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 			deltaY = mImageView.getHeight() - theRect.bottom;
 		}
 
-		Log.v(TAG, "Deltas:" + deltaX + " " + deltaY);
+		if (LOGGING) 
+			Log.v(LOGTAG, "Deltas:" + deltaX + " " + deltaY);
 
 		currentDisplayMatrix.postTranslate(deltaX, deltaY);
 		mImageView.setImageMatrix(currentDisplayMatrix);
@@ -306,12 +318,14 @@ public class ImageMediaContentView extends FrameLayout implements MediaDownloade
 		matrix.set(null);
 		matrix.setScale(scaleX, scaleY);
 
-		Log.v(TAG, "Display Width: " + width);
-		Log.v(TAG, "Display Height: " + height);
+		if (LOGGING) {
+			Log.v(LOGTAG, "Display Width: " + width);
+			Log.v(LOGTAG, "Display Height: " + height);
 
-		Log.v(TAG, "BMP Width: " + realBmp.getWidth());
-		Log.v(TAG, "BMP Height: " + realBmp.getHeight());
-
+			Log.v(LOGTAG, "BMP Width: " + realBmp.getWidth());
+			Log.v(LOGTAG, "BMP Height: " + realBmp.getHeight());
+		}
+		
 		mImageView.setImageBitmap(realBmp);
 		mImageView.setImageMatrix(matrix);
 		baseMatrix.set(matrix);

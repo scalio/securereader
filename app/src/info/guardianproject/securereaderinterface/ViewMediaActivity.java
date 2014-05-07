@@ -13,6 +13,9 @@ import com.tinymission.rss.MediaContent;
 public class ViewMediaActivity extends FragmentActivityWithMenu // implements
 // OnTouchListener
 {
+	public static final String LOGTAG = "ViewMediaActivity";
+	public static final boolean LOGGING = false;
+	
 	private static int ACTION_BAR_SHOW_DELAY = 2500; // How long to show the
 														// action bar until it
 														// does away
