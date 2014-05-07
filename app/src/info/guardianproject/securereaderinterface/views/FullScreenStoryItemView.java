@@ -17,9 +17,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.AdapterView;
-import org.holoeverywhere.widget.Spinner;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +27,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
 import com.tinymission.rss.Item;
@@ -37,7 +35,8 @@ import com.tinymission.rss.Item;
 public class FullScreenStoryItemView extends FrameLayout implements PagedViewListener
 {
 	protected static final String LOGTAG = "FullScreenStoryItemView";
-
+	public static final boolean LOGGING = false;
+	
 	private View mBtnRead;
 	private View mBtnComments;
 	private CheckableImageView mBtnFavorite;
@@ -307,7 +306,8 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			String roomName = "story_" + MD5_Hash(currentStory.getGuid());
 			Bundle params = new Bundle();
 			params.putString("room_name", roomName);
-			Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
+			if (LOGGING)
+				Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
 			UICallbacks.handleCommand(getContext(), R.integer.command_chat, params);
 		}
 		// mBtnRead.setSelected(false);

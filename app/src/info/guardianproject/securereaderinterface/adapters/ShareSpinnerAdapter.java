@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.holoeverywhere.widget.Spinner;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +27,9 @@ import android.widget.TextView;
 
 public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
+	public static final String LOGTAG = "ShareSpinnerAdapter";
+	public static final boolean LOGGING = false;	
+	
 	private final String TITLE_TAG = "TITLE";
 
 	private final Spinner mSpinner;

@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/left_menu_item_background"
+    android:descendantFocusability="blocksDescendants"
+    android:minHeight="54dp"
+    android:paddingBottom="8dp" >
+
+    <ImageView
+        android:id="@+id/ivFeedImage"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignBottom="@+id/tvFeedName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/tvFeedName"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_filter_favorites" />
+
+    <FrameLayout
+        android:id="@+id/fl0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvFeedName"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvFeedName"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="14dp" >
+
+        <TextView
+            android:id="@+id/tvCount"
+            style="@style/LeftSideMenuItemSubStyle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/feed_list_circle_background"
+            android:gravity="center"
+            android:text="12" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvFeedName"
+        style="@style/LeftSideMenuItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="21dp"
+        android:layout_toLeftOf="@id/fl0"
+        android:layout_toRightOf="@id/ivFeedImage"
+        android:minHeight="54dp"
+        android:text="@string/feed_filter_favorites" />
+
+    <TextView
+        android:id="@+id/shortcutView"
+        style="@style/LeftSideMenuShortcutItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvFeedName"
+        android:layout_alignRight="@id/tvFeedName"
+        android:layout_below="@id/tvFeedName"
+        android:background="@drawable/left_menu_shortcut_item_background"
+        android:minHeight="42dp"
+        android:padding="10dp"
+        android:text="@string/menu_receive_share" />
+
+</RelativeLayout>

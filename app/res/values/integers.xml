@@ -6,7 +6,6 @@
     <integer name="command_post_add">0</integer>
     <integer name="command_feed_add">0</integer>
     <integer name="command_settings">0</integer>
-    <integer name="command_resync">0</integer>
     <integer name="command_toggle_online">0</integer>
     <integer name="command_help">0</integer>
     <integer name="command_downloads">0</integer>

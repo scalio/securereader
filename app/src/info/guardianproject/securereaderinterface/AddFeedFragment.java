@@ -4,13 +4,12 @@ import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapter;
 import info.guardianproject.securereaderinterface.adapters.FeedListAdapter.FeedListAdapterListener;
 import info.guardianproject.securereaderinterface.uiutil.HttpTextWatcher;
+import info.guardianproject.securereaderinterface.widgets.FocusNoHintEditText;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -22,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import info.guardianproject.securereaderinterface.R;
@@ -30,8 +28,11 @@ import com.tinymission.rss.Feed;
 
 public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback
 {
+	public static final String LOGTAG = "AddFeedFragment";
+	public static final boolean LOGGING = false;
+	
 	private ListView mListFeeds;
-	private EditText mEditManualUrl;
+	private FocusNoHintEditText mEditManualUrl;
 	private Button mBtnAddManualUrl;
 
 	@Override
@@ -62,7 +63,8 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 				}
 			}
 		});
-		mEditManualUrl = (EditText) rootView.findViewById(R.id.editManualUrl);
+		mEditManualUrl = (FocusNoHintEditText) rootView.findViewById(R.id.editManualUrl);
+		mEditManualUrl.setHintRelativeSize(0.7f);
 		mEditManualUrl.addTextChangedListener(new HttpTextWatcher(rootView.getContext(), mBtnAddManualUrl));
 		
 		Intent intent = getActivity().getIntent();
@@ -122,7 +124,8 @@ public class AddFeedFragment extends Fragment implements FeedListAdapterListener
 	{
 		// We have now downloaded information about manually added feed, so
 		// update list!
-		Log.v("AddFeedFragment", "Feed " + _feed.getFeedURL() + " loaded, update list");
+		if (LOGGING)
+			Log.v(LOGTAG, "Feed " + _feed.getFeedURL() + " loaded, update list");
 		App.getInstance().socialReader.subscribeFeed(_feed);
 		updateList();
 	}

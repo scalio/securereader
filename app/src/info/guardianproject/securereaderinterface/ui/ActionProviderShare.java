@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 
 import com.actionbarsherlock.view.ActionProvider;
 import com.tinymission.rss.Feed;

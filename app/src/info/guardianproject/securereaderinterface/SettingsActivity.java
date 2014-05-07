@@ -4,21 +4,16 @@ import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.GroupView;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-import org.holoeverywhere.app.Dialog;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,7 +37,8 @@ import info.guardianproject.securereaderinterface.R;
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {
-	private static final String TAG = "Settings";
+	private static final boolean LOGGING = false;
+	private static final String LOGTAG = "Settings";
 
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
 
@@ -58,6 +54,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setDisplayHomeAsUp(true);
 		setContentView(R.layout.activity_settings);
 		setMenuIdentifier(R.menu.activity_settings);
 
@@ -264,12 +261,14 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 	private void hookupCheckbox(View parentView, int resIdCheckbox, String methodNameOfGetter)
 	{
-		Log.v(TAG, methodNameOfGetter);
+		if (LOGGING)
+			Log.v(LOGTAG, methodNameOfGetter);
 
 		Checkable cb = (Checkable) parentView.findViewById(resIdCheckbox);
 		if (cb == null)
 		{
-			Log.v(TAG, "Failed to find checkbox: " + resIdCheckbox);
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find checkbox: " + resIdCheckbox);
 			return;
 		}
 
@@ -281,7 +280,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[] { boolean.class });
 			if (getter == null || setter == null)
 			{
-				Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
+				if (LOGGING) 
+					Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
 				return;
 			}
 
@@ -304,26 +304,31 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					}
 					catch (Exception e)
 					{
-						Log.v(TAG, "Failed checked change listener: " + e.toString());
+						if (LOGGING) 
+							Log.v(LOGTAG, "Failed checked change listener: " + e.toString());
 					}
 				}
 			});
 		}
 		catch (NoSuchMethodException e)
 		{
-			Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalArgumentException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalAccessException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (InvocationTargetException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 	}
 
@@ -338,7 +343,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		Object[] constants = enumClass.getEnumConstants();
 		if (constants.length != resIds.length)
 		{
-			Log.w(TAG, "hookupRadioButton: mismatched classes!");
+			if (LOGGING) 
+				Log.w(LOGTAG, "hookupRadioButton: mismatched classes!");
 			return;
 		}
 
@@ -363,7 +369,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[] { valueType });
 			if (getter == null || setter == null)
 			{
-				Log.w(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
+				if (LOGGING) 
+					Log.w(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
 				return;
 			}
 
@@ -380,7 +387,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				RadioButton rb = (RadioButton) parentView.findViewById(resId);
 				if (rb == null)
 				{
-					Log.w(TAG, "Failed to find checkbox: " + resId);
+					if (LOGGING) 
+						Log.w(LOGTAG, "Failed to find checkbox: " + resId);
 					return;
 				}
 				if (currentValueInSettings.equals(value.getValue()))
@@ -391,19 +399,23 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		}
 		catch (NoSuchMethodException e)
 		{
-			Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalArgumentException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalAccessException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (InvocationTargetException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 	}
 
@@ -435,7 +447,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			}
 			catch (Exception e)
 			{
-				Log.v(TAG, "Failed checked change listener: " + e.toString());
+				if (LOGGING) 
+					Log.v(LOGTAG, "Failed checked change listener: " + e.toString());
 			}
 		}
 	}
@@ -476,7 +489,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
                 } catch (Exception e) {
                     // Invalid password or the secret key has been
-                    Log.e(TAG, e.getMessage());
+        			if (LOGGING) 
+        				Log.e(LOGTAG, e.getMessage());
 
                     Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
 					alert.dismiss();
@@ -530,7 +544,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					cwh.setPassphrase(editNewPassphrase.getText().toString().toCharArray());
 					sameAsPassphrase = true;
                 } catch (GeneralSecurityException e) {
-                    Log.e(TAG, "Cacheword initialization failed: " + e.getMessage());
+        			if (LOGGING) 
+        				Log.e(LOGTAG, "Cacheword initialization failed: " + e.getMessage());
                 }
 				if (!matching || sameAsPassphrase)
 				{

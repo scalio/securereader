@@ -20,14 +20,13 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.holoeverywhere.widget.ProgressBar;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ProgressBar;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
@@ -36,6 +35,8 @@ import com.tinymission.rss.MediaContent;
 public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 {
 	public static final String LOGTAG = "SecureShareReceiveActivity";
+	public static final boolean LOGGING = false;
+	
 	private View mLLReceive;
 	private View mLLSharedStory;
 	private ProgressBar mProgressReceive;
@@ -102,13 +103,15 @@ public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 			String action = intent.getAction();
 			String type = intent.getType();
 
-			if (intent != null && type != null && action != null)
-			{
-				Log.v(LOGTAG, "intent: " + intent.toString());
-				Log.v(LOGTAG, "action: " + action.toString());
-				Log.v(LOGTAG, "type: " + type.toString());
+			if (LOGGING) {
+				if (intent != null && type != null && action != null)
+				{
+					Log.v(LOGTAG, "intent: " + intent.toString());
+					Log.v(LOGTAG, "action: " + action.toString());
+					Log.v(LOGTAG, "type: " + type.toString());
+				}
 			}
-
+			
 			if (Intent.ACTION_VIEW.equals(action) && type != null && intent.getData() != null && type.equals(SocialReader.CONTENT_SHARING_MIME_TYPE))
 			{
 				try
@@ -118,14 +121,16 @@ public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 					bos = new BufferedOutputStream(new java.io.FileOutputStream(receivedContentBundleFile));
 
 					Uri streamUri = intent.getData();
-					Log.v(LOGTAG, "Received: " + streamUri.toString());
+					if (LOGGING) 
+						Log.v(LOGTAG, "Received: " + streamUri.toString());
 					instream = getContentResolver().openInputStream(streamUri);
 
 					int count;
 					byte[] buffer = new byte[256];
 					while ((count = instream.read(buffer, 0, buffer.length)) != -1)
 					{
-						Log.v(LOGTAG, "Read " + count + " bytes");
+						if (LOGGING) 
+							Log.v(LOGTAG, "Read " + count + " bytes");
 						bos.write(buffer, 0, count);
 					}
 
@@ -173,7 +178,8 @@ public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 								// Deserialize it
 								mItemReceived = (Item) objectInputStream.readObject();
 								objectInputStream.close();
-								Log.v(LOGTAG, "We have an Item!!!: " + mItemReceived.getTitle());
+								if (LOGGING)
+									Log.v(LOGTAG, "We have an Item!!!");
 								mItemReceived.setShared(true);
 								mItemReceived.setDatabaseId(Item.DEFAULT_DATABASE_ID);
 								mItemReceived.setFeedId(Feed.DEFAULT_DATABASE_ID);
@@ -194,7 +200,8 @@ public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 						else
 						{ // Ignore for now, we'll loop through again in a
 							// second
-							Log.v(LOGTAG, "Ignoring media element for now");
+							if (LOGGING) 
+								Log.v(LOGTAG, "Ignoring media element for now");
 						}
 					}
 
@@ -240,7 +247,8 @@ public class SecureShareReceiveActivity extends FragmentActivityWithMenu
 					}
 					else
 					{
-						Log.e(LOGTAG, "Didn't get an item");
+						if (LOGGING)
+							Log.e(LOGTAG, "Didn't get an item");
 					}
 
 				}
