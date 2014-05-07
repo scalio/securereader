@@ -10,6 +10,7 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereaderinterface.widgets.PagedView;
 import info.guardianproject.securereaderinterface.widgets.PagedView.PagedViewListener;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 
 import java.math.BigInteger;

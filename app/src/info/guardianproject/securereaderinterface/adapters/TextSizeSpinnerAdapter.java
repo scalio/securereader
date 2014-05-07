@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-
 import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 
 public class TextSizeSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {

@@ -3,6 +3,7 @@ package info.guardianproject.securereaderinterface.adapters;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 
 import java.util.ArrayList;
