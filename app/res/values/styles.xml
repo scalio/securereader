@@ -48,6 +48,8 @@
 	</style>
     
     <style name="AppThemeReporter" parent="AppTheme">
+        <item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonLightStyle</item>
+    	<item name="android:actionOverflowButtonStyle">@style/AppActionBarOverflowButtonLightStyle</item>
         <item name="actionBarThemeColorTitle">#ffffff</item>
         <item name="actionBarThemeColorIconTint">#ffffffff</item>
         <item name="actionBarThemeBackground">@drawable/actionbar_dark_background</item>
@@ -129,7 +131,11 @@
 		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
 		<item name="android:minWidth">20dip</item>
     </style>
-    
+ 	
+ 	<style name="AppActionBarOverflowButtonLightStyle" parent="AppActionBarOverflowButtonStyle">
+		<item name="android:src">@drawable/ic_action_overflow_light</item>
+    </style>
+ 	
     
     <!-- Shared styles                                 -->
     <!--                                               -->
