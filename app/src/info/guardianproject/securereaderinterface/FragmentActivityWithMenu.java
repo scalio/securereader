@@ -6,7 +6,6 @@ import info.guardianproject.paik.R;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
@@ -273,7 +272,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		
 		getSupportMenuInflater().inflate(R.menu.overflow_main, menu);
 		
-		colorizeMenuItems();
+		colorizeMenuItems();		
 		return true;
 	}
 
@@ -681,6 +680,45 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 				UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, FragmentActivityWithMenu.this);
 			}
 		});
+	}
+
+	@Override
+	public void viewPosts()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_posts_list, null);
+			}
+		});
+	}
+
+	@Override
+	public void addPost()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_post_add, null);
+			}
+		});
+	}
+	
+	@Override
+	public void discuss()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_chat, null);
+			}
+		});		
 	}
 
 	@Override

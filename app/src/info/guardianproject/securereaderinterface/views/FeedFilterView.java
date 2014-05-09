@@ -33,7 +33,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 {
 	private enum FeedFilterItemType
 	{
-		DISPLAY_PHOTOS(0), RECEIVE_SHARE(1), ALL_FEEDS(2), FAVORITES(3), POPULAR(4), SHARED(5), FEED(6);
+		DISPLAY_PHOTOS(0), RECEIVE_SHARE(1), ALL_FEEDS(2), FAVORITES(3), POPULAR(4), SHARED(5), POSTS(6), CHAT(7), FEED(8);
 
 		private final int value;
 
@@ -54,7 +54,16 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		void viewDownloads();
 
 		void viewShared();
+		
+		void viewPosts();
+		
+		void addPost();
 
+		/** 
+		 * Open general group discussion
+		 */
+		void discuss();
+		
 		void viewFeed(Feed feedToView);
 
 		void addNew();
@@ -73,7 +82,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		public TextView tvCount;
 		public ImageView ivFeedImage;
 		public View ivRefresh;
-		public View shortcutView;
+		public TextView shortcutView;
 	}
 
 	private FeedFilterViewCallbacks mCallbacks;
@@ -83,6 +92,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	private String mCountFavorites;
 	private String mCountShared;
 	private String mCountNumInProgress;
+	private String mCountPosts;
 
 	public FeedFilterView(Context context)
 	{
@@ -141,6 +151,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		mCountFavorites = String.valueOf(App.getInstance().socialReader.getAllFavoritesCount());
 		mCountShared = String.valueOf(App.getInstance().socialReader.getAllSharedCount());
 		mCountNumInProgress = String.valueOf(DownloadsAdapter.getNumInProgress());
+		mCountPosts = String.valueOf(App.getInstance().socialReporter.getPosts().size());
 		invalidateViews();
 	}
 	
@@ -181,7 +192,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
 	private int getCountSpecials()
 	{
-		return 3 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
+		return 5 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
 	}
 
 	@Override
@@ -225,6 +236,10 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		
 		if (position == 2)
 			return FeedFilterItemType.SHARED;
+		else if (position == 3)
+			return FeedFilterItemType.POSTS;
+		else if (position == 4)
+			return FeedFilterItemType.CHAT;
 		return FeedFilterItemType.FEED;
 	}
 	
@@ -340,6 +355,64 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			returnView = convertView;
 			break;
 		}
+		case POSTS:
+		{
+			if (convertView == null)
+				convertView = createSharedView();
+			ViewTag holder = (ViewTag) convertView.getTag();
+			
+			holder.ivFeedImage.setImageResource(R.drawable.ic_menu_stories);
+			holder.tvCount.setText(mCountPosts);
+			holder.tvName.setText(R.string.menu_post);
+			listener = new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (mCallbacks != null)
+						mCallbacks.viewPosts();
+				}
+			};
+
+			holder.shortcutView.setText(R.string.menu_post_new);
+			holder.shortcutView.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (mCallbacks != null)
+						mCallbacks.addPost();
+				}
+			});
+			
+//			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
+//			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+
+			returnView = convertView;
+			break;
+		}
+		case CHAT:
+		{
+			if (convertView == null)
+				convertView = createAllFeedsView();
+			ViewTag holder = (ViewTag) convertView.getTag();
+
+			holder.ivFeedImage.setImageResource(R.drawable.ic_menu_chat);
+			holder.ivRefresh.setVisibility(View.INVISIBLE);
+			holder.ivRefresh.clearAnimation();
+			holder.tvName.setText(R.string.menu_chat);
+			listener = new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (mCallbacks != null)
+						mCallbacks.discuss();
+				}
+			};
+			returnView = convertView;
+			break;
+		}
 		case ALL_FEEDS:
 		{
 			if (convertView == null)
@@ -443,7 +516,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 	@Override
 	public int getViewTypeCount()
 	{
-		return 7;
+		return 9;
 	}
 
 	@Override
@@ -519,6 +592,13 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		return view;
 	}
 
+	public View createPostsView()
+	{
+		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_shared, this, false);
+		createViewHolder(view);
+		return view;
+	}
+
 	public View createAllFeedsView()
 	{
 		View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_item, this, false);
@@ -534,7 +614,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		holder.tvCount = (TextView) view.findViewById(R.id.tvCount);
 		holder.ivRefresh = view.findViewById(R.id.ivRefresh);
 		holder.checkView = (CheckableImageView) view.findViewById(R.id.chkShowImages);
-		holder.shortcutView = view.findViewById(R.id.shortcutView);
+		holder.shortcutView = (TextView) view.findViewById(R.id.shortcutView);
 		view.setTag(holder);
 	}
 }
