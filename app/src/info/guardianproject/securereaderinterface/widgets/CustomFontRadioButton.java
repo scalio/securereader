@@ -38,4 +38,11 @@ public class CustomFontRadioButton extends RadioButton {
 	{
 		super.setText(FontManager.transformText(this, text), type);
 	}
+	
+	@Override
+	public void setTextAppearance(Context context, int resid)
+	{
+		super.setTextAppearance(context, resid);
+		mHelper.setTextAppearance(resid);
+	}
 }

@@ -32,4 +32,14 @@
    <color name="button_download_epub_reader">#231F20</color>
    <color name="button_download_epub_reader_selected">#80231F20</color>
    
+   <color name="button_tor">#c3cfd4</color>
+   <color name="button_tor_selected">@color/button_primary</color>
+   <color name="button_tor_text">#9099c0</color>
+   <color name="button_tor_text_selected">#ffffff</color>
+
+   <color name="button_photos">#9ba0b3</color>
+   <color name="button_photos_selected">#f92a2e</color>
+   <color name="button_photos_text">#c3cfd4</color>
+   <color name="button_photos_text_selected">#ffffff</color>
+   
 </resources>

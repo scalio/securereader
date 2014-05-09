@@ -225,39 +225,36 @@
 
             <TextView
                 android:id="@+id/TextView07"
-                style="@style/HelpTextStyle"
+                style="@style/HelpTextLinkedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_guardian_content" />
         </LinearLayout>
 
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <LinearLayout
             android:id="@+id/groupTermsAndLicenses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:collapse_layout="@layout/add_feed_closer"
-            app:header_layout="@layout/help_group_header_item"
-            app:header_text="@string/help_terms_group_title" >
+            android:background="@drawable/white_with_bottom_shadow"
+            android:orientation="vertical" >
 
-                        <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
-                            android:id="@+id/tvTermsTitle"
-                            style="@style/HelpTitleStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="left|center_vertical"
-                            android:text="@string/help_terms_title" />
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvTermsTitle"
+                style="@style/HelpTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:text="@string/help_terms_title" />
 
             <TextView
                 android:id="@+id/tvTerms"
-                style="@style/HelpTextStyle"
+                style="@style/HelpTextLinkedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_terms_content" />
 
-        </info.guardianproject.securereaderinterface.widgets.GroupView>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnDone"
@@ -267,6 +264,16 @@
             android:layout_margin="5dp"
             android:minHeight="50dp"
             android:text="@string/help_show_news" />
+
+        <TextView
+            android:id="@+id/tvVersion"
+            style="@style/HelpTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Version 1.0"
+            android:textColor="#888888"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

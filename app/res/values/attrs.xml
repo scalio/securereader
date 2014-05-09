@@ -42,6 +42,11 @@
         <attr name="dropdown_background" format="reference" />
         <attr name="android:divider" />
     </declare-styleable>
+
+    <declare-styleable name="Spinner">
+        <attr name="android:popupBackground" />
+        <attr name="android:divider" />
+    </declare-styleable>
     
     <declare-styleable name="CustomFontTextView" parent="TextView">
         <attr name="font" format="string" />

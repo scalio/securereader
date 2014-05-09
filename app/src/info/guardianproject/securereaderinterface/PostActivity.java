@@ -43,6 +43,9 @@ import com.actionbarsherlock.view.MenuItem;
 public class PostActivity extends ItemExpandActivity implements ActionBar.TabListener, OnActionListener, OnTagClickedListener, OnAgreeListener,
 		FadeInFadeOutListener
 {
+	public static final String LOGTAG = "PostActivity";
+	public static final boolean LOGGING = false;
+	
 	PostPagerAdapter mPostPagerAdapter;
 
 	/**

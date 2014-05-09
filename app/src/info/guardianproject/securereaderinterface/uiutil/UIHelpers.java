@@ -39,6 +39,9 @@ import android.view.inputmethod.InputMethodManager;
 
 public class UIHelpers
 {
+	public static final String LOGTAG = "UIHelpers";
+	public static final boolean LOGGING = false;	
+	
 	public static int dpToPx(int dp, Context ctx)
 	{
 		Resources r = ctx.getResources();
@@ -235,7 +238,8 @@ public class UIHelpers
 				int glSize = buf[0];
 				if (glSize < 1)
 				{
-					Log.v("UIHelpers", "GL Max texture size returned 0!");
+					if (LOGGING)
+						Log.v(LOGTAG, "GL Max texture size returned 0!");
 					
 					int rounded = (int)(2048f / context.getResources().getDisplayMetrics().density);
 					gMaxGLSize = new Point(rounded, rounded);

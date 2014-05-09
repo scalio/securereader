@@ -3,13 +3,12 @@ package info.guardianproject.securereaderinterface.adapters;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.paik.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.holoeverywhere.widget.Spinner;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -29,6 +28,9 @@ import android.widget.TextView;
 
 public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
+	public static final String LOGTAG = "ShareSpinnerAdapter";
+	public static final boolean LOGGING = false;	
+	
 	private final String TITLE_TAG = "TITLE";
 
 	private final Spinner mSpinner;

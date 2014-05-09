@@ -7,7 +7,9 @@ import android.widget.ListView;
 
 public class DownloadsActivity extends FragmentActivityWithMenu
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final boolean LOGGING = false;
+	public static final String LOGTAG = "DownloadsActivity";
+	
 	private ListView mListView;
 	private DownloadsAdapter mListAdapter;
 

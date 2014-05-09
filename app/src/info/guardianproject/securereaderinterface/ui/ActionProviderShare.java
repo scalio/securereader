@@ -2,16 +2,14 @@ package info.guardianproject.securereaderinterface.ui;
 
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.paik.R;
-
-import org.holoeverywhere.widget.AdapterView;
-import org.holoeverywhere.widget.Spinner;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 
 import com.actionbarsherlock.view.ActionProvider;
 import com.tinymission.rss.Feed;
@@ -75,7 +73,7 @@ public class ActionProviderShare extends ActionProvider
 			}
 			mAdapter.clear();
 			Intent shareIntent = App.getInstance().socialReader.getShareIntent(mFeed);
-			mAdapter.addSecureBTShareResolver(shareIntent);
+			//mAdapter.addSecureBTShareResolver(shareIntent);
 			mAdapter.addIntentResolvers(shareIntent);
 			mAdapter.notifyDataSetChanged();
 		}

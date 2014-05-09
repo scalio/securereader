@@ -12,6 +12,9 @@ import com.tinymission.rss.MediaContent;
 
 public class ApplicationMediaContentPreviewView extends FrameLayout implements MediaContentPreviewView
 {
+	public static final String LOGTAG = "ApplicationMediaContentPreviewView";
+	public static final boolean LOGGING = false;	
+	
 	private MediaContent mMediaContent;
 	private java.io.File mMediaFile;
 
@@ -45,7 +48,7 @@ public class ApplicationMediaContentPreviewView extends FrameLayout implements M
 		mMediaFile = mediaFileNonVFS;
 		if (mMediaFile == null)
 		{
-			Log.v("ApplicationMediaContentPreviewView", "Failed to download media, no file.");
+			Log.v(LOGTAG, "Failed to download media, no file.");
 			return;
 		}
 	}

@@ -9,7 +9,6 @@ import info.guardianproject.securereaderinterface.ChatInfoActivity;
 import info.guardianproject.securereaderinterface.CreateAccountActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
-import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
 import info.guardianproject.securereaderinterface.HelpActivity;
 import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
@@ -19,6 +18,7 @@ import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,8 +30,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.holoeverywhere.widget.Toast;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,6 +46,9 @@ import com.tinymission.rss.MediaContent;
 
 public class UICallbacks
 {
+	public static final String LOGTAG = "UICallbacks";
+	public static final boolean LOGGING = false;	
+	
 	public enum RequestCode
 	{
 	    BT_ENABLE(SecureBluetooth.REQUEST_ENABLE_BT),
@@ -195,7 +196,8 @@ public class UICallbacks
 		}
 		catch (Exception ex)
 		{
-			Log.d(MainActivity.LOGTAG, "Failed to get callback method info: " + ex.toString());
+			if (LOGGING)
+				Log.d(LOGTAG, "Failed to get callback method info: " + ex.toString());
 		}
 	}
 
@@ -264,11 +266,13 @@ public class UICallbacks
 
 		case R.integer.command_view_media:
 		{	
-			Log.v("UICallbacks", "command_view_media");
+			if (LOGGING)
+				Log.v(LOGTAG, "command_view_media");
 			if (commandParameters != null && commandParameters.containsKey("media"))
 			{
 				MediaContent mediaContent = (MediaContent) commandParameters.getSerializable("media");
-				Log.v("UICallbacks", "MediaContent " + mediaContent.getType());
+				if (LOGGING)
+					Log.v(LOGTAG, "MediaContent " + mediaContent.getType());
 
 				if (mediaContent != null && mediaContent.getType().startsWith("application/vnd.android.package-archive"))
 				{
@@ -283,11 +287,13 @@ public class UICallbacks
 				} 
 				else if (mediaContent != null && mediaContent.getType().startsWith("application/epub+zip"))
 				{
-					Log.v("UICallbacks", "MediaContent is epub");
+					if (LOGGING)
+						Log.v(LOGTAG, "MediaContent is epub");
 
 					// This is an epub
 					if (mediaContent.getDownloadedNonVFSFile() != null) {
-						Log.v("UICallbacks", "Not null");
+						if (LOGGING)
+							Log.v(LOGTAG, "Not null");
 						
 						try {
 							File properlyNamed = new File(mediaContent.getDownloadedNonVFSFile().toString() + ".epub"); 
@@ -309,11 +315,13 @@ public class UICallbacks
 							PackageManager packageManager = context.getPackageManager();
 						    List list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 						    if (list.size() > 0) {
-						    	Log.v("UICallbacks", "Launching epub reader" + Uri.fromFile(properlyNamed).toString());
+						    	if (LOGGING)
+									Log.v(LOGTAG, "Launching epub reader" + Uri.fromFile(properlyNamed).toString());
 						    	context.startActivity(intent);
 						    }
 						    else {
-						    	Log.v("UICallbacks", "No application found" + Uri.fromFile(properlyNamed).toString());
+						    	if (LOGGING)
+									Log.v("UICallbacks", "No application found" + Uri.fromFile(properlyNamed).toString());
 						    	
 						    	// Download epub reader?
 								int numShown = App.getSettings().downloadEpubReaderDialogShown();
@@ -336,7 +344,8 @@ public class UICallbacks
 					    
 					}
 					else {
-						Log.v("UICallbacks", "NULL");
+						if (LOGGING)
+							Log.v(LOGTAG, "NULL");
 					}
 				}
 				else
@@ -349,7 +358,8 @@ public class UICallbacks
 			}
 			else
 			{
-				Log.e(MainActivity.LOGTAG, "Invalid parameters to command command_view_media.");
+				if (LOGGING)
+					Log.e(LOGTAG, "Invalid parameters to command command_view_media.");
 			}
 			break;
 		}
@@ -426,7 +436,9 @@ public class UICallbacks
 					// Register Social Reporter username/password
 				/*} else {*/
 				
-					Log.v("UICallbacks", "Start the chat application now!");
+					if (LOGGING)
+						Log.v(LOGTAG, "Start the chat application now!");
+					
 					String roomName = context.getString(R.string.chatroom_name);
 					
 					if (commandParameters != null && commandParameters.containsKey("room_name"))
@@ -473,7 +485,8 @@ public class UICallbacks
 
 		case R.integer.command_receiveshare:
 		{
-			Log.v("UICallbacks", "Calling receive share activity");
+			if (LOGGING)
+				Log.v(LOGTAG, "Calling receive share activity");
 			Intent intent = new Intent(context, SecureBluetoothReceiverActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
@@ -483,7 +496,8 @@ public class UICallbacks
 
 		case R.integer.command_shareapp:
 		{
-			Log.v("UICallbacks", "Calling HTTPDAppSender");
+			if (LOGGING)
+				Log.v(LOGTAG, "Calling HTTPDAppSender");
 			Intent intent = new Intent(context, HTTPDAppSender.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
