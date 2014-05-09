@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	
-    <style name="AppTheme" parent="Holo.Theme.Light.DarkActionBar">          
+    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">          
         
         <item name="actionBarThemeColorTitle">#888888</item>
         <item name="actionBarThemeColorIconTint">#888888</item>
@@ -20,7 +20,10 @@
 		
 		<item name="actionBarMenuIcon">@drawable/ic_action_menu</item>
 		<item name="actionBarMenuIconInset">6dp</item>
-						    	    				
+
+		<item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
+    	<item name="android:actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
+								    	    				
 <!-- 		<item name="android:actionBarSize">54dp</item> -->
 	    <item name="android:actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
         <item name="android:actionBarTabStyle">@style/AppActionBarTabStyle</item>
@@ -121,6 +124,13 @@
         <item name="font">Glegoo-Regular</item>
     </style>
     
+ 	<style name="AppActionBarOverflowButtonStyle" parent="Widget.Sherlock.ActionButton.Overflow">
+		<item name="android:src">@drawable/ic_action_overflow</item>
+		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
+		<item name="android:minWidth">20dip</item>
+    </style>
+    
+    
     <!-- Shared styles                                 -->
     <!--                                               -->
     <!--                                               -->
@@ -130,8 +140,14 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
-    </style>    
-    
+    </style> 
+       
+    <style name="AddFeedUrlStyle" parent="SearchFieldStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>  
+       
    <style name="LockScreenEditStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
@@ -189,28 +205,44 @@
     
     <style name="LeftSideMenuItemStyle">
         <item name="android:gravity">center_vertical</item>
-       	<item name="android:textSize">14sp</item>
+       	<item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@style/LeftSideMenuItemAppearance</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/grey_dark</item>
-	</style>
+        <item name="android:textColor">#fff</item>
+    </style>
 
+    <style name="LeftSideMenuItemAppearance">
+        <item name="font">Lato-Light</item>
+	</style>  
+    
+    <style name="LeftSideMenuItemCurrentAppearance">
+        <item name="font">Lato-Bold</item>
+	</style>  
+        
+    <style name="LeftSideMenuShortcutItemStyle">
+        <item name="font">Lato-Light</item>
+        <item name="android:gravity">center_vertical</item>
+       	<item name="android:textSize">13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textAllCaps">true</item>
+	</style>
+    
     <style name="LeftSideMenuItemSubStyle">
         <item name="android:gravity">center_vertical</item>
        	<item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/grey_light_medium</item>
+        <item name="android:textColor">#000</item>
 	</style>
 	
     <style name="LeftMenuLabelStyle" parent="android:Widget.Holo.Light.TextView">
+        <item name="font">Glegoo-Regular</item>
 		<item name="android:padding">0dp</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_dark</item>
     </style>
-    
-    <style name="LeftMenuDropDownItemStyle">
-        <item name="android:textColor">@color/grey_light_medium</item>
-	</style>
     
     <!--  Bottom toolbar -->
     <style name="BottomToolbarStyle">
@@ -257,7 +289,13 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
-        
+
+    <style name="HelpTextLinkedStyle" parent="HelpTextStyle">
+        <item name="android:autoLink">web</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:textColorLink">#000000</item>
+    </style>
+    
     <style name="HelpButtonStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>

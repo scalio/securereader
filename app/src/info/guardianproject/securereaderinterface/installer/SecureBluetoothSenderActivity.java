@@ -13,8 +13,6 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.holoeverywhere.widget.ProgressBar;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -31,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +38,7 @@ import com.tinymission.rss.Item;
 public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu implements OnClickListener, SecureBluetoothEventListener, OnItemClickListener
 {
 	public static final String LOGTAG = "SecureBluetoothSenderActivity";
+	public static final boolean LOGGING = false;
 
 	private enum UIState
 	{
@@ -92,7 +92,8 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		}
 		else
 		{
-			Log.e(LOGTAG, "No Item Id to Share");
+			if (LOGGING)
+				Log.e(LOGTAG, "No Item Id to Share");
 			finish();
 		}
 
@@ -243,14 +244,16 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	@Override
 	public void onPause()
 	{
-		Log.v(LOGTAG,"onPause");
+		if (LOGGING) 
+			Log.v(LOGTAG,"onPause");
 		super.onPause();
 	}
 
 	@Override
 	protected void onStop()
 	{
-		Log.v(LOGTAG,"onStop");
+		if (LOGGING)
+			Log.v(LOGTAG,"onStop");
 		if (sb.btAdapter.isDiscovering()) { sb.btAdapter.cancelDiscovery(); }
 		sb.disconnect();
 		showScanningSpinner(false);
@@ -289,12 +292,14 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 						
 						Item inItem = (Item) input.readObject();
 						if (inItem != null) {
-							Log.v(LOGTAG,"We packaged an Item!!!: " + inItem.toString());
+							if (LOGGING)
+								Log.v(LOGTAG,"We packaged an Item!!!: " + inItem.toString());
 						} 
 						
 						sb.writeObject(inItem);
 
-						Log.v(LOGTAG,"We sent an Item!!!: " + inItem.toString());
+						if (LOGGING)
+							Log.v(LOGTAG,"We sent an Item!!!: " + inItem.toString());
 
 						
 					} catch (ClassNotFoundException e) {
@@ -326,7 +331,8 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 					lengthSent += bytesRead;
 					updateSendProgress(lengthSent, lengthTotal);
 					
-					Log.v(LOGTAG,"bytes sent now: " + bytesRead + " " + lengthSent + " total: " + lengthTotal);
+					if (LOGGING)
+						Log.v(LOGTAG,"bytes sent now: " + bytesRead + " " + lengthSent + " total: " + lengthTotal);
 				}
 									
 				setStatusText(R.string.bluetooth_send_sent_item);
@@ -431,10 +437,12 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	@Override
 	public void secureBluetoothEvent(int eventType, int dataLength, Object data)
 	{
-		Log.v(LOGTAG, "secureBluetoothEvent " + eventType);
+		if (LOGGING)
+			Log.v(LOGTAG, "secureBluetoothEvent " + eventType);
 		if (eventType == SecureBluetooth.EVENT_CONNECTED)
 		{
-			Log.v(LOGTAG, "Connected");
+			if (LOGGING)
+				Log.v(LOGTAG, "Connected");
 			setStatusText(R.string.bluetooth_send_connected);
 			sendButton.setEnabled(true);
 			onClick(sendButton);
@@ -442,7 +450,8 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		}
 		else if (eventType == SecureBluetooth.EVENT_DISCONNECTED)
 		{
-			Log.v(LOGTAG, "Disconnected");
+			if (LOGGING)
+				Log.v(LOGTAG, "Disconnected");
 			setStatusText(R.string.bluetooth_send_disconnected);
 			sendButton.setEnabled(true);
 		}

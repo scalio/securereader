@@ -31,12 +31,14 @@ import com.tinymission.rss.Item;
 
 public class ItemExpandActivity extends FragmentActivityWithMenu implements StoryListListener
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "ItemExpandActivity";
+	public static final boolean LOGGING = false;
 
 	private ExpandingFrameLayout mFullStoryView;
 	private FullScreenStoryItemView mFullView;
 	private ListView mFullListStories;
 	private int mFullOpeningOffset;
+	private boolean mInFullScreenMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -82,7 +84,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 
 			mFullView = new FullScreenStoryItemView(this);
 			mFullStoryView = new ExpandingFrameLayout(this, mFullView);
-
+			mInFullScreenMode = true;
+			
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT,
 					Gravity.LEFT | Gravity.TOP);
 			// params.topMargin = UIHelpers.getStatusBarHeight(this);
@@ -155,6 +158,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				{
 					removeFullStoryView();
 					mLeftSideMenu.setDragEnabled(true);
+					refreshMenu();
 				}
 			});
 
@@ -202,7 +206,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		}
 		catch (Exception ex)
 		{
-			Log.e(LOGTAG, "Failed to get top level frame: " + ex.toString());
+			if (LOGGING)
+				Log.e(LOGTAG, "Failed to get top level frame: " + ex.toString());
 		}
 		return null;
 	}
@@ -218,7 +223,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			}
 			catch (Exception ex)
 			{
-				Log.e(LOGTAG, "Failed to remove full story view from view tree: " + ex.toString());
+				if (LOGGING)
+					Log.e(LOGTAG, "Failed to remove full story view from view tree: " + ex.toString());
 			}
 		}
 	}
@@ -246,7 +252,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 
 	private boolean isInFullScreenMode()
 	{
-		return (mFullStoryView != null);
+		return mInFullScreenMode;
 	}
 
 	@Override
@@ -276,6 +282,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 
 	private void exitFullScreenMode()
 	{
+		mInFullScreenMode = false;
 		configureActionBarForFullscreen(false);
 		// getSupportActionBar().hide();
 		// getSupportActionBar().show();

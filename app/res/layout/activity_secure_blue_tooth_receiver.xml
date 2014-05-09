@@ -48,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:minHeight="48dp"
             android:text="@string/bluetooth_receive_receive" />
 
     </LinearLayout>
@@ -79,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <org.holoeverywhere.widget.ProgressBar
+            <ProgressBar
                 android:id="@+id/progressReceive"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"

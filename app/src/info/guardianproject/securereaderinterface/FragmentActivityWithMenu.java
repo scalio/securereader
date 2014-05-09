@@ -1,13 +1,21 @@
 package info.guardianproject.securereaderinterface;
 
+import java.util.ArrayList;
+
 import info.guardianproject.paik.R;
-import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
+import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.views.FeedFilterView;
+import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
+import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,9 +39,13 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Feed;
+import com.tinymission.rss.Item;
 
-public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener
+public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks, OnCallbackListener
 {
+	public static final String LOGTAG = "FragmentActivityWithMenu";
+	public static final boolean LOGGING = false;
+	
 	private KillReceiver mKillReceiver;
 	private SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private WipeReceiver mWipeReceiver;
@@ -46,7 +58,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	 */
 	LeftSideMenu mLeftSideMenu;
 
-	int mDeferedCommand;
+	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
 	protected boolean mResumed;
 	private boolean mNeedToRecreate;
 
@@ -66,12 +78,14 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		super.onCreate(savedInstanceState);
 		this.getWindow().setBackgroundDrawable(null);
 
+		UICallbacks.getInstance().addListener(this);
+
 		mKillReceiver = new KillReceiver();
-		registerReceiver(mKillReceiver, new IntentFilter(App.EXIT_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mKillReceiver, new IntentFilter(App.EXIT_BROADCAST_ACTION));
 		mSetUiLanguageReceiver = new SetUiLanguageReceiver();
-		registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
 		mWipeReceiver = new WipeReceiver();
-		registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION), App.EXIT_BROADCAST_PERMISSION, null);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION));
 
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -136,16 +150,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected void onStart()
 	{
 		super.onStart();
-		LocalBroadcastManager.getInstance(this).registerReceiver(mMenuCommandReceiver, new IntentFilter("MenuCommand"));
 		if (mLeftSideMenu != null)
 			mLeftSideMenu.checkMenuCreated();
-	}
-
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		LocalBroadcastManager.getInstance(this).unregisterReceiver(mMenuCommandReceiver);
 	}
 
 	@Override
@@ -168,6 +174,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		
 		if (Build.VERSION.SDK_INT >= 11)
 			invalidateOptionsMenu();
+		refreshMenu();
 	}
 
 	private final class KillReceiver extends BroadcastReceiver
@@ -247,9 +254,10 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		unregisterReceiver(mKillReceiver);
-		unregisterReceiver(mSetUiLanguageReceiver);
-		unregisterReceiver(mWipeReceiver);
+		UICallbacks.getInstance().removeListener(this);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mKillReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetUiLanguageReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mWipeReceiver);
 	}
 
 	@Override
@@ -261,7 +269,10 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		super.onCreateOptionsMenu(menu);
 
 		getSupportMenuInflater().inflate(mIdMenu, menu);
-		colorizeMenuItems();
+		
+		getSupportMenuInflater().inflate(R.menu.overflow_main, menu);
+		
+		colorizeMenuItems();		
 		return true;
 	}
 
@@ -317,6 +328,36 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 
+		case R.id.menu_media_downloads:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_downloads, null);
+			return true;
+		}
+
+		case R.id.menu_manage_feeds:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
+			return true;
+		}
+
+		case R.id.menu_preferences:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_settings, null);
+			return true;
+		}
+
+		case R.id.menu_about:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_help, null);
+			return true;
+		}
+
+		case R.id.menu_share_app:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_shareapp, null);
+			return true;
+		}
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -326,133 +367,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	@SuppressLint("NewApi")
 	public void onMenuCreated(final View parent, final View menuRoot, final View menu)
 	{
-		// News
-		//
-		menu.findViewById(R.id.llNews).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_news_list);
-			}
-		});
-
-		menu.findViewById(R.id.btnAddFeed).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_feed_add);
-			}
-		});
-
-		// Reporter
-		//
-		if (App.UI_ENABLE_REPORTER)
-		{
-			menu.findViewById(R.id.llReporter).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_posts_list);
-				}
-			});
-
-			menu.findViewById(R.id.btnAddPost).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_post_add);
-				}
-			});
-		}
-		else
-		{
-			// Disable reporter functionality
-			menu.findViewById(R.id.llReporter).setVisibility(View.GONE);
-			menu.findViewById(R.id.llReporterSeparator).setVisibility(View.GONE);
-			menu.findViewById(R.id.btnAddPost).setVisibility(View.GONE);
-			menu.findViewById(R.id.btnAddPostSeparator).setVisibility(View.GONE);
-		}
-
-		// Chat
-		//
-		if (App.UI_ENABLE_CHAT)
-		{
-			menu.findViewById(R.id.llChat).setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					mMenuCommandReceiver.handleCommand(R.integer.command_chat);
-				}
-			});
-		}
-		else
-		{
-			// Disable chat functionality
-			menu.findViewById(R.id.llChat).setVisibility(View.GONE);
-			menu.findViewById(R.id.llChatSeparator).setVisibility(View.GONE);
-		}
-
-		// Help
-		//
-		menu.findViewById(R.id.llHelp).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_help);
-			}
-		});
-
-		// Connect
-		menu.findViewById(R.id.btnTorStatus).setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_toggle_online, true);
-				onBeforeShow(); // update menu
-			}
-		});
-
-		// Receive share
-		menu.findViewById(R.id.llReceiveShare).setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_receiveshare);
-			}
-		});
-
-		menu.findViewById(R.id.llShareApp).setOnClickListener(new View.OnClickListener()
-		{
-
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_shareapp);
-			}
-		});
-
-		// Preferences
-		//
-		View btnSettings = menu.findViewById(R.id.llSettings);
-		btnSettings.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mMenuCommandReceiver.handleCommand(R.integer.command_settings);
-			}
-		});
-
+		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
 		performRotateTransition(parent, menuRoot);
+		refreshMenu();
 	}
 
 	@SuppressLint("NewApi")
@@ -531,11 +448,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	private class MenuViewHolder
 	{
-		public TextView tvTorStatus;
-		public ImageView ivTorStatus;
-		public TextView tvNumFeeds;
-		public TextView tvNumStories;
-		public TextView tvNumChats;
+		public CheckableButton btnTorStatus;
+		public CheckableButton btnShowPhotos;
+		public FeedFilterView viewFeedFilter;
 	}
 
 	private MenuViewHolder mMenuViewHolder;
@@ -543,44 +458,107 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	@Override
 	public void onBeforeShow()
 	{
-		View menuView = mLeftSideMenu.getMenuView();
-		if (menuView != null)
+		if (mMenuViewHolder != null)
 		{
-			UpdateMenuTask task = new UpdateMenuTask();
-			task.execute((Void) null);
+			mMenuViewHolder.viewFeedFilter.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();	
+				}
+			});
+		}
+		mMenuViewHolder.viewFeedFilter.invalidateViews();
+		new UpdateTorStatusTask().execute();
+	}
+
+	protected void refreshMenu()
+	{
+		if (mLeftSideMenu != null)
+		{
+			View menuView = mLeftSideMenu.getMenuView();
+			if (menuView != null)
+			{
+				new UpdateMenuFeedsTask().execute();
+			}
 		}
 	}
 
-	class UpdateMenuTask extends ThreadedTask<Void, Void, Void>
+	private void createMenuViewHolder()
 	{
-		private boolean isUsingTor;
-		private boolean isOnline;
-		// private boolean isSignedIn;
-		private int numFeeds;
-		private int numPosts;
+		if (mMenuViewHolder == null)
+		{
+			mMenuViewHolder = new MenuViewHolder();
+			View menuView = mLeftSideMenu.getMenuView();
+			mMenuViewHolder.btnTorStatus = (CheckableButton) menuView.findViewById(R.id.btnMenuTor);
+			mMenuViewHolder.btnShowPhotos = (CheckableButton) menuView.findViewById(R.id.btnMenuPhotos);
+			mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
+			
+			// Hookup events
+			mMenuViewHolder.btnTorStatus.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (App.getSettings().requireTor())
+					{
+						if (App.getInstance().socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
+						{
+							mLeftSideMenu.hide();
+							App.getInstance().socialReader.connectTor(FragmentActivityWithMenu.this);
+						}
+					}
+				}
+			});
+			
+			mMenuViewHolder.btnShowPhotos.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (App.getSettings().syncMode() == SyncMode.LetItFlow)
+						App.getSettings().setSyncMode(SyncMode.BitWise);
+					else
+						App.getSettings().setSyncMode(SyncMode.LetItFlow);
+					mMenuViewHolder.btnShowPhotos.setChecked(App.getSettings().syncMode() == SyncMode.LetItFlow);
+				}
+			});
+		}
+	}
+	
+	class UpdateMenuFeedsTask extends ThreadedTask<Void, Void, Void>
+	{
+		private ArrayList<Feed> feeds;
 
 		@Override
 		protected Void doInBackground(Void... values)
 		{
-			if (mMenuViewHolder == null)
-			{
-				mMenuViewHolder = new MenuViewHolder();
-				View menuView = mLeftSideMenu.getMenuView();
-				mMenuViewHolder.tvTorStatus = (TextView) menuView.findViewById(R.id.tvTorStatus);
-				mMenuViewHolder.ivTorStatus = (ImageView) menuView.findViewById(R.id.btnTorStatus);
-				mMenuViewHolder.tvNumFeeds = (TextView) menuView.findViewById(R.id.tvNumFeeds);
-				mMenuViewHolder.tvNumStories = (TextView) menuView.findViewById(R.id.tvNumStories);
-				mMenuViewHolder.tvNumChats = (TextView) menuView.findViewById(R.id.tvNumChats);
-			}
+			createMenuViewHolder();
+			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
+			return null;
+		}
 
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			mMenuViewHolder.viewFeedFilter.updateList(feeds);
+		}
+	}
+
+	class UpdateTorStatusTask extends ThreadedTask<Void, Void, Void>
+	{
+		private boolean isUsingTor;
+		private boolean showImages;
+		private boolean isOnline;
+
+		@Override
+		protected Void doInBackground(Void... values)
+		{
+			createMenuViewHolder();
 			isUsingTor = App.getInstance().socialReader.useTor();
 			isOnline = App.getInstance().socialReader.isTorOnline();
-			// isSignedIn = App.getInstance().socialReporter.isSignedIn();
-
-			numFeeds = App.getInstance().socialReader.getSubscribedFeedsList().size();
-			numPosts = 0;
-			// if (isSignedIn)
-			numPosts = App.getInstance().socialReporter.getPosts().size();
+			showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
 			return null;
 		}
 
@@ -589,83 +567,24 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			// Update TOR connection status
 			//
-			if (isOnline)
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_on);
-			}
-			else
-			{
-				mMenuViewHolder.tvTorStatus.setText(R.string.menu_tor_not_connected);
-				mMenuViewHolder.ivTorStatus.setImageResource(R.drawable.ic_menu_tor_off);
-			}
 			if (isUsingTor)
 			{
-				mMenuViewHolder.tvTorStatus.setVisibility(View.VISIBLE);
-				mMenuViewHolder.ivTorStatus.setVisibility(View.VISIBLE);
+				mMenuViewHolder.btnTorStatus.setChecked(isOnline);
+				mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
 			}
 			else
 			{
-				mMenuViewHolder.tvTorStatus.setVisibility(View.INVISIBLE);
-				mMenuViewHolder.ivTorStatus.setVisibility(View.INVISIBLE);
+				mMenuViewHolder.btnTorStatus.setChecked(false);
+				mMenuViewHolder.btnTorStatus.setText(R.string.menu_tor_not_connected);
 			}
-			mMenuViewHolder.tvNumFeeds.setText(getString(R.string.menu_num_feeds, numFeeds));
-			mMenuViewHolder.tvNumStories.setText(getString(R.string.menu_num_stories, numPosts));
-			mMenuViewHolder.tvNumChats.setText(getString(R.string.menu_num_chats, 0));
+			mMenuViewHolder.btnShowPhotos.setChecked(showImages);
 		}
 	}
-
-	private class MenuBroadcastReceiver extends BroadcastReceiver
-	{
-		@Override
-		public void onReceive(Context context, Intent intent)
-		{
-			int commandId = intent.getIntExtra("command", 0);
-			handleCommand(commandId);
-		}
-
-		public void handleCommand(int commandId)
-		{
-			handleCommand(commandId, false);
-		}
-
-		public void handleCommand(int commandId, boolean forceNow)
-		{
-			mDeferedCommand = commandId;
-			if (mLeftSideMenu != null && mLeftSideMenu.isOpen() && !forceNow)
-			{
-				mLeftSideMenu.hide();
-			}
-			else
-			{
-				doHandleCommand();
-			}
-		}
-	};
-
-	private final MenuBroadcastReceiver mMenuCommandReceiver = new MenuBroadcastReceiver();
-
-	private void doHandleCommand()
-	{
-		if (mDeferedCommand != 0)
-		{
-			int command = mDeferedCommand;
-			mDeferedCommand = 0;
-
-			onCommand(command, null);
-		}
-	}
-
+	
 	@Override
 	public void onHide()
 	{
-		doHandleCommand(); // Handle command, if any
-	}
-
-	protected boolean onCommand(int command, Bundle commandParameters)
-	{
-		UICallbacks.handleCommand(this, command, null);
-		return true;
+		runDeferredCommands();
 	}
 
 	@Override
@@ -701,5 +620,197 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return inflater;
 		}
 		return super.getSystemService(name);
+	}
+
+	@Override
+	public void receiveShare() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_receiveshare, null);
+			}
+		});
+	}
+	
+	@Override
+	public void viewFavorites() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, FragmentActivityWithMenu.this);
+			}
+		});
+	}
+
+	@Override
+	public void viewPopular() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, FragmentActivityWithMenu.this);
+			}
+		});
+	}
+
+	@Override
+	public void viewDownloads() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_downloads, null);
+			}
+		});
+	}
+
+	@Override
+	public void viewShared() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, FragmentActivityWithMenu.this);
+			}
+		});
+	}
+
+	@Override
+	public void viewPosts()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_posts_list, null);
+			}
+		});
+	}
+
+	@Override
+	public void addPost()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_post_add, null);
+			}
+		});
+	}
+	
+	@Override
+	public void discuss()
+	{
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_chat, null);
+			}
+		});		
+	}
+
+	@Override
+	public void viewFeed(final Feed feedToView) {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if (feedToView == null)
+					UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+				else
+					UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedToView.getDatabaseId(), this);
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
+			}
+		});
+	}
+
+	@Override
+	public void addNew() {
+		waitForMenuCloseAndRunCommand(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_feed_add, null);
+			}
+		});
+	}
+	
+	private void waitForMenuCloseAndRunCommand(Runnable runnable)
+	{
+		mDeferredCommands.add(runnable);
+		if (mLeftSideMenu != null && mLeftSideMenu.isOpen())
+		{
+			mLeftSideMenu.hide();
+		}
+		else
+		{
+			runDeferredCommands();
+		}
+	}
+	
+	private void runDeferredCommands()
+	{
+		for (Runnable r : mDeferredCommands)
+			r.run();
+		mDeferredCommands.clear();
+	}
+	
+	@Override
+	public void onFeedSelect(FeedFilterType type, long feedId, Object source)
+	{
+		if (mMenuViewHolder != null)
+			mMenuViewHolder.viewFeedFilter.invalidateViews();
+	}
+	
+	@Override
+	public void onTagSelect(String tag)
+	{
+	}
+
+	@Override
+	public void onRequestResync(Feed feed)
+	{
+	}
+
+	@Override
+	public void onItemFavoriteStatusChanged(Item item)
+	{
+	}
+
+	@Override
+	public void onCommand(int command, Bundle commandParameters)
+	{
+	}
+	
+	/**
+	 * This is a shortcut to {@link App#getCurrentFeedFeedFilterType()} }
+	 * @return the currently displayed feed type
+	 */
+	protected FeedFilterType getCurrentFeedFilterType()
+	{
+		return App.getInstance().getCurrentFeedFilterType();
+	}
+	
+	/**
+	 * This is a shortcut to {@link App#getCurrentFeed()} }
+	 * @return the currently displayed feed (if any)
+	 */
+	protected Feed getCurrentFeed()
+	{
+		return App.getInstance().getCurrentFeed();
 	}
 }

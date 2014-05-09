@@ -11,6 +11,9 @@ import android.net.Uri;
 
 public class APKInstaller {
 
+	public static final String LOGTAG = "APKInstaller";
+	public static final boolean LOGGING = false;
+	
 	public static int APK_INSTALL_CODE = 1;
 	
 	Context applicationContext;

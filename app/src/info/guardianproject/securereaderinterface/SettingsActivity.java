@@ -9,15 +9,11 @@ import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
-import org.holoeverywhere.app.Dialog;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,13 +31,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
-
 import info.guardianproject.paik.R;
 import info.guardianproject.cacheword.CacheWordHandler;
+import info.guardianproject.cacheword.PassphraseSecrets;
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {
-	private static final String TAG = "Settings";
+	private static final boolean LOGGING = false;
+	private static final String LOGTAG = "Settings";
 
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
 
@@ -57,6 +54,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setDisplayHomeAsUp(true);
 		setContentView(R.layout.activity_settings);
 		setMenuIdentifier(R.menu.activity_settings);
 
@@ -191,12 +189,13 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		});
 
 		this.hookupBinaryRadioButton(tabView, R.id.rbWipeApp, R.id.rbWipeContent, "wipeApp");
+		// Immediate, 1 minute, 1 hour, 1 day, 1 week
 		this.hookupRadioButtonWithArray(tabView, "passphraseTimeout", int.class, new ResourceValueMapping[] {
 			new ResourceValueMapping(R.id.rbPassphraseTimeout1, 0), 
 			new ResourceValueMapping(R.id.rbPassphraseTimeout2, 1),
-			new ResourceValueMapping(R.id.rbPassphraseTimeout3, 2),
-			new ResourceValueMapping(R.id.rbPassphraseTimeout4, 5),
-			new ResourceValueMapping(R.id.rbPassphraseTimeout5, Integer.MAX_VALUE / 60000), }); //MAX_INT milliseconds given in minutes
+			new ResourceValueMapping(R.id.rbPassphraseTimeout3, 60),
+			new ResourceValueMapping(R.id.rbPassphraseTimeout4, 1440),
+			new ResourceValueMapping(R.id.rbPassphraseTimeout5, 10080),});//Integer.MAX_VALUE / 60000), }); //MAX_INT milliseconds given in minutes
 		this.hookupRadioButton(tabView, "articleExpiration", Settings.ArticleExpiration.class, R.id.rbExpirationNever, R.id.rbExpiration1Day,
 				R.id.rbExpiration1Week, R.id.rbExpiration1Month);
 		this.hookupRadioButton(tabView, "syncFrequency", Settings.SyncFrequency.class, R.id.rbSyncManual, R.id.rbSyncWhenRunning, R.id.rbSyncInBackground);
@@ -256,12 +255,14 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 	private void hookupCheckbox(View parentView, int resIdCheckbox, String methodNameOfGetter)
 	{
-		Log.v(TAG, methodNameOfGetter);
+		if (LOGGING)
+			Log.v(LOGTAG, methodNameOfGetter);
 
 		Checkable cb = (Checkable) parentView.findViewById(resIdCheckbox);
 		if (cb == null)
 		{
-			Log.v(TAG, "Failed to find checkbox: " + resIdCheckbox);
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find checkbox: " + resIdCheckbox);
 			return;
 		}
 
@@ -273,7 +274,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[] { boolean.class });
 			if (getter == null || setter == null)
 			{
-				Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
+				if (LOGGING) 
+					Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
 				return;
 			}
 
@@ -296,26 +298,31 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					}
 					catch (Exception e)
 					{
-						Log.v(TAG, "Failed checked change listener: " + e.toString());
+						if (LOGGING) 
+							Log.v(LOGTAG, "Failed checked change listener: " + e.toString());
 					}
 				}
 			});
 		}
 		catch (NoSuchMethodException e)
 		{
-			Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalArgumentException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalAccessException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (InvocationTargetException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 	}
 
@@ -330,7 +337,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		Object[] constants = enumClass.getEnumConstants();
 		if (constants.length != resIds.length)
 		{
-			Log.w(TAG, "hookupRadioButton: mismatched classes!");
+			if (LOGGING) 
+				Log.w(LOGTAG, "hookupRadioButton: mismatched classes!");
 			return;
 		}
 
@@ -355,7 +363,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			final Method setter = mSettings.getClass().getMethod(methodNameOfSetter, new Class<?>[] { valueType });
 			if (getter == null || setter == null)
 			{
-				Log.w(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
+				if (LOGGING) 
+					Log.w(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter);
 				return;
 			}
 
@@ -372,7 +381,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				RadioButton rb = (RadioButton) parentView.findViewById(resId);
 				if (rb == null)
 				{
-					Log.w(TAG, "Failed to find checkbox: " + resId);
+					if (LOGGING) 
+						Log.w(LOGTAG, "Failed to find checkbox: " + resId);
 					return;
 				}
 				if (currentValueInSettings.equals(value.getValue()))
@@ -383,19 +393,23 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		}
 		catch (NoSuchMethodException e)
 		{
-			Log.v(TAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to find propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalArgumentException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (IllegalAccessException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 		catch (InvocationTargetException e)
 		{
-			Log.v(TAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
+			if (LOGGING) 
+				Log.v(LOGTAG, "Failed to invoke propety getter/setter for: " + methodNameOfGetter + " error: " + e.toString());
 		}
 	}
 
@@ -427,7 +441,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			}
 			catch (Exception e)
 			{
-				Log.v(TAG, "Failed checked change listener: " + e.toString());
+				if (LOGGING) 
+					Log.v(LOGTAG, "Failed checked change listener: " + e.toString());
 			}
 		}
 	}
@@ -450,23 +465,33 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
 					return; // Both empty, ignore click
 
-				// Check old
-				if (!editEnterPassphrase.getText().toString().equals(App.getSettings().launchPassphrase())
-						|| !editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))
-				{
-					editEnterPassphrase.setText("");
-					editNewPassphrase.setText("");
-					editConfirmNewPassphrase.setText("");
-					editEnterPassphrase.requestFocus();
-					Toast.makeText(SettingsActivity.this, getString(R.string.lock_screen_passphrases_not_matching), Toast.LENGTH_LONG).show();
+				if (!(editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))) {
+					 Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_not_matching), Toast.LENGTH_LONG).show();
+						alert.dismiss();
+						promptForNewPassphrase();
+						return; // Try again...					
+				}
+				
+				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+				
+				char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
+				PassphraseSecrets secrets;
+                try {
+                	secrets = PassphraseSecrets.fetchSecrets(SettingsActivity.this, passwd);
+					cwh.changePassphrase(secrets, editNewPassphrase.getText().toString().toCharArray());
+                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_changed), Toast.LENGTH_LONG).show();
+
+                } catch (Exception e) {
+                    // Invalid password or the secret key has been
+        			if (LOGGING) 
+        				Log.e(LOGTAG, e.getMessage());
+
+                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
 					alert.dismiss();
 					promptForNewPassphrase();
-					return; // Try again...
-				}
-
-				// Store
-				App.getSettings().setLaunchPassphrase(editNewPassphrase.getText().toString());
-
+					return; // Try again...                    
+                }
+                
 				alert.dismiss();
 			}
 		});
@@ -513,7 +538,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					cwh.setPassphrase(editNewPassphrase.getText().toString().toCharArray());
 					sameAsPassphrase = true;
                 } catch (GeneralSecurityException e) {
-                    Log.e(TAG, "Cacheword initialization failed: " + e.getMessage());
+        			if (LOGGING) 
+        				Log.e(LOGTAG, "Cacheword initialization failed: " + e.getMessage());
                 }
 				if (!matching || sameAsPassphrase)
 				{

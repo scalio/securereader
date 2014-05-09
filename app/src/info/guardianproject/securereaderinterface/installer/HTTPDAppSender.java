@@ -1,7 +1,5 @@
 //https://gist.github.com/komamitsu/1893396
-
 package info.guardianproject.securereaderinterface.installer;
-
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -30,8 +28,10 @@ import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -43,6 +43,9 @@ import fi.iki.elonen.NanoHTTPD.Response.Status;
 
 public class HTTPDAppSender extends FragmentActivityWithMenu
 {
+	public static final String LOGTAG = "HTTPDAppSender";
+	public static final boolean LOGGING = false;
+	
 	private static class AppInfo
 	{
 		public String packageName;
@@ -70,7 +73,6 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 	}
 
 	private static final int PORT = 8080;
-	private static final String LOGTAG = "HTTPDAPPSENDER";
 
 	private final Handler handler = new Handler();
 	private TextView textView;
@@ -89,6 +91,7 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					new AppInfo("info.guardianproject.browser", "", "", 0) };
 		APPS_TO_DISPLAY[1] = new AppInfo(getPackageName(), "", "", 0); 
 		
+		setDisplayHomeAsUp(true);
 		setContentView(R.layout.httpd_app_sender);
 		textView = (TextView) findViewById(R.id.tvUrl);
 
@@ -119,46 +122,42 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		// http://www.whitebyte.info/android/android-wifi-hotspot-manager-class
 		// https://github.com/nickrussler/Android-Wifi-Hotspot-Manager-Class
 
-		// WifiManager wifiManager = (WifiManager)
-		// getSystemService(WIFI_SERVICE);
-		// int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+		// This doesn't work with tethering
+		WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
+		int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
+		if (LOGGING) 
+			Log.v(LOGTAG, "WifiManager Raw IP:" + ipAddress);
+		final String formatedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
+		if (LOGGING)
+			Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
+		textView.setText("http://" + formatedIpAddress + ":" + PORT );
 
-		// final String formatedIpAddress = String.format("%d.%d.%d.%d",
-		// (ipAddress & 0xff), (ipAddress >> 8 & 0xff),
-		// (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
-
-		// Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
-		// textView.setText("http://" + formatedIpAddress + ":" + PORT );
-
-		try
-		{
-			List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-			for (NetworkInterface intf : interfaces)
+		// WifiManager not giving info about hotspot, loop through networks, look for 192.
+		if (ipAddress < 1) {
+			try
 			{
-				List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-				for (InetAddress addr : addrs)
+				List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+				for (NetworkInterface intf : interfaces)
 				{
-					if (!addr.isLoopbackAddress() && addr.getAddress().length == 4 && !addr.getHostAddress().contains("0.0.0.0"))
+					List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+					for (InetAddress addr : addrs)
 					{
-
-						String sAddr = addr.getHostAddress();
-						Log.v(LOGTAG, "Other IP: " + sAddr);
-
-						// String aFormattedIP = String.format("%d.%d.%d.%d",
-						// (sAddr & 0xff), (sAddr >> 8 & 0xff),
-						// (sAddr >> 16 & 0xff), (sAddr >> 24 & 0xff));
-
-						textView.setText("http://" + sAddr + ":" + PORT);
-
+						if (!addr.isLoopbackAddress() && addr.getAddress().length == 4 
+								&& !addr.getHostAddress().contains("0.0.0.0") 
+								&& addr.getHostAddress().startsWith("192"))
+						{
+							textView.setText("http://" + addr.getHostAddress() + ":" + PORT);	
+							break;
+						}
 					}
 				}
 			}
+			catch (Exception ex)
+			{
+				ex.printStackTrace();
+			}
 		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		} // for now eat exceptions
-
+		
 		try
 		{
 			server = new MyHTTPD();
@@ -188,7 +187,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		@Override
 		public Response serve(String uri, Method method, Map<String, String> header, Map<String, String> parms, Map<String, String> files)
 		{
-			Log.v(LOGTAG, "Request for: " + uri);
+			if (LOGGING) 
+				Log.v(LOGTAG, "Request for: " + uri);
 
 			if (uri.equals("/"))
 			{
@@ -227,7 +227,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 
 					responseText.append(templateStr);
 
-					Log.v(LOGTAG, responseText.toString());
+					if (LOGGING)
+						Log.v(LOGTAG, responseText.toString());
 					Response response = new Response(Status.OK, "text/html", responseText.toString());
 					return response;
 				}
@@ -318,7 +319,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					ApplicationInfo appInfo = packageInfo.applicationInfo;
 					String pathToApk = appInfo.sourceDir;
 
-					Log.v(LOGTAG, pathToApk);
+					if (LOGGING) 
+						Log.v(LOGTAG, pathToApk);
 					try
 					{
 						File apk = new File(pathToApk);

@@ -19,18 +19,17 @@ import android.util.Log;
 
 public class AppSender {
 		
-	public static final String LOGTAG = "APPSENDER";
+	public static final String LOGTAG = "AppSender";
+	public static final boolean LOGGING = false;
 	
 	Context applicationContext;
 		
 	public AppSender(Context _context) {
 			applicationContext = _context;
-			Log.v(LOGTAG,"in AppSender");
 	}
 		
 	public void sendThisApp() {
-		Log.v(LOGTAG,"sendThisApp");
-		
+	
 		try {
 			PackageManager packageManager = applicationContext.getPackageManager();
 			PackageInfo packageInfo = packageManager.getPackageInfo(applicationContext.getPackageName(), 0);
@@ -44,14 +43,12 @@ public class AppSender {
 	}
 		
 	public void sendOtherApp(String appPackageName) {
-		Log.v(LOGTAG,"sendOtherApp");
-				
+			
 		PackageManager packageManager = applicationContext.getPackageManager();
 		List<PackageInfo> packages = packageManager.getInstalledPackages(0); 
 		for (int i = 0; i < packages.size(); i++) {
 	         PackageInfo pInfo = packages.get(i);
 	         ApplicationInfo aInfo = pInfo.applicationInfo; 
-	         Log.v(LOGTAG,aInfo.packageName);
 	         if (aInfo.packageName.equals(appPackageName)) {
 	        	 shareFileViaBluetooth(aInfo.sourceDir);
 	        	 break;
@@ -61,8 +58,7 @@ public class AppSender {
 	
 	private void shareFileViaBluetooth(String pathToFile)
 	{
-		Log.v(LOGTAG,"in shareFileViaBluetooth");
-		
+
 		String tempFileName = "temp.jpg";
 		
 		try {
@@ -93,16 +89,11 @@ public class AppSender {
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				
 			applicationContext.startActivity(intent);
-			Log.v(LOGTAG,"finish shareFileViaBluetooth");	        
 	        
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-			
-
-
 	}
 }

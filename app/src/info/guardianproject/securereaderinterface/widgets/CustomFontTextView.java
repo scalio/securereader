@@ -7,11 +7,11 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -266,6 +266,13 @@ public class CustomFontTextView extends TextView
 	{
 		mEllipsize = where;
 		//super.setEllipsize(where);
+	}
+
+	@Override
+	public void setTextAppearance(Context context, int resid)
+	{
+		super.setTextAppearance(context, resid);
+		mHelper.setTextAppearance(resid);
 	}
 	
 	

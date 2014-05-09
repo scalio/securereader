@@ -1,12 +1,19 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
-import info.guardianproject.securereader.SyncServiceFeedFetcher.SyncServiceFeedFetchedCallback;
+import java.text.SimpleDateFormat;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import info.guardianproject.paik.R;
@@ -14,12 +21,15 @@ import com.tinymission.rss.Feed;
 
 public class HelpActivity extends FragmentActivityWithMenu
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "HelpActivity";
+	public static final boolean LOGGING = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		if (useLeftSideMenu())
+			setDisplayHomeAsUp(true);
 		setContentView(R.layout.activity_help);
 		setMenuIdentifier(R.menu.activity_help);
 
@@ -74,6 +84,10 @@ public class HelpActivity extends FragmentActivityWithMenu
 		});
 		if (useLeftSideMenu())
 			btnDone.setVisibility(View.GONE);
+		
+		// Update version display
+		TextView tvVersion = (TextView) findViewById(R.id.tvVersion);
+		tvVersion.setText("" + getString(R.string.app_name) + " " + getBuildVersion() + " - " + getBuildDate());
 	}
 
 	@Override
@@ -98,4 +112,58 @@ public class HelpActivity extends FragmentActivityWithMenu
 		this.performRotateTransition(parent, content);
 	}
 
+	private String getBuildVersion()
+	{
+		String ret = "unknown";
+		try
+		{
+			ret = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		}
+		catch (NameNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
+	@SuppressLint("NewApi")
+	private String getBuildDate()
+	{
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD_MR1)
+		{
+			return getBuildDateOld();
+		}
+		else
+		{
+			String ret = "unknown";
+			try
+			{
+				long time = getPackageManager().getPackageInfo(getPackageName(), 0).lastUpdateTime;
+				ret = SimpleDateFormat.getInstance().format(new java.util.Date(time));
+			}
+			catch (NameNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			return ret;
+		}
+	}
+
+	private String getBuildDateOld()
+	{
+		String buildDate = "unknown";
+		try
+		{
+			ApplicationInfo ai = getPackageManager().getApplicationInfo(getPackageName(), 0);
+			ZipFile zf = new ZipFile(ai.sourceDir);
+			ZipEntry ze = zf.getEntry("classes.dex");
+			long time = ze.getTime();
+			buildDate = SimpleDateFormat.getInstance().format(new java.util.Date(time));
+
+		}
+		catch (Exception e)
+		{
+		}
+		return buildDate;
+	}
 }

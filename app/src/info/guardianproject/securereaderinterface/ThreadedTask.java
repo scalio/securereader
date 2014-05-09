@@ -4,6 +4,9 @@ import android.os.Handler;
 
 public abstract class ThreadedTask<Params,Progress,Result> {
 
+	public static final String LOGTAG = "ThreadedTask";
+	public static final boolean LOGGING = false;
+	
 	private Handler mHandler;
 	private Thread mThread;
 

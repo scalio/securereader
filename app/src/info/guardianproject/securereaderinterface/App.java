@@ -3,7 +3,9 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
-import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.ui.UICallbackListener;
+import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CustomFontButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontEditText;
 import info.guardianproject.securereaderinterface.widgets.CustomFontRadioButton;
@@ -11,6 +13,7 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
@@ -26,13 +29,15 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.tinymission.rss.Feed;
 
 public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
+	public static final String LOGTAG = "App";
+	public static final boolean LOGGING = false;
+	
 	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
 			
 	public static final boolean UI_ENABLE_COMMENTS = true;
@@ -42,7 +47,6 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final boolean UI_ENABLE_CHAT = true;
 	public static final boolean UI_ENABLE_LANGUAGE_CHOICE = true;
 	
-	public static final String EXIT_BROADCAST_PERMISSION = "info.guardianproject.securereaderinterface.exit.permission";
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
 	public static final String SET_UI_LANGUAGE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.setuilanguage.action";
 	public static final String WIPE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.wipe.action";
@@ -51,19 +55,15 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 	private static App m_singleton;
 
-	public int m_selectedArticleId;
-	public boolean m_unreadOnly = true;
-	public boolean m_unreadArticlesOnly = true;
-	// public String m_sessionId;
-	// public int m_apiLevel;
-	public boolean m_canUseProgress;
-
 	public static Context m_context;
 	public static Settings m_settings;
 
 	public SocialReader socialReader;
 	public SocialReporter socialReporter;
+	
 	private String mCurrentLanguage;
+	private FeedFilterType mCurrentFeedFilterType;
+	private Feed mCurrentFeed;
 
 	@Override
 	public void onCreate()
@@ -83,6 +83,20 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		m_settings.registerChangeListener(this);
 		
 		mCurrentLanguage = getBaseContext().getResources().getConfiguration().locale.getLanguage();
+		UICallbacks.getInstance().addListener(new UICallbackListener()
+		{
+			@Override
+			public void onFeedSelect(FeedFilterType type, long feedId, Object source)
+			{
+				Feed feed = null;
+				if (type == FeedFilterType.SINGLE_FEED)
+				{
+					feed = getFeedById(feedId);
+				}
+				mCurrentFeedFilterType = type;
+				mCurrentFeed = feed;
+			}
+		});
 	}
 
 	public static Context getContext()
@@ -149,6 +163,10 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			language = "bo";
 		else if (lang == UiLanguage.Chinese)
 			language = "zh";
+		else if (lang == UiLanguage.Ukrainian)
+			language = "uk";
+		else if (lang == UiLanguage.Russian)
+			language = "ru";
 		
 		if (language.equals(mCurrentLanguage))
 			return;
@@ -163,15 +181,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 	
 		// Notify activities (if any)
-		Intent intent = new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
-	}
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
+}
 
 	private void applyPassphraseTimeout()
 	{
@@ -183,14 +194,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader.doWipe(wipeMethod);
 
 		// Notify activities (if any)
-		Intent intent = new Intent(App.WIPE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
 	}
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
@@ -281,4 +285,38 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	{
 		mLockScreen = null;
 	}
+	
+	private Feed getFeedById(long idFeed)
+	{
+		ArrayList<Feed> items = socialReader.getSubscribedFeedsList();
+		for (Feed feed : items)
+		{
+			if (feed.getDatabaseId() == idFeed)
+				return feed;
+		}
+		return null;
+	}
+	
+	public FeedFilterType getCurrentFeedFilterType()
+	{
+		return mCurrentFeedFilterType;
+	}
+	
+	public Feed getCurrentFeed()
+	{
+		return mCurrentFeed;
+	}
+
+	/**
+	 * Update the current feed property. Why is this needed? Because if the feed was just
+	 * updated from the network a new Feed object will have been created and we want to
+	 * pick up changes to the network pull date (and possibly other changes) here.
+	 * @param feed
+	 */
+	public void updateCurrentFeed(Feed feed)
+	{
+		if (mCurrentFeed != null && mCurrentFeed.getDatabaseId() == feed.getDatabaseId())
+			mCurrentFeed = feed;
+	}
+
 }
