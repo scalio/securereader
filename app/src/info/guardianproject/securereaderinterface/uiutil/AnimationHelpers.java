@@ -422,42 +422,14 @@ public class AnimationHelpers
 			ViewGroup.MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
 			if (params != null)
 			{
-				ViewGroup.MarginLayoutParams originalParams = (MarginLayoutParams) view.getTag(R.id.compatibility_margin_tag_key);
-				if (originalParams == null)
-				{
-					originalParams = new ViewGroup.MarginLayoutParams(params);
-					view.setTag(R.id.compatibility_margin_tag_key, originalParams);
-				}
-				params.topMargin = originalParams.topMargin;
-				params.leftMargin = originalParams.leftMargin + value;
-				params.bottomMargin = originalParams.bottomMargin;
-				params.rightMargin = originalParams.rightMargin - value;
-				view.setLayoutParams(params);
-			}
-		}
-	}
+				Integer translationX = (Integer) view.getTag(R.id.compatibility_translation_x_key);
+				if (translationX == null)
+					translationX = Integer.valueOf(0);
+				
+				view.setTag(R.id.compatibility_translation_x_key, Integer.valueOf(value));
 
-	public static void setTranslationY(final View view, int value)
-	{
-		if (Build.VERSION.SDK_INT >= 11)
-		{
-			view.setTranslationY(value);
-		}
-		else
-		{
-			ViewGroup.MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
-			if (params != null)
-			{
-				ViewGroup.MarginLayoutParams originalParams = (MarginLayoutParams) view.getTag(R.id.compatibility_margin_tag_key);
-				if (originalParams == null)
-				{
-					originalParams = new ViewGroup.MarginLayoutParams(params);
-					view.setTag(R.id.compatibility_margin_tag_key, originalParams);
-				}
-				params.topMargin = originalParams.topMargin + value;
-				params.leftMargin = originalParams.leftMargin;
-				params.bottomMargin = originalParams.bottomMargin - value;
-				params.rightMargin = originalParams.rightMargin;
+				params.leftMargin = params.leftMargin + value - translationX.intValue();
+				params.rightMargin = params.rightMargin - value + translationX.intValue();
 				view.setLayoutParams(params);
 			}
 		}
@@ -471,17 +443,10 @@ public class AnimationHelpers
 		}
 		else
 		{
-			ViewGroup.MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
-			if (params != null)
-			{
-				ViewGroup.MarginLayoutParams originalParams = (MarginLayoutParams) view.getTag(R.id.compatibility_margin_tag_key);
-				if (originalParams == null)
-				{
-					return 0;
-				}
-				return params.leftMargin - originalParams.leftMargin;
-			}
-			return 0;
+			Integer translationX = (Integer) view.getTag(R.id.compatibility_translation_x_key);
+			if (translationX == null)
+				return 0;
+			return translationX.intValue();
 		}
 	}
 }
