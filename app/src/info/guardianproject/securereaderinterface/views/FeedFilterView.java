@@ -314,7 +314,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
-			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
+			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -349,7 +349,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			});
 			
-			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
+			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
@@ -385,8 +385,8 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			});
 			
-//			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
-//			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+			boolean isChecked = App.getInstance().isCurrentActivityPosts(); 
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
 			break;
@@ -410,6 +410,10 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 						mCallbacks.discuss();
 				}
 			};
+			
+			boolean isChecked = false;
+			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
+
 			returnView = convertView;
 			break;
 		}
@@ -440,7 +444,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 			
-			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS);
+			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -476,6 +480,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
 					App.getInstance().getCurrentFeed() != null 
 					&& App.getInstance().getCurrentFeed().getDatabaseId() == feed.getDatabaseId());
+			isChecked = isChecked && !App.getInstance().isCurrentActivityPosts(); 
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 			
 			returnView = convertView;
@@ -500,7 +505,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				}
 			};
 
-			boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.POPULAR);
+			boolean isChecked = !App.getInstance().isCurrentActivityPosts() && (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.POPULAR);
 			holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
 			returnView = convertView;
