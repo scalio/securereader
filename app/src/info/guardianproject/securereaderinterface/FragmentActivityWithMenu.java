@@ -139,6 +139,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			getSupportActionBar().setDisplayShowCustomEnabled(true);
 			TextView tvTitle = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tvTitle);
 			tvTitle.setText(title);
+			tvTitle.setSelected(true);
 		}
 		else
 		{
