@@ -265,7 +265,8 @@ public class CustomFontTextView extends TextView
 	public void setEllipsize(TruncateAt where)
 	{
 		mEllipsize = where;
-		//super.setEllipsize(where);
+		if (mEllipsize == TruncateAt.MARQUEE)
+			super.setEllipsize(where);
 	}
 
 	@Override
