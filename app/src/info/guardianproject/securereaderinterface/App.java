@@ -319,4 +319,14 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			mCurrentFeed = feed;
 	}
 
+	/**
+	 * Used to check if the current topmost activity is either the Posts or AddPost screen.
+	 * This is just so that the menu can easily decide what to show in bold.
+	 * @return true if the current activity is Posts or AddPost.
+	 */
+	public boolean isCurrentActivityPosts()
+	{
+		return mLastResumed != null && ((mLastResumed instanceof PostActivity) || (mLastResumed instanceof AddPostActivity));
+	}
+	
 }
