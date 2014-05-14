@@ -10,7 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 public class DottedProgressView extends View implements ViewPagerIndicator
 {

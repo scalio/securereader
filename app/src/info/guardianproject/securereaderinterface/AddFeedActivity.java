@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 import android.os.Bundle;
 

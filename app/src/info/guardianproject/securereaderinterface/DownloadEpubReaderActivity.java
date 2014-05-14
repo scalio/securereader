@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import info.guardianproject.securereaderinterface.ui.PackageHelper;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 public class DownloadEpubReaderActivity extends FragmentActivityWithMenu implements OnClickListener 
 {

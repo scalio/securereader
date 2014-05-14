@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 import com.tinymission.rss.MediaContent;
 
 public class ViewMediaActivity extends FragmentActivityWithMenu // implements

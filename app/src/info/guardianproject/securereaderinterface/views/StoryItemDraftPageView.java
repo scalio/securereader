@@ -9,7 +9,7 @@ import android.view.View;
 
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 public class StoryItemDraftPageView extends StoryItemPageView
 {

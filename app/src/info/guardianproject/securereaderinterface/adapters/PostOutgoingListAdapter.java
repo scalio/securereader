@@ -3,7 +3,7 @@ package info.guardianproject.securereaderinterface.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 import com.tinymission.rss.Item;
 
 public class PostOutgoingListAdapter extends PostPublishedListAdapter

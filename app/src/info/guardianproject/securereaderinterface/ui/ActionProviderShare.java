@@ -3,7 +3,7 @@ package info.guardianproject.securereaderinterface.ui;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 public class StoryListHintTorView extends FrameLayout implements View.OnClickListener
 {

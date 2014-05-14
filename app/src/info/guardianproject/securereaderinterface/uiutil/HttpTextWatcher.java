@@ -1,6 +1,7 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.R.color;
 
 import android.content.Context;
 import android.text.Editable;

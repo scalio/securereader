@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import info.guardianproject.securereaderinterface.models.OnMediaOrientationListener;
 import info.guardianproject.securereaderinterface.views.ImageMediaContentView;
 import info.guardianproject.securereaderinterface.views.VideoMediaContentView;
-import info.guardianproject.courier.R;
+import info.guardianproject.securereaderinterface.R;
 
 import com.tinymission.rss.MediaContent;
 
