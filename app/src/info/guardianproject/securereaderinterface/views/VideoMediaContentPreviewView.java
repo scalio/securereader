@@ -19,6 +19,9 @@ import com.tinymission.rss.MediaContent;
 
 public class VideoMediaContentPreviewView extends FrameLayout implements MediaContentPreviewView
 {
+	public static final String LOGTAG = "VideoMediaContentPreviewView";
+	public static final boolean LOGGING = false;
+	
 	private ImageView mImageView;
 	private View mPlayView;
 	private File mMediaFile;
@@ -67,7 +70,8 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 		mMediaFile = mediaFile;
 		if (mMediaFile == null)
 		{
-			Log.v("VideoMediaContentPreviewView", "Failed to download media, no file.");
+			if (LOGGING)
+				Log.v(LOGTAG, "Failed to download media, no file.");
 			return;
 		}
 
@@ -79,7 +83,9 @@ public class VideoMediaContentPreviewView extends FrameLayout implements MediaCo
 			@Override
 			public void run()
 			{
-				Log.v("VideoMediaContentPreviewView", "getOrientationThread");
+				if (LOGGING)
+					Log.v(LOGTAG, "getOrientationThread");
+				
 				Bitmap preview = ThumbnailUtils.createVideoThumbnail(mMediaFile.getPath(), Video.Thumbnails.MINI_KIND);
 
 				Runnable reportRunnable = new Runnable()

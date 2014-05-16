@@ -3,23 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
-    android:gravity="top" >
-
-    <ListView
-        android:id="@+id/lvFeeds"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:choiceMode="singleChoice"
-        android:divider="@color/grey_light"
-        android:dividerHeight="1px" >
-
-    </ListView>    
-    
-    <include
-        android:id="@+id/btnAddFeeds"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/feed_list_add_new" />
-
+    android:gravity="top"
+	android:choiceMode="singleChoice"
+    android:divider="@color/grey_light"
+    android:dividerHeight="1px"
+     >
 </info.guardianproject.securereaderinterface.views.FeedFilterView>

@@ -1,7 +1,5 @@
 //https://gist.github.com/komamitsu/1893396
-
 package info.guardianproject.securereaderinterface.installer;
-
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -45,6 +43,9 @@ import fi.iki.elonen.NanoHTTPD.Response.Status;
 
 public class HTTPDAppSender extends FragmentActivityWithMenu
 {
+	public static final String LOGTAG = "HTTPDAppSender";
+	public static final boolean LOGGING = false;
+	
 	private static class AppInfo
 	{
 		public String packageName;
@@ -72,7 +73,6 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 	}
 
 	private static final int PORT = 8080;
-	private static final String LOGTAG = "HTTPDAPPSENDER";
 
 	private final Handler handler = new Handler();
 	private TextView textView;
@@ -91,6 +91,7 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					new AppInfo("info.guardianproject.browser", "", "", 0) };
 		APPS_TO_DISPLAY[1] = new AppInfo(getPackageName(), "", "", 0); 
 		
+		setDisplayHomeAsUp(true);
 		setContentView(R.layout.httpd_app_sender);
 		textView = (TextView) findViewById(R.id.tvUrl);
 
@@ -124,9 +125,11 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		// This doesn't work with tethering
 		WifiManager wifiManager = (WifiManager)getSystemService(WIFI_SERVICE);
 		int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-		Log.v(LOGTAG, "WifiManager Raw IP:" + ipAddress);
+		if (LOGGING) 
+			Log.v(LOGTAG, "WifiManager Raw IP:" + ipAddress);
 		final String formatedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
-		Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
+		if (LOGGING)
+			Log.v(LOGTAG,"WifiManager IP: " + formatedIpAddress);
 		textView.setText("http://" + formatedIpAddress + ":" + PORT );
 
 		// WifiManager not giving info about hotspot, loop through networks, look for 192.
@@ -184,7 +187,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 		@Override
 		public Response serve(String uri, Method method, Map<String, String> header, Map<String, String> parms, Map<String, String> files)
 		{
-			Log.v(LOGTAG, "Request for: " + uri);
+			if (LOGGING) 
+				Log.v(LOGTAG, "Request for: " + uri);
 
 			if (uri.equals("/"))
 			{
@@ -223,7 +227,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 
 					responseText.append(templateStr);
 
-					Log.v(LOGTAG, responseText.toString());
+					if (LOGGING)
+						Log.v(LOGTAG, responseText.toString());
 					Response response = new Response(Status.OK, "text/html", responseText.toString());
 					return response;
 				}
@@ -314,7 +319,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					ApplicationInfo appInfo = packageInfo.applicationInfo;
 					String pathToApk = appInfo.sourceDir;
 
-					Log.v(LOGTAG, pathToApk);
+					if (LOGGING) 
+						Log.v(LOGTAG, pathToApk);
 					try
 					{
 						File apk = new File(pathToApk);

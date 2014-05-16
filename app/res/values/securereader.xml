@@ -4,15 +4,9 @@
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
 	
     <string-array name="built_in_feed_names">
-        <item>Big Buffalo</item>
-        <item>Applications</item>
-        <item>EPubs</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
-	    <item>http://bigbuffalo.com/feed/</item>
-        <item>http://securereader.guardianproject.info/swfeed/swfeed.php</item>
-        <item>http://securereader.guardianproject.info/opds/opds.php</item>
     </string-array>
 
 
@@ -26,9 +20,9 @@
 	<integer name="expiration_check_frequency">43200000</integer>
 
 	<!-- XMLRPC_ENDPOINT -->
-	<string name="xmlrpc_endpoint">http://securereader.guardianproject.info/xmlrpc.php</string>
+	<string name="xmlrpc_endpoint"></string>
 
 	<!-- Default values that should be referenced in Settings.java -->
-	<bool name="require_tor_default">false</bool>
+	<bool name="require_tor_default">true</bool>
 			    
 </resources>

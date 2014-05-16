@@ -21,15 +21,12 @@ import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.BounceInterpolator;
@@ -44,11 +41,10 @@ import com.actionbarsherlock.app.ActionBar;
 public class LeftSideMenu
 {
 	public static final String LOGTAG = "LeftSideMenu";
-
+	public static final boolean LOGGING = false;
+	
 	public interface LeftSideMenuListener
 	{
-		void onMenuCreated(View parent, View menuRoot, View menu);
-
 		void onBeforeShow();
 
 		void onHide();
@@ -60,12 +56,8 @@ public class LeftSideMenu
 																// ms
 	private static final float ANIMATION_DECELERATION = 2f;
 
-	private static final float MENU_SPEED = 0.5f; // 0 for REVEAL, 1 for SLIDE
-													// and in between for cool
-													// effects
-
 	private static final float RUBBERBAND_LIMIT = 30.0f;
-	private static final boolean USE_SHADOW = true;
+	private static final boolean USE_SHADOW = false;
 
 	private final Activity mActivity;
 	private final ActionBar mActionBar;
@@ -75,6 +67,7 @@ public class LeftSideMenu
 	private boolean mMenuShown = false;
 	private int mMenuWidth;
 	private int mStatusBarHeight = 0;
+	private int mActionBarHeight = 0;
 	private LeftMenuRootLayout mRoot;
 	private View mMenuView;
 	private boolean mIsAnimating;
@@ -102,42 +95,20 @@ public class LeftSideMenu
 		mParent = (FrameLayout) mActivity.getWindow().getDecorView();
 		mContent = mParent.getChildAt(0);
 
-		final ViewTreeObserver vto = mParent.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener()
-		{
-			@Override
-			public void onGlobalLayout()
-			{
-				try
-				{
-					// remove the listener... or we'll be doing this a lot.
-					ViewTreeObserver observer = vto;
-					if (!observer.isAlive())
-						observer = mContent.getViewTreeObserver();
-					observer.removeGlobalOnLayoutListener(this);
-				}
-				catch (Exception ex)
-				{
-				}
-
-				createMenuView();
-				if (mListener != null)
-					mListener.onMenuCreated(mParent, mRoot, mMenuView);
-			}
-		});
+		getActionBarSizes();
+		createMenuView();
 	}
-
-	public void checkMenuCreated()
-	{
-		if (mParent != null && mRoot != null && mMenuView != null && mListener != null)
-			mListener.onMenuCreated(mParent, mRoot, mMenuView);
-	}
-
+	
 	public View getMenuView()
 	{
 		return mMenuView;
 	}
 
+	public View getMenuRootView()
+	{
+		return mRoot;
+	}
+	
 	public boolean isDragEnabled()
 	{
 		return mIsDragEnabled;
@@ -176,12 +147,6 @@ public class LeftSideMenu
 	{
 		if (mMenuView == null)
 		{
-			// get the height of the status bar
-			if (mStatusBarHeight == 0)
-			{
-				mStatusBarHeight = UIHelpers.getStatusBarHeight(mActivity);
-			}
-
 			// Create the new root container that will hold both our menu and
 			// the actual content
 			// (as well as the hidden touch intercept view and the "drag bar")
@@ -197,12 +162,15 @@ public class LeftSideMenu
 			mMenuView.setTag(this);
 
 			FrameLayout.LayoutParams lays = (LayoutParams) mMenuView.getLayoutParams();
-			lays.setMargins(0, 0, 0, 0);
+			lays.setMargins(0, mActionBarHeight, 0, 0);
+			lays.gravity = Gravity.LEFT | Gravity.TOP;
 			mMenuView.setLayoutParams(lays);
 			mMenuView.setVisibility(View.GONE);
 			mMenuWidth = lays.width;
-			mRoot.addView(mMenuView);
-
+			if (USE_SHADOW)
+				mMenuWidth += 30;
+			positionMenu = -mMenuWidth;
+			
 			// Then move the content over to our new root
 			//
 			mParent.removeView(mContent);
@@ -215,11 +183,45 @@ public class LeftSideMenu
 			mContent.setLayoutParams(lpContent);
 
 			mRoot.addView(mContent);
+			mRoot.addView(mMenuView);
 			mParent.addView(mRoot);
 		}
 		return mMenuView;
 	}
 
+	private void getActionBarSizes()
+	{
+		// Get action bar height
+		TypedArray a = mActivity.getTheme().obtainStyledAttributes(new int[] { R.attr.actionBarSize });
+		if (a != null && a.hasValue(0))
+		{
+			mActionBarHeight = a.getDimensionPixelSize(0, 0);
+		}
+		
+		// Get status bar height
+		int resourceId = mActivity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) 
+		{
+	       mStatusBarHeight = mActivity.getResources().getDimensionPixelSize(resourceId);
+	    }
+	}
+	
+	private void updateSizesAndMargins()
+	{
+		getActionBarSizes();
+		FrameLayout.LayoutParams laysRoot = (LayoutParams) mRoot.getLayoutParams();
+		laysRoot.setMargins(0, mStatusBarHeight, 0, 0);
+		mRoot.setLayoutParams(laysRoot);
+
+		FrameLayout.LayoutParams lays = (LayoutParams) mMenuView.getLayoutParams();
+		lays.setMargins(0, mActionBarHeight, 0, 0);
+		mMenuView.setLayoutParams(lays);
+		
+		FrameLayout.LayoutParams lpContent = (LayoutParams) mContent.getLayoutParams();
+		lpContent.setMargins(0, -mStatusBarHeight, 0, 0);
+		mContent.setLayoutParams(lpContent);
+	}
+	
 	public boolean showMenuHintIfNotShown()
 	{
 		if (mMenuView != null)
@@ -463,8 +465,8 @@ public class LeftSideMenu
 
 		createMenuView();
 
-		int contentPercentage = (int) ((mMenuWidth * percent) / 100.0f);
-		int menuPercentage = -(int) ((MENU_SPEED * mMenuWidth * (100.0f - percent)) / 100.0f);
+		int contentPercentage = (int) (0 * ((mMenuWidth * percent) / 100.0f));
+		int menuPercentage = -(int) ((mMenuWidth * (100.0f - percent)) / 100.0f);
 
 		if (mIsInteractive)
 		{
@@ -544,7 +546,7 @@ public class LeftSideMenu
 			mShadowPaint.setAntiAlias(true);
 			mShadowPaint.setDither(true);
 			mShadowPaint.setStyle(Paint.Style.FILL);
-			mShadowPaint.setShader(new LinearGradient(0f, 0f, 30f, 0f, new int[] { 0x00000000, 0x60000000, 0xff000000 }, new float[] { 0f, 0.8f, 1f },
+			mShadowPaint.setShader(new LinearGradient(0f, 0f, 30f, 0f, new int[] { 0xff000000, 0x60000000, 0x00000000 }, new float[] { 0f, 0.2f, 1f },
 					Shader.TileMode.CLAMP));
 
 			updateMenuIcon();
@@ -560,21 +562,20 @@ public class LeftSideMenu
 			// Get information about menu icon to display (if any)
 			//
 			TypedArray styled = getContext().obtainStyledAttributes(new int[] { 
-					com.actionbarsherlock.R.attr.actionBarSize,
 					R.attr.actionBarMenuIcon,
 					R.attr.actionBarMenuIconInset
 			} );
-			int actionBarHeight = styled.getDimensionPixelOffset(0, UIHelpers.dpToPx(54, getContext()));
-			Drawable actionBarMenuIcon = styled.getDrawable(1);
-			mMenuIndicatorInset = styled.getDimensionPixelOffset(2, UIHelpers.dpToPx(6, getContext()));
+			Drawable actionBarMenuIcon = styled.getDrawable(0);
+			mMenuIndicatorInset = styled.getDimensionPixelOffset(1, UIHelpers.dpToPx(6, getContext()));
 			styled.recycle();
 			if (actionBarMenuIcon != null && actionBarMenuIcon instanceof BitmapDrawable)
 				mMenuIndicatorDrawable = (BitmapDrawable) actionBarMenuIcon;
 			else
 				mMenuIndicatorDrawable = null;
-			mMenuIndicatorY = actionBarHeight / 2;			
+			mMenuIndicatorY = mActionBarHeight / 2;			
 		}
 		
+		@SuppressWarnings("unused")
 		@SuppressLint("NewApi")
 		@Override
 		protected boolean drawChild(Canvas canvas, View child, long drawingTime)
@@ -591,7 +592,7 @@ public class LeftSideMenu
 				else if (child == mMenuView)
 				{
 					canvas.translate(positionMenu, 0);
-					canvas.clipRect(0, mMenuView.getTop(), positionContent - positionMenu, mMenuView.getBottom(), Op.REPLACE);
+					canvas.clipRect(0, mMenuView.getTop(), mMenuWidth, mMenuView.getBottom(), Op.REPLACE);
 				}
 			}
 
@@ -600,10 +601,10 @@ public class LeftSideMenu
 			// Draw shadow?
 			if (child == mMenuView && USE_SHADOW)
 			{
-				int offset = positionContent - positionMenu;
-				if (offset > 0)
+				int offset = -positionMenu;
+				if (offset > -mMenuWidth)
 				{
-					canvas.translate(offset - 30, 0);
+					canvas.translate(mMenuWidth - 30, 0);
 					canvas.drawRect(0, mMenuView.getTop(), 30f, mMenuView.getBottom(), mShadowPaint);
 				}
 			}
@@ -704,7 +705,11 @@ public class LeftSideMenu
 			mIsBeingDragged = true;
 			if (mListener != null)
 				mListener.onBeforeShow();
-			mTranslationAtStartOfDrag = AnimationHelpers.getTranslationX(mContent);
+			
+			if (mIsInteractive)
+				mTranslationAtStartOfDrag = AnimationHelpers.getTranslationX(mMenuView) + mMenuWidth;
+			else
+				mTranslationAtStartOfDrag = positionMenu + mMenuWidth;
 
 			setInteractive(false);
 			enableHardwareLayering(true);
@@ -947,7 +952,17 @@ public class LeftSideMenu
 	public void onConfigurationChanged()
 	{
 		if (mRoot != null)
-			mRoot.updateMenuIcon();
+		{
+			mRoot.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					updateSizesAndMargins();
+					mRoot.updateMenuIcon();
+				}
+			});
+		}
 	}
 	
 	public void setDisplayMenuIndicator(boolean displayMenuIndicator)

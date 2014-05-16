@@ -9,7 +9,9 @@ import info.guardianproject.securereaderinterface.R;
 
 public class CreateAccountActivity extends FragmentActivityWithMenu implements OnActionListener
 {
-	public static String LOGTAG = "Big Buffalo";
+	public static final String LOGTAG = "CreateAccountActivity";
+	public static final boolean LOGGING = false;
+	
 	private CreateAccountView mViewCreateAccount;
 
 	@Override
