@@ -140,6 +140,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			getSupportActionBar().setDisplayShowCustomEnabled(true);
 			TextView tvTitle = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tvTitle);
 			tvTitle.setText(title);
+			tvTitle.setSelected(true);
 		}
 		else
 		{
@@ -152,7 +153,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	{
 		super.onStart();
 		if (mLeftSideMenu != null)
-			mLeftSideMenu.checkMenuCreated();
+			initializeMenu();
 	}
 
 	@Override
@@ -364,10 +365,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		}
 	}
 
-	@Override
-	@SuppressLint("NewApi")
-	public void onMenuCreated(final View parent, final View menuRoot, final View menu)
+	public void initializeMenu()
 	{
+		View menuRoot = mLeftSideMenu.getMenuRootView();
+		View menu = mLeftSideMenu.getMenuView();
+		View parent = (View) menuRoot.getParent();
 		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
 		performRotateTransition(parent, menuRoot);
 		refreshMenu();

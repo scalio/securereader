@@ -1,7 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereaderinterface.R;
-
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
@@ -13,6 +12,10 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannedString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PanicActivity extends Activity implements OnTouchListener
@@ -55,7 +59,7 @@ public class PanicActivity extends Activity implements OnTouchListener
 			}
 		});
 
-		View btnSettings = findViewById(R.id.btnSettings);
+		TextView btnSettings = (TextView) findViewById(R.id.btnSettings);
 		btnSettings.setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -68,6 +72,11 @@ public class PanicActivity extends Activity implements OnTouchListener
 				PanicActivity.this.finish();
 			}
 		});
+		// Make the text underline
+		//
+		SpannableString content = new SpannableString(btnSettings.getText());
+		content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+		btnSettings.setText(content);
 
 		TextView textHint = (TextView) findViewById(R.id.textHint);
 		if (App.getSettings().wipeApp())
@@ -94,7 +103,7 @@ public class PanicActivity extends Activity implements OnTouchListener
 			switch (event.getAction() & MotionEvent.ACTION_MASK)
 			{
 			case MotionEvent.ACTION_DOWN:
-				FrameLayout.LayoutParams lParams = (FrameLayout.LayoutParams) view.getLayoutParams();
+				RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
 				yOriginal = lParams.topMargin;
 				yDelta = Y - lParams.topMargin;
 				mIsOverArrow = false;
