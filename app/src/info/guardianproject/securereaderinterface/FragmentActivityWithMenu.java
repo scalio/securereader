@@ -60,8 +60,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	LeftSideMenu mLeftSideMenu;
 
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
-	protected boolean mResumed;
-	private boolean mNeedToRecreate;
+
 
 	protected void setMenuIdentifier(int idMenu)
 	{
@@ -156,27 +155,17 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			initializeMenu();
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mResumed = false;
-	}
-
 	@SuppressLint("NewApi")
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		mResumed = true;
-		if (mNeedToRecreate)
+		if (!isFinishing())
 		{
-			onUiLanguageChanged();
-			return;
+			if (Build.VERSION.SDK_INT >= 11)
+				invalidateOptionsMenu();
+			refreshMenu();
 		}
-		
-		if (Build.VERSION.SDK_INT >= 11)
-			invalidateOptionsMenu();
-		refreshMenu();
 	}
 
 	private final class KillReceiver extends BroadcastReceiver
@@ -199,7 +188,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 				@Override
 				public void run()
 				{
-					onUiLanguageChanged();
+					recreateNowOrOnResume();
 				}
 			});
 		}
@@ -227,29 +216,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected void onWipe()
 	{
 
-	}
-
-	@SuppressLint("NewApi")
-	protected void onUiLanguageChanged()
-	{
-		if (!mResumed)
-		{
-			mNeedToRecreate = true;
-		}
-		else
-		{
-			mNeedToRecreate = false;
-			Intent intentThis = getIntent();
-			
-			Bundle b = new Bundle();
-			onSaveInstanceState(b);
-			intentThis.putExtra("savedInstance", b);
-			intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			finish();
-			overridePendingTransition(0, 0);
-			startActivity(intentThis);
-			overridePendingTransition(0, 0);
-		}
 	}
 
 	@Override

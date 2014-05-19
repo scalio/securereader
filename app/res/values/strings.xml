@@ -133,6 +133,7 @@
     <string name="settings_security_passphrase_timeout3">1 hour</string>
     <string name="settings_security_passphrase_timeout4">1 day</string>
     <string name="settings_security_passphrase_timeout5">1 week</string>
+    <string name="settings_enable_screenshots">Enable Screenshots</string>
 	<string name="generic_second">second</string>
 	<string name="generic_seconds">seconds</string>
 	<string name="generic_minute">minute</string>

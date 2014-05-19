@@ -50,7 +50,7 @@ import com.tinymission.rss.Item;
 //import net.hockeyapp.android.CrashManager;
 //import net.hockeyapp.android.UpdateManager;
 
-public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
+public class MainActivity extends ItemExpandActivity
 {
 	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
 	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
@@ -160,8 +160,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		}
 
-		addSettingsChangeListener();
-
 		// Called with flags of which item to show?
 		Intent intent = getIntent();
 		if (intent.hasExtra(INTENT_EXTRA_SHOW_THIS_ITEM) && intent.hasExtra(INTENT_EXTRA_SHOW_THIS_FEED))
@@ -219,13 +217,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		UpdateManager.register(this, APP_ID);
 	}*/	
 
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-		removeSettingsChangeListener();
-	}
-	
 	@Override
 	protected void onAfterResumeAnimation()
 	{
@@ -334,16 +325,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			if (Build.VERSION.SDK_INT >= 11)
 				invalidateOptionsMenu();
 		}
-	}
-
-	private void addSettingsChangeListener()
-	{
-		App.getSettings().registerChangeListener(this);
-	}
-
-	private void removeSettingsChangeListener()
-	{
-		App.getSettings().unregisterChangeListener(this);
 	}
 
 	private void showTagSearchPopup(View anchorView)
@@ -624,16 +605,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			mTorView = (StoryListHintTorView) headerView;
 			updateTorView();
 		}
-	}
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-	{
-		if (LOGGING) 
-			Log.v(LOGTAG, "The setting " + key + " has changed.");
-		// if (Settings.KEY_SYNC_MODE.equals(key))
-		// {
-		// }
 	}
 
 	@Override
