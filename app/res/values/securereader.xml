@@ -3,6 +3,8 @@
 
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
 	
+	<bool name="fulltextfeeds">false</bool>
+		
     <string-array name="built_in_feed_names">
     </string-array>
     

@@ -9,7 +9,10 @@ good_jar="app/libs/android-support-v4.jar"
 #external/CacheWord/cachewordlib
 #END
 
-MAPFILE[0]='external/ActionBarSherlock/actionbarsherlock'
+# create libs folder in support library project
+mkdir -p external/supportlibrary/v7/appcompat/libs
+
+MAPFILE[0]='external/supportlibrary/v7/appcompat'
 MAPFILE[1]='external/CacheWord/cachewordlib'
 MAPFILE[2]='external/OnionKit/libnetcipher'
 

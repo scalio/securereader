@@ -29,16 +29,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
@@ -140,6 +140,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			getSupportActionBar().setDisplayShowCustomEnabled(true);
 			TextView tvTitle = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tvTitle);
 			tvTitle.setText(title);
+			tvTitle.setSelected(true);
 		}
 		else
 		{
@@ -152,7 +153,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	{
 		super.onStart();
 		if (mLeftSideMenu != null)
-			mLeftSideMenu.checkMenuCreated();
+			initializeMenu();
 	}
 
 	@Override
@@ -269,9 +270,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		mOptionsMenu = menu;
 		super.onCreateOptionsMenu(menu);
 
-		getSupportMenuInflater().inflate(mIdMenu, menu);
+		getMenuInflater().inflate(mIdMenu, menu);
 		
-		getSupportMenuInflater().inflate(R.menu.overflow_main, menu);
+		getMenuInflater().inflate(R.menu.overflow_main, menu);
 		
 		colorizeMenuItems();
 		return true;
@@ -364,10 +365,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		}
 	}
 
-	@Override
-	@SuppressLint("NewApi")
-	public void onMenuCreated(final View parent, final View menuRoot, final View menu)
+	public void initializeMenu()
 	{
+		View menuRoot = mLeftSideMenu.getMenuRootView();
+		View menu = mLeftSideMenu.getMenuView();
+		View parent = (View) menuRoot.getParent();
 		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
 		performRotateTransition(parent, menuRoot);
 		refreshMenu();

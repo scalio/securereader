@@ -5,9 +5,13 @@
 ]>
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-	 x="0px" y="0px" width="49px" height="124px" viewBox="-0.564 0 49 124"
-	 overflow="visible" enable-background="new -0.564 0 49 124" xml:space="preserve">
+	 x="0px" y="0px" width="278px" height="168px" viewBox="0 55 278 168" overflow="visible" enable-background="new 0 55 278 168"
+	 xml:space="preserve">
 <defs>
 </defs>
-<polygon fill="#FFFFFF" points="15.812,0 15.812,92.402 0,92.402 24.083,123.896 48.162,92.402 32.354,92.402 32.354,0 "/>
+<polygon fill="#FFFFFF" points="181.8,57.1 138.5,94.6 95.2,57.1 "/>
+<polygon fill="#FFFFFF" points="169.7,129.4 138.5,156.4 107.3,129.4 "/>
+<polygon fill="#FFFFFF" points="166.2,196.9 138.5,220.9 110.8,196.9 "/>
+<rect display="none" opacity="0.82" fill="#FF5100" width="278" height="278"/>
+<rect x="0.3" y="1.7" display="none" opacity="0.82" fill="#FF5100" width="275.6" height="168"/>
 </svg>

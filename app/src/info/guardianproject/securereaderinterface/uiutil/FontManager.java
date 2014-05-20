@@ -1,6 +1,5 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.widgets.CustomFontSpan;
 
 import java.util.HashMap;
@@ -101,22 +100,47 @@ public class FontManager
 		}
 	}
 	
+	public static SpannableStringBuilder getTibetanText(Context context, String text)
+	{
+		// This is hacky. The tbo library has a bug with composites at the end
+		// of a string not being added to the output... so append some useless chars
+		// (more than 3) and strip off those that still remain after the transform.
+		String result = text.toString() + "_####";
+		result = CustomTypefaceManager.handlePrecompose(result);
+		int pos = result.lastIndexOf("_#");
+		if (pos != -1)
+			result = result.substring(0, pos);
+		SpannableStringBuilder ssb = new SpannableStringBuilder(result);
+		ssb.clearSpans();
+		getTibetanSpans(context, ssb);
+		return ssb;
+	}
+	
 	public static CharSequence transformText(TextView view, CharSequence text)
 	{
 		if (isTibetan(text))
 		{
-			// This is hacky. The tbo library has a bug with composites at the end
-			// of a string not being added to the output... so append some useless chars
-			// (more than 3) and strip off those that still remain after the transform.
-			String result = text.toString() + "_####";
-			result = CustomTypefaceManager.handlePrecompose(result);
-			int pos = result.lastIndexOf("_#");
-			if (pos != -1)
-				result = result.substring(0, pos);
-			SpannableStringBuilder ssb = new SpannableStringBuilder(result);
-			ssb.clearSpans();
-			getTibetanSpans(view.getContext(), ssb);
-			return ssb;
+			if (text instanceof Spannable)
+			{
+				SpannableStringBuilder ssb = new SpannableStringBuilder(text);
+				int thisStart = 0;
+				int nextStart = 0;
+				int limit = 0;
+				do
+				{
+					limit = ssb.length();
+					nextStart = ssb.nextSpanTransition(thisStart, limit, Object.class);
+					if (nextStart > thisStart)
+					{
+						SpannableStringBuilder subText = getTibetanText(view.getContext(), ssb.subSequence(thisStart, nextStart).toString());
+						ssb.replace(thisStart, nextStart, subText);
+						thisStart = thisStart + subText.length();
+					}
+				}
+				while (nextStart < limit);
+				return ssb;
+			}
+			return getTibetanText(view.getContext(), text.toString());
 		}
 		else if (isCyrillic(text))
 		{
