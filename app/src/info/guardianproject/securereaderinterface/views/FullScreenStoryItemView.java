@@ -4,6 +4,8 @@ import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -23,6 +25,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -180,6 +184,20 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			{
 				ShareSpinnerAdapter adapter = (ShareSpinnerAdapter) parent.getAdapter();
 				Intent shareIntent = adapter.getIntentAtPosition(position);
+				if (adapter.isSecureBTShareIntent(shareIntent))
+				{
+					// BT Share is a dialog popup, so handle that here.
+			        FragmentManager fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
+			        SecureBluetoothSenderFragment dialogSendShare = new SecureBluetoothSenderFragment(); 
+			        
+			        // Get the share intent and make sure to forward it on to our fragment
+			        Bundle args = new Bundle();
+			        args.putParcelable("intent", shareIntent.getParcelableExtra("intent"));
+			        dialogSendShare.setArguments(args);
+			        
+			        dialogSendShare.show(fm, App.FRAGMENT_TAG_SEND_BT_SHARE);
+					return;
+				}
 				if (adapter.isSecureChatIntent(shareIntent))
 					shareIntent = App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), false);
 				if (shareIntent != null)

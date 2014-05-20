@@ -53,6 +53,9 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final String LOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.lock.action";
 	public static final String UNLOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.unlock.action";
 
+	public static final String FRAGMENT_TAG_RECEIVE_SHARE = "FragmentReceiveShare";
+	public static final String FRAGMENT_TAG_SEND_BT_SHARE = "FragmentSendBTShare";
+
 	private static App m_singleton;
 
 	public static Context m_context;
