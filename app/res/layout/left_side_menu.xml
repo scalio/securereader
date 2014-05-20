@@ -37,6 +37,7 @@
         android:choiceMode="singleChoice"
         android:divider="@drawable/left_menu_divider"
         android:dividerHeight="1px"
+        android:cacheColorHint="@android:color/transparent"
         android:fillViewport="true" >
 
     </info.guardianproject.securereaderinterface.views.FeedFilterView>

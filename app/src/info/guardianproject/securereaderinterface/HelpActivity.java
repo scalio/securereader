@@ -10,14 +10,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.ActionBar;
 import info.guardianproject.securereaderinterface.R;
-import com.tinymission.rss.Feed;
 
 public class HelpActivity extends FragmentActivityWithMenu
 {
