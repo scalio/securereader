@@ -21,6 +21,7 @@ import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
+import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,8 +36,6 @@ import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-
-import com.actionbarsherlock.app.ActionBar;
 
 public class LeftSideMenu
 {

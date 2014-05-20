@@ -11,16 +11,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class LockableActivity extends SherlockFragmentActivity  implements OnSharedPreferenceChangeListener {
-
+public class LockableActivity extends ActionBarActivity  implements OnSharedPreferenceChangeListener 
+{
 	public static final String LOGTAG = "LockableActivity";
 	public static final boolean LOGGING = false;
 	
@@ -190,8 +190,8 @@ public class LockableActivity extends SherlockFragmentActivity  implements OnSha
 	}
 
 	@Override
-	public void onContentChanged() {
-		super.onContentChanged();
+	public void onSupportContentChanged() {
+		super.onSupportContentChanged();
 		ViewGroup parent = (ViewGroup) (getWindow().getDecorView());
 		mContentView = parent.getChildAt(0);
 	}
@@ -221,7 +221,18 @@ public class LockableActivity extends SherlockFragmentActivity  implements OnSha
 	
 	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		
+		// Call our fragments
+		//
+		if (getSupportFragmentManager().getFragments() != null)
+		{
+			for (Fragment f : getSupportFragmentManager().getFragments())
+			{
+				if (f instanceof LockableFragment)
+				{
+					((LockableFragment) f).onUnlockedActivityResult(requestCode, resultCode, imageReturnedIntent);
+				}
+			}
+		}
 	}
 	
 	public void recreateNowOrOnResume()
