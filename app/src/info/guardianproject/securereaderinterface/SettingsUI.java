@@ -9,12 +9,9 @@ public class SettingsUI extends Settings
 {
 	public static final String KEY_ENABLE_SCREENSHOTS = "enable_screenshots";
 
-	private final SharedPreferences mPrefs;
-
 	public SettingsUI(Context _context)
 	{
 		super(_context);
-		mPrefs = PreferenceManager.getDefaultSharedPreferences(_context);
 	}
 
 	/**
