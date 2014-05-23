@@ -1,16 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llRoot1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:background="@drawable/background_news"
-    android:gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:weightSum="32" >
-
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
+<merge
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/llRoot1"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="32"
         android:orientation="vertical" >
@@ -150,6 +141,4 @@
 
     </info.guardianproject.securereaderinterface.widgets.AppearingRelativeLayout>
     
-    </RelativeLayout>
-
-</LinearLayout>
+</merge>
