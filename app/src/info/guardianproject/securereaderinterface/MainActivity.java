@@ -123,7 +123,17 @@ public class MainActivity extends ItemExpandActivity
 			}
 		});
 
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		// Saved what we were looking at?
+		if (savedInstanceState != null && savedInstanceState.containsKey("FeedFilterType"))
+		{
+			FeedFilterType type = Enum.valueOf(FeedFilterType.class, savedInstanceState.getString("FeedFilterType"));
+			long feedId = savedInstanceState.getLong("FeedId", 0);
+			UICallbacks.setFeedFilter(type, feedId, this);
+		}
+		else
+		{
+			UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
+		}
 		
 		// HockeyApp SDK
 		//checkForUpdates();
@@ -152,7 +162,7 @@ public class MainActivity extends ItemExpandActivity
 				if (!mIsInitialized)
 				{
 					mIsInitialized = true;
-					UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, MainActivity.this);
+					UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 					getSupportActionBar().show();
 				}
 			}
@@ -829,7 +839,7 @@ public class MainActivity extends ItemExpandActivity
 	protected void onUnlocked() {
 		super.onUnlocked();
 		socialReader = ((App) getApplicationContext()).socialReader;
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 	}
 
 	@Override
@@ -875,4 +885,14 @@ public class MainActivity extends ItemExpandActivity
 		onResync(feed, showLoader);
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		
+		// Save what we are currently looking at, so we can restore that later
+		//
+		outState.putString("FeedFilterType", App.getInstance().getCurrentFeedFilterType().name());
+		outState.putLong("FeedId", App.getInstance().getCurrentFeedId());
+	}
 }

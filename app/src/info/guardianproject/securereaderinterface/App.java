@@ -65,8 +65,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public SocialReporter socialReporter;
 	
 	private String mCurrentLanguage;
-	private FeedFilterType mCurrentFeedFilterType;
-	private Feed mCurrentFeed;
+	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
+	private Feed mCurrentFeed = null;
 
 	@Override
 	public void onCreate()
@@ -308,6 +308,13 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public Feed getCurrentFeed()
 	{
 		return mCurrentFeed;
+	}
+	
+	public long getCurrentFeedId()
+	{
+		if (getCurrentFeed() != null)
+			return getCurrentFeed().getDatabaseId();
+		return 0;
 	}
 
 	/**
