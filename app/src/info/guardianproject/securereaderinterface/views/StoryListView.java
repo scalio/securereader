@@ -37,14 +37,14 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import info.guardianproject.securereaderinterface.R;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-public class StoryListView extends FrameLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
+public class StoryListView extends RelativeLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
 {
 	public static final String LOGTAG = "StoryListView";
 	public static final boolean LOGGING = false;
