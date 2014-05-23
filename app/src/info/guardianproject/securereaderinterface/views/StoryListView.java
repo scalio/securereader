@@ -171,7 +171,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			}
 		});
 		
-		searchByTag(null);
+		searchByTag(null, null);
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			@Override
 			public void onTagSelect(String tag)
 			{
-				searchByTag(tag);
+				searchByTag(mFeed, tag);
 			}
 
 		};
@@ -237,7 +237,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 		mCallbackListener = null;
 	}
 
-	private void searchByTag(String tag)
+	private void searchByTag(Feed feed, String tag)
 	{
 		mCurrentSearchTag = tag;
 		if (mCurrentSearchTag == null)
@@ -252,7 +252,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			mTvTagResults.setVisibility(View.VISIBLE);
 			mBtnCloseTagSearch.setVisibility(View.VISIBLE);
 		}
-		mAdapter.setTagFilter(tag);
+		mAdapter.setTagFilter(feed, tag);
 	}
 
 	@Override

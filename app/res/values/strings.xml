@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Courier</string>
-    <string name="app_description">Courier is a secure news reader and reporter app featuring group conversations around news.</string>
+    <string name="app_description">Courier is a mobile RSS news reader with enhanced security features, offline reading and sharing capability.</string>
     
     <string name="title_activity_main">Courier</string>
     <string name="title_activity_help">Courier</string>
@@ -133,6 +133,7 @@
     <string name="settings_security_passphrase_timeout3">1 hour</string>
     <string name="settings_security_passphrase_timeout4">1 day</string>
     <string name="settings_security_passphrase_timeout5">1 week</string>
+    <string name="settings_enable_screenshots">Enable Screenshots</string>
 	<string name="generic_second">second</string>
 	<string name="generic_seconds">seconds</string>
 	<string name="generic_minute">minute</string>
@@ -289,7 +290,7 @@
     <string name="story_list_hint_tor_no_net">No Internet. Try again later.</string>
     <string name="story_list_hint_tor_go_online">CONNECT TO TOR</string>
     <string name="story_list_hint_tor_more_title">Using Tor</string>
-    <string name="story_list_hint_tor_more_info">Tor is not required for the news reader, however, it is strongly recommended. You can opt out of using Tor for the news, in your preferences. Your privacy will not be protected in this case.\n\nTor is required for publishing reports on Courier.</string>
+    <string name="story_list_hint_tor_more_info">Tor is not required for the news reader, however, it is strongly recommended. You can opt out of using Tor for the news, in your preferences. Your privacy will not be protected in this case.</string>
     <string name="story_list_hint_tor_connected_title">You have successfully connected to Tor!</string>
     <string name="story_list_hint_tor_connected_info">Pull down to sync the news.</string>
     <string name="story_list_error_title">Oops! Your feeds are not refreshing.</string>

@@ -59,14 +59,14 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	private static App m_singleton;
 
 	public static Context m_context;
-	public static Settings m_settings;
+	public static SettingsUI m_settings;
 
 	public SocialReader socialReader;
 	public SocialReporter socialReporter;
 	
 	private String mCurrentLanguage;
-	private FeedFilterType mCurrentFeedFilterType;
-	private Feed mCurrentFeed;
+	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
+	private Feed mCurrentFeed = null;
 
 	@Override
 	public void onCreate()
@@ -75,7 +75,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 		m_singleton = this;
 		m_context = this;
-		m_settings = new Settings(m_context);
+		m_settings = new SettingsUI(m_context);
 		applyUiLanguage();
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
@@ -112,7 +112,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		return m_singleton;
 	}
 
-	public static Settings getSettings()
+	public static SettingsUI getSettings()
 	{
 		return m_settings;
 	}
@@ -308,6 +308,13 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public Feed getCurrentFeed()
 	{
 		return mCurrentFeed;
+	}
+	
+	public long getCurrentFeedId()
+	{
+		if (getCurrentFeed() != null)
+			return getCurrentFeed().getDatabaseId();
+		return 0;
 	}
 
 	/**

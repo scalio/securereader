@@ -3,15 +3,18 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.GroupView;
+import info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -43,12 +46,13 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
 
 	Settings mSettings;
-	private ViewGroup rootView;
+	private InitialScrollScrollView rootView;
 
 	private RadioButton mRbUseKillPassphraseOn;
 	private RadioButton mRbUseKillPassphraseOff;
 
-	private boolean mLanguageBeingUpdated;
+	private boolean mIsBeingRecreated;
+	private String mLastChangedSetting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -60,8 +64,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 		mSettings = App.getSettings();
 
-		rootView = (ViewGroup) findViewById(R.id.root);
-
+		rootView = (InitialScrollScrollView) findViewById(R.id.root);
+		
 		TypedArray array = this.obtainStyledAttributes(R.style.SettingsRadioButtonSubStyle, new int[] { android.R.attr.textColor });
 		if (array != null)
 		{
@@ -74,6 +78,20 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			array.recycle();
 		}
 
+		if (getIntent().hasExtra("savedInstance"))
+		{
+			Bundle savedInstance = getIntent().getBundleExtra("savedInstance");
+			getIntent().removeExtra("savedInstance");
+			if (savedInstance != null)
+			{
+				if (savedInstance.containsKey("expandedViews"))
+					expandSelectedGroupViews(rootView, savedInstance.getIntegerArrayList("expandedViews"));
+				
+				int scrollToViewId = savedInstance.getInt("scrollToViewId", View.NO_ID);
+				int scrollToViewOffset = savedInstance.getInt("scrollToViewOffset", 0);
+				rootView.setInitialPosition(scrollToViewId, scrollToViewOffset);
+			}
+		}
 	}
 
 	private void applySpanToAllRadioButtons(ViewGroup parent, CharacterStyle... cs)
@@ -123,12 +141,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			handleGoToGroup(getIntent().getIntExtra(EXTRA_GO_TO_GROUP, 0));
 			getIntent().removeExtra(EXTRA_GO_TO_GROUP);
 		}
-		
-		if (getIntent().hasExtra("savedInstance"))
-		{
-			this.onRestoreInstanceState(getIntent().getBundleExtra("savedInstance"));
-			getIntent().removeExtra("savedInstance");
-		}
 	}
 	
 	private void handleGoToGroup(int goToSection)
@@ -151,7 +163,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 						int top = view.getTop();
 						rootView.scrollTo(0, top - 5);
 					}
-
 				});
 			}
 		}
@@ -235,6 +246,19 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				promptForKillPassphrase(false);
 			}
 		});
+		
+		this.hookupCheckbox(tabView, R.id.chkEnableScreenshots, "enableScreenshots");
+		
+//		// On older devices there is no reliable way to turn off screen captures!
+//		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
+//		{
+//			View chkEnableScreenshots = tabView.findViewById(R.id.chkEnableScreenshots);
+//			if (chkEnableScreenshots != null)
+//			{
+//				((Checkable)chkEnableScreenshots).setChecked(true);
+//				chkEnableScreenshots.setEnabled(false);
+//			}
+//		}
 	}
 
 	private class ResourceValueMapping
@@ -602,13 +626,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		}
 	}
 
-	@Override
-	protected void onUiLanguageChanged()
-	{
-		mLanguageBeingUpdated = true;
-		super.onUiLanguageChanged();
-	}
-
 	private void collectExpandedGroupViews(View current, ArrayList<Integer> expandedViews)
 	{
 		if (current instanceof ViewGroup)
@@ -627,37 +644,51 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	protected void onSaveInstanceState(Bundle outState) {
 		// Dont call base, see http://stackoverflow.com/questions/4504024/android-localization-problem-not-all-items-in-the-layout-update-properly-when-s
 		//super.onSaveInstanceState(outState);
-		if (mLanguageBeingUpdated)
+		if (mIsBeingRecreated)
 		{
 			ArrayList<Integer> expandedViews = new ArrayList<Integer>();
 			collectExpandedGroupViews(rootView, expandedViews);
 			outState.putIntegerArrayList("expandedViews", expandedViews);
+			
+			if (mLastChangedSetting != null)
+			{
+				if (SettingsUI.KEY_ENABLE_SCREENSHOTS.equals(mLastChangedSetting))
+				{
+					outState.putInt("scrollToViewId", R.id.chkEnableScreenshots);
+					outState.putInt("scrollToViewOffset", UIHelpers.getRelativeTop(findViewById(R.id.chkEnableScreenshots)) - UIHelpers.getRelativeTop(rootView) - rootView.getScrollY());
+				}
+				else if (SettingsUI.KEY_UI_LANGUAGE.equals(mLastChangedSetting))
+				{
+					outState.putInt("scrollToViewId", R.id.groupLanguage);
+					outState.putInt("scrollToViewOffset", UIHelpers.getRelativeTop(findViewById(R.id.groupLanguage)) - UIHelpers.getRelativeTop(rootView) - rootView.getScrollY());
+				}
+			}
 		}
 	}
 
 	private void expandSelectedGroupViews(View current, ArrayList<Integer> expandedViews)
 	{
-		if (current instanceof ViewGroup)
+		for (int id : expandedViews)
 		{
-			for (int child = 0; child < ((ViewGroup) current).getChildCount(); child++)
-				expandSelectedGroupViews(((ViewGroup) current).getChildAt(child), expandedViews);
-		}
-		if (current instanceof GroupView)
-		{
-			if (expandedViews.contains(Integer.valueOf(current.getId())))
-				((GroupView) current).setExpanded(true, false);
+			View view = current.findViewById(id);
+			if (view != null && view instanceof GroupView)
+			{
+				((GroupView) view).setExpanded(true, false);
+			}
 		}
 	}
 	
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		//super.onRestoreInstanceState(savedInstanceState);
-		if (savedInstanceState.containsKey("expandedViews"))
-		{
-			expandSelectedGroupViews(rootView, savedInstanceState.getIntegerArrayList("expandedViews"));
-			handleGoToGroup(R.id.groupLanguage);
-		}
+	public void recreateNowOrOnResume()
+	{
+		mIsBeingRecreated = true;
+		super.recreateNowOrOnResume();
 	}
-	
-	
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+	{
+		mLastChangedSetting = key;
+		super.onSharedPreferenceChanged(sharedPreferences, key);
+	}
 }

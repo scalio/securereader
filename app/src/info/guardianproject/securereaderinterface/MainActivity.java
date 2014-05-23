@@ -50,7 +50,7 @@ import com.tinymission.rss.Item;
 //import net.hockeyapp.android.CrashManager;
 //import net.hockeyapp.android.UpdateManager;
 
-public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
+public class MainActivity extends ItemExpandActivity
 {
 	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
 	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
@@ -123,7 +123,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			}
 		});
 
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		// Saved what we were looking at?
+		if (savedInstanceState != null && savedInstanceState.containsKey("FeedFilterType"))
+		{
+			FeedFilterType type = Enum.valueOf(FeedFilterType.class, savedInstanceState.getString("FeedFilterType"));
+			long feedId = savedInstanceState.getLong("FeedId", 0);
+			UICallbacks.setFeedFilter(type, feedId, this);
+		}
+		else
+		{
+			UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
+		}
 		
 		// HockeyApp SDK
 		//checkForUpdates();
@@ -152,14 +162,12 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 				if (!mIsInitialized)
 				{
 					mIsInitialized = true;
-					UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, MainActivity.this);
+					UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 					getSupportActionBar().show();
 				}
 			}
 
 		}
-
-		addSettingsChangeListener();
 
 		// Called with flags of which item to show?
 		Intent intent = getIntent();
@@ -218,13 +226,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		UpdateManager.register(this, APP_ID);
 	}*/	
 
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-		removeSettingsChangeListener();
-	}
-	
 	@Override
 	protected void onAfterResumeAnimation()
 	{
@@ -333,16 +334,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			if (Build.VERSION.SDK_INT >= 11)
 				invalidateOptionsMenu();
 		}
-	}
-
-	private void addSettingsChangeListener()
-	{
-		App.getSettings().registerChangeListener(this);
-	}
-
-	private void removeSettingsChangeListener()
-	{
-		App.getSettings().unregisterChangeListener(this);
 	}
 
 	private void showTagSearchPopup(View anchorView)
@@ -626,16 +617,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	}
 
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-	{
-		if (LOGGING) 
-			Log.v(LOGTAG, "The setting " + key + " has changed.");
-		// if (Settings.KEY_SYNC_MODE.equals(key))
-		// {
-		// }
-	}
-
-	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
 	{
 		super.onWindowFocusChanged(hasFocus);
@@ -858,7 +839,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	protected void onUnlocked() {
 		super.onUnlocked();
 		socialReader = ((App) getApplicationContext()).socialReader;
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 	}
 
 	@Override
@@ -904,4 +885,14 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		onResync(feed, showLoader);
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		
+		// Save what we are currently looking at, so we can restore that later
+		//
+		outState.putString("FeedFilterType", App.getInstance().getCurrentFeedFilterType().name());
+		outState.putLong("FeedId", App.getInstance().getCurrentFeedId());
+	}
 }
