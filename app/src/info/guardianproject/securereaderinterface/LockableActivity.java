@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -39,6 +40,8 @@ public class LockableActivity extends SherlockFragmentActivity {
 	protected void onDestroy()
 	{
 		super.onDestroy();
+		if (LOGGING) 
+			Log.v(LOGTAG, "onDestroy");
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mLockReceiver);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnlockReceiver);
 	}
