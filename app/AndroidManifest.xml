@@ -27,7 +27,7 @@
 		<activity android:name="net.hockeyapp.android.UpdateActivity" />
         
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 
-		    android:enabled="true" android:exported="false" />        
+		    android:enabled="true" android:exported="true" />        
         
         <activity
             android:name="info.guardianproject.securereaderinterface.MainActivity"
