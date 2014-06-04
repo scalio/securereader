@@ -1,7 +1,7 @@
 package info.guardianproject.securereaderinterface.widgets;
 
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;

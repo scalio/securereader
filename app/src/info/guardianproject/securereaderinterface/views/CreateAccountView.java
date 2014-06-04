@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class CreateAccountView extends FrameLayout implements View.OnClickListener, TextWatcher
 {

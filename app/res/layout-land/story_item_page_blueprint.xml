@@ -5,7 +5,7 @@
     android:gravity="top"
     android:orientation="vertical"
      xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface">
+     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier">
 
     <include
         android:id="@+id/layout_source"

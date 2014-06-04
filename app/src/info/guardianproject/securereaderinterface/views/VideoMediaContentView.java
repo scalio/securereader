@@ -19,7 +19,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.VideoView;
 
 import info.guardianproject.securereaderinterface.models.OnMediaOrientationListener;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class VideoMediaContentView extends FrameLayout implements OnErrorListener, OnPreparedListener, OnCompletionListener, OnSeekBarChangeListener
 {

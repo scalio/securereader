@@ -3,7 +3,7 @@ package info.guardianproject.securereaderinterface.views;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;

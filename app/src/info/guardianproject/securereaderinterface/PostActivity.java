@@ -10,7 +10,7 @@ import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;

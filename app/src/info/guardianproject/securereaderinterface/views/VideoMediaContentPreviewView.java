@@ -1,7 +1,7 @@
 package info.guardianproject.securereaderinterface.views;
 
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import info.guardianproject.iocipher.File;
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -11,7 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class PostSignInView extends FrameLayout implements View.OnClickListener, OnCheckedChangeListener
 {

@@ -22,7 +22,7 @@ import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import com.tinymission.rss.MediaContent;
 
 public class ImageMediaContentView extends FrameLayout implements MediaDownloaderCallback, OnTouchListener

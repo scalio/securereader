@@ -2,7 +2,7 @@ package info.guardianproject.securereaderinterface.widgets;
 
 import info.guardianproject.securereaderinterface.uiutil.AllCapsTransformation;
 import info.guardianproject.securereaderinterface.uiutil.FontManager;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import android.annotation.SuppressLint;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;

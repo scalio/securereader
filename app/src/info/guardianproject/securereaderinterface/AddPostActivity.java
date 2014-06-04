@@ -12,7 +12,7 @@ import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.StoryMediaContentView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;

@@ -36,7 +36,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.PassphraseSecrets;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {

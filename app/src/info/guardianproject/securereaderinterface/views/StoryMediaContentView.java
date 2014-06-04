@@ -19,7 +19,7 @@ import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMedia
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.DottedProgressView;
 import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class StoryMediaContentView extends FrameLayout implements View.OnClickListener, OnMediaLoadedListener 
 {

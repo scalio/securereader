@@ -6,7 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import info.guardianproject.securereaderinterface.views.StoryItemDraftPageView;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import com.tinymission.rss.Item;
 
 public class PostDraftsListAdapter extends PostPublishedListAdapter

@@ -5,7 +5,7 @@ import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.views.StoryMediaContentView;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

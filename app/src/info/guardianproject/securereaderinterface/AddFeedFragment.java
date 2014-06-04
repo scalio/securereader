@@ -23,7 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import com.tinymission.rss.Feed;
 
 public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback

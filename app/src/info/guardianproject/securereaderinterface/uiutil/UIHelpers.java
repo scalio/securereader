@@ -1,7 +1,7 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
 import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 

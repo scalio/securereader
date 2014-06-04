@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class HelpActivity extends FragmentActivityWithMenu
 {

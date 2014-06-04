@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import android.view.Window;
 import com.tinymission.rss.MediaContent;
 

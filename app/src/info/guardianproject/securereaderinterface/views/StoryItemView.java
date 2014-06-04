@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.views;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;

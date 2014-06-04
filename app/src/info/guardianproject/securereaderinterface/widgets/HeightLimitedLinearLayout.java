@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class HeightLimitedLinearLayout extends LinearLayout
 {

@@ -10,7 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class GroupView extends LinearLayout
 {

@@ -18,7 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 import info.guardianproject.securereaderinterface.uiutil.FontManager;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 public class CustomFontTextView extends TextView
 {

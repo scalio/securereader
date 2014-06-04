@@ -4,7 +4,7 @@ import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers.FadeInFadeOutListener;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 
 import java.util.ArrayList;
 

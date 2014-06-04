@@ -6,7 +6,7 @@ import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.DropdownSpinner;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.courier.R;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordSettings;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
