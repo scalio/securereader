@@ -8,7 +8,8 @@ versionCodeDate=`date +%s`
 versionNameDate=`date +%Y-%m-%d_%H.%M.%S`
 
 # jenkins does not always handle this well, so run manually
-git submodule sync
+git submodule sync --recursive
+git submodule foreach --recursive git submodule sync
 
 sed -i \
     -e "s,android:versionCode=\"[0-9][0-9]*\",android:versionCode=\"$versionCodeDate\"," \
