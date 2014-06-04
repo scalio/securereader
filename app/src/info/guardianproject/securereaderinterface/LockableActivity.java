@@ -14,6 +14,7 @@ import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
