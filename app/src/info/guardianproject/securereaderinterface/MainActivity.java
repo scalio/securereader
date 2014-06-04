@@ -24,10 +24,13 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -40,9 +43,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
@@ -50,7 +50,7 @@ import com.tinymission.rss.Item;
 //import net.hockeyapp.android.CrashManager;
 //import net.hockeyapp.android.UpdateManager;
 
-public class MainActivity extends ItemExpandActivity implements OnSharedPreferenceChangeListener
+public class MainActivity extends ItemExpandActivity
 {
 	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
 	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
@@ -90,16 +90,15 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		mCurrentSyncMode = App.getSettings().syncMode();
 
 		// We do a little song and dance number here - This activity's theme is
-		// set to NoActionBar in the manifest, but here we change to default app
-		// theme again and request the action bar. This is because, at first
-		// startup, the system will show a screen with default action bar and
-		// default background. We don't want that. Instead we want to show solid
-		// color (same as lock screen background) and no action bar. See
-		// AppThemeNoActionBar theme for more information.
-		requestWindowFeature(Window.FEATURE_ACTION_BAR);
-		setTheme(R.style.AppTheme);
-
+ 		// set to NoActionBar in the manifest, but here we change to default app
+ 		// theme again and request the action bar. This is because, at first
+ 		// startup, the system will show a screen with default action bar and
+ 		// default background. We don't want that. Instead we want to show solid
+ 		// color (same as lock screen background) and no action bar. See
+ 		// AppThemeNoActionBar theme for more information.
+ 		setTheme(R.style.AppTheme);
 		super.onCreate(savedInstanceState);
+	
 		getSupportActionBar().hide();
 
 		setContentView(R.layout.activity_main);
@@ -107,7 +106,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 
 		mStoryListView = (StoryListView) findViewById(R.id.storyList);
 		mStoryListView.setListener(this);
-
+		
 		socialReader = ((App) getApplicationContext()).socialReader;
 		socialReader.setSyncServiceListener(new SyncService.SyncServiceListener()
 		{
@@ -124,7 +123,17 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			}
 		});
 
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		// Saved what we were looking at?
+		if (savedInstanceState != null && savedInstanceState.containsKey("FeedFilterType"))
+		{
+			FeedFilterType type = Enum.valueOf(FeedFilterType.class, savedInstanceState.getString("FeedFilterType"));
+			long feedId = savedInstanceState.getLong("FeedId", 0);
+			UICallbacks.setFeedFilter(type, feedId, this);
+		}
+		else
+		{
+			UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
+		}
 		
 		// HockeyApp SDK
 		//checkForUpdates();
@@ -153,14 +162,12 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 				if (!mIsInitialized)
 				{
 					mIsInitialized = true;
-					UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, MainActivity.this);
+					UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 					getSupportActionBar().show();
 				}
 			}
 
 		}
-
-		addSettingsChangeListener();
 
 		// Called with flags of which item to show?
 		Intent intent = getIntent();
@@ -219,13 +226,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		UpdateManager.register(this, APP_ID);
 	}*/	
 
-	@Override
-	public void onPause()
-	{
-		super.onPause();
-		removeSettingsChangeListener();
-	}
-	
 	@Override
 	protected void onAfterResumeAnimation()
 	{
@@ -297,7 +297,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		{
 			mShareActionProvider = new ActionProviderShare(this);
 			mShareActionProvider.setFeed(getCurrentFeed());
-			mMenuItemShare.setActionProvider(mShareActionProvider);
+			MenuItemCompat.setActionProvider(mMenuItemShare, mShareActionProvider);
 		}
 		// Locate MenuItem with ShareActionProvider
 		// mMenuItemFeed = menu.findItem(R.id.menu_feed);
@@ -334,16 +334,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 			if (Build.VERSION.SDK_INT >= 11)
 				invalidateOptionsMenu();
 		}
-	}
-
-	private void addSettingsChangeListener()
-	{
-		App.getSettings().registerChangeListener(this);
-	}
-
-	private void removeSettingsChangeListener()
-	{
-		App.getSettings().unregisterChangeListener(this);
 	}
 
 	private void showTagSearchPopup(View anchorView)
@@ -627,16 +617,6 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	}
 
 	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-	{
-		if (LOGGING) 
-			Log.v(LOGTAG, "The setting " + key + " has changed.");
-		// if (Settings.KEY_SYNC_MODE.equals(key))
-		// {
-		// }
-	}
-
-	@Override
 	public void onWindowFocusChanged(boolean hasFocus)
 	{
 		super.onWindowFocusChanged(hasFocus);
@@ -859,7 +839,7 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 	protected void onUnlocked() {
 		super.onUnlocked();
 		socialReader = ((App) getApplicationContext()).socialReader;
-		UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, 0, this);
+		UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
 	}
 
 	@Override
@@ -905,4 +885,14 @@ public class MainActivity extends ItemExpandActivity implements OnSharedPreferen
 		onResync(feed, showLoader);
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		
+		// Save what we are currently looking at, so we can restore that later
+		//
+		outState.putString("FeedFilterType", App.getInstance().getCurrentFeedFilterType().name());
+		outState.putLong("FeedId", App.getInstance().getCurrentFeedId());
+	}
 }

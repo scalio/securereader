@@ -1,3 +1,3 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_post" android:orderInCategory="102" android:title="@string/add_post_menu_post" android:showAsAction="always" android:visible="true" android:enabled="true"></item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_post" android:orderInCategory="102" android:title="@string/add_post_menu_post" app:showAsAction="always" android:visible="true" android:enabled="true"></item>
 </menu>
