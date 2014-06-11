@@ -214,6 +214,31 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/groupFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/white_with_bottom_shadow"
+            android:orientation="vertical" >
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvFeedbackTitle"
+                style="@style/HelpTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:text="@string/help_feedback_title" />
+
+            <TextView
+                android:id="@+id/tvFeedback"
+                style="@style/HelpTextLinkedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_feedback_content" />
+
+        </LinearLayout>
+        
         <Button
             android:id="@+id/btnDone"
             style="@style/HelpButtonStyle"

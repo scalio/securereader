@@ -50,6 +50,8 @@
     <string name="help_terms_title">Terms and Licenses</string>
     <string name="help_terms_content">Software licenses and more information available online at: https://guardianproject.info/apps/courier</string>
     <string name="help_show_news">Got it. Show me the news!</string>
+    <string name="help_feedback_title">Share Feedback</string>
+    <string name="help_feedback_content">We\'re making improvements! Let us know how Courier is working for you at https://okthanks.typeform.com/to/tXYKpF</string>
     <string name="downloads_title">Media Downloads</string>
     <string name="downloads_complete">COMPLETE</string>
     <string name="downloads_in_progress">IN PROGRESS</string>
