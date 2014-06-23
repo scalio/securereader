@@ -13,10 +13,13 @@ projectroot=`pwd`
 projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' app/res/values/strings.xml`
 TIMESTAMP=`git log -n1 --date=iso | sed -n 's,^Date:\(.*\),\1,p'`
 
-git reset --hard
-git clean -fdx
-git submodule foreach --recursive git reset --hard
-git submodule foreach --recursive git clean -fdx
+if [ $1 = "--hard-reset" ]; then
+    git reset --hard
+    git clean -fdx
+    git submodule foreach --recursive git reset --hard
+    git submodule foreach --recursive git clean -fdx
+fi
+
 git submodule sync --recursive
 git submodule foreach --recursive git submodule sync
 git submodule update --init --recursive
@@ -32,7 +35,7 @@ fi
 
 ./setup-ant.sh
 cd app/
-faketime $TIMESTAMP ant release
+faketime "$TIMESTAMP" ant release
 
 apk=$projectroot/app/bin/$projectname-release.apk
 if [ -e $apk ]; then
