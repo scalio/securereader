@@ -37,8 +37,10 @@
 		<item name="actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
 		<item name="spinnerDropDownItemStyle">@style/DropDownItem</item>
 		<item name="dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
+		<item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
+		<item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
 	</style>
-
+    
     <style name="AppThemeNoActionBar" parent="AppTheme">
 		<item name="android:windowActionBar">false</item>
 		<item name="android:windowTitleSize">0dp</item>
