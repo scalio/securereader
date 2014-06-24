@@ -11,7 +11,9 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,9 +26,12 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
@@ -479,61 +484,67 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 	private void promptForNewPassphrase()
 	{
-		final Dialog alert = new Dialog(this);
-		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		alert.setContentView(R.layout.settings_change_passphrase);
-
-		final EditText editEnterPassphrase = (EditText) alert.findViewById(R.id.editEnterPassphrase);
-		final EditText editNewPassphrase = (EditText) alert.findViewById(R.id.editNewPassphrase);
-		final EditText editConfirmNewPassphrase = (EditText) alert.findViewById(R.id.editConfirmNewPassphrase);
-
-		alert.findViewById(R.id.btnOk).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
-					return; // Both empty, ignore click
-
-				if (!(editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))) {
-					 Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_not_matching), Toast.LENGTH_LONG).show();
-						alert.dismiss();
+		View contentView = LayoutInflater.from(this).inflate(R.layout.settings_change_passphrase, null, false);
+		
+		final EditText editEnterPassphrase = (EditText) contentView.findViewById(R.id.editEnterPassphrase);
+		final EditText editNewPassphrase = (EditText) contentView.findViewById(R.id.editNewPassphrase);
+		final EditText editConfirmNewPassphrase = (EditText) contentView.findViewById(R.id.editConfirmNewPassphrase);
+		
+		Builder alert = new AlertDialog.Builder(this)
+				.setTitle(R.string.settings_security_change_passphrase)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
+						{
+							dialog.dismiss();
+							promptForNewPassphrase();
+							return; // Try again...                    
+						}
+	
+					if (!(editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))) {
+						 Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_not_matching), Toast.LENGTH_LONG).show();
+							dialog.dismiss();
+							promptForNewPassphrase();
+							return; // Try again...					
+					}
+					
+					CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+					
+					char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
+					PassphraseSecrets secrets;
+	                try {
+	                	secrets = PassphraseSecrets.fetchSecrets(SettingsActivity.this, passwd);
+						cwh.changePassphrase(secrets, editNewPassphrase.getText().toString().toCharArray());
+	                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_changed), Toast.LENGTH_LONG).show();
+	
+	                } catch (Exception e) {
+	                    // Invalid password or the secret key has been
+	        			if (LOGGING) 
+	        				Log.e(LOGTAG, e.getMessage());
+	
+	                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
+						dialog.dismiss();
 						promptForNewPassphrase();
-						return; // Try again...					
-				}
-				
-				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
-				
-				char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
-				PassphraseSecrets secrets;
-                try {
-                	secrets = PassphraseSecrets.fetchSecrets(SettingsActivity.this, passwd);
-					cwh.changePassphrase(secrets, editNewPassphrase.getText().toString().toCharArray());
-                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_changed), Toast.LENGTH_LONG).show();
-
-                } catch (Exception e) {
-                    // Invalid password or the secret key has been
-        			if (LOGGING) 
-        				Log.e(LOGTAG, e.getMessage());
-
-                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
-					alert.dismiss();
-					promptForNewPassphrase();
-					return; // Try again...                    
-                }
-                
-				alert.dismiss();
-			}
-		});
-		alert.findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				alert.cancel();
-			}
-		});
-		alert.show();
+						return; // Try again...                    
+	                }
+	                
+					dialog.dismiss();		
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						dialog.cancel();
+					}
+				})
+				.setView(contentView);
+		AlertDialog dialog = alert.create();
+		dialog.show();
 	}
 
 	/**
@@ -545,20 +556,24 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	 */
 	private void promptForKillPassphrase(final boolean setToOnIfSuccessful)
 	{
-		final Dialog alert = new Dialog(this);
-		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		alert.setContentView(R.layout.settings_set_kill_passphrase);
+		View contentView = LayoutInflater.from(this).inflate(R.layout.settings_set_kill_passphrase, null, false);
 
-		final EditText editNewPassphrase = (EditText) alert.findViewById(R.id.editNewPassphrase);
-		final EditText editConfirmNewPassphrase = (EditText) alert.findViewById(R.id.editConfirmNewPassphrase);
+		final EditText editNewPassphrase = (EditText) contentView.findViewById(R.id.editNewPassphrase);
+		final EditText editConfirmNewPassphrase = (EditText) contentView.findViewById(R.id.editConfirmNewPassphrase);
 
-		alert.findViewById(R.id.btnOk).setOnClickListener(new OnClickListener()
+		Builder alert = new AlertDialog.Builder(this)
+		.setTitle(R.string.settings_security_set_kill_passphrase)
+		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			@Override
-			public void onClick(View v)
+			public void onClick(DialogInterface dialog, int which)
 			{
 				if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
-					return; // Both empty, ignore click
+				{
+					dialog.dismiss();
+					promptForKillPassphrase(setToOnIfSuccessful);
+					return; // Try again...
+				}
 
 				// Check old
 				boolean matching = (editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()));
@@ -580,7 +595,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 						Toast.makeText(SettingsActivity.this, getString(R.string.lock_screen_passphrases_not_matching), Toast.LENGTH_LONG).show();
 					else
 						Toast.makeText(SettingsActivity.this, getString(R.string.settings_security_kill_passphrase_same_as_login), Toast.LENGTH_LONG).show();
-					alert.dismiss();
+					dialog.dismiss();
 					promptForKillPassphrase(setToOnIfSuccessful);
 					return; // Try again...
 				}
@@ -589,18 +604,20 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				App.getSettings().setKillPassphrase(editNewPassphrase.getText().toString());
 				if (setToOnIfSuccessful)
 					updateUseKillPassphrase();
-				alert.dismiss();
+				dialog.dismiss();
 			}
-		});
-		alert.findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener()
+		})
+		.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
 		{
 			@Override
-			public void onClick(View v)
+			public void onClick(DialogInterface dialog, int which)
 			{
-				alert.cancel();
+				dialog.cancel();
 			}
-		});
-		alert.setOnCancelListener(new OnCancelListener()
+		})
+		.setView(contentView);
+		AlertDialog dialog = alert.create();
+		dialog.setOnCancelListener(new OnCancelListener()
 		{
 			@Override
 			public void onCancel(DialogInterface dialog)
@@ -609,7 +626,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					updateUseKillPassphrase();
 			}
 		});
-		alert.show();
+		dialog.show();
 	}
 
 	private void updateUseKillPassphrase()

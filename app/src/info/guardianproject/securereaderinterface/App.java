@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface;
 		
+import info.guardianproject.courier.R;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
@@ -19,16 +20,17 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.tinymission.rss.Feed;
@@ -202,13 +204,29 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
 	{
-		if (name.equals("TextView"))
+		int id = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "id", -1);
+		if (Build.VERSION.SDK_INT < 11)
+		{
+			// Older devices don't support setting the "android:alertDialogTheme" in styles.xml
+			int idParent = Resources.getSystem().getIdentifier("parentPanel", "id", "android");
+			if (id == idParent)
+				context.setTheme(R.style.ModalDialogTheme);
+		}
+		
+		if (name.equals("TextView") || name.endsWith("DialogTitle"))
 		{
 			return new CustomFontTextView(context, attrs);
 		}
 		else if (name.equals("Button"))
 		{
-			return new CustomFontButton(context, attrs);
+			View view = null;
+			if (id == android.R.id.button1) // Positive button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonPositiveTheme), attrs);
+			else if (id == android.R.id.button2) // Negative button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonNegativeTheme), attrs);
+			else
+				view = new CustomFontButton(context, attrs);		
+			return view;
 		}
 		else if (name.equals("RadioButton"))
 		{
@@ -329,4 +347,5 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			mCurrentFeed = feed;
 	}
 
+	
 }

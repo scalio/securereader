@@ -9,115 +9,103 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_frame"
+        android:background="@drawable/modal_background"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:context=".SecureBluetoothSenderFragment" >
 
         <ImageView
             android:id="@+id/ImageView01"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            style="@style/ModalImageStyle"
             android:scaleType="fitCenter"
             android:src="@drawable/img_share_instructions" />
 
         <TextView
+            android:id="@+id/textView2"
+            style="@style/ModalCaptionStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bluetooth_send_info"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/textView1"
-            style="@style/BTSendHeaderStyle"
+            style="@style/ModalHeaderStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bluetooth_send_title"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/textView2"
-            style="@style/BTSendTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/bluetooth_send_info"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <View style="@style/ModalHeaderDividerStyle" />
 
         <ListView
             android:id="@+id/new_devices"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:choiceMode="singleChoice"
-            android:divider="@color/grey_light"
+            android:divider="@drawable/modal_list_divider"
             android:dividerHeight="1px"
             android:listSelector="@drawable/light_or_transparent_selector" >
         </ListView>
 
-        <LinearLayout
-            android:id="@+id/btScanButton"
-            style="@style/BTSendButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal" >
+        <FrameLayout
+            android:id="@+id/buttonContainer2"
+            style="@style/ModalButtonContainerStyle" >
 
-            <ImageView
-                android:id="@+id/ivScanning"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_context_load" />
+            <LinearLayout
+                android:id="@+id/btScanButton"
+                style="@style/ModalButtonStyle"
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/tvScanning"
-                style="@style/BTSendButtonTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/bluetooth_send_scan" />
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/ivScanning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_context_load" />
+
+                <TextView
+                    android:id="@+id/tvScanning"
+                    style="@style/ModalButtonTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/bluetooth_send_scan" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llSend"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_frame"
-        android:gravity="center"
+        android:background="@drawable/modal_background"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
         tools:context=".SecureBluetoothSenderFragment" >
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="30dp"
+            style="@style/ModalImageStyle"
             android:src="@drawable/img_local_share" />
 
         <TextView
             android:id="@+id/btSendText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ModalCaptionStyle"
             android:text="TextView" />
-
-        <Button
-            android:id="@+id/btSendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/fl1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" >
 
             <ProgressBar
                 android:id="@+id/progressSend"
@@ -135,7 +123,6 @@
                 android:text="@string/bluetooth_send_sharing"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#ffffff" />
-
         </FrameLayout>
     </LinearLayout>
 
@@ -144,57 +131,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="20dp"
+        android:background="@drawable/modal_background"
         android:gravity="top|center_horizontal"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:context=".SecureBluetoothSenderFragment" >
-
-        <LinearLayout
-            android:id="@+id/ll"
-            android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:background="@drawable/rounded_frame"
-            android:orientation="vertical" >
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                android:layout_gravity="center"
-            android:layout_margin="10dp"
+            style="@style/ModalHeaderStyle"
+            android:layout_width="fill_parent"
+            android:gravity="center"
             android:text="@string/bluetooth_send_success_1_story"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <ScrollView
-                android:id="@+id/svSharedItem"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1" >
+        <ScrollView
+            android:id="@+id/svSharedItem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1" >
 
-                <info.guardianproject.securereaderinterface.views.StoryItemPageView
-                    android:id="@+id/sharedItemView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:longClickable="false" >
-                </info.guardianproject.securereaderinterface.views.StoryItemPageView>
-            </ScrollView>
+            <info.guardianproject.securereaderinterface.views.StoryItemPageView
+                android:id="@+id/sharedItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:longClickable="false" >
+            </info.guardianproject.securereaderinterface.views.StoryItemPageView>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/buttonContainer1"
+            style="@style/ModalButtonContainerStyle" >
 
             <LinearLayout
                 android:id="@+id/btnClose"
-                style="@style/HelpButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
+                style="@style/ModalButtonSecondaryStyle"
                 android:background="@drawable/button_secondary_background_selector"
                 android:gravity="center"
                 android:minHeight="50dp"
@@ -218,12 +197,7 @@
                     android:textAllCaps="false"
                     android:textSize="13sp" />
             </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        </LinearLayout>
-        
 </FrameLayout>
