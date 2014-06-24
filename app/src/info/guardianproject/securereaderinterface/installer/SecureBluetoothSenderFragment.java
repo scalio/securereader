@@ -61,7 +61,6 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 	View mLLSend;
 	View mLLSharedStory;
 
-	Button sendButton;
 	View scanButton;
 
 	View ivScanning;
@@ -132,12 +131,8 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 		newDevicesListView.setOnItemClickListener(this);
 
 		sendTextView = (TextView) root.findViewById(R.id.btSendText);
-		sendTextView.setText("Click Scan to view the available devices");
+		sendTextView.setText("");
 
-		sendButton = (Button) root.findViewById(R.id.btSendButton);
-		//sendButton.setVisibility(View.INVISIBLE);
-		sendButton.setEnabled(false);
-		sendButton.setOnClickListener(this);
 		mProgressSend = (ProgressBar) root.findViewById(R.id.progressSend);
 
 		scanButton = root.findViewById(R.id.btScanButton);
@@ -405,7 +400,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 		}
 		else
 		{
-			sendTextView.setText("Error Sending Item");
+			setStatusText(R.string.bluetooth_send_error);
 		}		
 	}
 	
@@ -413,16 +408,7 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 	@Override
 	public void onClick(View clickedView)
 	{
-		if (clickedView == sendButton)
-		{
-			// sb.write("Hello Receiver, this is sender sending");
-			// sb.disconnect();
-
-			sendFile();
-
-			sendButton.setEnabled(false);
-		}
-		else if (clickedView == scanButton)
+		if (clickedView == scanButton)
 		{
 			mNewDevicesArrayAdapter.clear();
 			showScanningSpinner(true);
@@ -484,16 +470,13 @@ public class SecureBluetoothSenderFragment extends DialogFragment implements Loc
 			if (LOGGING)
 				Log.v(LOGTAG, "Connected");
 			setStatusText(R.string.bluetooth_send_connected);
-			sendButton.setEnabled(true);
-			onClick(sendButton);
-			//sendFile();
+			sendFile();
 		}
 		else if (eventType == SecureBluetooth.EVENT_DISCONNECTED)
 		{
 			if (LOGGING)
 				Log.v(LOGTAG, "Disconnected");
 			setStatusText(R.string.bluetooth_send_disconnected);
-			sendButton.setEnabled(true);
 		}
 	}
 
