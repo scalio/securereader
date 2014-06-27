@@ -4,8 +4,17 @@ import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.widgets.CustomFontSpan;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.ironrabbit.type.CustomTypefaceManager;
+
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
 
