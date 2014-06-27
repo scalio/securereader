@@ -10,3 +10,6 @@
 [submodule "external/supportlibrary"]
 	path = external/supportlibrary
 	url = https://android.googlesource.com/platform/frameworks/support
+[submodule "external/bho"]
+	path = external/bho
+	url = https://code.google.com/p/bho/
