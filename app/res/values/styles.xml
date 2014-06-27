@@ -1,6 +1,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	
-    <style name="AppTheme" parent="Theme.Sherlock.Light.DarkActionBar">          
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">          
         
         <item name="actionBarThemeColorTitle">#888888</item>
         <item name="actionBarThemeColorIconTint">#888888</item>
@@ -36,10 +36,11 @@
         <item name="actionBarTabStyle">@style/AppActionBarTabStyle</item>
 		<item name="actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
 		<item name="spinnerDropDownItemStyle">@style/DropDownItem</item>
-		<item name="spinnerItemStyle">@style/SpinnerItem</item>
 		<item name="dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
+		<item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
+		<item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
 	</style>
-
+    
     <style name="AppThemeNoActionBar" parent="AppTheme">
 		<item name="android:windowActionBar">false</item>
 		<item name="android:windowTitleSize">0dp</item>
@@ -58,50 +59,50 @@
 		<item name="actionBarMenuIcon">@drawable/ic_action_menu_read</item>
     </style>
      
-    <style name="AppActionBarStyle" parent="@style/Widget.Sherlock.Light.ActionBar">
+    <style name="AppActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">?attr/actionBarThemeBackground</item>
         <item name="background">?attr/actionBarThemeBackground</item>
     </style>
     
-    <style name="AppActionButtonStyle" parent="Widget.Sherlock.ActionButton">
+    <style name="AppActionButtonStyle" parent="Widget.AppCompat.ActionButton">
     	<item name="android:minWidth">56dip</item>
     	<item name="android:background">?attr/actionBarThemeButtonBackground</item>
     	<item name="background">?attr/actionBarThemeButtonBackground</item>
     </style>
   
-    <style name="AppActionBarTabBarStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabBar">
+    <style name="AppActionBarTabBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
 	    <item name="android:showDividers">middle</item>
 	    <item name="android:divider">@null</item>
 	</style>
     
     <!-- style for the tabs -->
-    <style name="AppActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+    <style name="AppActionBarTabStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_background_selector</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
 	</style>
     
-    <style name="AppActionBarTabTextStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabText">
+    <style name="AppActionBarTabTextStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabText">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@drawable/tab_foreground_selector</item>
     </style>
        
-    <style name="DropDownItem" parent="@style/Widget.Sherlock.Light.DropDownItem.Spinner">
+    <style name="DropDownItem" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
         <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
 <!--         <item name="android:background">@drawable/accent_on_selected_selector</item> -->
 	</style>
 	
-    <style name="SpinnerItem" parent="@style/Widget.Sherlock.TextView.SpinnerItem">
+    <style name="SpinnerItem" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
         <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
     </style>
      
-    <style name="ActionBarGreenButton" parent="@style/Widget.Sherlock.TextView.SpinnerItem">
+    <style name="ActionBarGreenButton" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
         <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
         <item name="android:background">@drawable/actionbar_light_button_inverted_selector</item>
     </style>
     
-    <style name="ActionBarSpinnerStyle" parent="@style/Widget.Sherlock.Light.DropDownItem.Spinner">
+    <style name="ActionBarSpinnerStyle" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
         <item name="android:dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
         <item name="dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
         <item name="listPopupWindowStyle">@style/ActionBarSpinnerDropdownListStyle</item>
@@ -126,7 +127,7 @@
         <item name="font">Glegoo-Regular</item>
     </style>
     
- 	<style name="AppActionBarOverflowButtonStyle" parent="Widget.Sherlock.ActionButton.Overflow">
+ 	<style name="AppActionBarOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
 		<item name="android:src">@drawable/ic_action_overflow</item>
 		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
 		<item name="android:minWidth">20dip</item>
@@ -341,7 +342,19 @@
 	    <item name="android:windowIsTranslucent">true</item>
 	    <item name="android:windowBackground">@android:color/transparent</item>
 	</style>
+
+	<style name="AppTheme.Dialog" parent="AppTheme">
+	    <item name="android:windowIsTranslucent">true</item>
+	    <item name="android:windowBackground">@android:color/transparent</item>
+	    <item name="android:windowFrame">@null</item>
+	    <item name="android:windowIsFloating">false</item>
+	    <item name="android:windowContentOverlay">@null</item>
+	    <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+	    <item name="android:windowNoTitle">true</item>
+	    <item name="android:backgroundDimEnabled">true</item>
+	</style>
 	
+		
 	<style name="RoundedButtonStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>

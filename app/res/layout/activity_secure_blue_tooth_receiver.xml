@@ -2,73 +2,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:id="@+id/llWait"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_frame"
-        android:gravity="center"
+        android:background="@drawable/modal_background"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical"
-        tools:context=".SecureBluetoothReceiverActivity" >
+        android:visibility="visible" >
 
         <ImageView
             android:id="@+id/ImageView01"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            style="@style/ModalImageStyle"
             android:scaleType="fitCenter"
             android:src="@drawable/img_receive_share" />
 
         <TextView
             android:id="@+id/textView1"
+            style="@style/ModalCaptionStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:gravity="top|center_horizontal"
             android:text="@string/bluetooth_receive_title"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/btReceiveText"
+            style="@style/ModalTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bluetooth_receive_info"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <Button
-            android:id="@+id/btReceiveButton"
-            style="@style/HelpButtonStyle"
+        <FrameLayout
+            android:id="@+id/buttonContainer"
+            style="@style/ModalButtonContainerStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:minHeight="48dp"
-            android:text="@string/bluetooth_receive_receive" />
+            android:layout_height="wrap_content" >
 
+            <Button
+                android:id="@+id/btReceiveButton"
+                style="@style/ModalButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/bluetooth_receive_receive" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llReceive"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="20dp"
-        android:background="@drawable/rounded_frame"
-        android:gravity="center"
+        android:background="@drawable/modal_background"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:context=".SecureBluetoothSenderActivity" >
+        tools:context=".SecureBluetoothSenderFragment" >
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/ModalImageStyle"
             android:layout_marginBottom="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -78,7 +82,8 @@
         <FrameLayout
             android:id="@+id/fl1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp" >
 
             <ProgressBar
                 android:id="@+id/progressReceive"
@@ -104,63 +109,53 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
-        android:layout_margin="20dp"
+        android:background="@drawable/modal_background"
         android:gravity="top|center_horizontal"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        android:visibility="visible"
-        tools:context=".SecureBluetoothSenderActivity" >
-
-        <LinearLayout
-            android:id="@+id/ll"
-            android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal"
-        android:background="@drawable/rounded_frame"
-            android:orientation="vertical" >
+        android:visibility="gone"
+        tools:context=".SecureBluetoothSenderFragment" >
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-                android:layout_gravity="center"
-            android:layout_margin="10dp"
+            style="@style/ModalHeaderStyle"
+            android:gravity="center"
             android:text="@string/bluetooth_send_success_1_story"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <ScrollView
-                android:id="@+id/svSharedItem"
+        <ScrollView
+            android:id="@+id/svSharedItem"
             android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
             android:layout_marginTop="20dp"
-                android:layout_weight="1" >
+            android:layout_weight="1" >
 
-                <info.guardianproject.securereaderinterface.views.StoryItemPageView
-                    android:id="@+id/sharedItemView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:longClickable="false" >
-                </info.guardianproject.securereaderinterface.views.StoryItemPageView>
-            </ScrollView>
+            <info.guardianproject.securereaderinterface.views.StoryItemPageView
+                android:id="@+id/sharedItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:longClickable="false" >
+            </info.guardianproject.securereaderinterface.views.StoryItemPageView>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/rlButtons"
+            style="@style/ModalButtonContainerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:id="@+id/btnClose"
-                style="@style/HelpButtonStyle"
+                style="@style/ModalButtonSecondaryStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:background="@drawable/button_secondary_background_selector"
                 android:gravity="center"
                 android:minHeight="50dp"
                 android:orientation="horizontal" >
@@ -184,18 +179,12 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="#ffffff" />
-
             <LinearLayout
                 android:id="@+id/btnRead"
-                style="@style/HelpButtonStyle"
+                style="@style/ModalButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:background="@drawable/button_primary_background_selector"
                 android:gravity="center"
                 android:minHeight="50dp"
                 android:orientation="horizontal" >
@@ -219,14 +208,6 @@
                     android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
     </LinearLayout>
 
 </FrameLayout>

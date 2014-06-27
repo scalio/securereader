@@ -4,6 +4,7 @@ import info.guardianproject.paik.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
+import info.guardianproject.securereaderinterface.LockableFragment;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth.SecureBluetoothEventListener;
 import info.guardianproject.securereaderinterface.views.StoryItemPageView;
 import info.guardianproject.iocipher.File;
@@ -13,15 +14,22 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -35,9 +43,9 @@ import android.widget.Toast;
 
 import com.tinymission.rss.Item;
 
-public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu implements OnClickListener, SecureBluetoothEventListener, OnItemClickListener
+public class SecureBluetoothSenderFragment extends DialogFragment implements LockableFragment, OnClickListener, SecureBluetoothEventListener, OnItemClickListener
 {
-	public static final String LOGTAG = "SecureBluetoothSenderActivity";
+	public static final String LOGTAG = "SecureBluetoothSenderFragment";
 	public static final boolean LOGGING = false;
 
 	private enum UIState
@@ -53,7 +61,6 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	View mLLSend;
 	View mLLSharedStory;
 
-	Button sendButton;
 	View scanButton;
 
 	View ivScanning;
@@ -71,21 +78,34 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	UIState mCurrentState = UIState.Scanning;
 	ProgressBar mProgressSend;
 
+	private Dialog mDialog;
+
+	public SecureBluetoothSenderFragment()
+	{
+		super();
+		sb = new SecureBluetooth();
+		sb.setSecureBluetoothEventListener(this);
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		// this.requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
-
-		// Display home as up
-		setDisplayHomeAsUp(true);
-		setMenuIdentifier(R.menu.activity_bluetooth_sender);
+        int style = DialogFragment.STYLE_NO_TITLE;
+        int theme = R.style.AppTheme_Dialog;
+        setStyle(style, theme);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		View root = inflater.inflate(R.layout.activity_secure_blue_tooth_sender, container, false);
 
 		// Pull out the item id
-		shareIntent = this.getIntent();
+		shareIntent = this.getArguments().getParcelable("intent");
 		if (shareIntent.hasExtra(SocialReader.SHARE_ITEM_ID))
 		{
-			SocialReader socialReader = ((App) this.getApplication()).socialReader;
+			SocialReader socialReader = App.getInstance().socialReader;
 			itemIdToSend = shareIntent.getLongExtra(SocialReader.SHARE_ITEM_ID, Item.DEFAULT_DATABASE_ID);
 			fileToSend = socialReader.packageItem(itemIdToSend);
 			mItemSent = socialReader.getItemFromId(itemIdToSend);
@@ -94,43 +114,32 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		{
 			if (LOGGING)
 				Log.e(LOGTAG, "No Item Id to Share");
-			finish();
+			dismiss();
 		}
 
-		setContentView(R.layout.activity_secure_blue_tooth_sender);
-		setActionBarTitle(getString(R.string.title_activity_secure_blue_tooth_sender));
-		
-		sb = new SecureBluetooth();
-		sb.setSecureBluetoothEventListener(this);
-		sb.enableBluetooth(this);
-
-		mLLScan = findViewById(R.id.llScan);
-		mLLSend = findViewById(R.id.llSend);
-		mLLSharedStory = findViewById(R.id.llSharedStory);
+		mLLScan = root.findViewById(R.id.llScan);
+		mLLSend = root.findViewById(R.id.llSend);
+		mLLSharedStory = root.findViewById(R.id.llSharedStory);
 
 		// Initialize array adapters. One for already paired devices and one for
 		// newly discovered devices
-		mNewDevicesArrayAdapter = new ArrayAdapter<DeviceInfo>(this, R.layout.activity_secure_blue_tooth_sender_device_name);
+		mNewDevicesArrayAdapter = new ArrayAdapter<DeviceInfo>(getActivity(), R.layout.activity_secure_blue_tooth_sender_device_name);
 
 		// Find and set up the ListView for newly discovered devices
-		newDevicesListView = (ListView) findViewById(R.id.new_devices);
+		newDevicesListView = (ListView) root.findViewById(R.id.new_devices);
 		newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
 		newDevicesListView.setOnItemClickListener(this);
 
-		sendTextView = (TextView) this.findViewById(R.id.btSendText);
-		sendTextView.setText("Click Scan to view the available devices");
+		sendTextView = (TextView) root.findViewById(R.id.btSendText);
+		sendTextView.setText("");
 
-		sendButton = (Button) this.findViewById(R.id.btSendButton);
-		//sendButton.setVisibility(View.INVISIBLE);
-		sendButton.setEnabled(false);
-		sendButton.setOnClickListener(this);
-		mProgressSend = (ProgressBar) findViewById(R.id.progressSend);
+		mProgressSend = (ProgressBar) root.findViewById(R.id.progressSend);
 
-		scanButton = findViewById(R.id.btScanButton);
+		scanButton = root.findViewById(R.id.btScanButton);
 		scanButton.setEnabled(true);
 		scanButton.setOnClickListener(this);
-		ivScanning = findViewById(R.id.ivScanning);
-		tvScanning = (TextView) findViewById(R.id.tvScanning);
+		ivScanning = root.findViewById(R.id.ivScanning);
+		tvScanning = (TextView) root.findViewById(R.id.tvScanning);
 
 		mLLSharedStory.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener()
 		{
@@ -138,13 +147,38 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 			public void onClick(View v)
 			{
 				// Go back to what we were doing...
-				finish();
+				dismiss();
 			}
 		});
 
 		showScanningSpinner(false);
+		
+		// Start by trying to receive
+		if (!sb.isEnabled())
+			sb.enableBluetooth(getActivity());
+		
+		return root;
 	}
 
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState)
+	{
+		mDialog = super.onCreateDialog(savedInstanceState);
+		mDialog.setOnShowListener(new OnShowListener()
+		{
+			@Override
+			public void onShow(DialogInterface dialog)
+			{
+				// If BT not enabled, hide us for now. We will prompt the user to enable
+				// BT and handle the result in onUnlockedActivityResult. Based on the
+				// user´s choice the dialog will either be dismissed or shown there.
+				if (!sb.isEnabled())
+					mDialog.hide();
+			}
+		});
+		return mDialog;
+	}
+	
 	private final BroadcastReceiver receiver = new BroadcastReceiver()
 	{
 		@Override
@@ -166,7 +200,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 			}
 			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
 			{
-				setProgressBarIndeterminateVisibility(false);
+				//setProgressBarIndeterminateVisibility(false);
 				// setTitle(R.string.select_device);
 				if (mNewDevicesArrayAdapter.getCount() == 0)
 				{
@@ -178,29 +212,16 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 			}
 			else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
 			{
-				setProgressBarIndeterminateVisibility(true);
+				//setProgressBarIndeterminateVisibility(true);
 				showScanningSpinner(true);
 			}
 		}
 	};
 
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		super.onResume();
-
-		// Register for broadcasts when a device is discovered
-		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-		registerReceiver(receiver, filter);
-
-		// Register for broadcasts when discovery has finished
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		registerReceiver(receiver, filter);
-
-		// Register for broadcasts when discovery has started
-		filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-		registerReceiver(receiver, filter);
-
 		updateUi();
 
 		// Start a scan automatically
@@ -249,15 +270,29 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		super.onPause();
 	}
 
+	
+	
 	@Override
-	protected void onStop()
+	public void onStart()
+	{
+		super.onStart();
+		
+		// Register for broadcasts when a device is discovered
+		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+		getActivity().registerReceiver(receiver, filter);
+	}
+
+	@Override
+	public void onStop()
 	{
 		if (LOGGING)
 			Log.v(LOGTAG,"onStop");
 		if (sb.btAdapter.isDiscovering()) { sb.btAdapter.cancelDiscovery(); }
 		sb.disconnect();
 		showScanningSpinner(false);
-		unregisterReceiver(receiver);
+		getActivity().unregisterReceiver(receiver);
 		super.onStop();
 	}
 
@@ -365,7 +400,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		}
 		else
 		{
-			sendTextView.setText("Error Sending Item");
+			setStatusText(R.string.bluetooth_send_error);
 		}		
 	}
 	
@@ -373,16 +408,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	@Override
 	public void onClick(View clickedView)
 	{
-		if (clickedView == sendButton)
-		{
-			// sb.write("Hello Receiver, this is sender sending");
-			// sb.disconnect();
-
-			sendFile();
-
-			sendButton.setEnabled(false);
-		}
-		else if (clickedView == scanButton)
+		if (clickedView == scanButton)
 		{
 			mNewDevicesArrayAdapter.clear();
 			showScanningSpinner(true);
@@ -420,7 +446,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 					if (!sb.connect(mAddress))
 					{
 						setUiState(UIState.Scanning);
-						Toast.makeText(SecureBluetoothSenderActivity.this, R.string.bluetooth_send_connect_error, Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), R.string.bluetooth_send_connect_error, Toast.LENGTH_LONG).show();
 					}
 				}
 
@@ -444,16 +470,13 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 			if (LOGGING)
 				Log.v(LOGTAG, "Connected");
 			setStatusText(R.string.bluetooth_send_connected);
-			sendButton.setEnabled(true);
-			onClick(sendButton);
-			//sendFile();
+			sendFile();
 		}
 		else if (eventType == SecureBluetooth.EVENT_DISCONNECTED)
 		{
 			if (LOGGING)
 				Log.v(LOGTAG, "Disconnected");
 			setStatusText(R.string.bluetooth_send_disconnected);
-			sendButton.setEnabled(true);
 		}
 	}
 
@@ -463,7 +486,7 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 		{
 			tvScanning.setText(R.string.bluetooth_send_scanning);
 			ivScanning.setVisibility(View.VISIBLE);
-			ivScanning.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+			ivScanning.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.rotate));
 			scanButton.setEnabled(false);
 		}
 		else
@@ -512,17 +535,21 @@ public class SecureBluetoothSenderActivity extends FragmentActivityWithMenu impl
 	}
 
 	@Override
-	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent data)
+	public void onUnlockedActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		super.onUnlockedActivityResult(requestCode, resultCode, data);
-		
 		// If we don´t allow BT to be turned on, just quit out of this activity!
-		if (requestCode == SecureBluetooth.REQUEST_ENABLE_BT && resultCode == RESULT_CANCELED)
+		if (requestCode == SecureBluetooth.REQUEST_ENABLE_BT)
 		{
-			finish();
+			if (resultCode == Activity.RESULT_CANCELED)	
+			{
+				this.dismiss();
+			}
+			else if (resultCode == Activity.RESULT_OK)
+			{
+				mDialog.show();
+			}
 		}
 	}
-	
 	
 	
 }

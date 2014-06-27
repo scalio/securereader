@@ -3,11 +3,11 @@ package info.guardianproject.securereaderinterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import info.guardianproject.paik.R;
+import android.view.Window;
 import com.tinymission.rss.MediaContent;
 
 public class ViewMediaActivity extends FragmentActivityWithMenu // implements

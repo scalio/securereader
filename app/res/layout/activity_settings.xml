@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.paik"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -19,22 +19,23 @@
            android:layout_width="match_parent"
            android:layout_height="60dp"
            android:layout_margin="5dp"
-           android:background="@drawable/settings_group_header_item_background"
-           android:padding="10dp" >
+           android:background="@drawable/settings_group_header_item_background" >
 
 		  	<TextView
-        		style="@style/SettingsHeadingStyle"
-        		android:layout_width="0dp"
-        		android:layout_height="wrap_content"
-        		android:layout_gravity="center_vertical"
-        		android:layout_weight="1"
-        		android:text="@string/settings_tor_require" />
+		  	    style="@style/SettingsHeadingStyle"
+		  	    android:layout_width="0dp"
+		  	    android:layout_height="wrap_content"
+		  	    android:layout_gravity="center_vertical"
+		  	    android:layout_margin="10dp"
+		  	    android:layout_weight="1"
+		  	    android:text="@string/settings_tor_require" />
 
     		<info.guardianproject.securereaderinterface.widgets.CheckableImageView
     		    android:id="@+id/chkRequireTor"
     		    android:layout_width="wrap_content"
-    		    android:layout_height="wrap_content"
+    		    android:layout_height="match_parent"
     		    android:layout_gravity="right|center_vertical"
+    		    android:padding="10dp"
     		    android:src="@drawable/checkbox_selector" />
 
 		</LinearLayout> 
@@ -505,6 +506,33 @@
             </RadioGroup>
 
         </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+        <LinearLayout
+            android:id="@+id/groupScreenshots"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/settings_group_header_item_background" >
+
+            <TextView
+                style="@style/SettingsHeadingStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/settings_enable_screenshots" />
+
+            <info.guardianproject.securereaderinterface.widgets.CheckableImageView
+                android:id="@+id/chkEnableScreenshots"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/checkbox_selector" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-</ScrollView>
+</info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView>

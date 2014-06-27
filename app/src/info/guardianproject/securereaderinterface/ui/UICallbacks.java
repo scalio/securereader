@@ -16,7 +16,7 @@ import info.guardianproject.securereaderinterface.SettingsActivity;
 import info.guardianproject.securereaderinterface.ViewMediaActivity;
 import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverActivity;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
@@ -38,6 +38,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.tinymission.rss.Feed;
@@ -485,12 +487,14 @@ public class UICallbacks
 
 		case R.integer.command_receiveshare:
 		{
-			if (LOGGING)
-				Log.v(LOGTAG, "Calling receive share activity");
-			Intent intent = new Intent(context, SecureBluetoothReceiverActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			context.startActivity(intent);
-			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			if (context instanceof FragmentActivity)
+			{
+				if (LOGGING)
+					Log.v(LOGTAG, "Calling receive share fragment dialog");
+				FragmentManager fm = ((FragmentActivity)context).getSupportFragmentManager();
+				SecureBluetoothReceiverFragment dialogReceiveShare = new SecureBluetoothReceiverFragment(); 
+				dialogReceiveShare.show(fm, App.FRAGMENT_TAG_RECEIVE_SHARE);
+			}
 			break;
 		}
 

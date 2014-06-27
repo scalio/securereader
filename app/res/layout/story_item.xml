@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.yakreader"
     android:id="@+id/llRoot"
     android:layout_width="fill_parent"
@@ -80,4 +80,4 @@
         android:drawable="@drawable/page_indicator_dot_selector"
         android:gravity="center_horizontal" />
 
-</FrameLayout>
+</merge>

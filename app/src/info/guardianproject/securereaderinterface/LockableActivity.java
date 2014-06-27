@@ -4,40 +4,43 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class LockableActivity extends SherlockFragmentActivity {
-
+public class LockableActivity extends ActionBarActivity  implements OnSharedPreferenceChangeListener 
+{
 	public static final String LOGTAG = "LockableActivity";
 	public static final boolean LOGGING = false;
 	
 	private boolean mLockedInOnPause;
-
+	private boolean mResumed;
+	private boolean mNeedToRecreate;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		LocalBroadcastManager.getInstance(this).registerReceiver(mLockReceiver, new IntentFilter(App.LOCKED_BROADCAST_ACTION));
 		LocalBroadcastManager.getInstance(this).registerReceiver(mUnlockReceiver, new IntentFilter(App.UNLOCKED_BROADCAST_ACTION));
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-		{
-			 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-			 WindowManager.LayoutParams.FLAG_SECURE);
-		}
+		addSettingsChangeListener();
+		applyEnableScreenshotsSetting();
 	}
 	
 	@Override
 	protected void onDestroy()
 	{
+		removeSettingsChangeListener();
 		super.onDestroy();
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mLockReceiver);
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(mUnlockReceiver);
@@ -62,7 +65,7 @@ public class LockableActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+		mResumed = false;
 		PowerManager pm =(PowerManager) getSystemService(Context.POWER_SERVICE);
 		if (pm.isScreenOn() == false)
 		{
@@ -78,6 +81,56 @@ public class LockableActivity extends SherlockFragmentActivity {
 			App.getInstance().onActivityResume(this);
 		mLockedInOnPause = false;
 		super.onResume();
+		mResumed = true;
+		if (mNeedToRecreate)
+		{
+			recreateNowOrOnResume();
+			return;
+		}
+	}
+	
+	private void addSettingsChangeListener()
+	{
+		App.getSettings().registerChangeListener(this);
+	}
+
+	private void removeSettingsChangeListener()
+	{
+		App.getSettings().unregisterChangeListener(this);
+	}
+	
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+	{
+		if (SettingsUI.KEY_ENABLE_SCREENSHOTS.equals(key))
+		{
+			if (LOGGING) 
+				Log.v(LOGTAG, "The enable screenshots setting has changed.");
+			recreateNowOrOnResume();
+		}
+	}
+	
+	/**
+	 * Based on the enable screenshots setting, set relevant window flags so that screen capturing will be enabled/disabled.
+	 */
+	private void applyEnableScreenshotsSetting()
+	{
+		if (App.getSettings().enableScreenshots())
+		{
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+			{
+				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+			}			
+		}
+		else
+		{
+			// Disable screen shots
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
+			{
+				 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+				 WindowManager.LayoutParams.FLAG_SECURE);
+			}
+		}
 	}
 	
 	BroadcastReceiver mLockReceiver = new BroadcastReceiver()
@@ -137,8 +190,8 @@ public class LockableActivity extends SherlockFragmentActivity {
 	}
 
 	@Override
-	public void onContentChanged() {
-		super.onContentChanged();
+	public void onSupportContentChanged() {
+		super.onSupportContentChanged();
 		ViewGroup parent = (ViewGroup) (getWindow().getDecorView());
 		mContentView = parent.getChildAt(0);
 	}
@@ -168,6 +221,39 @@ public class LockableActivity extends SherlockFragmentActivity {
 	
 	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		
+		// Call our fragments
+		//
+		if (getSupportFragmentManager().getFragments() != null)
+		{
+			for (Fragment f : getSupportFragmentManager().getFragments())
+			{
+				if (f instanceof LockableFragment)
+				{
+					((LockableFragment) f).onUnlockedActivityResult(requestCode, resultCode, imageReturnedIntent);
+				}
+			}
+		}
+	}
+	
+	public void recreateNowOrOnResume()
+	{
+		if (!mResumed)
+		{
+			mNeedToRecreate = true;
+		}
+		else
+		{
+			mNeedToRecreate = false;
+			Intent intentThis = getIntent();
+
+			Bundle b = new Bundle();
+			onSaveInstanceState(b);
+			intentThis.putExtra("savedInstance", b);
+			intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			finish();
+			overridePendingTransition(0, 0);
+			startActivity(intentThis);
+			overridePendingTransition(0, 0);
+		}
 	}
 }

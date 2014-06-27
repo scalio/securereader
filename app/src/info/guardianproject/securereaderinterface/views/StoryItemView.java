@@ -4,11 +4,9 @@ import info.guardianproject.paik.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.ItemExpandActivity;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
-import info.guardianproject.securereaderinterface.ui.PackageHelper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
@@ -22,13 +20,14 @@ import info.guardianproject.securereader.SocialReader;
 
 import java.text.Bidi;
 import java.util.ArrayList;
+import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
@@ -611,9 +610,37 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 			try
 			{
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mItem.getLink()));
-				//intent.setClassName(PackageHelper.URI_ORWEB, PackageHelper.URI_ORWEB + ".Browser");
-				// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				v.getContext().startActivity(intent);
+
+				String thisPackageName = App.getInstance().getPackageName();
+
+				// Instead of using built in functionality, we create our own chooser so that we
+				// can remove ourselves from the list (opening the story in this app would actually
+				// take us to the AddFeed page, so it does not make sense to have it as an option)
+				List<Intent> targetedShareIntents = new ArrayList<Intent>();
+				List<ResolveInfo> resInfo = v.getContext().getPackageManager().queryIntentActivities(intent, 0);
+				if (resInfo != null && resInfo.size() > 0)
+				{
+					for (ResolveInfo resolveInfo : resInfo)
+					{
+						String packageName = resolveInfo.activityInfo.packageName;
+
+						Intent targetedShareIntent = (Intent) intent.clone();
+						targetedShareIntent.setPackage(packageName);
+						if (!packageName.equals(thisPackageName)) // Remove
+																	// ourselves
+						{
+							targetedShareIntents.add(targetedShareIntent);
+						}
+					}
+
+					if (targetedShareIntents.size() > 0)
+					{
+						Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), null);
+						chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[] {}));
+
+						v.getContext().startActivity(chooserIntent);
+					}
+				}
 			}
 			catch (Exception e)
 			{
@@ -621,24 +648,22 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 					Log.d(LOGTAG, "Error trying to open read more link: " + mItem.getLink());
 			}
 		}
-
 	}
 
-	private class PromptOrwebClickListener implements View.OnClickListener
-	{
-		private final Context mContext;
-
-		public PromptOrwebClickListener(Context context)
-		{
-			mContext = context;
-		}
-
-		@Override
-		public void onClick(View v)
-		{
-			AlertDialog dialog = PackageHelper.showDownloadDialog(mContext, R.string.install_orweb_title, R.string.install_orweb_prompt, android.R.string.ok,
-					android.R.string.cancel, PackageHelper.URI_ORWEB_PLAY);
-		}
-
-	}
+//	private class PromptOrwebClickListener implements View.OnClickListener
+//	{
+//		private final Context mContext;
+//
+//		public PromptOrwebClickListener(Context context)
+//		{
+//			mContext = context;
+//		}
+//
+//		@Override
+//		public void onClick(View v)
+//		{
+//			AlertDialog dialog = PackageHelper.showDownloadDialog(mContext, R.string.install_orweb_title, R.string.install_orweb_prompt, android.R.string.ok,
+//					android.R.string.cancel, PackageHelper.URI_ORWEB_PLAY);
+//		}
+//	}
 }

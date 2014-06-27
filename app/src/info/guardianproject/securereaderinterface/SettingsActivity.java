@@ -3,15 +3,20 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.GroupView;
+import info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -21,9 +26,12 @@ import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
@@ -43,12 +51,13 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	public static final String EXTRA_GO_TO_GROUP = "go_to_group";
 
 	Settings mSettings;
-	private ViewGroup rootView;
+	private InitialScrollScrollView rootView;
 
 	private RadioButton mRbUseKillPassphraseOn;
 	private RadioButton mRbUseKillPassphraseOff;
 
-	private boolean mLanguageBeingUpdated;
+	private boolean mIsBeingRecreated;
+	private String mLastChangedSetting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -60,8 +69,8 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 		mSettings = App.getSettings();
 
-		rootView = (ViewGroup) findViewById(R.id.root);
-
+		rootView = (InitialScrollScrollView) findViewById(R.id.root);
+		
 		TypedArray array = this.obtainStyledAttributes(R.style.SettingsRadioButtonSubStyle, new int[] { android.R.attr.textColor });
 		if (array != null)
 		{
@@ -74,6 +83,20 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			array.recycle();
 		}
 
+		if (getIntent().hasExtra("savedInstance"))
+		{
+			Bundle savedInstance = getIntent().getBundleExtra("savedInstance");
+			getIntent().removeExtra("savedInstance");
+			if (savedInstance != null)
+			{
+				if (savedInstance.containsKey("expandedViews"))
+					expandSelectedGroupViews(rootView, savedInstance.getIntegerArrayList("expandedViews"));
+				
+				int scrollToViewId = savedInstance.getInt("scrollToViewId", View.NO_ID);
+				int scrollToViewOffset = savedInstance.getInt("scrollToViewOffset", 0);
+				rootView.setInitialPosition(scrollToViewId, scrollToViewOffset);
+			}
+		}
 	}
 
 	private void applySpanToAllRadioButtons(ViewGroup parent, CharacterStyle... cs)
@@ -123,12 +146,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			handleGoToGroup(getIntent().getIntExtra(EXTRA_GO_TO_GROUP, 0));
 			getIntent().removeExtra(EXTRA_GO_TO_GROUP);
 		}
-		
-		if (getIntent().hasExtra("savedInstance"))
-		{
-			this.onRestoreInstanceState(getIntent().getBundleExtra("savedInstance"));
-			getIntent().removeExtra("savedInstance");
-		}
 	}
 	
 	private void handleGoToGroup(int goToSection)
@@ -151,7 +168,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 						int top = view.getTop();
 						rootView.scrollTo(0, top - 5);
 					}
-
 				});
 			}
 		}
@@ -229,6 +245,19 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				promptForKillPassphrase(false);
 			}
 		});
+		
+		this.hookupCheckbox(tabView, R.id.chkEnableScreenshots, "enableScreenshots");
+		
+//		// On older devices there is no reliable way to turn off screen captures!
+//		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
+//		{
+//			View chkEnableScreenshots = tabView.findViewById(R.id.chkEnableScreenshots);
+//			if (chkEnableScreenshots != null)
+//			{
+//				((Checkable)chkEnableScreenshots).setChecked(true);
+//				chkEnableScreenshots.setEnabled(false);
+//			}
+//		}
 	}
 
 	private class ResourceValueMapping
@@ -449,61 +478,67 @@ public class SettingsActivity extends FragmentActivityWithMenu
 
 	private void promptForNewPassphrase()
 	{
-		final Dialog alert = new Dialog(this);
-		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		alert.setContentView(R.layout.settings_change_passphrase);
-
-		final EditText editEnterPassphrase = (EditText) alert.findViewById(R.id.editEnterPassphrase);
-		final EditText editNewPassphrase = (EditText) alert.findViewById(R.id.editNewPassphrase);
-		final EditText editConfirmNewPassphrase = (EditText) alert.findViewById(R.id.editConfirmNewPassphrase);
-
-		alert.findViewById(R.id.btnOk).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
-					return; // Both empty, ignore click
-
-				if (!(editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))) {
-					 Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_not_matching), Toast.LENGTH_LONG).show();
-						alert.dismiss();
+		View contentView = LayoutInflater.from(this).inflate(R.layout.settings_change_passphrase, null, false);
+		
+		final EditText editEnterPassphrase = (EditText) contentView.findViewById(R.id.editEnterPassphrase);
+		final EditText editNewPassphrase = (EditText) contentView.findViewById(R.id.editNewPassphrase);
+		final EditText editConfirmNewPassphrase = (EditText) contentView.findViewById(R.id.editConfirmNewPassphrase);
+		
+		Builder alert = new AlertDialog.Builder(this)
+				.setTitle(R.string.settings_security_change_passphrase)
+				.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
+						{
+							dialog.dismiss();
+							promptForNewPassphrase();
+							return; // Try again...                    
+						}
+	
+					if (!(editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()))) {
+						 Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_not_matching), Toast.LENGTH_LONG).show();
+							dialog.dismiss();
+							promptForNewPassphrase();
+							return; // Try again...					
+					}
+					
+					CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+					
+					char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
+					PassphraseSecrets secrets;
+	                try {
+	                	secrets = PassphraseSecrets.fetchSecrets(SettingsActivity.this, passwd);
+						cwh.changePassphrase(secrets, editNewPassphrase.getText().toString().toCharArray());
+	                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_changed), Toast.LENGTH_LONG).show();
+	
+	                } catch (Exception e) {
+	                    // Invalid password or the secret key has been
+	        			if (LOGGING) 
+	        				Log.e(LOGTAG, e.getMessage());
+	
+	                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
+						dialog.dismiss();
 						promptForNewPassphrase();
-						return; // Try again...					
-				}
-				
-				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
-				
-				char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
-				PassphraseSecrets secrets;
-                try {
-                	secrets = PassphraseSecrets.fetchSecrets(SettingsActivity.this, passwd);
-					cwh.changePassphrase(secrets, editNewPassphrase.getText().toString().toCharArray());
-                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_changed), Toast.LENGTH_LONG).show();
-
-                } catch (Exception e) {
-                    // Invalid password or the secret key has been
-        			if (LOGGING) 
-        				Log.e(LOGTAG, e.getMessage());
-
-                    Toast.makeText(SettingsActivity.this, getString(R.string.change_passphrase_incorrect), Toast.LENGTH_LONG).show();
-					alert.dismiss();
-					promptForNewPassphrase();
-					return; // Try again...                    
-                }
-                
-				alert.dismiss();
-			}
-		});
-		alert.findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				alert.cancel();
-			}
-		});
-		alert.show();
+						return; // Try again...                    
+	                }
+	                
+					dialog.dismiss();		
+					}
+				})
+				.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						dialog.cancel();
+					}
+				})
+				.setView(contentView);
+		AlertDialog dialog = alert.create();
+		dialog.show();
 	}
 
 	/**
@@ -515,20 +550,24 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	 */
 	private void promptForKillPassphrase(final boolean setToOnIfSuccessful)
 	{
-		final Dialog alert = new Dialog(this);
-		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		alert.setContentView(R.layout.settings_set_kill_passphrase);
+		View contentView = LayoutInflater.from(this).inflate(R.layout.settings_set_kill_passphrase, null, false);
 
-		final EditText editNewPassphrase = (EditText) alert.findViewById(R.id.editNewPassphrase);
-		final EditText editConfirmNewPassphrase = (EditText) alert.findViewById(R.id.editConfirmNewPassphrase);
+		final EditText editNewPassphrase = (EditText) contentView.findViewById(R.id.editNewPassphrase);
+		final EditText editConfirmNewPassphrase = (EditText) contentView.findViewById(R.id.editConfirmNewPassphrase);
 
-		alert.findViewById(R.id.btnOk).setOnClickListener(new OnClickListener()
+		Builder alert = new AlertDialog.Builder(this)
+		.setTitle(R.string.settings_security_set_kill_passphrase)
+		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			@Override
-			public void onClick(View v)
+			public void onClick(DialogInterface dialog, int which)
 			{
 				if (editNewPassphrase.getText().length() == 0 && editConfirmNewPassphrase.getText().length() == 0)
-					return; // Both empty, ignore click
+				{
+					dialog.dismiss();
+					promptForKillPassphrase(setToOnIfSuccessful);
+					return; // Try again...
+				}
 
 				// Check old
 				boolean matching = (editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()));
@@ -550,7 +589,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 						Toast.makeText(SettingsActivity.this, getString(R.string.lock_screen_passphrases_not_matching), Toast.LENGTH_LONG).show();
 					else
 						Toast.makeText(SettingsActivity.this, getString(R.string.settings_security_kill_passphrase_same_as_login), Toast.LENGTH_LONG).show();
-					alert.dismiss();
+					dialog.dismiss();
 					promptForKillPassphrase(setToOnIfSuccessful);
 					return; // Try again...
 				}
@@ -559,18 +598,20 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				App.getSettings().setKillPassphrase(editNewPassphrase.getText().toString());
 				if (setToOnIfSuccessful)
 					updateUseKillPassphrase();
-				alert.dismiss();
+				dialog.dismiss();
 			}
-		});
-		alert.findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener()
+		})
+		.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
 		{
 			@Override
-			public void onClick(View v)
+			public void onClick(DialogInterface dialog, int which)
 			{
-				alert.cancel();
+				dialog.cancel();
 			}
-		});
-		alert.setOnCancelListener(new OnCancelListener()
+		})
+		.setView(contentView);
+		AlertDialog dialog = alert.create();
+		dialog.setOnCancelListener(new OnCancelListener()
 		{
 			@Override
 			public void onCancel(DialogInterface dialog)
@@ -579,7 +620,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 					updateUseKillPassphrase();
 			}
 		});
-		alert.show();
+		dialog.show();
 	}
 
 	private void updateUseKillPassphrase()
@@ -594,13 +635,6 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			mRbUseKillPassphraseOff.setChecked(true);
 			mSettings.setUseKillPassphrase(false);
 		}
-	}
-
-	@Override
-	protected void onUiLanguageChanged()
-	{
-		mLanguageBeingUpdated = true;
-		super.onUiLanguageChanged();
 	}
 
 	private void collectExpandedGroupViews(View current, ArrayList<Integer> expandedViews)
@@ -621,37 +655,51 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	protected void onSaveInstanceState(Bundle outState) {
 		// Dont call base, see http://stackoverflow.com/questions/4504024/android-localization-problem-not-all-items-in-the-layout-update-properly-when-s
 		//super.onSaveInstanceState(outState);
-		if (mLanguageBeingUpdated)
+		if (mIsBeingRecreated)
 		{
 			ArrayList<Integer> expandedViews = new ArrayList<Integer>();
 			collectExpandedGroupViews(rootView, expandedViews);
 			outState.putIntegerArrayList("expandedViews", expandedViews);
+			
+			if (mLastChangedSetting != null)
+			{
+				if (SettingsUI.KEY_ENABLE_SCREENSHOTS.equals(mLastChangedSetting))
+				{
+					outState.putInt("scrollToViewId", R.id.chkEnableScreenshots);
+					outState.putInt("scrollToViewOffset", UIHelpers.getRelativeTop(findViewById(R.id.chkEnableScreenshots)) - UIHelpers.getRelativeTop(rootView) - rootView.getScrollY());
+				}
+				else if (SettingsUI.KEY_UI_LANGUAGE.equals(mLastChangedSetting))
+				{
+					outState.putInt("scrollToViewId", R.id.groupLanguage);
+					outState.putInt("scrollToViewOffset", UIHelpers.getRelativeTop(findViewById(R.id.groupLanguage)) - UIHelpers.getRelativeTop(rootView) - rootView.getScrollY());
+				}
+			}
 		}
 	}
 
 	private void expandSelectedGroupViews(View current, ArrayList<Integer> expandedViews)
 	{
-		if (current instanceof ViewGroup)
+		for (int id : expandedViews)
 		{
-			for (int child = 0; child < ((ViewGroup) current).getChildCount(); child++)
-				expandSelectedGroupViews(((ViewGroup) current).getChildAt(child), expandedViews);
-		}
-		if (current instanceof GroupView)
-		{
-			if (expandedViews.contains(Integer.valueOf(current.getId())))
-				((GroupView) current).setExpanded(true, false);
+			View view = current.findViewById(id);
+			if (view != null && view instanceof GroupView)
+			{
+				((GroupView) view).setExpanded(true, false);
+			}
 		}
 	}
 	
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		//super.onRestoreInstanceState(savedInstanceState);
-		if (savedInstanceState.containsKey("expandedViews"))
-		{
-			expandSelectedGroupViews(rootView, savedInstanceState.getIntegerArrayList("expandedViews"));
-			handleGoToGroup(R.id.groupLanguage);
-		}
+	public void recreateNowOrOnResume()
+	{
+		mIsBeingRecreated = true;
+		super.recreateNowOrOnResume();
 	}
-	
-	
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+	{
+		mLastChangedSetting = key;
+		super.onSharedPreferenceChanged(sharedPreferences, key);
+	}
 }

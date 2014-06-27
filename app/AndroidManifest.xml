@@ -191,17 +191,6 @@
         </activity>
         <service android:name="info.guardianproject.securereader.SyncService" >
         </service>
-
-        <activity
-            android:name="info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity"
-            android:label="@string/title_activity_secure_blue_tooth_sender"
-            android:theme="@style/AppTheme.Transparent" >
-        </activity>
-        <activity
-            android:name="info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverActivity"
-            android:label="@string/title_activity_secure_blue_tooth_receiver"
-            android:theme="@style/AppTheme.Transparent" >
-        </activity>
         
         <activity
             android:name="info.guardianproject.securereaderinterface.installer.SecureShareReceiveActivity"

@@ -19,16 +19,17 @@ import java.util.Locale;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.tinymission.rss.Feed;
@@ -53,17 +54,20 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final String LOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.lock.action";
 	public static final String UNLOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.unlock.action";
 
+	public static final String FRAGMENT_TAG_RECEIVE_SHARE = "FragmentReceiveShare";
+	public static final String FRAGMENT_TAG_SEND_BT_SHARE = "FragmentSendBTShare";
+
 	private static App m_singleton;
 
 	public static Context m_context;
-	public static Settings m_settings;
+	public static SettingsUI m_settings;
 
 	public SocialReader socialReader;
 	public SocialReporter socialReporter;
 	
 	private String mCurrentLanguage;
-	private FeedFilterType mCurrentFeedFilterType;
-	private Feed mCurrentFeed;
+	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
+	private Feed mCurrentFeed = null;
 
 	@Override
 	public void onCreate()
@@ -72,7 +76,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 		m_singleton = this;
 		m_context = this;
-		m_settings = new Settings(m_context);
+		m_settings = new SettingsUI(m_context);
 		applyUiLanguage();
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
@@ -109,7 +113,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		return m_singleton;
 	}
 
-	public static Settings getSettings()
+	public static SettingsUI getSettings()
 	{
 		return m_settings;
 	}
@@ -199,13 +203,29 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
 	{
-		if (name.equals("TextView"))
+		int id = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "id", -1);
+		if (Build.VERSION.SDK_INT < 11)
+		{
+			// Older devices don't support setting the "android:alertDialogTheme" in styles.xml
+			int idParent = Resources.getSystem().getIdentifier("parentPanel", "id", "android");
+			if (id == idParent)
+				context.setTheme(R.style.ModalDialogTheme);
+		}
+		
+		if (name.equals("TextView") || name.endsWith("DialogTitle"))
 		{
 			return new CustomFontTextView(context, attrs);
 		}
 		else if (name.equals("Button"))
 		{
-			return new CustomFontButton(context, attrs);
+			View view = null;
+			if (id == android.R.id.button1) // Positive button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonPositiveTheme), attrs);
+			else if (id == android.R.id.button2) // Negative button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonNegativeTheme), attrs);
+			else
+				view = new CustomFontButton(context, attrs);		
+			return view;
 		}
 		else if (name.equals("RadioButton"))
 		{
@@ -305,6 +325,13 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public Feed getCurrentFeed()
 	{
 		return mCurrentFeed;
+	}
+	
+	public long getCurrentFeedId()
+	{
+		if (getCurrentFeed() != null)
+			return getCurrentFeed().getDatabaseId();
+		return 0;
 	}
 
 	/**

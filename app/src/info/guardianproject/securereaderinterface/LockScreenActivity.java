@@ -271,6 +271,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					App.getInstance().wipe(SocialReader.DATA_WIPE);
 					mEnterPassphrase.setText("");
 					findViewById(R.id.tvError).setVisibility(View.VISIBLE);
+					finish();
 					return; // Try again...
 				}
 
@@ -287,6 +288,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
                     {
                         // Ooops, to many attempts! Wipe the data...
                         App.getInstance().wipe(SocialReader.DATA_WIPE);
+                        finish();
                     }
 
                     mEnterPassphrase.setText("");

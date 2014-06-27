@@ -28,16 +28,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
@@ -59,8 +59,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	LeftSideMenu mLeftSideMenu;
 
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
-	protected boolean mResumed;
-	private boolean mNeedToRecreate;
+
 
 	protected void setMenuIdentifier(int idMenu)
 	{
@@ -155,27 +154,17 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			initializeMenu();
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		mResumed = false;
-	}
-
 	@SuppressLint("NewApi")
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		mResumed = true;
-		if (mNeedToRecreate)
+		if (!isFinishing())
 		{
-			onUiLanguageChanged();
-			return;
+			if (Build.VERSION.SDK_INT >= 11)
+				invalidateOptionsMenu();
+			refreshMenu();
 		}
-		
-		if (Build.VERSION.SDK_INT >= 11)
-			invalidateOptionsMenu();
-		refreshMenu();
 	}
 
 	private final class KillReceiver extends BroadcastReceiver
@@ -198,7 +187,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 				@Override
 				public void run()
 				{
-					onUiLanguageChanged();
+					recreateNowOrOnResume();
 				}
 			});
 		}
@@ -228,29 +217,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	}
 
-	@SuppressLint("NewApi")
-	protected void onUiLanguageChanged()
-	{
-		if (!mResumed)
-		{
-			mNeedToRecreate = true;
-		}
-		else
-		{
-			mNeedToRecreate = false;
-			Intent intentThis = getIntent();
-			
-			Bundle b = new Bundle();
-			onSaveInstanceState(b);
-			intentThis.putExtra("savedInstance", b);
-			intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			finish();
-			overridePendingTransition(0, 0);
-			startActivity(intentThis);
-			overridePendingTransition(0, 0);
-		}
-	}
-
 	@Override
 	protected void onDestroy()
 	{
@@ -269,9 +235,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		mOptionsMenu = menu;
 		super.onCreateOptionsMenu(menu);
 
-		getSupportMenuInflater().inflate(mIdMenu, menu);
+		getMenuInflater().inflate(mIdMenu, menu);
 		
-		getSupportMenuInflater().inflate(R.menu.overflow_main, menu);
+		getMenuInflater().inflate(R.menu.overflow_main, menu);
 		
 		colorizeMenuItems();		
 		return true;

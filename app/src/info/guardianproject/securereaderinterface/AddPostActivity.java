@@ -40,6 +40,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -47,6 +49,8 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
@@ -65,9 +69,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.ActionProvider;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
 
@@ -124,9 +125,9 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 	}
 
 	@Override
-	public void onContentChanged()
+	public void onSupportContentChanged()
 	{
-		super.onContentChanged();
+		super.onSupportContentChanged();
 		mEditTitle = (EditText) findViewById(R.id.editTitle);
 		mEditContent = (EditText) findViewById(R.id.editContent);
 		mEditTags = (EditText) findViewById(R.id.editTags);
@@ -461,7 +462,7 @@ public class AddPostActivity extends FragmentActivityWithMenu implements OnActio
 		MenuItem menuPost = menu.findItem(R.id.menu_post);
 		if (menuPost != null)
 		{
-			menuPost.setActionProvider(new ActionProvider(this)
+			MenuItemCompat.setActionProvider(menuPost, new ActionProvider(this)
 			{
 				@Override
 				public View onCreateActionView()

@@ -4,7 +4,8 @@
     <string name="app_name">Secure Reader Library</string>
 
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
-            
+	<bool name="fulltextfeeds">false</bool>
+
     <string-array name="built_in_feed_names">
         <item>Paik Persian News</item>
         <item>Voice of America</item>

@@ -37,6 +37,7 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import info.guardianproject.paik.R;
@@ -44,7 +45,7 @@ import info.guardianproject.paik.R;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-public class StoryListView extends FrameLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
+public class StoryListView extends RelativeLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
 {
 	public static final String LOGTAG = "StoryListView";
 	public static final boolean LOGGING = false;
@@ -171,7 +172,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			}
 		});
 		
-		searchByTag(null);
+		searchByTag(null, null);
 	}
 
 	@Override
@@ -223,7 +224,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			@Override
 			public void onTagSelect(String tag)
 			{
-				searchByTag(tag);
+				searchByTag(mFeed, tag);
 			}
 
 		};
@@ -237,7 +238,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 		mCallbackListener = null;
 	}
 
-	private void searchByTag(String tag)
+	private void searchByTag(Feed feed, String tag)
 	{
 		mCurrentSearchTag = tag;
 		if (mCurrentSearchTag == null)
@@ -252,7 +253,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			mTvTagResults.setVisibility(View.VISIBLE);
 			mBtnCloseTagSearch.setVisibility(View.VISIBLE);
 		}
-		mAdapter.setTagFilter(tag);
+		mAdapter.setTagFilter(feed, tag);
 	}
 
 	@Override

@@ -1,80 +1,75 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llRoot"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frameRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="#ED231F20"
+    android:paddingBottom="19dp"
+    android:paddingLeft="26dp"
+    android:paddingRight="26dp"
+    android:paddingTop="19dp" >
 
-    <FrameLayout
-        android:id="@+id/frameRoot"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_panic_cancel" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#80000000"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:orientation="vertical" >
+    <TextView
+        android:id="@+id/btnSettings"
+        style="@style/PanicSettingsStyle"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/btnCancel"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="@string/panic_settings"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="18sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="40dp" >
-
-                <TextView
-                    android:id="@+id/btnSettings"
-                    style="@style/PanicSettingsStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="@string/panic_settings"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <TextView
-                    android:id="@+id/btnCancel"
-                    style="@style/PanicCancelStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/panic_cancel"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textHint"
-                style="@style/PanicHintStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="0dip"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:text="@string/panic_hint"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <ImageView
-                android:id="@+id/arrowSymbolView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:src="@drawable/ic_panic_down" />
-
-        </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="308dp"
+        android:layout_height="308dp"
+        android:layout_centerInParent="true" >
 
         <ImageView
-            android:id="@+id/radioactiveSymbolView"
+            android:id="@+id/arrowSymbolView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_panic_down" />        
+
+        <TextView
+            android:id="@+id/textHint"
+            style="@style/PanicHintStyle"
+            android:layout_width="250dp"
+            android:layout_height="44dp"
+            android:layout_above="@id/arrowSymbolView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="19dp"
+            android:layout_marginTop="19dp"
+            android:gravity="center"
+            android:text="@string/panic_hint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="18sp" />
+        
+                
+        <ImageView
+            android:id="@+id/radioactiveSymbolView"
+            android:layout_above="@id/textHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/ic_panic_lg" />
 
-    </FrameLayout>
 
-</LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
