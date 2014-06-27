@@ -32,6 +32,8 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import info.guardianproject.paik.R;
+
 import com.tinymission.rss.Feed;
 
 public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
@@ -209,6 +211,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			// Older devices don't support setting the "android:alertDialogTheme" in styles.xml
 			int idParent = Resources.getSystem().getIdentifier("parentPanel", "id", "android");
 			if (id == idParent)
+				
 				context.setTheme(R.style.ModalDialogTheme);
 		}
 		
@@ -355,5 +358,4 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	{
 		return mLastResumed != null && ((mLastResumed instanceof PostActivity) || (mLastResumed instanceof AddPostActivity));
 	}
-	
 }
