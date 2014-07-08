@@ -1,18 +1,14 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.widgets.CustomFontSpan;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.ironrabbit.type.CustomTypefaceManager;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
@@ -101,49 +97,9 @@ public class FontManager
 		}
 	}
 	
-	public static SpannableStringBuilder getTibetanText(Context context, String text)
-	{
-		// This is hacky. The tbo library has a bug with composites at the end
-		// of a string not being added to the output... so append some useless chars
-		// (more than 3) and strip off those that still remain after the transform.
-		String result = text.toString() + "_####";
-		result = CustomTypefaceManager.handlePrecompose(result);
-		int pos = result.lastIndexOf("_#");
-		if (pos != -1)
-			result = result.substring(0, pos);
-		SpannableStringBuilder ssb = new SpannableStringBuilder(result);
-		ssb.clearSpans();
-		getTibetanSpans(context, ssb);
-		return ssb;
-	}
-	
 	public static CharSequence transformText(TextView view, CharSequence text)
 	{
-		if (isTibetan(text))
-		{
-			if (text instanceof Spannable)
-			{
-				SpannableStringBuilder ssb = new SpannableStringBuilder(text);
-				int thisStart = 0;
-				int nextStart = 0;
-				int limit = 0;
-				do
-				{
-					limit = ssb.length();
-					nextStart = ssb.nextSpanTransition(thisStart, limit, Object.class);
-					if (nextStart > thisStart)
-					{
-						SpannableStringBuilder subText = getTibetanText(view.getContext(), ssb.subSequence(thisStart, nextStart).toString());
-						ssb.replace(thisStart, nextStart, subText);
-						thisStart = thisStart + subText.length();
-					}
-				}
-				while (nextStart < limit);
-				return ssb;
-			}
-			return getTibetanText(view.getContext(), text.toString());
-		}
-		else if (isCyrillic(text))
+		if (isCyrillic(text))
 		{
 			if (view.getTypeface() == FontManager.getFontByName(view.getContext(), "Lato-Light"))
 			{
