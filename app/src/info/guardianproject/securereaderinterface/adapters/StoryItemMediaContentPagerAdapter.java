@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 
 public class StoryItemMediaContentPagerAdapter extends PagerAdapter
 {
+	public static final String LOGTAG = "StoryItemMediaContentPagerAdapter";
+	public static final boolean LOGGING = false;	
+	
+	
 	private final Context mContext;
 	private ArrayList<MediaContentPreviewView> mMediaViewCollection;
 

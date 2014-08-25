@@ -9,11 +9,5 @@
     <outline category="en_US" text="VOA News" htmlUrl="http://www.voanews.com/api/epiqq" xmlUrl="http://www.voanews.com/api/epiqq" />
     <outline category="en_US" text="The Guardian World News" htmlUrl="http://feeds.theguardian.com/theguardian/world/rss" xmlUrl="http://feeds.theguardian.com/theguardian/world/rss" />
     <outline category="en_US" text="Washington Post World News" htmlUrl="http://feeds.washingtonpost.com/rss/world" xmlUrl="http://feeds.washingtonpost.com/rss/world" />
-    <outline category="bo_CN" text="VOA Tibetan" htmlUrl="http://www.voatibetan.com/api/"  xmlUrl="http://www.voatibetan.com/api/" />
-    <outline category="bo_CN" text="RFA Tibetan" htmlUrl="http://www.rfa.org/tibetan/RSS" xmlUrl="http://www.rfa.org/tibetan/RSS" />
-    <outline category="bo_CN" text="རི་མཐོ་ས་གཙང་།" htmlUrl="http://feeds.feedburner.com/highpeakspureearth/Ivux" xmlUrl="http://feeds.feedburner.com/highpeakspureearth/Ivux" />
-    <outline category="zh_CN" text="VOA Chinese" htmlUrl="http://www.voachinese.com/api/epiqq" xmlUrl="http://www.voachinese.com/api/epiqq" />
-    <outline category="zh_CN" text="高峰净土" htmlUrl="http://feeds.feedburner.com/highpeakspureearth/QdIn" xmlUrl="http://feeds.feedburner.com/highpeakspureearth/QdIn" />
-    <outline category="zh_CN" text="Voice of Tibet - Chinese" htmlUrl="http://www.vot.org/cn/feed/" xmlUrl="http://www.vot.org/cn/feed/" />
   </body>
 </opml> 

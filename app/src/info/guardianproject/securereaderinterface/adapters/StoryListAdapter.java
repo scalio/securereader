@@ -11,6 +11,8 @@ import info.guardianproject.securereaderinterface.views.StoryItemPageView.ViewTy
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,11 +24,15 @@ import android.widget.Filterable;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
 
 public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListener, Filterable, StoryItemPageViewListener
 {
+	public static final String LOGTAG = "StoryListAdapter";
+	public static final boolean LOGGING = false;	
+	
 	public interface OnTagClickedListener
 	{
 		void onTagClicked(String tag);
@@ -48,6 +54,7 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 	private int mResIdHeaderView;
 	private boolean mHeaderOnlyIfNoItems;
 	private String mTagFilter;
+	private Feed mTagFilterFeed;
 	private boolean mDeferMediaLoading;
 	private Filter mFilter;
 
@@ -76,10 +83,11 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 		applyFilters(); // Will call NotifyDataSetChanged when complete
 	}
 
-	public void setTagFilter(String tagFilter)
+	public void setTagFilter(Feed feed, String tagFilter)
 	{
 		if (!TextUtils.equals(mTagFilter, tagFilter))
 		{
+			mTagFilterFeed = feed;
 			mTagFilter = tagFilter;
 			applyFilters();
 		}
@@ -297,30 +305,41 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 				protected FilterResults performFiltering(CharSequence constraint)
 				{
 					ArrayList<Item> filteredStories = null;
-					if (mStories != null)
+
+					if (mTagFilterFeed != null)
 					{
-						filteredStories = new ArrayList<Item>();
-						for (Item item : mStories)
+						Feed result = App.getInstance().socialReader.getFeedItemsWithTag(mTagFilterFeed, constraint.toString());
+						filteredStories = result.getItems();
+					}
+					else
+					{
+						if (mStories != null)
 						{
-							if (constraint != null)
+							filteredStories = new ArrayList<Item>();
+							for (Item item : mStories)
 							{
-								if (item.getTags() != null)
+								if (constraint != null)
 								{
-									boolean bFoundTag = false;
-									for (String tag : item.getTags())
+									Pattern pattern = Pattern.compile(Pattern.quote(constraint.toString()), Pattern.CASE_INSENSITIVE);
+									if (item.getTags() != null)
 									{
-										if (tag.contains(constraint))
+										boolean bFoundTag = false;
+										for (String tag : item.getTags())
 										{
-											bFoundTag = true;
-											break;
+											if (pattern.matcher(tag).find())
+											{
+												bFoundTag = true;
+												break;
+											}
 										}
+										if (!bFoundTag)
+											continue; // Don't add this, i.e.
+														// filter
+														// it
 									}
-									if (!bFoundTag)
-										continue; // Don't add this, i.e. filter
-													// it
 								}
+								filteredStories.add(item);
 							}
-							filteredStories.add(item);
 						}
 					}
 					FilterResults results = new FilterResults();

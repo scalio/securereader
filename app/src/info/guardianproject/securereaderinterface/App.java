@@ -3,7 +3,9 @@ package info.guardianproject.securereaderinterface;
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
-import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.ui.UICallbackListener;
+import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CustomFontButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontEditText;
 import info.guardianproject.securereaderinterface.widgets.CustomFontRadioButton;
@@ -11,28 +13,34 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 
 import com.tinymission.rss.Feed;
 
+import info.guardianproject.yakreader.R;
+
 public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
+	public static final String LOGTAG = "App";
+	public static final boolean LOGGING = false;
+	
 	public static final boolean UI_ENABLE_POPULAR_ITEMS = false;
 			
 	public static final boolean UI_ENABLE_COMMENTS = false;
@@ -42,28 +50,26 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	public static final boolean UI_ENABLE_CHAT = false;
 	public static final boolean UI_ENABLE_LANGUAGE_CHOICE = true;
 	
-	public static final String EXIT_BROADCAST_PERMISSION = "info.guardianproject.securereaderinterface.exit.permission";
 	public static final String EXIT_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.exit.action";
 	public static final String SET_UI_LANGUAGE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.setuilanguage.action";
 	public static final String WIPE_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.wipe.action";
 	public static final String LOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.lock.action";
 	public static final String UNLOCKED_BROADCAST_ACTION = "info.guardianproject.securereaderinterface.unlock.action";
 
+	public static final String FRAGMENT_TAG_RECEIVE_SHARE = "FragmentReceiveShare";
+	public static final String FRAGMENT_TAG_SEND_BT_SHARE = "FragmentSendBTShare";
+
 	private static App m_singleton;
 
-	public int m_selectedArticleId;
-	public boolean m_unreadOnly = true;
-	public boolean m_unreadArticlesOnly = true;
-	// public String m_sessionId;
-	// public int m_apiLevel;
-	public boolean m_canUseProgress;
-
 	public static Context m_context;
-	public static Settings m_settings;
+	public static SettingsUI m_settings;
 
 	public SocialReader socialReader;
 	public SocialReporter socialReporter;
+	
 	private String mCurrentLanguage;
+	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
+	private Feed mCurrentFeed = null;
 
 	@Override
 	public void onCreate()
@@ -72,7 +78,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 
 		m_singleton = this;
 		m_context = this;
-		m_settings = new Settings(m_context);
+		m_settings = new SettingsUI(m_context);
 		applyUiLanguage();
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
@@ -83,6 +89,20 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		m_settings.registerChangeListener(this);
 		
 		mCurrentLanguage = getBaseContext().getResources().getConfiguration().locale.getLanguage();
+		UICallbacks.getInstance().addListener(new UICallbackListener()
+		{
+			@Override
+			public void onFeedSelect(FeedFilterType type, long feedId, Object source)
+			{
+				Feed feed = null;
+				if (type == FeedFilterType.SINGLE_FEED)
+				{
+					feed = getFeedById(feedId);
+				}
+				mCurrentFeedFilterType = type;
+				mCurrentFeed = feed;
+			}
+		});
 	}
 
 	public static Context getContext()
@@ -95,7 +115,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		return m_singleton;
 	}
 
-	public static Settings getSettings()
+	public static SettingsUI getSettings()
 	{
 		return m_settings;
 	}
@@ -151,6 +171,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			language = "zh";
 		else if (lang == UiLanguage.Ukrainian)
 			language = "uk";
+		else if (lang == UiLanguage.Russian)
+			language = "ru";
 		
 		if (language.equals(mCurrentLanguage))
 			return;
@@ -165,15 +187,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 	
 		// Notify activities (if any)
-		Intent intent = new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
-	}
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
+}
 
 	private void applyPassphraseTimeout()
 	{
@@ -185,25 +200,34 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader.doWipe(wipeMethod);
 
 		// Notify activities (if any)
-		Intent intent = new Intent(App.WIPE_BROADCAST_ACTION);
-		this.sendOrderedBroadcast(intent, App.EXIT_BROADCAST_PERMISSION, new BroadcastReceiver()
-		{
-			@Override
-			public void onReceive(Context context, Intent intent)
-			{
-			}
-		}, null, Activity.RESULT_OK, null, null);
+		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
 	}
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
 	{
-		if (name.equals("TextView"))
+		int id = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "id", -1);
+		if (Build.VERSION.SDK_INT < 11)
+		{
+			// Older devices don't support setting the "android:alertDialogTheme" in styles.xml
+			int idParent = Resources.getSystem().getIdentifier("parentPanel", "id", "android");
+			if (id == idParent)
+				context.setTheme(R.style.ModalDialogTheme);
+		}
+		
+		if (name.equals("TextView") || name.endsWith("DialogTitle"))
 		{
 			return new CustomFontTextView(context, attrs);
 		}
 		else if (name.equals("Button"))
 		{
-			return new CustomFontButton(context, attrs);
+			View view = null;
+			if (id == android.R.id.button1) // Positive button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonPositiveTheme), attrs);
+			else if (id == android.R.id.button2) // Negative button
+				view = new CustomFontButton(new ContextThemeWrapper(context, R.style.ModalAlertDialogButtonNegativeTheme), attrs);
+			else
+				view = new CustomFontButton(context, attrs);		
+			return view;
 		}
 		else if (name.equals("RadioButton"))
 		{
@@ -283,4 +307,46 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	{
 		mLockScreen = null;
 	}
+	
+	private Feed getFeedById(long idFeed)
+	{
+		ArrayList<Feed> items = socialReader.getSubscribedFeedsList();
+		for (Feed feed : items)
+		{
+			if (feed.getDatabaseId() == idFeed)
+				return feed;
+		}
+		return null;
+	}
+	
+	public FeedFilterType getCurrentFeedFilterType()
+	{
+		return mCurrentFeedFilterType;
+	}
+	
+	public Feed getCurrentFeed()
+	{
+		return mCurrentFeed;
+	}
+	
+	public long getCurrentFeedId()
+	{
+		if (getCurrentFeed() != null)
+			return getCurrentFeed().getDatabaseId();
+		return 0;
+	}
+
+	/**
+	 * Update the current feed property. Why is this needed? Because if the feed was just
+	 * updated from the network a new Feed object will have been created and we want to
+	 * pick up changes to the network pull date (and possibly other changes) here.
+	 * @param feed
+	 */
+	public void updateCurrentFeed(Feed feed)
+	{
+		if (mCurrentFeed != null && mCurrentFeed.getDatabaseId() == feed.getDatabaseId())
+			mCurrentFeed = feed;
+	}
+
+	
 }

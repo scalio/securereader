@@ -4,6 +4,7 @@ import info.guardianproject.yakreader.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
+import info.guardianproject.securereaderinterface.LockableFragment;
 import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.views.StoryItemPageView;
@@ -20,27 +21,37 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.holoeverywhere.widget.ProgressBar;
-
+import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 import com.tinymission.rss.MediaContent;
 
-public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu implements OnClickListener, SecureBluetooth.SecureBluetoothEventListener
+public class SecureBluetoothReceiverFragment extends DialogFragment implements LockableFragment, OnClickListener, SecureBluetooth.SecureBluetoothEventListener
 {
-	public static final String LOGTAG = "SecureBluetoothReceiverActivity";
+	public static final String LOGTAG = "SecureBluetoothReceiverFragment";
+	public static final boolean LOGGING = false;
 
 	private enum UIState
 	{
@@ -66,44 +77,46 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 
 	private long bytesReceived = 0;
 	private boolean mReceiverRegistered;
+	private Dialog mDialog;
 
+	public SecureBluetoothReceiverFragment()
+	{
+		super();
+		sb = new SecureBluetooth();
+		sb.setSecureBluetoothEventListener(this);
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+        int style = DialogFragment.STYLE_NO_TITLE;
+        int theme = R.style.AppTheme_Dialog;
+        setStyle(style, theme);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		View root = inflater.inflate(R.layout.activity_secure_blue_tooth_receiver, container, false);
 
-		setMenuIdentifier(R.menu.activity_bluetooth_receiver);
+		mLLWait = root.findViewById(R.id.llWait);
+		mLLReceive = root.findViewById(R.id.llReceive);
+		mLLSharedStory = root.findViewById(R.id.llSharedStory);
 
-		setContentView(R.layout.activity_secure_blue_tooth_receiver);
-		setActionBarTitle(getString(R.string.title_activity_secure_blue_tooth_receiver));
+		receiveText = (TextView) root.findViewById(R.id.btReceiveText);
 
-		sb = new SecureBluetooth();
-		sb.setSecureBluetoothEventListener(this);
-		sb.enableBluetooth(this);
-
-		mLLWait = findViewById(R.id.llWait);
-		mLLReceive = findViewById(R.id.llReceive);
-		mLLSharedStory = findViewById(R.id.llSharedStory);
-
-		receiveText = (TextView) this.findViewById(R.id.btReceiveText);
-
-		receiveButton = (Button) this.findViewById(R.id.btReceiveButton);
+		receiveButton = (Button) root.findViewById(R.id.btReceiveButton);
 		receiveButton.setOnClickListener(this);
 
-		mProgressReceive = (ProgressBar) findViewById(R.id.progressReceive);
+		mProgressReceive = (ProgressBar) root.findViewById(R.id.progressReceive);
 
 		mLLSharedStory.findViewById(R.id.btnClose).setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				// Receive more?
-				mItemReceived = null;
-				setUiState(UIState.Listening);
-				
-				// Update according to current scan mode
-				if (sb != null && sb.btAdapter != null)
-					updateBasedOnScanMode(sb.btAdapter.getScanMode());
+				dismiss();
 			}
 		});
 		mLLSharedStory.findViewById(R.id.btnRead).setOnClickListener(new OnClickListener()
@@ -127,12 +140,35 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 
 		// Start by trying to receive
 		if (sb.isEnabled())
-		receiveButton.performClick();
+			receiveButton.performClick();
+		else
+			sb.enableBluetooth(getActivity());
+		return root;
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState)
+	{
+		mDialog = super.onCreateDialog(savedInstanceState);
+		mDialog.setOnShowListener(new OnShowListener()
+		{
+			@Override
+			public void onShow(DialogInterface dialog)
+			{
+				// If BT not enabled, hide us for now. We will prompt the user to enable
+				// BT and handle the result in onUnlockedActivityResult. Based on the
+				// user´s choice the dialog will either be dismissed or shown there.
+				if (!sb.isEnabled())
+					mDialog.hide();
+			}
+		});
+		return mDialog;
 	}
 
 	@Override
 	public void onPause()
 	{
+		if (LOGGING)
 		Log.v(LOGTAG,"onPause");
 		super.onPause();
 	}
@@ -140,6 +176,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	@Override
 	public void onStop()
 	{
+		if (LOGGING) 
 		Log.v(LOGTAG,"onStop");
 		sb.disconnect();
 		unregisterReceiver();
@@ -147,7 +184,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	}
 
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		registerReceiver();
 		super.onResume();
@@ -193,9 +230,10 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	{
 		if (clickedView == receiveButton)
 		{
-			sb.enableDiscovery(this);
+			sb.enableDiscovery(getActivity());
 			sb.listen();
 			this.updateBasedOnScanMode(sb.btAdapter.getScanMode());
+			if (LOGGING)
 			Log.v(LOGTAG, "listen called, ready to receive");
 			receiveButton.setEnabled(false);
 		}
@@ -204,7 +242,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	private void getReadyToReceive()
 	{
 		//receivedContentBundleFile = ((App) this.getApplication()).socialReader.vfsTempItemBundle();
-		receivedContentBundleFile = ((App) this.getApplication()).socialReader.nonVfsTempItemBundle();
+		receivedContentBundleFile = App.getInstance().socialReader.nonVfsTempItemBundle();
 
 		receiveText.setText(getString(R.string.bluetooth_receive_connected));
 
@@ -224,11 +262,13 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 	@Override
 	public void secureBluetoothEvent(int eventType, int dataLength, Object data)
 	{
+		if (LOGGING)
 		Log.v(LOGTAG, "secureBluetoothEvent " + eventType);
 
 		if (eventType == SecureBluetooth.EVENT_CONNECTED)
 		{
 
+			if (LOGGING)
 			Log.v(LOGTAG, "We have a connection");
 			setUiState(UIState.Receiving);
 			getReadyToReceive();
@@ -237,6 +277,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 		else if (eventType == SecureBluetooth.EVENT_DISCONNECTED)
 		{
 
+			if (LOGGING)
 			Log.v(LOGTAG, "Got a disconnect, " + bytesReceived + " bytes received");
 
 			try
@@ -262,7 +303,8 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 							// Deserialize it
 							receivedItem = (Item) objectInputStream.readObject();
 							objectInputStream.close();
-							Log.v(LOGTAG, "We have an Item!!!: " + receivedItem.getTitle());
+							if (LOGGING)
+								Log.v(LOGTAG, "We have an Item!!!");
 							mItemReceived = receivedItem;
 							receivedItem.setShared(true);
 							receivedItem.setDatabaseId(Item.DEFAULT_DATABASE_ID);
@@ -271,7 +313,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 								mc.setDatabaseId(MediaContent.DEFAULT_DATABASE_ID);
 							}
 							// Add it in..
-							((App) this.getApplication()).socialReader.setItemData(receivedItem);							
+							App.getInstance().socialReader.setItemData(receivedItem);							
 						}
 						catch (ClassNotFoundException e)
 						{
@@ -279,6 +321,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 							e.printStackTrace();
 						}						
 					} else { // Ignore for now, we'll loop through again in a second 
+						if (LOGGING)
 						Log.v(LOGTAG,"Ignoring media element for now");
 					}
 				}
@@ -303,7 +346,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 							MediaContent mediaContent = receivedItem.getMediaContent(mediaContentCount);
 							mediaContentCount++;
 							
-							File savedFile = new File(((App) this.getApplication()).socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
+							File savedFile = new File(App.getInstance().socialReader.getFileSystemDir(), SocialReader.MEDIA_CONTENT_FILE_PREFIX + mediaContent.getDatabaseId());
 							bos = new BufferedOutputStream(new FileOutputStream(savedFile));
 							
 							byte buffer[] = new byte[1024];
@@ -318,6 +361,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 					}
 				}
 				else {
+					if (LOGGING)
 					Log.e(LOGTAG,"Didn't get an item");
 				}
 				
@@ -340,7 +384,7 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 				getReadyToReceive();
 			}
 
-			// Log.v(LOGTAG,"Reading data: " + sb.available());
+			if (LOGGING)
 			Log.v(LOGTAG, "Reading data: " + dataLength);
 			bytesReceived += dataLength;
 
@@ -348,12 +392,10 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 			{
 				bos.write((byte[]) data, 0, dataLength);
 				String textReceived = new String((byte[]) data);
-				Log.v(LOGTAG, textReceived);
 				updateProgress(dataLength, 2 * dataLength);
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -377,11 +419,12 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 		if (!mReceiverRegistered)
 		{
 			mReceiverRegistered = true;
+			if (LOGGING)
 			Log.d(LOGTAG, "Register receiver");
 
 			IntentFilter filter = new IntentFilter();
 			filter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
-			registerReceiver(receiver, filter);
+			getActivity().registerReceiver(receiver, filter);
 		}
 
 		// Update according to current scan mode
@@ -394,8 +437,9 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 		if (mReceiverRegistered)
 		{
 			mReceiverRegistered = false;
+			if (LOGGING)
 			Log.d(LOGTAG, "Unregister receiver");
-			unregisterReceiver(receiver);
+			getActivity().unregisterReceiver(receiver);
 		}
 	}
 
@@ -431,24 +475,22 @@ public class SecureBluetoothReceiverActivity extends FragmentActivityWithMenu im
 			receiveButton.setVisibility(View.GONE);
 		}
 	}
-	
+
 	@Override
-	protected void onUnlockedActivityResult(int requestCode, int resultCode, Intent data)
+	public void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		super.onUnlockedActivityResult(requestCode, resultCode, data);
-		
 		// If we don´t allow BT to be turned on, just quit out of this activity!
 		if (requestCode == SecureBluetooth.REQUEST_ENABLE_BT)
 		{
-			if (resultCode == RESULT_CANCELED)	
+			if (resultCode == Activity.RESULT_CANCELED)	
 			{
-				finish();
+				this.dismiss();
 			}
-			else if (resultCode == RESULT_OK)
+			else if (resultCode == Activity.RESULT_OK)
 			{
+				mDialog.show();
 				receiveButton.performClick();
 			}
 		}
 	}
-
 }

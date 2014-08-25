@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
@@ -15,8 +13,10 @@ import android.widget.TextView;
 
 import info.guardianproject.yakreader.R;
 
+
 public class GroupView extends LinearLayout
 {
+	boolean mHasBeenMeasured = false;
 	boolean mIsExpanded = false;
 	View mHeaderView;
 	View mCollapseView;
@@ -84,31 +84,6 @@ public class GroupView extends LinearLayout
 			}
 			a.recycle();
 		}
-
-		final ViewTreeObserver vto = this.getViewTreeObserver();
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener()
-		{
-			@Override
-			public void onGlobalLayout()
-			{
-				try
-				{
-					// remove the listener... or we'll be doing this a lot.
-					ViewTreeObserver observer = vto;
-					if (!observer.isAlive())
-						observer = GroupView.this.getViewTreeObserver();
-					observer.removeGlobalOnLayoutListener(this);
-
-					if (!mIsExpanded)
-					{
-						collapse(false);
-					}
-				}
-				catch (Exception ex)
-				{
-				}
-			}
-		});
 	}
 
 	@Override
@@ -118,6 +93,26 @@ public class GroupView extends LinearLayout
 
 		if (mCollapseView != null)
 			addView(mCollapseView);
+	}
+	
+	
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh)
+	{
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+
+	@Override
+	public void setLayoutParams(ViewGroup.LayoutParams params)
+	{
+		if (params != null && !mHasBeenMeasured)
+		{
+			if (!mIsExpanded)
+				params.height = getCollapsedHeight();
+			mHasBeenMeasured = true;
+		}
+		super.setLayoutParams(params);
 	}
 
 	public boolean getExpanded()
@@ -141,26 +136,24 @@ public class GroupView extends LinearLayout
 	public void expand(boolean animated)
 	{
 		mIsExpanded = true;
-
-		int width = getWidth();
-		if (width > 0)
+		if (animated)
 		{
-			super.measure(View.MeasureSpec.makeMeasureSpec(getWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED);
-
-			if (animated)
+			int width = getWidth();
+			if (width > 0)
 			{
+				super.measure(View.MeasureSpec.makeMeasureSpec(getWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED);
 				final ExpandAnim anim = new ExpandAnim(this, getHeight(), getMeasuredHeight());
 				anim.setDuration(500);
 				this.startAnimation(anim);
 			}
-			else
+		}
+		else
+		{
+			ViewGroup.LayoutParams layoutParams = getLayoutParams();
+			if (layoutParams != null)
 			{
-				ViewGroup.LayoutParams layoutParams = getLayoutParams();
-				if (layoutParams != null)
-				{
-					layoutParams.height = getMeasuredHeight();
-					setLayoutParams(layoutParams);
-				}
+				layoutParams.height = LayoutParams.WRAP_CONTENT;
+				setLayoutParams(layoutParams);
 			}
 		}
 	}

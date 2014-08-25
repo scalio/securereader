@@ -1,15 +1,14 @@
 package info.guardianproject.securereaderinterface.adapters;
 
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity;
+import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.yakreader.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.holoeverywhere.widget.Spinner;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -29,6 +28,9 @@ import android.widget.TextView;
 
 public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 {
+	public static final String LOGTAG = "ShareSpinnerAdapter";
+	public static final boolean LOGGING = false;	
+	
 	private final String TITLE_TAG = "TITLE";
 
 	private final Spinner mSpinner;
@@ -39,6 +41,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 	private final int mResIdHeaderString;
 	private final int mResIdButtonLayout;
 
+	private final Intent mSecureBTShareIntentPlaceholder = new Intent();
 	private final Intent mSecureChatShareIntentPlaceholder = new Intent();
 	
 	public ShareSpinnerAdapter(Spinner spinner, Context context, int resIdHeaderString, int resIdButtonLayout)
@@ -102,8 +105,22 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 	{
 		// Add an intent for our secure share
 		//
-		addIntentResolver(shareIntent, null, mContext.getPackageName(), SecureBluetoothSenderActivity.class.getName(),
-				R.string.share_via_secure_bluetooth, R.drawable.ic_share_sharer);
+		ResolveInfo info = new ResolveInfo();
+		ActivityInfo ai = null;
+		try
+		{
+			ai = App.getInstance().getPackageManager().getActivityInfo(new ComponentName(mContext.getPackageName(), MainActivity.class.getName()), 0);
+			info.activityInfo = ai;
+			info.labelRes = R.string.share_via_secure_bluetooth;
+			info.icon = R.drawable.ic_share_sharer;
+		}
+		catch (NameNotFoundException e)
+		{
+		}
+		mReceivers.add(info);
+		mSecureBTShareIntentPlaceholder.putExtra("intent", shareIntent);
+		mReceiverIntents.put(info, mSecureBTShareIntentPlaceholder);
+		this.notifyDataSetChanged();
 	}
 	
 	public void addSecureChatShareResolver(Intent shareIntent) {
@@ -160,6 +177,11 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 		{
 		}
 		this.notifyDataSetChanged();
+	}
+
+	public boolean isSecureBTShareIntent(Intent intent)
+	{
+		return intent == this.mSecureBTShareIntentPlaceholder;
 	}
 
 	public boolean isSecureChatIntent(Intent intent)

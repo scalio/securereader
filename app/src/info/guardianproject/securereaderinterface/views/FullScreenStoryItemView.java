@@ -4,32 +4,36 @@ import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
+import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereaderinterface.widgets.PagedView;
 import info.guardianproject.securereaderinterface.widgets.PagedView.PagedViewListener;
+
 import info.guardianproject.yakreader.R;
+import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import org.holoeverywhere.widget.AdapterView;
-import org.holoeverywhere.widget.Spinner;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
 import com.tinymission.rss.Item;
@@ -37,7 +41,8 @@ import com.tinymission.rss.Item;
 public class FullScreenStoryItemView extends FrameLayout implements PagedViewListener
 {
 	protected static final String LOGTAG = "FullScreenStoryItemView";
-
+	public static final boolean LOGGING = false;
+	
 	private View mBtnRead;
 	private View mBtnComments;
 	private CheckableImageView mBtnFavorite;
@@ -180,6 +185,20 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			{
 				ShareSpinnerAdapter adapter = (ShareSpinnerAdapter) parent.getAdapter();
 				Intent shareIntent = adapter.getIntentAtPosition(position);
+				if (adapter.isSecureBTShareIntent(shareIntent))
+				{
+					// BT Share is a dialog popup, so handle that here.
+			        FragmentManager fm = ((FragmentActivity)getContext()).getSupportFragmentManager();
+			        SecureBluetoothSenderFragment dialogSendShare = new SecureBluetoothSenderFragment(); 
+			        
+			        // Get the share intent and make sure to forward it on to our fragment
+			        Bundle args = new Bundle();
+			        args.putParcelable("intent", shareIntent.getParcelableExtra("intent"));
+			        dialogSendShare.setArguments(args);
+			        
+			        dialogSendShare.show(fm, App.FRAGMENT_TAG_SEND_BT_SHARE);
+					return;
+				}
 				if (adapter.isSecureChatIntent(shareIntent))
 					shareIntent = App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), false);
 				if (shareIntent != null)
@@ -264,7 +283,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		mShareAdapter.clear();
 		Intent shareIntent = App.getInstance().socialReader.getShareIntent(getCurrentStory());
 		mShareAdapter.addSecureBTShareResolver(shareIntent);
-		mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
+		//mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
 		// mShareAdapter.addIntentResolvers(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory()),
 		// PackageHelper.URI_CHATSECURE,
 		// R.string.share_via_secure_chat, R.drawable.ic_share_sharer);
@@ -307,7 +326,8 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			String roomName = "story_" + MD5_Hash(currentStory.getGuid());
 			Bundle params = new Bundle();
 			params.putString("room_name", roomName);
-			Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
+			if (LOGGING)
+				Log.v(LOGTAG, "Show comments, so start the chat application now with room: " + roomName);
 			UICallbacks.handleCommand(getContext(), R.integer.command_chat, params);
 		}
 		// mBtnRead.setSelected(false);

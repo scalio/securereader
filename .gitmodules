@@ -11,6 +11,6 @@
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
 	url = https://github.com/guardianproject/securereaderlibrary.git
-[submodule "external/HoloEverywhere"]
-	path = external/HoloEverywhere
-	url = https://github.com/Prototik/HoloEverywhere.git
+[submodule "external/supportlibrary"]
+	path = external/supportlibrary
+	url = https://android.googlesource.com/platform/frameworks/support

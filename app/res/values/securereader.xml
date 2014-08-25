@@ -3,6 +3,8 @@
 
 	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
 	
+	<bool name="fulltextfeeds">false</bool>
+		
     <string-array name="built_in_feed_names">
         <item>Applications</item>
         <item>EPubs</item>
@@ -27,6 +29,6 @@
 	<string name="xmlrpc_endpoint"></string>
 
 	<!-- Default values that should be referenced in Settings.java -->
-	<bool name="require_tor_default">false</bool>
+	<bool name="require_tor_default">true</bool>
 			    
 </resources>

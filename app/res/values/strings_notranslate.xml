@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_language_english_nt">English</string>
+    <string name="settings_language_arabic_nt">العربية</string>
+    <string name="settings_language_farsi_nt">رسیدن</string>
+    <string name="settings_language_tibetan_nt">བོད་ཡིག</string>
+    <string name="settings_language_chinese_nt">中文</string>
+  <string name="settings_language_ukrainian_nt">Українськa</string>
+    <string name="settings_language_russian_nt">русский</string>    
+</resources>

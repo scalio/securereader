@@ -155,7 +155,7 @@ public class StoryItemPageView extends RelativeLayout
 
 	public void populateWithItem(Item item)
 	{
-		if (mItem != item)
+		if (mItem == null || item == null || mItem.getDatabaseId() != item.getDatabaseId())
 		{
 			mItem = item;
 			if (mMediaViewCollection != null)

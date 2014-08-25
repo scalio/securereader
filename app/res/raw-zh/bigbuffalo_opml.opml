@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<opml version="1.1">
+  <head>
+    <title>Big Buffalo - Default Feeds</title>
+    <dateCreated>2013-07-18T00:38:00+00:00</dateCreated>
+    <dateModified>2013-07-18T00:38:00+00:00</dateModified>
+  </head>
+  <body>
+    <outline category="zh_CN" text="VOA Chinese" htmlUrl="http://www.voachinese.com/api/epiqq" xmlUrl="http://www.voachinese.com/api/epiqq" />
+    <outline category="zh_CN" text="高峰净土" htmlUrl="http://feeds.feedburner.com/highpeakspureearth/QdIn" xmlUrl="http://feeds.feedburner.com/highpeakspureearth/QdIn" />
+    <outline category="zh_CN" text="Voice of Tibet - Chinese" htmlUrl="http://www.vot.org/cn/feed/" xmlUrl="http://www.vot.org/cn/feed/" />
+  </body>
+</opml> 

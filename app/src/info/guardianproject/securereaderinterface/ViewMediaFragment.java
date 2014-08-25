@@ -16,6 +16,9 @@ import com.tinymission.rss.MediaContent;
 
 public class ViewMediaFragment extends Fragment implements OnMediaOrientationListener
 {
+	public static final String LOGTAG = "ViewMediaFragment";
+	public static final boolean LOGGING = false;
+	
 	private View mRootView;
 	private View mMediaContentView;
 

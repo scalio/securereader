@@ -11,6 +11,9 @@ import com.tinymission.rss.Item;
 
 public class PostDraftsListAdapter extends PostPublishedListAdapter
 {
+	public static final String LOGTAG = "PostDraftsListAdapter";
+	public static final boolean LOGGING = false;
+	
 	public interface PostDraftsListAdapterListener
 	{
 		void onEditDraft(Item item);

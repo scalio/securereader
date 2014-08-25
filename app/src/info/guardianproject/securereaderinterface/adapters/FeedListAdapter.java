@@ -24,6 +24,7 @@ import com.tinymission.rss.Feed;
 public class FeedListAdapter extends BaseAdapter
 {
 	public final static String LOGTAG = "FeedList";
+	public static final boolean LOGGING = false;
 
 	public interface FeedListAdapterListener
 	{

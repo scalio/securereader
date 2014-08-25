@@ -37,6 +37,7 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import info.guardianproject.yakreader.R;
@@ -44,8 +45,11 @@ import info.guardianproject.yakreader.R;
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-public class StoryListView extends FrameLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
+public class StoryListView extends RelativeLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
 {
+	public static final String LOGTAG = "StoryListView";
+	public static final boolean LOGGING = false;
+	
 	public interface StoryListListener
 	{
 		/**
@@ -168,7 +172,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			}
 		});
 		
-		searchByTag(null);
+		searchByTag(null, null);
 	}
 
 	@Override
@@ -220,7 +224,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			@Override
 			public void onTagSelect(String tag)
 			{
-				searchByTag(tag);
+				searchByTag(mFeed, tag);
 			}
 
 		};
@@ -234,7 +238,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 		mCallbackListener = null;
 	}
 
-	private void searchByTag(String tag)
+	private void searchByTag(Feed feed, String tag)
 	{
 		mCurrentSearchTag = tag;
 		if (mCurrentSearchTag == null)
@@ -249,7 +253,7 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			mTvTagResults.setVisibility(View.VISIBLE);
 			mBtnCloseTagSearch.setVisibility(View.VISIBLE);
 		}
-		mAdapter.setTagFilter(tag);
+		mAdapter.setTagFilter(feed, tag);
 	}
 
 	@Override
@@ -432,8 +436,9 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			View child = mListStories.getChildAt(0);
 			if (child != null)
 				oldY = child.getTop();
-			Log.v(MainActivity.LOGTAG, "Remember list position " + oldItemId
-					+ "," + oldY);
+			
+			if (LOGGING)	
+				Log.v(LOGTAG, "Remember list position " + oldItemId + "," + oldY);
 		}
 		mOldItemId = oldItemId;
 		mOldY = oldY;
@@ -446,7 +451,9 @@ public class StoryListView extends FrameLayout implements OnTagClickedListener, 
 			int index = 0;
 			int offset = 0;
 			
-			Log.v(MainActivity.LOGTAG, "Scrolling list back to item " + mOldItemId + "," + mOldY);
+			if (LOGGING)
+				Log.v(LOGTAG, "Scrolling list back to item " + mOldItemId + "," + mOldY);
+			
 			if (mOldItemId != -1)
 			{
 				ListAdapter adapter = mListStories.getAdapter();

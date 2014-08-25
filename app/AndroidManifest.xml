@@ -2,23 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.yakreader"
     android:installLocation="preferExternal"
-    android:versionCode="6"
-    android:versionName="1.1.0" >
+    android:versionCode="12"
+    android:versionName="0.1.6">
     <!-- Change package when branching into distinct app -->
 
     <uses-sdk
-		android:minSdkVersion="9"
+	android:minSdkVersion="9"
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <permission
-        android:name="info.guardianproject.securereaderinterface.exit.permission"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="info.guardianproject.securereaderinterface.exit.permission" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -61,11 +55,13 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_add_feed" >
             
+            <!-- 
 			<intent-filter>
 			    <action android:name="android.intent.action.VIEW"/>
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:host="*"/>
 			    <data android:pathPattern=".*\\.xml"/>
 			    <data android:pathPattern=".*\\.rss"/>
@@ -76,6 +72,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>		
 			    <data android:host="feeds.feedburner.com"/>
 			    <data android:host="feedproxy.google.com"/>
 			    <data android:host="feeds2.feedburner.com"/>
@@ -87,12 +84,37 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>	
+			    <data android:mimeType="text/*"/>		    
 			    <data android:mimeType="text/xml"/>
 			    <data android:mimeType="application/rss+xml"/>
 			    <data android:mimeType="application/atom+xml"/>
 			    <data android:mimeType="application/xml"/>
 			</intent-filter>         
+			-->
 			
+			<intent-filter>
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.ALTERNATIVE" /> 
+				<category android:name="android.intent.category.SELECTED_ALTERNATIVE" /> 
+				<data android:mimeType="text/*" />
+			</intent-filter>
+			              
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="android.intent.category.BROWSABLE"/>
+			    <data android:mimeType="text/*"/>
+			</intent-filter>			
+
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <category android:name="android.intent.category.BROWSABLE"/>
+			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
+			</intent-filter>				
         </activity>
         <activity
             android:name="info.guardianproject.securereaderinterface.PanicActivity"
@@ -135,17 +157,6 @@
         </activity>
         <service android:name="info.guardianproject.securereader.SyncService" >
         </service>
-
-        <activity
-            android:name="info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderActivity"
-            android:label="@string/title_activity_secure_blue_tooth_sender"
-            android:theme="@style/AppTheme.Transparent" >
-        </activity>
-        <activity
-            android:name="info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverActivity"
-            android:label="@string/title_activity_secure_blue_tooth_receiver"
-            android:theme="@style/AppTheme.Transparent" >
-        </activity>
         
         <activity
             android:name="info.guardianproject.securereaderinterface.installer.SecureShareReceiveActivity"

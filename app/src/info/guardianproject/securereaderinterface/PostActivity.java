@@ -21,8 +21,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -35,14 +39,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 public class PostActivity extends ItemExpandActivity implements ActionBar.TabListener, OnActionListener, OnTagClickedListener, OnAgreeListener,
 		FadeInFadeOutListener
 {
+	public static final String LOGTAG = "PostActivity";
+	public static final boolean LOGGING = false;
+	
 	PostPagerAdapter mPostPagerAdapter;
 
 	/**

@@ -24,6 +24,9 @@ import info.guardianproject.yakreader.R;
 
 public class ExpandingFrameLayout extends FrameLayout
 {
+	public static final String LOGTAG = "ExpandingFrameLayout";
+	public static final boolean LOGGING = false;		 
+	
 	public static final int DEFAULT_EXPAND_DURATION = 500;
 	public static final int DEFAULT_COLLAPSE_DURATION = 500;
 
@@ -223,7 +226,8 @@ public class ExpandingFrameLayout extends FrameLayout
 			}
 			catch(Exception e)
 			{
-				Log.e("ExpandingFrameLayout", e.toString());
+				if (LOGGING)
+					Log.e("ExpandingFrameLayout", e.toString());
 			}
 		parent.setDrawingCacheEnabled(false);
 		}

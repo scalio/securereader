@@ -117,9 +117,27 @@
   <string name="settings_panic_wipe_app">ཉེར་སྤྱོད་མ་ལག་ཆ་ཚང་ཕྱིས། </string>
   <string name="settings_panic_wipe_content">ངའི་དཀར་ཆག་ཕྱིས། </string>
   <string name="settings_heading_login">ནང་འཛུལ་བྱོས། </string>
-  <string name="settings_security_launch">དགོས་འདུན་ཁག་འགོ་ཚུགས།</string>
-  <string name="settings_security_launch_require_passphrase">གསང་ཚིག</string>
-  <string name="settings_security_launch_require_none">གང་ཡང་མེད།</string>
+  <string name="settings_security_passphrase_timeout">Lock Automatically</string>
+  <string name="settings_security_passphrase_timeout_info">Locking allows your information to be encrypted and stored safely on your device. Choose timeout.</string>
+  <string name="settings_security_passphrase_timeout1">Immediate</string>
+  <string name="settings_security_passphrase_timeout2">1 minute</string>
+  <string name="settings_security_passphrase_timeout3">1 hour</string>
+  <string name="settings_security_passphrase_timeout4">1 day</string>
+  <string name="settings_security_passphrase_timeout5">1 week</string>
+	<string name="generic_second">second</string>
+	<string name="generic_seconds">seconds</string>
+	<string name="generic_minute">minute</string>
+	<string name="generic_minutes">minutes</string>
+	<string name="generic_hour">hour</string>
+	<string name="generic_hours">hours</string>
+	<string name="generic_day">day</string>
+	<string name="generic_days">days</string>
+	<string name="generic_week">week</string>
+	<string name="generic_weeks">weeks</string>
+	<string name="generic_month">month</string>
+	<string name="generic_months">months</string>
+	<string name="generic_year">year</string>
+	<string name="generic_years">years</string>    
   <string name="settings_security_password_attempts">གསང་ཚིག་ནོར་བ་ནང་འཇུག་ཁག </string>
   <string name="settings_security_password_attempts_label">ཁྱེད་རང་སྒེར་གྱི་གནས་ཚུལ་ཁག་ཉེར་སྤྱོད་མ་ལག་ནས་མ་གསུབ་པའི་སྔོན་ལ། གསང་གྲངས་ནོར་བ་ཞིག་ནང་འཇུག་ཐེངས་ག་ཚོད་ལ་བྱེད་སྲིད་པའི་གྲངས་ཀ་དེ་འདེམས། </string>
   <string name="settings_security_password_attempts_1">༢</string>
@@ -156,8 +174,13 @@
   <string name="settings_reader_swipe_direction_ltr">ཧྤར་སིས།⏎\nཤོག་ངོས་རྗེས་མ་དེ་གཡོན་ནས་གཡས་སུ་འགྲོ</string>
   <string name="settings_heading_language">སྐད་ཡིག</string>
   <string name="settings_language_option_group_default">གཏན་འཁེལ་བའི་སྐད་ཡིག</string>
-  <string name="settings_language_english">དབྱིན་སྐད།</string>
-  <string name="settings_language_farsi">པར་ཤི་ཡའི་སྐད་ཡིག</string>
+	<string name="lock_screen_language_farsi">པར་ཤི་ཡའི་སྐད་ཡིག</string>
+<string name="lock_screen_language_english">དབྱིན་སྐད།</string>
+<string name="settings_language_arabic">Arabic</string>
+    <string name="settings_language_tibetan">བོད་ཡིག</string>
+    <string name="settings_language_chinese">Chinese</string>
+    <string name="settings_language_ukrainian">Ukrainian</string>
+    <string name="settings_language_russian">Russian</string>
   <string name="lock_screen_title1">གཡག་ཀློག་པ་པོ་བེད་སྤྱོད་བྱེད་པར་དགའ་བསུ་ཡོད།</string>
   <string name="lock_screen_title2">རང་དབང་ངང་ཀློག བྲིས། གཏམ་གླེང་བྱོས།</string>
   <string name="lock_screen_set_passphrase">གསང་ཚིག་སྒྲིག་སྦྱོར་བྱེད།</string>
@@ -225,14 +248,17 @@
 
     <string name="apps_feed_name">Applications</string>
     <string name="epubs_feed_name">Tibet Archive</string>
-
-    <string name="cacheword_notification_cached_title">YakReader Unlocked</string>
-    <string name="cacheword_notification_cached">YakReader passcode stored in memory</string>
-    <string name="cacheword_notification_cached_message">YakReader passcode stored in memory</string>
+    
+    <string name="cacheword_notification_cached_title">Courier Unlocked</string>
+    <string name="cacheword_notification_cached">Courier passcode stored in memory</string>
+    <string name="cacheword_notification_cached_message">Courier passcode stored in memory</string>
     <string name="download_epub_hint">Download ePub</string>
     <string name="download_epub_reader_title">Download ePub Reader</string>
     <string name="download_epub_reader_info">You need an ePub reader to see the story. We recommend FBReader. Get it on:</string>
     <string name="download_epub_reader_play">Google Play</string>
     <string name="download_epub_reader_web">FBReader Website</string>
     <string name="download_epub_reader_close">Close</string>
+    
+    <string name="chatroom_name">Not being used</string>
+    
 </resources>

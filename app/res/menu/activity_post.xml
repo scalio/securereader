@@ -1,5 +1,5 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_add_post" android:title="@string/menu_add_post" android:orderInCategory="99" android:icon="@drawable/ic_action_post_new" android:showAsAction="always" android:enabled="true"/>
-    <item android:id="@+id/menu_tag" android:title="@string/menu_tag" android:orderInCategory="100" android:icon="@drawable/ic_action_tag" android:showAsAction="always" android:enabled="true"/>
-    <item android:id="@+id/menu_panic" android:title="@string/menu_panic" android:orderInCategory="101" android:showAsAction="always" android:icon="@drawable/ic_action_panic" android:enabled="true"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_add_post" android:title="@string/menu_add_post" android:orderInCategory="99" android:icon="@drawable/ic_action_post_new" app:showAsAction="always" android:enabled="true"/>
+    <item android:id="@+id/menu_tag" android:title="@string/menu_tag" android:orderInCategory="100" android:icon="@drawable/ic_action_tag" app:showAsAction="always" android:enabled="true"/>
+    <item android:id="@+id/menu_panic" android:title="@string/menu_panic" android:orderInCategory="101" app:showAsAction="always" android:icon="@drawable/ic_action_panic" android:enabled="true"/>
 </menu>

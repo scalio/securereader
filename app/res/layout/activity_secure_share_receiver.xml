@@ -14,7 +14,7 @@
         android:background="@drawable/rounded_frame"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".SecureBluetoothSenderActivity" >
+        tools:context=".SecureBluetoothSenderFragment" >
 
         <ImageView
             android:id="@+id/imageView1"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <org.holoeverywhere.widget.ProgressBar
+            <ProgressBar
                 android:id="@+id/progressReceive"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:context=".SecureBluetoothSenderActivity" >
+        tools:context=".SecureBluetoothSenderFragment" >
 
         <TextView
             android:id="@+id/textView4"

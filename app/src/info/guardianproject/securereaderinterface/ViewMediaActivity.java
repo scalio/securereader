@@ -3,16 +3,18 @@ package info.guardianproject.securereaderinterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
-
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import info.guardianproject.yakreader.R;
+import android.view.Window;
 import com.tinymission.rss.MediaContent;
 
 public class ViewMediaActivity extends FragmentActivityWithMenu // implements
 // OnTouchListener
 {
+	public static final String LOGTAG = "ViewMediaActivity";
+	public static final boolean LOGGING = false;
+	
 	private static int ACTION_BAR_SHOW_DELAY = 2500; // How long to show the
 														// action bar until it
 														// does away

@@ -27,6 +27,9 @@ import com.tinymission.rss.Item;
 
 public class PostListFragment extends Fragment implements PostDraftsListAdapterListener
 {
+	public static final String LOGTAG = "PostListFragment";
+	public static final boolean LOGGING = false;
+	
 	public static final String ARG_POST_LIST_TYPE = "post_list_type";
 
 	public enum PostListType
@@ -123,11 +126,11 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 		if (mListPosts != null && mListPosts.getAdapter() != null)
 		{
 			if (mListPosts.getAdapter() instanceof PostPublishedListAdapter)
-				((PostPublishedListAdapter) mListPosts.getAdapter()).setTagFilter(tag);
+				((PostPublishedListAdapter) mListPosts.getAdapter()).setTagFilter(null, tag);
 			if (mListPosts.getAdapter() instanceof PostOutgoingListAdapter)
-				((PostOutgoingListAdapter) mListPosts.getAdapter()).setTagFilter(tag);
+				((PostOutgoingListAdapter) mListPosts.getAdapter()).setTagFilter(null, tag);
 			if (mListPosts.getAdapter() instanceof PostDraftsListAdapter)
-				((PostDraftsListAdapter) mListPosts.getAdapter()).setTagFilter(tag);
+				((PostDraftsListAdapter) mListPosts.getAdapter()).setTagFilter(null, tag);
 		}
 	}
 
@@ -164,7 +167,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 								getActivity(), result);
 						adapter.setOnTagClickedListener(mOnTagClickedListener);
 						adapter.setListener(mStoryListListener);
-						adapter.setTagFilter(mCurrentTagFilter);
+						adapter.setTagFilter(null, mCurrentTagFilter);
 						mListPosts.setAdapter(adapter);
 					}
 					else
@@ -180,7 +183,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 								getActivity(), result);
 						adapter.setOnTagClickedListener(mOnTagClickedListener);
 						adapter.setListener(mStoryListListener);
-						adapter.setTagFilter(mCurrentTagFilter);
+						adapter.setTagFilter(null, mCurrentTagFilter);
 						mListPosts.setAdapter(adapter);
 					}
 					else
@@ -198,7 +201,7 @@ public class PostListFragment extends Fragment implements PostDraftsListAdapterL
 						adapter.setPostDraftsListAdapterListener(PostListFragment.this);
 						adapter.setOnTagClickedListener(mOnTagClickedListener);
 						adapter.setListener(mStoryListListener);
-						adapter.setTagFilter(mCurrentTagFilter);
+						adapter.setTagFilter(null, mCurrentTagFilter);
 						mListPosts.setAdapter(adapter);
 					}
 					else

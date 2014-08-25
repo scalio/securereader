@@ -3,10 +3,11 @@ package info.guardianproject.securereaderinterface.views;
 import info.guardianproject.yakreader.R;
 import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.MainActivity;
+import info.guardianproject.securereaderinterface.ItemExpandActivity;
+import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
-import info.guardianproject.securereaderinterface.ui.PackageHelper;
+import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout;
@@ -19,13 +20,14 @@ import info.guardianproject.securereader.SocialReader;
 
 import java.text.Bidi;
 import java.util.ArrayList;
+import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
@@ -33,6 +35,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -42,6 +45,9 @@ import com.tinymission.rss.Item;
 
 public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMediaLoadedListener
 {
+	public static final String LOGTAG = "StoryItemView";
+	public static final boolean LOGGING = false;
+	
 	private PagedView mPagedView;
 	private final Item mItem;
 	private MediaViewCollection mMediaViewCollection;
@@ -443,6 +449,20 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 		if (tv != null)
 		{
 			tv.setText(story.getSource());
+			tv.setTag(Long.valueOf(story.getFeedId()));
+			tv.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					long feedId = ((Long) v.getTag()).longValue();
+					if (feedId != -1 && mPagedView.getContext() instanceof ItemExpandActivity)
+					{
+						((ItemExpandActivity)mPagedView.getContext()).onBackPressed();
+						UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedId, this);
+					}
+				}
+			});
 		}
 
 		// Time
@@ -570,7 +590,8 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 	@Override
 	public void onViewLoaded(MediaViewCollection collection, int index, boolean wasCached)
 	{
-		Log.v("StoryItemView", "Media content has requested relayout.");
+		if (LOGGING)
+			Log.v(LOGTAG, "Media content has requested relayout.");
 		mPagedView.recreateViewsForContent(this);
 	}
 
@@ -589,33 +610,60 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 			try
 			{
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mItem.getLink()));
-				//intent.setClassName(PackageHelper.URI_ORWEB, PackageHelper.URI_ORWEB + ".Browser");
-				// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				v.getContext().startActivity(intent);
+
+				String thisPackageName = App.getInstance().getPackageName();
+
+				// Instead of using built in functionality, we create our own chooser so that we
+				// can remove ourselves from the list (opening the story in this app would actually
+				// take us to the AddFeed page, so it does not make sense to have it as an option)
+				List<Intent> targetedShareIntents = new ArrayList<Intent>();
+				List<ResolveInfo> resInfo = v.getContext().getPackageManager().queryIntentActivities(intent, 0);
+				if (resInfo != null && resInfo.size() > 0)
+				{
+					for (ResolveInfo resolveInfo : resInfo)
+					{
+						String packageName = resolveInfo.activityInfo.packageName;
+
+						Intent targetedShareIntent = (Intent) intent.clone();
+						targetedShareIntent.setPackage(packageName);
+						if (!packageName.equals(thisPackageName)) // Remove
+																	// ourselves
+						{
+							targetedShareIntents.add(targetedShareIntent);
+						}
+					}
+
+					if (targetedShareIntents.size() > 0)
+					{
+						Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), null);
+						chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[] {}));
+
+						v.getContext().startActivity(chooserIntent);
+					}
+				}
 			}
 			catch (Exception e)
 			{
-				Log.d(MainActivity.LOGTAG, "Error trying to open read more link: " + mItem.getLink());
+				if (LOGGING)
+					Log.d(LOGTAG, "Error trying to open read more link: " + mItem.getLink());
 			}
 		}
-
 	}
 
-	private class PromptOrwebClickListener implements View.OnClickListener
-	{
-		private final Context mContext;
-
-		public PromptOrwebClickListener(Context context)
-		{
-			mContext = context;
-		}
-
-		@Override
-		public void onClick(View v)
-		{
-			AlertDialog dialog = PackageHelper.showDownloadDialog(mContext, R.string.install_orweb_title, R.string.install_orweb_prompt, android.R.string.ok,
-					android.R.string.cancel, PackageHelper.URI_ORWEB_PLAY);
-		}
-
-	}
+//	private class PromptOrwebClickListener implements View.OnClickListener
+//	{
+//		private final Context mContext;
+//
+//		public PromptOrwebClickListener(Context context)
+//		{
+//			mContext = context;
+//		}
+//
+//		@Override
+//		public void onClick(View v)
+//		{
+//			AlertDialog dialog = PackageHelper.showDownloadDialog(mContext, R.string.install_orweb_title, R.string.install_orweb_prompt, android.R.string.ok,
+//					android.R.string.cancel, PackageHelper.URI_ORWEB_PLAY);
+//		}
+//	}
 }
