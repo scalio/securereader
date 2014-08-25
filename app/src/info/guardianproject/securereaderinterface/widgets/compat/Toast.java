@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.widgets.compat;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.yakreader.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
