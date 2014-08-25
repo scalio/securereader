@@ -446,7 +446,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_language_option_group_default" />
 
-            <RadioGroup
+           <RadioGroup
                 android:id="@+id/rgUiLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
@@ -473,19 +473,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/settings_language_tibetan_nt" />
 
-                <RadioButton
-                    android:id="@+id/rbUiLanguageUkrainian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_ukrainian_nt" />
 
-                <RadioButton
-                    android:id="@+id/rbUiLanguageRussian"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_language_russian_nt" />
                 
             </RadioGroup>
 
