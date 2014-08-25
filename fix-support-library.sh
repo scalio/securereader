@@ -15,6 +15,7 @@ mkdir -p external/supportlibrary/v7/appcompat/libs
 MAPFILE[0]='external/supportlibrary/v7/appcompat'
 MAPFILE[1]='external/CacheWord/cachewordlib'
 MAPFILE[2]='external/OnionKit/libnetcipher'
+MAPFILE[3]='external/securereaderlibrary'
 
 
 for project in "${MAPFILE[@]}"; do
