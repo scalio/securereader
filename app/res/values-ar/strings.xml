@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Courier</string>
-    <string name="app_description">Courier is a secure news reader and reporter app featuring group conversations around news.</string>
+    <string name="app_name">YakReader</string>
+    <string name="app_description">YakReader is a secure news reader and reporter app featuring group conversations around news.</string>
     
-    <string name="title_activity_main">Courier</string>
-    <string name="title_activity_help">Courier</string>
-    <string name="title_activity_downloads">Courier</string>
-    <string name="title_activity_add_feed">Courier</string>
+    <string name="title_activity_main">YakReader</string>
+    <string name="title_activity_help">YakReader</string>
+    <string name="title_activity_downloads">YakReader</string>
+    <string name="title_activity_add_feed">YakReader</string>
     <string name="title_activity_post">My Posts</string>
-    <string name="title_activity_add_post">Courier</string>
-    <string name="title_activity_panic">Courier</string>
-    <string name="title_activity_view_media">Courier</string>
-    <string name="title_activity_settings">Courier</string>
-    <string name="title_activity_lock_screen">Courier</string>
-    <string name="title_activity_create_account">Courier</string>
+    <string name="title_activity_add_post">YakReader</string>
+    <string name="title_activity_panic">YakReader</string>
+    <string name="title_activity_view_media">YakReader</string>
+    <string name="title_activity_settings">YakReader</string>
+    <string name="title_activity_lock_screen">YakReader</string>
+    <string name="title_activity_create_account">YakReader</string>
     <string name="title_activity_httpd_app_sender">SHARE APP</string>
     <string name="menu_tag">Search by Tag</string>
     <string name="menu_share">Share</string>
@@ -31,19 +31,19 @@
     <string name="story_list_hint_add_favorite_text2">Here are some favorites from fellow readers to hold you over:</string>
     <string name="story_list_hint_no_popular_text1">Stories get popular when comments are shared!</string>
     <string name="story_list_hint_no_popular_text2">These stories have long titles, perhaps they\'re worth talking about:</string>
-    <string name="story_list_hint_no_shared_text1">The stories shared with you using Courier’s Secure Share are listed here.</string>
+    <string name="story_list_hint_no_shared_text1">The stories shared with you using YakReader’s Secure Share are listed here.</string>
     <string name="story_list_hint_no_shared_text2">To receive a share from a friend, go to the ‘Receive a Share’ screen from the side menu.</string>
-    <string name="help_title">About Courier</string>
+    <string name="help_title">About YakReader</string>
     <string name="help_tor_title">Go Online with Tor?</string>
     <string name="help_tor_content">Tor is an open network that helps keep you safe online. It defends against network surveillance that threatens your personal freedom and privacy. You must use the Orbot app to connect to the Tor network.</string>
     <string name="help_tor_button">Go Online with Tor</string>
     <string name="help_wipe_title">Wipe the App</string>
-    <string name="help_wipe_content">Tap the panic button to delete your personal data within Courier. You can set the panic action to delete the entire app in your preferences.</string>
+    <string name="help_wipe_content">Tap the panic button to delete your personal data within YakReader. You can set the panic action to delete the entire app in your preferences.</string>
     <string name="help_wipe_button">Test panic button</string>
     <string name="help_share_title">Share locally, without Internet</string>
-    <string name="help_share_content">Share stories, feeds and the entire app using the Courier Secure Share. It\'s safe, easy and only requires a friend nearby with Bluetooth. App sharing requires a WiFi network or hotspot.</string>
+    <string name="help_share_content">Share stories, feeds and the entire app using the YakReader Secure Share. It\'s safe, easy and only requires a friend nearby with Bluetooth. App sharing requires a WiFi network or hotspot.</string>
     <string name="help_data_title">Minimize Data Use</string>
-    <string name="help_data_content">Tips to reduce your data consumption:\n\n1. Sync only the feeds that matter to you most. Courier allows you to sync individual feeds.\n\n2. Choose Bit Wise syncing mode in your preferences. This syncs only text, with the ability to load photos on a story by story basis.\n\n3. Expire your articles in a timely manner. Choose your time frame in your preferences.</string>
+    <string name="help_data_content">Tips to reduce your data consumption:\n\n1. Sync only the feeds that matter to you most. YakReader allows you to sync individual feeds.\n\n2. Choose Bit Wise syncing mode in your preferences. This syncs only text, with the ability to load photos on a story by story basis.\n\n3. Expire your articles in a timely manner. Choose your time frame in your preferences.</string>
 	<string name="about_guardian_title">About Guardian Project</string>
     <string name="about_guardian_content">The Guardian Project creates easy to use apps, open-source software libraries, operating system modifications, and customized mobile devices useful to any person looking to protect their communications and personal data from unjust intrusion and monitoring. Visit us at https://guardianproject.info</string>
     <string name="help_terms_group_title">Terms and Software Licenses</string>
@@ -72,7 +72,7 @@
     <string name="menu_post_new">Create a Post</string>
     <string name="menu_downloads">Downloads</string>
     <string name="menu_chat">Chat</string>
-    <string name="menu_help">About Courier</string>
+    <string name="menu_help">About YakReader</string>
     <string name="menu_share_app">Share App</string>
     <string name="menu_receive_share">Receive a Share</string>
     <string name="menu_tor_connected">Connected to Tor</string>
@@ -190,7 +190,7 @@
     <string name="settings_language_chinese">中文</string>
     <string name="settings_language_ukrainian">Український</string>
     <string name="settings_language_russian">русский</string>
-    <string name="lock_screen_title1">Welcome to Courier</string>
+    <string name="lock_screen_title1">Welcome to YakReader</string>
     <string name="lock_screen_title2">Read, write and talk freely.</string>
     <string name="lock_screen_choose_language">Choose a language</string>
     <string name="lock_screen_set_passphrase">GET STARTED</string>
@@ -241,10 +241,10 @@
     <string name="post_no_drafts">No drafts</string>
     <string name="post_no_outgoing">No outgoing posts</string>
     <string name="post_sign_in_title">Share the news that’s happening around you</string>
-    <string name="post_sign_in_info">Courier provides a feed of noteworthy news to its community. Every post created with Courier will undergo a curation process before it is shared in the official Courier news feed. Please see the Terms &amp; Conditions ("About Courier" then "Terms &amp; Software Licenses) to understand the rights you grant when you share information with Courier.</string>
+    <string name="post_sign_in_info">YakReader provides a feed of noteworthy news to its community. Every post created with YakReader will undergo a curation process before it is shared in the official YakReader news feed. Please see the Terms &amp; Conditions ("About YakReader" then "Terms &amp; Software Licenses) to understand the rights you grant when you share information with YakReader.</string>
     <string name="post_sign_in_agree">I give my permission to use my content</string>
     <string name="post_sign_in_done">Done</string>
-    <string name="httpd_app_sender_instructions">To locally share the Courier app or the apps supported by it (Orbot and ChatSecure), please take the following steps:</string>
+    <string name="httpd_app_sender_instructions">To locally share the YakReader app or the apps supported by it (Orbot and ChatSecure), please take the following steps:</string>
     <string name="httpd_app_sender_sender">To Share</string>
     <string name="httpd_app_sender_sender_title">1. Enable a "Portable WiFi Hotspot"</string>
     <string name="httpd_app_sender_sender_part1">You can enable a hotspot in your phone settings. This is the most secure way to share the app.\n\nIf you cannot enable a hotspot, you can connect to a public wifi network that you trust.</string>
@@ -259,11 +259,11 @@
     <string name="title_activity_secure_blue_tooth_receiver">RECEIVE A SHARE</string>
 
     <string name="bluetooth_send_title">Choose your friend\'s device:</string>
-    <string name="bluetooth_send_info">Your friend must have the Courier app open to the \'Receive a Share\' screen from the side menu.</string>
+    <string name="bluetooth_send_info">Your friend must have the YakReader app open to the \'Receive a Share\' screen from the side menu.</string>
     <string name="bluetooth_send_scan">Search for more devices&#8230;</string>
     <string name="bluetooth_send_scanning">Searching for devices&#8230;</string>
     <string name="bluetooth_no_devices_found">No Devices Found</string>
-    <string name="bluetooth_receive_title">Receive a story or feed from a friend using Courier’s secure share.</string>
+    <string name="bluetooth_receive_title">Receive a story or feed from a friend using YakReader’s secure share.</string>
     <string name="bluetooth_receive_info">Bluetooth is listening.</string>
     <string name="bluetooth_receive_receive">TELL BLUETOOTH TO LISTEN</string>
     <string name="bluetooth_receive_connected">Connected</string>
@@ -277,19 +277,19 @@
     <string name="bluetooth_send_close">CLOSE</string>
     <string name="bluetooth_send_read_now">READ NOW</string>
     <string name="bluetooth_send_success_1_story">Success! 1 story shared.</string>
-    <string name="create_account_title">Create your Courier Nickname</string>
+    <string name="create_account_title">Create your YakReader Nickname</string>
     <string name="create_account_info">Your nickname will be used in group conversations and will be displayed with the reports you publish.</string>
     <string name="create_account_hint">Nickname</string>
     <string name="create_account_create">Create</string>
     
-    <string name="story_list_hint_tor_title">Welcome to your Courier news feed.</string>
+    <string name="story_list_hint_tor_title">Welcome to your YakReader news feed.</string>
     <string name="story_list_hint_tor_info">Before syncing the news, you need to go online with Tor. The Orbot app will connect you to the Tor network.</string>
     <string name="story_list_hint_tor_more">Learn more about using Tor</string>
     <string name="story_list_hint_tor_less">Less</string>
     <string name="story_list_hint_tor_no_net">No Internet. Try again later.</string>
     <string name="story_list_hint_tor_go_online">CONNECT TO TOR</string>
     <string name="story_list_hint_tor_more_title">Using Tor</string>
-    <string name="story_list_hint_tor_more_info">Tor is not required for the news reader, however, it is strongly recommended. You can opt out of using Tor for the news, in your preferences. Your privacy will not be protected in this case.\n\nTor is required for publishing reports on Courier.</string>
+    <string name="story_list_hint_tor_more_info">Tor is not required for the news reader, however, it is strongly recommended. You can opt out of using Tor for the news, in your preferences. Your privacy will not be protected in this case.\n\nTor is required for publishing reports on YakReader.</string>
     <string name="story_list_hint_tor_connected_title">You have successfully connected to Tor!</string>
     <string name="story_list_hint_tor_connected_info">Pull down to sync the news.</string>
     <string name="story_list_error_title">Oops! Your feeds are not refreshing.</string>
@@ -304,9 +304,9 @@
     <string name="apps_feed_name">Applications</string>
     <string name="epubs_feed_name">Tibet Archive</string>
     
-    <string name="cacheword_notification_cached_title">Courier Unlocked</string>
-    <string name="cacheword_notification_cached">Courier passcode stored in memory</string>
-    <string name="cacheword_notification_cached_message">Courier passcode stored in memory</string>
+    <string name="cacheword_notification_cached_title">YakReader Unlocked</string>
+    <string name="cacheword_notification_cached">YakReader passcode stored in memory</string>
+    <string name="cacheword_notification_cached_message">YakReader passcode stored in memory</string>
     <string name="download_epub_hint">Download ePub</string>
     <string name="download_epub_reader_title">Download ePub Reader</string>
     <string name="download_epub_reader_info">You need an ePub reader to see the story. We recommend FBReader. Get it on:</string>
