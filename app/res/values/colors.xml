@@ -12,8 +12,8 @@
    <color name="accent_dark_medium">#80A4A59B</color>  
    <color name="accent_dark">#40A4A59B</color>  
    
-   <color name="button_primary">#94103C</color>
-   <color name="button_primary_selected">#8094103C</color>
+   <color name="button_primary">#E8B909</color>
+   <color name="button_primary_selected">#80E8B909</color>
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>
    
@@ -37,7 +37,7 @@
    <color name="button_tor_text_selected">#ffffff</color>
 
    <color name="button_photos">#9ba0b3</color>
-   <color name="button_photos_selected">#f92a2e</color>
+   <color name="button_photos_selected">#ce9c14</color>
    <color name="button_photos_text">#c3cfd4</color>
    <color name="button_photos_text_selected">#ffffff</color>
 

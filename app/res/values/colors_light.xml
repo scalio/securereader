@@ -2,5 +2,5 @@
 <resources> 
    <color name="actionbar_light_background">#EFEFEF</color>  
    <color name="actionbar_light_dividers">#848778</color>  
-   <color name="actionbar_light_bottom_edge">#94103C</color>  
+   <color name="actionbar_light_bottom_edge">#FFD400</color>  
 </resources>
