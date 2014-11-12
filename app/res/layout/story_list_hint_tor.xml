@@ -1,57 +1,183 @@
+<info.guardianproject.securereaderinterface.views.StoryListHintTorView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
 
-    <info.guardianproject.securereaderinterface.views.StoryListHintTorView 
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
+        android:id="@+id/llNotConnected"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
 
         <LinearLayout
-           android:id="@+id/llNotConnected"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_margin="10dp"
-            android:background="@drawable/white_with_bottom_shadow"
-            android:orientation="vertical" >
-      <info.guardianproject.securereaderinterface.widgets.CustomFontTextView            
-            android:id="@+id/tvText1"
-            style="@style/HelpTitleStyle"
+            android:id="@+id/ll1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/story_list_hint_tor_title" />
+            android:background="@drawable/white_with_bottom_shadow"
+            android:orientation="vertical" >
+
+            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                android:id="@+id/tvText1"
+                style="@style/HelpTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/story_list_hint_tor_title" />
+
+            <TextView
+                android:id="@+id/tvText2"
+                style="@style/HelpTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/story_list_hint_tor_info" />
+
+            <Button
+                android:id="@+id/btnGoOnline"
+                style="@style/HelpButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:minHeight="50dp"
+                android:text="@string/story_list_hint_tor_go_online"
+                android:textSize="13sp" />
+
+            <!-- <Button -->
+            <!-- android:id="@+id/btnNoNet" -->
+            <!-- style="@style/HelpButtonStyle" -->
+            <!-- android:layout_width="match_parent" -->
+            <!-- android:layout_height="wrap_content" -->
+            <!-- android:layout_margin="5dp" -->
+            <!-- android:background="@drawable/button_secondary_background_selector" -->
+            <!-- android:drawableLeft="@drawable/ic_status_sad_white" -->
+            <!-- android:minHeight="50dp" -->
+            <!-- android:text="@string/story_list_hint_tor_no_net" -->
+            <!-- android:textAllCaps="false" -->
+            <!-- android:textSize="13sp" /> -->
+
+            <LinearLayout
+                android:id="@+id/btnNoNet"
+                style="@style/HelpButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/button_secondary_background_selector"
+                android:gravity="center"
+                android:minHeight="50dp"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    style="@style/HelpButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:clickable="false"
+                    android:src="@drawable/ic_status_sad_white" />
+
+                <TextView
+                    style="@style/HelpButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#0000"
+                    android:clickable="false"
+                    android:text="@string/story_list_hint_tor_no_net"
+                    android:textAllCaps="false"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llExpander"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/story_list_hint_tor_more"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@drawable/ic_context_open" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llCollapser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/story_list_hint_tor_less"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@drawable/ic_context_close" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llExpansionArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/grey_light_medium" />
+
+                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    style="@style/HelpTitleStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/story_list_hint_tor_more_title" />
+
+                <TextView
+                    style="@style/HelpTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/story_list_hint_tor_more_info" />
+            </LinearLayout>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tvText2"
+            android:id="@+id/tvTextPsiphonInfo"
             style="@style/HelpTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/story_list_hint_tor_info" />
+            android:text="@string/story_list_hint_tor_info_psiphon" />
 
         <Button
-            android:id="@+id/btnGoOnline"
+            android:id="@+id/btnGoOnlinePsiphon"
             style="@style/HelpButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:background="@drawable/button_secondary_background_selector"
             android:minHeight="50dp"
-            android:text="@string/story_list_hint_tor_go_online"
+            android:text="@string/story_list_hint_tor_go_online_psiphon"
             android:textSize="13sp" />
 
-<!--         <Button -->
-<!--             android:id="@+id/btnNoNet" -->
-<!--             style="@style/HelpButtonStyle" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:layout_margin="5dp" -->
-<!--             android:background="@drawable/button_secondary_background_selector" -->
-<!--             android:drawableLeft="@drawable/ic_status_sad_white" -->
-<!--             android:minHeight="50dp" -->
-<!--             android:text="@string/story_list_hint_tor_no_net" -->
-<!--             android:textAllCaps="false" -->
-<!--             android:textSize="13sp" /> -->
-
         <LinearLayout
-            android:id="@+id/btnNoNet"
+            android:id="@+id/btnNoNetPsiphon"
             style="@style/HelpButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,111 +187,40 @@
             android:minHeight="50dp"
             android:orientation="horizontal" >
 
-    <ImageView 
-        style="@style/HelpButtonStyle"
-        android:layout_width="wrap_content"
+            <ImageView
+                style="@style/HelpButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:src="@drawable/ic_status_sad_white" />
+
+            <TextView
+                style="@style/HelpButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:text="@string/story_list_hint_tor_no_net"
+                android:textAllCaps="false"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llConnected"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:background="#0000"
-        android:src="@drawable/ic_status_sad_white"/>
-    <TextView
-        style="@style/HelpButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:clickable="false"
-        android:background="#0000"
-                    android:text="@string/story_list_hint_tor_no_net"
-            android:textAllCaps="false"
-            android:textSize="13sp" />
-</LinearLayout>
-        
-        
-        <LinearLayout
-            android:id="@+id/llExpander"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal" >
+        android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:background="@drawable/white_with_bottom_shadow"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_weight="1"
-                android:text="@string/story_list_hint_tor_more"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:src="@drawable/ic_context_open" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llCollapser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_weight="1"
-                android:text="@string/story_list_hint_tor_less"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:src="@drawable/ic_context_close" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llExpansionArea"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/grey_light_medium" />
-                    
-     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
-                    style="@style/HelpTitleStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/story_list_hint_tor_more_title" />
-
-        <TextView
-            style="@style/HelpTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/story_list_hint_tor_more_info" />
-
-        </LinearLayout>
-</LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llConnected"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/white_with_bottom_shadow"
-                    android:orientation="vertical"
-                    android:visibility="gone" >
-      <info.guardianproject.securereaderinterface.widgets.CustomFontTextView            
-          	style="@style/HelpTitleStyle"
+        <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+            android:id="@+id/tvSuccessfulConnection"
+            style="@style/HelpTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -179,13 +234,12 @@
             android:text="@string/story_list_hint_tor_connected_info" />
 
         <ImageView
-            android:id="@+id/imageView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:paddingBottom="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_context_sync_arrow_pull" />
+    </LinearLayout>
 
-</LinearLayout>
-    </info.guardianproject.securereaderinterface.views.StoryListHintTorView>
+</info.guardianproject.securereaderinterface.views.StoryListHintTorView>

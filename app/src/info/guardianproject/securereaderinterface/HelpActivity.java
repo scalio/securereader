@@ -44,7 +44,7 @@ public class HelpActivity extends FragmentActivityWithMenu
 			@Override
 			public void onClick(View v)
 			{
-				App.getInstance().socialReader.connectTor(HelpActivity.this);
+				App.getInstance().socialReader.connectProxy(HelpActivity.this);
 				//App.getInstance().socialReader.getSubscribedFeedItems(new FeedFetchedCallback()
 				/*App.getInstance().socialReader.getSubscribedFeedItems(new SyncServiceFeedFetchedCallback()
 				{

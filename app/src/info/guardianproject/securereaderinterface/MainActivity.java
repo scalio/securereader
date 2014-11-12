@@ -1,5 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
+import info.guardianproject.securereader.Settings.ProxyType;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SyncService;
@@ -412,7 +413,7 @@ public class MainActivity extends ItemExpandActivity
 	{
 		if (socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
 		{
-			socialReader.connectTor(this);
+			socialReader.connectProxy(this);
 		}
 
 		if (socialReader.isOnline() == SocialReader.ONLINE)
@@ -642,7 +643,7 @@ public class MainActivity extends ItemExpandActivity
 		if (mTorView == null)
 			return;
 
-		if (!App.getSettings().requireTor() || mIsLoading)
+		if (!App.getSettings().requireProxy() || mIsLoading)
 		{
 			mTorView.setVisibility(View.GONE);
 		}
@@ -661,8 +662,22 @@ public class MainActivity extends ItemExpandActivity
 				}
 
 				@Override
+				public void onNoNetPsiphonClicked() 
+				{
+					onNoNetClicked();
+				}
+
+				@Override
 				public void onGoOnlineClicked()
 				{
+					App.getSettings().setProxyType(ProxyType.Tor);
+					onResync();
+				}
+
+				@Override
+				public void onGoOnlinePsiphonClicked()
+				{
+					App.getSettings().setProxyType(ProxyType.Psiphon);
 					onResync();
 				}
 
@@ -675,6 +690,10 @@ public class MainActivity extends ItemExpandActivity
 			int onlineMode = App.getInstance().socialReader.isOnline();
 			mTorView.setIsOnline(!(onlineMode == SocialReader.NOT_ONLINE_NO_WIFI || onlineMode == SocialReader.NOT_ONLINE_NO_WIFI_OR_NETWORK),
 					onlineMode == SocialReader.ONLINE);
+			if (App.getSettings().proxyType() == ProxyType.Psiphon)
+				mTorView.updateProxyText(R.string.story_list_hint_tor_connected_psiphon_title);
+			else
+				mTorView.updateProxyText(R.string.story_list_hint_tor_connected_title);
 			mTorView.setVisibility(View.VISIBLE);
 		}
 	}

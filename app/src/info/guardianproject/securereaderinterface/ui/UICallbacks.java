@@ -258,7 +258,7 @@ public class UICallbacks
 		case R.integer.command_toggle_online:
 		{
 			if (App.getInstance().socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
-				App.getInstance().socialReader.connectTor((Activity) context);
+				App.getInstance().socialReader.connectProxy((Activity) context);
 			// else
 			// Not sure this makes sense
 			// App.getInstance().socialReader.goOffline();

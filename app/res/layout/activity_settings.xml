@@ -12,33 +12,47 @@
         android:orientation="vertical" >
 
                 
-        <!-- TOR section -->
-        
-       <LinearLayout
-           android:id="@+id/groupTor"
-           android:layout_width="match_parent"
-           android:layout_height="60dp"
-           android:layout_margin="5dp"
-           android:background="@drawable/settings_group_header_item_background" >
+        <!-- Proxy section -->
 
-		  	<TextView
-		  	    style="@style/SettingsHeadingStyle"
-		  	    android:layout_width="0dp"
-		  	    android:layout_height="wrap_content"
-		  	    android:layout_gravity="center_vertical"
-		  	    android:layout_margin="10dp"
-		  	    android:layout_weight="1"
-		  	    android:text="@string/settings_tor_require" />
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupProxy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_proxy" >
 
-    		<info.guardianproject.securereaderinterface.widgets.CheckableImageView
-    		    android:id="@+id/chkRequireTor"
-    		    android:layout_width="wrap_content"
-    		    android:layout_height="match_parent"
-    		    android:layout_gravity="right|center_vertical"
-    		    android:padding="10dp"
-    		    android:src="@drawable/checkbox_selector" />
+            <RadioGroup
+                android:id="@+id/radioGroupProxy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-		</LinearLayout> 
+                <RadioButton
+                    android:id="@+id/rbProxyTor"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_tor" />
+
+                <RadioButton
+                    android:id="@+id/rbProxyPsiphon"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_psiphon" />
+                
+                <RadioButton
+                    android:id="@+id/rbProxyNone"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_none" />
+                                
+            </RadioGroup>
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
         
 
         <!-- Chat section -->

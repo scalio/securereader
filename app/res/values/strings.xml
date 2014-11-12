@@ -79,6 +79,8 @@
     <string name="menu_receive_share">Receive a Share</string>
     <string name="menu_tor_connected">Connected to Tor</string>
     <string name="menu_tor_not_connected">Not connected to Tor</string>
+    <string name="menu_psiphon_connected">Connected to Psiphon</string>
+    <string name="menu_psiphon_not_connected">Not connected to Psiphon</string>
     <string name="menu_num_feeds">%1$d feeds</string>
     <string name="menu_num_stories">%1$d posts</string>
     <string name="menu_num_chats">%1$d chats</string>
@@ -120,7 +122,10 @@
     <string name="add_feed_collapse">Close</string>
     <string name="add_feed_not_loaded">Feed data not loaded</string>
     <string name="add_feed_error_loading">We were unable to load this feed. Be sure that the RSS feed URL is correct.</string>
-    <string name="settings_tor_require">Use Tor</string>
+	<string name="settings_heading_proxy">Proxy</string>
+    <string name="settings_proxy_tor">Tor</string>
+    <string name="settings_proxy_psiphon">Psiphon</string>
+    <string name="settings_proxy_none">None of these</string>
     <string name="settings_heading_chat">Chat</string>
     <string name="settings_gibberbot_connected">ChatSecure account connected</string>
     <string name="settings_heading_panic_action">Panic Action</string>
@@ -291,9 +296,12 @@
     <string name="story_list_hint_tor_less">Less</string>
     <string name="story_list_hint_tor_no_net">No Internet. Try again later.</string>
     <string name="story_list_hint_tor_go_online">CONNECT TO TOR</string>
+    <string name="story_list_hint_tor_info_psiphon">Alternatively, you can use Psiphon.</string>
+    <string name="story_list_hint_tor_go_online_psiphon">CONNECT TO PSIPHON</string>
     <string name="story_list_hint_tor_more_title">Using Tor</string>
     <string name="story_list_hint_tor_more_info">Tor is not required for the news reader, however, it is strongly recommended. You can opt out of using Tor for the news, in your preferences. Your privacy will not be protected in this case.\n\nTor is required for publishing reports on Paik.</string>
     <string name="story_list_hint_tor_connected_title">You have successfully connected to Tor!</string>
+    <string name="story_list_hint_tor_connected_psiphon_title">You have successfully connected to Psiphon!</string>
     <string name="story_list_hint_tor_connected_info">Pull down to sync the news.</string>
     <string name="story_list_error_title">Oops! Your feeds are not refreshing.</string>
 

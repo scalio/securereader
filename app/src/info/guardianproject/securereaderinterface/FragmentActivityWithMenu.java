@@ -3,6 +3,7 @@ package info.guardianproject.securereaderinterface;
 import java.util.ArrayList;
 
 import info.guardianproject.paik.R;
+import info.guardianproject.securereader.Settings.ProxyType;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
@@ -469,12 +470,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 				@Override
 				public void onClick(View v)
 				{
-					if (App.getSettings().requireTor())
+					if (App.getSettings().requireProxy())
 					{
 						if (App.getInstance().socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
 						{
 							mLeftSideMenu.hide();
-							App.getInstance().socialReader.connectTor(FragmentActivityWithMenu.this);
+							App.getInstance().socialReader.connectProxy(FragmentActivityWithMenu.this);
 						}
 					}
 				}
@@ -516,7 +517,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	class UpdateTorStatusTask extends ThreadedTask<Void, Void, Void>
 	{
-		private boolean isUsingTor;
+		private boolean isUsingProxy;
+		private boolean isUsingPsiphon;
 		private boolean showImages;
 		private boolean isOnline;
 
@@ -524,8 +526,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		protected Void doInBackground(Void... values)
 		{
 			createMenuViewHolder();
-			isUsingTor = App.getInstance().socialReader.useTor();
-			isOnline = App.getInstance().socialReader.isTorOnline();
+			isUsingProxy = App.getInstance().socialReader.useProxy();
+			isUsingPsiphon = (App.getSettings().proxyType() == ProxyType.Psiphon);
+			isOnline = App.getInstance().socialReader.isProxyOnline();
 			showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
 			return null;
 		}
@@ -535,10 +538,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			// Update TOR connection status
 			//
-			if (isUsingTor)
+			if (isUsingProxy)
 			{
 				mMenuViewHolder.btnTorStatus.setChecked(isOnline);
-				mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
+				if (isUsingPsiphon)
+					mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_psiphon_connected : R.string.menu_psiphon_not_connected);
+				else
+					mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
 			}
 			else
 			{

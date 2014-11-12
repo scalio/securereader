@@ -177,7 +177,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	{
 		View tabView = rootView;
 
-		this.hookupCheckbox(tabView, R.id.chkRequireTor, "requireTor");
+		this.hookupRadioButton(tabView, "proxyType", Settings.ProxyType.class, R.id.rbProxyNone, R.id.rbProxyTor, R.id.rbProxyPsiphon);
 
 		mRbUseKillPassphraseOn = (RadioButton) tabView.findViewById(R.id.rbKillPassphraseOn);
 		mRbUseKillPassphraseOff = (RadioButton) tabView.findViewById(R.id.rbKillPassphraseOff);
@@ -701,5 +701,9 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	{
 		mLastChangedSetting = key;
 		super.onSharedPreferenceChanged(sharedPreferences, key);
+		if (key == Settings.KEY_PROXY_TYPE)
+		{
+			mSettings.setRequireProxy(mSettings.proxyType() != Settings.ProxyType.None);
+		}
 	}
 }
