@@ -545,11 +545,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 					mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_psiphon_connected : R.string.menu_psiphon_not_connected);
 				else
 					mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
+				mMenuViewHolder.btnTorStatus.setCompoundDrawablesWithIntrinsicBounds(null, mMenuViewHolder.btnTorStatus.getContext().getResources().getDrawable(isUsingPsiphon ? R.drawable.button_psiphon_icon_selector : R.drawable.button_tor_icon_selector), null, null);
 			}
 			else
 			{
 				mMenuViewHolder.btnTorStatus.setChecked(false);
 				mMenuViewHolder.btnTorStatus.setText(R.string.menu_tor_not_connected);
+				mMenuViewHolder.btnTorStatus.setCompoundDrawablesWithIntrinsicBounds(null, mMenuViewHolder.btnTorStatus.getContext().getResources().getDrawable(R.drawable.button_tor_icon_selector), null, null);
 			}
 			mMenuViewHolder.btnShowPhotos.setChecked(showImages);
 		}
