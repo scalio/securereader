@@ -47,6 +47,8 @@ public class StoryItemDraftPageView extends StoryItemPageView
 	@Override
 	public void populateWithItem(Item item)
 	{
+		mItem = null; // Drafts are dynamic, so null mItem so that super class will always regenerate views
+		
 		super.populateWithItem(item);
 		if (mTvTitle != null && TextUtils.isEmpty(mTvTitle.getText()))
 		{

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="app_name">Курьер</string>
-  <string name="app_description">Курьер -  это приложение для безопасного чтения и передачи новостей, предоставляющее возможность групповых обсуждений новостей.</string>
+  <string name="app_description">Курьер - это мобильное приложение для чтения новостных лент через RSS канал с расширенными функциями безопасности, чтением новостей в автономном режиме и возможностью совместного использования.</string>
   <string name="title_activity_main">Курьер</string>
   <string name="title_activity_help">Курьер</string>
   <string name="title_activity_downloads">Курьер</string>
@@ -41,13 +41,15 @@
   <string name="help_share_title">Поделиться локально, без использования Интернета.</string>
   <string name="help_share_content">Делитесь статьями, лентами новостей и самим приложением, используя службу Безопасного Распространения Курьер. Это безопасно, просто и требует только чтобы мобильное устройство вашего друга находилось рядом с включенным Bluetooth. Чтобы поделиться приложением, необходима сеть WiFi  или хот-спот.</string>
   <string name="help_data_title">Уменьшить использование данных</string>
-  <string name="help_data_content">Советы по уменьшению использования ваших данных:\n\n1. Синхронизируйте только наиболее важные для вас ленты новостей. Курьер позволяет синхронизировать отдельные ленты новостей.\n\n2. В настройках выберите режим синхронизации Экономная загрузка. При таком режиме синхронизируется только текст каждой статьи, предоставляя возможность загружать фотографии к каждой статье отдельно.\n\n3. Определите срок хранения ваших статей. В настройках вы можете установить временные рамки.</string>
+  <string name="help_data_content">Подсказки по снижению использования данных:\n\n1. Синхронизируйте только наиболее интересующие Вас новoстные ленты. Курьер позволяет синхронизировать отдельные каналы.\n\n2. Выберите Экономный режим синхронизации в своем разделе настроек. Таким способом Вы синхронизируете только текст, с возможностью загрузки фотографий отдельно относящихся к каждой статьe.\n\n3. Cвоевременноe окончание срока хранения ваших статей. Укажите желаемый срок хранения статей в разделе настройки.</string>
   <string name="about_guardian_title">О Проекте Guardian </string>
   <string name="about_guardian_content">Проект Guardian создает легкие в использовании приложения, библиотеки открытого программного обеспечения, модификации к операционным системам и специализированные мобильные устройства, полезные для всех, кто хочет защитить свое общение и личные данные от несанкционированного вторжения и мониторинга. Узнайте больше о нас на https://guardianproject.info</string>
-  <string name="help_terms_group_title">Условия и лицензии на программное обеспечение</string>
-  <string name="help_terms_title">Условия и лицензии на программное обеспечение</string>
-  <string name="help_terms_content"></string>
+  <string name="help_terms_group_title">Условия и лицензии</string>
+  <string name="help_terms_title">Условия и лицензии</string>
+  <string name="help_terms_content">Лицензии на программное обеспечение и более подробную информацию можно получить на сайте: https://guardianproject.info/apps/courier</string>
   <string name="help_show_news">Все понятно. Покажи мне новости!</string>
+  <string name="help_feedback_title">Отправить Oтзыв</string>
+  <string name="help_feedback_content">Мы усовершенствуем наше приложение! Сообщите нам как Курьер работает для вас здесь: https://okthanks.typeform.com/to/tXYKpF</string>
   <string name="downloads_title">Загрузка мультимедийных файлов</string>
   <string name="downloads_complete">ЗАВЕРШЕНО</string>
   <string name="downloads_in_progress">В ПРОЦЕССЕ </string>
@@ -121,7 +123,8 @@
   <string name="settings_gibberbot_connected">Учетная запись Безопасного Чата подключена</string>
   <string name="settings_heading_panic_action">Действие кнопки Тревога</string>
   <string name="settings_panic_action_info">Выберите действие, которое вы хотите присвоить кнопке Тревога.</string>
-  <string name="settings_panic_wipe_app">Полностью стереть приложение. \n</string>
+  <string name="settings_panic_wipe_app">Полностью стереть приложение. 
+</string>
   <string name="settings_panic_wipe_content">Стереть мой контент</string>
   <string name="settings_heading_login">Вход</string>
   <string name="settings_security_passphrase_timeout">Автоматически заблокировать</string>
@@ -131,6 +134,7 @@
   <string name="settings_security_passphrase_timeout3">1 час</string>
   <string name="settings_security_passphrase_timeout4">1 день</string>
   <string name="settings_security_passphrase_timeout5">1 неделя</string>
+  <string name="settings_enable_screenshots">Включите снимки экрана</string>
   <string name="generic_second">секунда</string>
   <string name="generic_seconds">секунды</string>
   <string name="generic_minute">минута</string>
@@ -167,18 +171,14 @@
   <string name="settings_data_article_expiration_never">Никогда</string>
   <string name="settings_data_syncing">Частота синхронизации</string>
   <string name="settings_data_syncing_manual_only">Вручную</string>
-  <string name="settings_data_syncing_automatic_running">Автоматически, когда приложение запущено.\nСинхронизировать при использовании приложения</string>
-  <string name="settings_data_syncing_automatic_background">Автоматически в фоновом режиме\nВсегда синхронизировать, когда мой телефон подключен к интернету</string>
   <string name="settings_data_sync_mode">Режим синхронизации</string>
-  <string name="settings_data_sync_mode_bitwise">Экономная загрузка (экономит объем использованных данных)\nПри синхронизации приложения будет загружен только текст; Мультимедиа файлы из статьи могут быть загружены отдельно.</string>
-  <string name="settings_data_sync_mode_flow">Загружать полностью \nТекст и мультимедиа файлы будут загружены к каждой статье при синхронизации приложения.</string>
   <string name="settings_data_sync_network">Синхронизировать сеть</string>
   <string name="settings_data_sync_network_wifi">Только через WiFi</string>
   <string name="settings_data_sync_network_all">Через WiFi и мобильные сети</string>
   <string name="settings_reader_swipe_direction">Провести пальцем для чтения</string>
-  <string name="settings_reader_swipe_direction_automatic">Авто\nРаспознать автоматически на основе языка</string>
-  <string name="settings_reader_swipe_direction_rtl">Английский\nСправа налево переходит на следующую страницу</string>
-  <string name="settings_reader_swipe_direction_ltr">Фарси\nСлева направо переходит на следующую страницу</string>
+  <string name="settings_reader_swipe_direction_automatic">Авто\nOпределение на основе языка</string>
+  <string name="settings_reader_swipe_direction_rtl">Английский\nCправа налево ведет к следующей странице</string>
+  <string name="settings_reader_swipe_direction_ltr">Фарси\nСлева направо ведет к следующей странице</string>
   <string name="settings_heading_language">Язык</string>
   <string name="settings_language_option_group_default">Язык по умолчанию</string>
   <string name="settings_language_english">Английский</string>
@@ -245,7 +245,6 @@
   <string name="httpd_app_sender_instructions">Чтобы локально поделиться приложением Курьер или поддерживаемыми им приложениями (Orbot и Безопасный Чат), пожалуйста, выполните следующие действия:</string>
   <string name="httpd_app_sender_sender">Чтобы поделиться</string>
   <string name="httpd_app_sender_sender_title">Включите «Точку доступа WiFi портативного устройства» </string>
-  <string name="httpd_app_sender_sender_part1">Вы можете включить точку доступа в настройках вашего телефона. Это наиболее безопасный способ поделиться приложением.\n\nЕсли вы не можете включить точку доступа, вы можете подключиться к общественной сети WiFi, которой вы доверяете.</string>
   <string name="httpd_app_sender_receiver">Чтобы получить</string>
   <string name="httpd_app_sender_receiver_part1">2. Подключиться к точке доступа WiFi портативного устройства</string>
   <string name="httpd_app_sender_receiver_part2">Если вы не подключены ни к какой точке доступа, используйте ту же сеть WiFi, что и ваш друг, делящийся приложением.</string>
@@ -285,7 +284,7 @@
   <string name="story_list_hint_tor_no_net">Нет доступа к сети Интернет. Попробуйте еще раз позже.</string>
   <string name="story_list_hint_tor_go_online">ПОДКЛЮЧИТЬСЯ К ТОR</string>
   <string name="story_list_hint_tor_more_title">Подклучение к сети Тор установлено</string>
-  <string name="story_list_hint_tor_more_info">Использование Тоr для службы чтения новостей не требуется, но настоятельно рекомендуется. В настройках вы можете отключить использование Тоr для просмотра новостей. В таком случае, защита ваших данных обеспечена не будет.\n\nИспользование Тоr необходимо для публикации отчетов в Курьере.</string>
+  <string name="story_list_hint_tor_more_info">Использование Тор для чтения новостей не обязательно, но настоятельно рекомендуется. Вы можете отказаться от использования Тор для просмотра новостей в ваших настройках. Ваша конфиденциальность не будет защищенна в таком случае.</string>
   <string name="story_list_hint_tor_connected_title">Вы успешно подключились к Тоr!</string>
   <string name="story_list_hint_tor_connected_info">Потяните вниз, чтобы синхронизировать новости.</string>
   <string name="story_list_error_title">Ой! Ваши ленты новостей не обновляются.</string>
@@ -298,8 +297,8 @@
   <string name="apps_feed_name">Приложения</string>
   <string name="epubs_feed_name">Архив Тибет</string>
   <string name="cacheword_notification_cached_title">Курьер Разблокирован</string>
-  <string name="cacheword_notification_cached">Код-пароль Курьера сохранен в памяти</string>
-  <string name="cacheword_notification_cached_message">Код-пароль Курьера сохранен в памяти</string>
+  <string name="cacheword_notification_cached">Прикоснитесь пальцем, чтобы замкнуть</string>
+  <string name="cacheword_notification_cached_message">Прикоснитесь пальцем, чтобы замкнуть</string>
   <string name="download_epub_hint">Скачать электронные публикации в формате ePub </string>
   <string name="download_epub_reader_title">Скачать программу для чтения электронных публикаций в формате ePub</string>
   <string name="download_epub_reader_info">Для просмотра этой статьи Вам необходима программа для чтения электронных публикаций в формате ePub. Мы рекомендуем FBReader. Получите его на:</string>

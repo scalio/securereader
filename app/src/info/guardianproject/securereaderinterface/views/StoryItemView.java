@@ -459,7 +459,7 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 					if (feedId != -1 && mPagedView.getContext() instanceof ItemExpandActivity)
 					{
 						((ItemExpandActivity)mPagedView.getContext()).onBackPressed();
-						UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedId, this);
+						UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, feedId, StoryItemView.this);
 					}
 				}
 			});

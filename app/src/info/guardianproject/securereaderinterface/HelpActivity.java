@@ -82,6 +82,8 @@ public class HelpActivity extends FragmentActivityWithMenu
 		});
 		if (useLeftSideMenu())
 			btnDone.setVisibility(View.GONE);
+		else
+			getSupportActionBar().hide();
 		
 		// Update version display
 		TextView tvVersion = (TextView) findViewById(R.id.tvVersion);

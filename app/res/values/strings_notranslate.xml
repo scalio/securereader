@@ -5,6 +5,10 @@
     <string name="settings_language_farsi_nt">رسیدن</string>
     <string name="settings_language_tibetan_nt">བོད་ཡིག</string>
     <string name="settings_language_chinese_nt">中文</string>
-  <string name="settings_language_ukrainian_nt">Українськa</string>
-    <string name="settings_language_russian_nt">русский</string>    
+  	<string name="settings_language_ukrainian_nt">Українськa</string>
+    <string name="settings_language_russian_nt">русский</string>   
+    <string name="settings_language_japanese_nt">日本人</string>
+    <string name="settings_language_norwegian_nt">norsk</string>
+    <string name="settings_language_spanish_nt">español</string>
+    <string name="settings_language_turkish_nt">Türk</string>    
 </resources>

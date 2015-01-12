@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="app_name">Kур\'єр</string>
-  <string name="app_description">Kур\'єр - це безпечний додаток для читання та передачі новин з можливістю групового обговорення</string>
+  <string name="app_description">Кур\'єр - це мобільний читач новин через RSS канал із розширеними функціями безпеки, читанням новин в автономному режимі і можливості спільного використання.</string>
   <string name="title_activity_main">Kур\'єр</string>
   <string name="title_activity_help">Kур\'єр</string>
   <string name="title_activity_downloads">Kур\'єр</string>
@@ -41,13 +41,14 @@
   <string name="help_share_title">Поширити локально, не використовуючи інтернет. </string>
   <string name="help_share_content">Обмінюйтесь новинами, стрічками новин та цим додатком за допомогою Безпечного  Поширення Кур\'єру. Це безпечно, легко і вимагає лише, щоб мобільний пристрій вашого друга знаходився поруч з ввімкненим Bluetooth. Обмін цим додатком вимагає наявності мережі Wi-Fi або хот-спот.</string>
   <string name="help_data_title">Зменшити використання даних, МБ </string>
-  <string name="help_data_content">Поради, як зменшити ваше споживання даних, МБ: \n1. Синхронізуйте лише ті стрічки новин, які для вас є найважливішими. Кур\'єр дозволяє синхронізувати стрічки індивідуально.\n2. В налаштуваннях оберіть режим синхронізації Економне завантаження. Він синхронізує лише текст кожної новини, з можливістю завантаження фотографій на індивідуальній основі.\n3. Визначіть певний термін зберігання обраних вами новин. Виберіть один із термінів у ваших налаштуваннях.</string>
   <string name="about_guardian_title">Що таке Guardian Project</string>
   <string name="about_guardian_content">Проект Гардіан створює легкі у використанні додатки, програмні бібліотеки з відкритими вихідними кодами, модифікаційні версії операційних систем та спеціалізовані мобільні пристрої, корисні для будь-кого, хто прагне захистити своє спілкування та особисті дані від несанкціонованого вторгнення і моніторингу. Дізнайтесь про нас більше тут: https://guardianproject.info</string>
-  <string name="help_terms_group_title">Умови та ліцензії на програмне забезпечення  </string>
-  <string name="help_terms_title">Умови та ліцензії на програмне забезпечення  </string>
-  <string name="help_terms_content"></string>
+  <string name="help_terms_group_title">Про умови та ліцензії</string>
+  <string name="help_terms_title">Про умови та ліцензії</string>
+  <string name="help_terms_content">Ліцензії на програмне забезпечення та більш детальну інформацію можна отримати на сайті: https://guardianproject.info/apps/courier</string>
   <string name="help_show_news">Зрозуміло. Покажи мені новини!</string>
+  <string name="help_feedback_title">Надіслати Відгук</string>
+  <string name="help_feedback_content">Ми вдосконалюємо наш додаток! Повідомте нас, як Kур\'єр працює для Вас тут: https://okthanks.typeform.com/to/tXYKpF</string>
   <string name="downloads_title">Завантаження мультимедіа файлів</string>
   <string name="downloads_complete">ЗАВЕРШЕНО</string>
   <string name="downloads_in_progress">В ПРОЦЕСІ</string>
@@ -131,6 +132,7 @@
   <string name="settings_security_passphrase_timeout3">1 година</string>
   <string name="settings_security_passphrase_timeout4">1 день</string>
   <string name="settings_security_passphrase_timeout5">1 тиждень</string>
+  <string name="settings_enable_screenshots">Увімкніть знімки екрану</string>
   <string name="generic_second">секунда</string>
   <string name="generic_seconds">секунди</string>
   <string name="generic_minute">хвилина</string>
@@ -167,18 +169,14 @@
   <string name="settings_data_article_expiration_never">Ніколи</string>
   <string name="settings_data_syncing">Частота синхронізації</string>
   <string name="settings_data_syncing_manual_only">Вручну</string>
-  <string name="settings_data_syncing_automatic_running">Автоматично, коли додаток працює. \nСинхронізовувати під час використання додатку.</string>
-  <string name="settings_data_syncing_automatic_background">Автоматично у фоновому режимі\nЗавжди синхронізувати, коли мій телефон під\'єднаний до Інтернету</string>
   <string name="settings_data_sync_mode">Режим синхронізації</string>
-  <string name="settings_data_sync_mode_bitwise">Економне завантаження Біт Вайс (економить кількість використанних даних, МБ) \nКоли додаток синхронізується, буде завантажено лише текст; Мультимедіа файл новини може бути завантажений окремо.</string>
-  <string name="settings_data_sync_mode_flow">Загрузити разом з мультимедіа файлом\nТекст та мультимедіа файли будуть завантажені до кожної статті, коли додаток синхронізується.</string>
   <string name="settings_data_sync_network">Синхронізація мережі</string>
   <string name="settings_data_sync_network_wifi">Лише через WiFi</string>
   <string name="settings_data_sync_network_all">Через WiFi та мобільні мережі</string>
   <string name="settings_reader_swipe_direction">Провести пальцем вбік для читання</string>
-  <string name="settings_reader_swipe_direction_automatic">Авто\nРозпізнати автоматично на основі мови</string>
-  <string name="settings_reader_swipe_direction_rtl">Англійська\nСправа наліво переходить до наступної сторінки  </string>
-  <string name="settings_reader_swipe_direction_ltr">Фарсі\nЗліва направо переходить до наступної сторінки  </string>
+  <string name="settings_reader_swipe_direction_automatic">Aвто\nРозпізнання на основi мови</string>
+  <string name="settings_reader_swipe_direction_rtl">Англійська\nСправа наліво зліва перевoдить до наступної сторінки</string>
+  <string name="settings_reader_swipe_direction_ltr">Фарсі\nЗліва направо переводить до наступної сторінки</string>
   <string name="settings_heading_language">Мова</string>
   <string name="settings_language_option_group_default">Основна мова</string>
   <string name="settings_language_english">Англійська</string>
@@ -245,7 +243,6 @@
   <string name="httpd_app_sender_instructions">Для локального поширення додатку Кур\'єр або додатку, що ним підтримується (Орбот і Безпечний Чат), будь ласка, виконайте наступнії дії:</string>
   <string name="httpd_app_sender_sender">Щоб Поширити</string>
   <string name="httpd_app_sender_sender_title">1. Ввімкніть \"Портативний хот-спот WiFi\"</string>
-  <string name="httpd_app_sender_sender_part1">Ви можете ввімкнути хот-спот у параметрах налаштування у вашому телефоні. Це найбезпечніший спосіб обміну додатком. Якщо ви не можете ввімкнути хот-спот, ви можете підключитися до публічної мережі WiFi, якій ви довіряєте.</string>
   <string name="httpd_app_sender_receiver">Щоб отримати</string>
   <string name="httpd_app_sender_receiver_part1">2. Приєднайтеся до Портативного хот-спот WiFi</string>
   <string name="httpd_app_sender_receiver_part2">Якщо ви не використовуєте хот-спот, тоді під\'єднайтеся до тієї ж мережі WiFi, через яку ваш друг ділиться додатком.</string>
@@ -278,14 +275,15 @@
   <string name="create_account_info">Ваш нік буде використовуватися в групових бесідах та відображатиметься у повідoмленнях, які ви публікуєте.</string>
   <string name="create_account_hint">Нік</string>
   <string name="create_account_create">Створити</string>
-  <string name="story_list_hint_tor_title">Ласкаво просимо до вашої стрічки новин\n Кур\'єр.</string>
+  <string name="story_list_hint_tor_title">Ласкаво просимо до вашої стрічки новин
+ Кур\'єр.</string>
   <string name="story_list_hint_tor_info">Перед тим, як синхронізувати новини, ви повинні вийти онлайн з Toр. Додаток Орбот підключить вас до мережі Toр.</string>
   <string name="story_list_hint_tor_more">Дізнайтесь більше, як користуватись Тор</string>
   <string name="story_list_hint_tor_less">Mенше</string>
   <string name="story_list_hint_tor_no_net">Немає інтернету. Спробуйте пізніше ще раз.</string>
   <string name="story_list_hint_tor_go_online">ПІД\'ЄДНАТИСЯ ДО ТОР</string>
   <string name="story_list_hint_tor_more_title">Використати Тор</string>
-  <string name="story_list_hint_tor_more_info">Тор не вимагається для читача новин, однак, його використання настійно рекомендується. Ви можете відхилити використання Toр для перегляду новин у параметрах налаштування. У цьому випадку ваша конфіденційність захищена не буде. Тор вимагається для публікування повідoмлень в Кур\'єрі.</string>
+  <string name="story_list_hint_tor_more_info">Використання Тор для читання новин не обов\'язкове, однак, настійно рекомендується. Ви можете відмовитися від використання Тор для перегляду новин у ваших настройках. Ваша конфіденційнiсть не будe захищена в такому разі.</string>
   <string name="story_list_hint_tor_connected_title">Ви успішно під\'єдналися до Тор!</string>
   <string name="story_list_hint_tor_connected_info">Потягніть донизу, щоб синхрозувати новини.</string>
   <string name="story_list_error_title">Ой! Ваші стрічки новин не оновлюються.</string>
@@ -298,8 +296,8 @@
   <string name="apps_feed_name">Додатки</string>
   <string name="epubs_feed_name">Тібет Архів </string>
   <string name="cacheword_notification_cached_title">Кур\'єр відімкнуто</string>
-  <string name="cacheword_notification_cached">Пароль-код Кур\'єрa збережено в памяті</string>
-  <string name="cacheword_notification_cached_message">Пароль-код Кур\'єрa збережено в памяті</string>
+  <string name="cacheword_notification_cached">Доторкніться пальцем, щоб замкнути</string>
+  <string name="cacheword_notification_cached_message">Доторкніться пальцем, щоб замкнути</string>
   <string name="download_epub_hint">Скачати електронні публікації формату ePub</string>
   <string name="download_epub_reader_title">Скачати читач електронних публікацій ePub Reader</string>
   <string name="download_epub_reader_info">Для того, щоб побачити цю статтю, вам потрібен читач електронних публікацій ePub Reader. Ми рекомендуємо FBReader. Отримайте його на:</string>
