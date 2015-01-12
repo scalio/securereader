@@ -238,14 +238,13 @@
         </LinearLayout>
     </ScrollView>
 
-<<<<<<< HEAD
-        <LinearLayout
-            android:id="@+id/groupFeedback"
+    <LinearLayout            
+        	android:id="@+id/groupFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@drawable/white_with_bottom_shadow"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
                 android:id="@+id/tvFeedbackTitle"
@@ -282,7 +281,4 @@
             android:text="Version 1.0"
             android:textColor="#888888"
             android:textSize="12sp" />
-
-    </LinearLayout>
-
 </ScrollView>
