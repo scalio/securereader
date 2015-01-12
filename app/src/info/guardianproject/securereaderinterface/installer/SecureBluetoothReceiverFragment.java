@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.installer;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;

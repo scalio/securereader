@@ -39,7 +39,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;

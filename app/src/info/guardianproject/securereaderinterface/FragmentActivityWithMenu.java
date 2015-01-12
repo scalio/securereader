@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;

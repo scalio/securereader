@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;

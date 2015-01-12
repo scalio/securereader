@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.widgets.compat;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import info.guardianproject.securereaderinterface.adapters.SpinnerWrapperListAdapter;
 import android.app.Activity;
 import android.content.Context;

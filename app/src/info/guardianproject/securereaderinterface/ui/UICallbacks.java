@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.ui;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.AddFeedActivity;
 import info.guardianproject.securereaderinterface.AddPostActivity;

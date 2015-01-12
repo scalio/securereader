@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.annotation.SuppressLint;

@@ -36,7 +36,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import info.guardianproject.securereaderinterface.FragmentActivityWithMenu;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.Response.Status;

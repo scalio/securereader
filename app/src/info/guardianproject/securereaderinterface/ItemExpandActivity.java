@@ -23,7 +23,7 @@ import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.ExpansionListener;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.SwipeListener;
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 
 import com.tinymission.rss.Item;
 

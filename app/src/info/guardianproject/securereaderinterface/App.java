@@ -12,6 +12,7 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontRadioButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
+import info.guardianproject.unicorn.R;
 
 import java.util.ArrayList;
 import java.util.Locale;

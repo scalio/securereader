@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.unicorn.R;
 
 public class HeightLimitedRelativeLayout extends RelativeLayout
 {
