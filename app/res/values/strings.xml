@@ -191,6 +191,10 @@
     <string name="settings_language_chinese">Chinese</string>
     <string name="settings_language_ukrainian">Ukrainian</string>
     <string name="settings_language_russian">Russian</string>
+    <string name="settings_language_japanese">Japanese</string>
+    <string name="settings_language_norwegian">Norwegian</string>
+    <string name="settings_language_spanish">Spanish</string>
+    <string name="settings_language_turkish">Turkish</string>    
     <string name="lock_screen_title1">Welcome to Courier</string>
     <string name="lock_screen_title2">Read, write and talk freely.</string>
     <string name="lock_screen_choose_language">Choose a language</string>
