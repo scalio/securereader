@@ -4,9 +4,11 @@ import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
+import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
+import info.guardianproject.securereaderinterface.views.StoryItemView;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView;
 import info.guardianproject.securereaderinterface.views.StoryListView;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView.OnButtonClickedListener;
@@ -593,6 +595,7 @@ public class MainActivity extends ItemExpandActivity
 	private StoryListHintTorView mTorView;
 	private FeedFilterType mCurrentShownFeedFilterType = null;
 	private Feed mCurrentShownFeed = null;
+	private boolean mBackShouldOpenAllFeeds;
 
 	@Override
 	public void onCommand(int command, Bundle commandParameters)
@@ -859,9 +862,18 @@ public class MainActivity extends ItemExpandActivity
 		else if (getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED
 				&& (mCurrentShownFeed == null || getCurrentFeed() == null || mCurrentShownFeed.getDatabaseId() != getCurrentFeed().getDatabaseId()))
 			isUpdate = false;
-
+		
 		mCurrentShownFeedFilterType = getCurrentFeedFilterType();
 		mCurrentShownFeed = getCurrentFeed();
+
+		// If clicking story source to filter feed, "back" should not close app but get us back to "ALL FEEDS" (task #4292)
+		//
+		mBackShouldOpenAllFeeds = false;
+		if (mCurrentShownFeedFilterType == FeedFilterType.SINGLE_FEED)
+		{
+			if (source instanceof StoryListAdapter || source instanceof StoryItemView)
+				mBackShouldOpenAllFeeds = true;
+		}
 
 		updateList(isUpdate);
 	}
@@ -894,5 +906,19 @@ public class MainActivity extends ItemExpandActivity
 		//
 		outState.putString("FeedFilterType", App.getInstance().getCurrentFeedFilterType().name());
 		outState.putLong("FeedId", App.getInstance().getCurrentFeedId());
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		if (mBackShouldOpenAllFeeds)
+		{
+			mBackShouldOpenAllFeeds = false;
+			UICallbacks.setFeedFilter(FeedFilterType.ALL_FEEDS, -1, this);
+		}
+		else
+		{
+			super.onBackPressed();
+		}
 	}
 }
