@@ -22,5 +22,7 @@
     <integer name="cacheword_timeout_minutes_default">1440</integer>
     <integer name="cacheword_pbkdf2_minimum_iteration_count">15000</integer>
     <bool name="cacheword_pbkdf2_auto_calibrate">false</bool>
+    <bool name="cacheword_vibrate_default">false</bool>
+    
 </resources>
 
