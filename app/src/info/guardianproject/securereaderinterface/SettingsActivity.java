@@ -219,13 +219,18 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		this.hookupRadioButton(tabView, "syncNetwork", Settings.SyncNetwork.class, R.id.rbSyncNetworkWifiAndMobile, R.id.rbSyncNetworkWifiOnly);
 		this.hookupRadioButton(tabView, "readerSwipeDirection", Settings.ReaderSwipeDirection.class, R.id.rbSwipeDirectionRtl, R.id.rbSwipeDirectionLtr,
 				R.id.rbSwipeDirectionAutomatic);
-
+		
 		this.hookupRadioButtonWithArray(tabView, "uiLanguage", Settings.UiLanguage.class, new ResourceValueMapping[] {
 			new ResourceValueMapping(R.id.rbUiLanguageEnglish, Settings.UiLanguage.English),
 			new ResourceValueMapping(R.id.rbUiLanguageTibetan, Settings.UiLanguage.Tibetan),
 			new ResourceValueMapping(R.id.rbUiLanguageChinese, Settings.UiLanguage.Chinese),
 			new ResourceValueMapping(R.id.rbUiLanguageUkrainian, Settings.UiLanguage.Ukrainian),
-			new ResourceValueMapping(R.id.rbUiLanguageRussian, Settings.UiLanguage.Russian)
+			new ResourceValueMapping(R.id.rbUiLanguageRussian, Settings.UiLanguage.Russian),
+			new ResourceValueMapping(R.id.rbUiLanguageJapanese, Settings.UiLanguage.Japanese),
+			new ResourceValueMapping(R.id.rbUiLanguageNorwegian, Settings.UiLanguage.Norwegian),
+			new ResourceValueMapping(R.id.rbUiLanguageSpanish, Settings.UiLanguage.Spanish),
+			new ResourceValueMapping(R.id.rbUiLanguageTurkish, Settings.UiLanguage.Turkish),
+			new ResourceValueMapping(R.id.rbUiLanguageFarsi, Settings.UiLanguage.Farsi)
 			});
 
 		this.hookupRadioButtonWithArray(tabView, "numberOfPasswordAttempts", int.class, new ResourceValueMapping[] {
