@@ -6,8 +6,8 @@
     <dateModified>2013-07-18T00:38:00+00:00</dateModified>
   </head>
   <body>
-    <outline category="en_US" text="VOA News" htmlUrl="http://www.voanews.com/api/epiqq" xmlUrl="http://www.voanews.com/api/epiqq" />
-    <outline category="en_US" text="The Guardian World News" htmlUrl="http://feeds.theguardian.com/theguardian/world/rss" xmlUrl="http://feeds.theguardian.com/theguardian/world/rss" />
-    <outline category="en_US" text="Washington Post World News" htmlUrl="http://feeds.washingtonpost.com/rss/world" xmlUrl="http://feeds.washingtonpost.com/rss/world" />
+    <outline category="en_US" text="VOA News" htmlUrl="http://www.voanews.com/api/epiqq" xmlUrl="http://www.voanews.com/api/epiqq" subscribe="true" />
+    <outline category="en_US" text="The Guardian World News" htmlUrl="http://feeds.theguardian.com/theguardian/world/rss" xmlUrl="http://feeds.theguardian.com/theguardian/world/rss" subscribe="true" />
+    <outline category="en_US" text="Washington Post World News" htmlUrl="http://feeds.washingtonpost.com/rss/world" xmlUrl="http://feeds.washingtonpost.com/rss/world" subscribe="true" />
   </body>
 </opml> 
