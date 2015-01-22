@@ -172,6 +172,14 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			language = "uk";
 		else if (lang == UiLanguage.Russian)
 			language = "ru";
+		else if (lang == UiLanguage.Spanish)
+			language = "es";
+		else if (lang == UiLanguage.Japanese)
+			language = "ja";
+		else if (lang == UiLanguage.Norwegian)
+			language = "nb";
+		else if (lang == UiLanguage.Turkish)
+			language = "tr";
 		
 		if (language.equals(mCurrentLanguage))
 			return;
