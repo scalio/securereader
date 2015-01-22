@@ -450,7 +450,7 @@
                 android:id="@+id/rgUiLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
+                
                 <RadioButton
                     android:id="@+id/rbUiLanguageEnglish"
                     style="@style/SettingsRadioButtonStyle"
@@ -486,6 +486,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_language_russian_nt" />
+                
+                <RadioButton
+                    android:id="@+id/rbUiLanguageJapanese"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_japanese_nt" />
+                		
+				<RadioButton
+                    android:id="@+id/rbUiLanguageNorwegian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_norwegian_nt" />
+		
+				<RadioButton
+                    android:id="@+id/rbUiLanguageSpanish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_spanish_nt" />
+				
+				<RadioButton
+                    android:id="@+id/rbUiLanguageTurkish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_turkish_nt" />
+		
+				<RadioButton
+                    android:id="@+id/rbUiLanguageFarsi"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_farsi_nt" />                
                 
             </RadioGroup>
 
