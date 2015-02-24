@@ -50,7 +50,7 @@ import com.tinymission.rss.MediaContent;
 
 public class SecureBluetoothReceiverFragment extends DialogFragment implements LockableFragment, OnClickListener, SecureBluetooth.SecureBluetoothEventListener
 {
-	public static final String LOGTAG = "SecureBluetoothReceiverFragment";
+	public static final String LOGTAG = "SecureBltRecFrag";
 	public static final boolean LOGGING = false;
 
 	private enum UIState
@@ -157,7 +157,7 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 			{
 				// If BT not enabled, hide us for now. We will prompt the user to enable
 				// BT and handle the result in onUnlockedActivityResult. Based on the
-				// user´s choice the dialog will either be dismissed or shown there.
+				// userï¿½s choice the dialog will either be dismissed or shown there.
 				if (!sb.isEnabled())
 					mDialog.hide();
 			}
@@ -479,7 +479,7 @@ public class SecureBluetoothReceiverFragment extends DialogFragment implements L
 	@Override
 	public void onUnlockedActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
 	{
-		// If we don´t allow BT to be turned on, just quit out of this activity!
+		// If we donï¿½t allow BT to be turned on, just quit out of this activity!
 		if (requestCode == SecureBluetooth.REQUEST_ENABLE_BT)
 		{
 			if (resultCode == Activity.RESULT_CANCELED)	

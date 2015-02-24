@@ -183,10 +183,10 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					UiLanguage.Chinese,
 					UiLanguage.Ukrainian,
 					UiLanguage.Russian,
-					UiLanguage.Japanese, 
-					UiLanguage.Norwegian, 
-					UiLanguage.Spanish, 
-					UiLanguage.Turkish, 
+					//UiLanguage.Japanese,
+					//UiLanguage.Norwegian,
+					//UiLanguage.Spanish,
+					//UiLanguage.Turkish,
 					UiLanguage.Farsi					
 			};
 			

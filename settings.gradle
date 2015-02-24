@@ -1,0 +1,5 @@
+include ':app'
+include ':external:CacheWord:cachewordlib'
+include ':external:securereaderlibrary'
+include ':external:OnionKit:libnetcipher'
+include ':external:bho:TibetanTextLibrary'
