@@ -23,4 +23,6 @@ local.properties
 .settings
 
 build.xml
-app/ant.properties
+
+#OSX
+.DS_Store
