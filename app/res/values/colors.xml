@@ -12,8 +12,8 @@
    <color name="accent_dark_medium">#80A4A59B</color>  
    <color name="accent_dark">#40A4A59B</color>  
    
-   <color name="button_primary">#94103C</color>
-   <color name="button_primary_selected">#8094103C</color>
+   <color name="button_primary">#108BAE</color>
+   <color name="button_primary_selected">#80108BAE</color>
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>
    
@@ -52,4 +52,10 @@
    <color name="modal_button_secondary">#92938D</color>
    <color name="modal_button_secondary_selected">#303030</color>
    <color name="modal_button_secondary_disabled">#303030</color>
+   
+   <color name="rz_blue_light">#3CBCF4</color>
+   <color name="rz_blue_dark">#108BAE</color>
+   <color name="rz_grey_light">#DDDDDD</color>
+   <color name="rz_grey_dark">#555555</color>
+   
 </resources>
