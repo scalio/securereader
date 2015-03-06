@@ -23,3 +23,6 @@ local.properties
 .settings
 
 build.xml
+
+#OSX
+.DS_Store
