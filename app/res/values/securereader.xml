@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="opml_url">http://securereader.guardianproject.info/opml/opml.php</string>
+	<string name="opml_url"></string>
 	
 	<bool name="fulltextfeeds">false</bool>
 		
