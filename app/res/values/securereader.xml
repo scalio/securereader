@@ -6,13 +6,11 @@
 	<bool name="fulltextfeeds">false</bool>
 		
     <string-array name="built_in_feed_names">
-        <item>CNN-US</item>
-        <item>ESPN soccer</item>
+        <item>Radio Zamaneh</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
-        <item>http://rss.cnn.com/rss/cnn_us.rss</item>
-        <item>http://www.espnfc.com/uefa-champions-league/2/rss</item>
+        <item>http://www.radiozamaneh.com/feed</item>
     </string-array>
 
 

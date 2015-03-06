@@ -65,11 +65,11 @@
         android:text="@string/app_name" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/tvTitle"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_launch_logo" />
+        android:src="@drawable/rz_logo" />
 
 </RelativeLayout>
