@@ -205,7 +205,7 @@ public class LockableActivity extends ActionBarActivity  implements OnSharedPref
 	}
 
 	@Override
-	final protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent)
+	protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent)
 	{
 		super.onActivityResult(requestCode, resultCode, returnedIntent);
 		if (App.getInstance().isActivityLocked())

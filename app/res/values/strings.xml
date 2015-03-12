@@ -7,6 +7,7 @@
     <string name="title_activity_main">Radio Zamaneh</string>
     <string name="title_activity_help">Radio Zamaneh</string>
     <string name="title_activity_downloads">Radio Zamaneh</string>
+    <string name="title_activity_uploads">Radio Zamaneh</string>
     <string name="title_activity_add_feed">Radio Zamaneh</string>
     <string name="title_activity_post">My Posts</string>
     <string name="title_activity_add_post">Radio Zamaneh</string>
@@ -322,5 +323,24 @@
     <string name="download_epub_reader_close">Close</string>
     
     <string name="chatroom_name">Not being used</string>
+    
+    
+    
+    <!-- RZ -->
+    <string name="media_upload">Upload Media</string>
+    
+	<string name="import_btn">IMPORT</string>
+    <string name="capture_btn">CAPTURE</string>
+
+    <string-array name="ar_media_capture_options">
+        <item>Photo</item>
+        <item>Video</item>
+        <item>Audio</item>
+    </string-array>
+    
+        <!-- Errors -->
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_invalid_media_type">File Type not recognized</string>
+    <string name="error_no_media">No Media Found!</string>
     
 </resources>
