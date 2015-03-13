@@ -327,10 +327,13 @@
     
     
     <!-- RZ -->
-    <string name="media_upload">Upload Media</string>
+    <string name="image_content">content</string>
+    
+    <string name="upload_title">Media Upload</string>
     
 	<string name="import_btn">IMPORT</string>
     <string name="capture_btn">CAPTURE</string>
+    <string name="upload_btn">UPLOAD</string>
 
     <string-array name="ar_media_capture_options">
         <item>Photo</item>
