@@ -13,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class UploadsActivity extends FragmentActivityWithMenu
 	public static final boolean LOGGING = false;
 	public static final String LOGTAG = "UploadsActivity";
 	private Context mContext;
+	
+	Button btnUpload;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -54,7 +58,8 @@ public class UploadsActivity extends FragmentActivityWithMenu
 	private void init() {
         Button btnImport = (Button) findViewById(R.id.btnImport);
         Button btnCapture = (Button) findViewById(R.id.btnCapture);
-
+        btnUpload = (Button) findViewById(R.id.btnUpload);
+        
         btnImport.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // ACTION_OPEN_DOCUMENT is the new API 19 action for the Android file manager
@@ -111,6 +116,12 @@ public class UploadsActivity extends FragmentActivityWithMenu
                 if (null != intent && intent.resolveActivity(mContext.getPackageManager()) != null) {
                     ((Activity) mContext).startActivityForResult(intent, requestId);
                 }
+            }
+        });
+        
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(mContext, "uploading...", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -203,7 +214,19 @@ public class UploadsActivity extends FragmentActivityWithMenu
                 Intent reviewMediaIntent = new Intent(this, ReviewMediaActivity.class);
                 reviewMediaIntent.putExtra(Globals.EXTRA_CURRENT_MEDIA_ID, media.getId());
                 startActivity(reviewMediaIntent);*/
+            	
+            	ImageView ivMedia = (ImageView) findViewById(R.id.ivMedia);
+            	Bitmap bm = Utility.getThumbnail(mContext, path, mediaType);
+            	ivMedia.setImageBitmap(bm);
+            	
+            	if(null != bm) {
+            		btnUpload.setVisibility(View.VISIBLE);
+            	} else {
+            		btnUpload.setVisibility(View.GONE);
+            	}    
             }
+            
+            init();
         }
     }
 }

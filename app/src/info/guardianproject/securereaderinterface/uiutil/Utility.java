@@ -4,14 +4,23 @@ package info.guardianproject.securereaderinterface.uiutil;
  * Created by micahjlucas on 12/16/14.
  */
 
+import info.guardianproject.securereader.R;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.MimeTypeMap;
@@ -20,7 +29,8 @@ import android.widget.Toast;
 
 
 public class Utility {
-
+	public static final String LOGTAG = "Utility";
+	
     public static Globals.MEDIA_TYPE getMediaType(String mediaPath) {
         // makes comparisons easier
         mediaPath = mediaPath.toLowerCase();
@@ -159,5 +169,92 @@ public class Utility {
                 Toast.makeText(_activity.getApplicationContext(), _msg, isLongToast ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    
+    public static Bitmap getThumbnail(Context context, String filePath, Globals.MEDIA_TYPE mediaType) {
+        Bitmap thumbnail = null;
+        String thumbnailFilePath;
+        
+        Uri uri = Uri.parse(filePath);
+        String lastSegment = uri.getLastPathSegment();
+        boolean isDocumentProviderUri = filePath.contains("content:/") && (lastSegment.contains(":"));
+        
+        if (mediaType == Globals.MEDIA_TYPE.AUDIO) {
+            thumbnail = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        } else if (mediaType == Globals.MEDIA_TYPE.IMAGE) {
+            if (isDocumentProviderUri) {
+                // path of form : content://com.android.providers.media.documents/document/video:183
+                // An Android Document Provider URI. Thumbnail already generated
+                // TODO Because we need Context we can't yet override this behavior at MediaFile#getThumbnail
+                long id = Long.parseLong(Uri.parse(filePath).getLastPathSegment().split(":")[1]);
+                thumbnail = MediaStore.Images.Thumbnails.getThumbnail(context.getContentResolver(), id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+            } else {
+                if (filePath.contains("content:/")) {
+                	filePath = Utility.getRealPathFromURI(context, uri);
+                }
+                File originalFile = new File(filePath);
+                String fileName = originalFile.getName();
+                String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+                thumbnailFilePath = filePath.substring(0, filePath.lastIndexOf(File.separator) + 1) + tokens[0] + "_thumbnail.png";
+                File thumbnailFile = new File(thumbnailFilePath);
+                if (thumbnailFile.exists()) {
+                    thumbnail = BitmapFactory.decodeFile(thumbnailFilePath);
+                } else {
+                    Bitmap bitMap = BitmapFactory.decodeFile(filePath);
+
+                    try {
+                        FileOutputStream thumbnailStream = new FileOutputStream(thumbnailFile);
+                        thumbnail = ThumbnailUtils.extractThumbnail(bitMap, 400, 300); // FIXME figure out the real aspect ratio and size needed
+                        thumbnail.compress(Bitmap.CompressFormat.PNG, 75, thumbnailStream); // FIXME make compression level configurable
+                        thumbnailStream.flush();
+                        thumbnailStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else if (mediaType == Globals.MEDIA_TYPE.VIDEO) {
+            // path of form : content://com.android.providers.media.documents/document/video:183
+            if (isDocumentProviderUri) {
+                // An Android Document Provider URI. Thumbnail already generated
+
+                long id = 0;
+                id = Long.parseLong(lastSegment.split(":")[1]);
+                return MediaStore.Video.Thumbnails.getThumbnail(context.getContentResolver(), id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+            } else {
+                // Regular old File path
+                try {
+                    if (filePath.contains("content:/")) {
+                    	filePath = Utility.getRealPathFromURI(context, uri);
+                    }
+                    File originalFile = new File(filePath);
+                    String fileName = originalFile.getName();
+                    String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+                    thumbnailFilePath = filePath.substring(0, filePath.lastIndexOf(File.separator) + 1) + tokens[0] + "_thumbnail.png";
+                    File thumbnailFile = new File(thumbnailFilePath);
+                    if (thumbnailFile.exists()) {
+                        thumbnail = BitmapFactory.decodeFile(thumbnailFilePath);
+                    } else {
+                        FileOutputStream thumbnailStream = new FileOutputStream(thumbnailFile);
+
+                        thumbnail = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND);
+                        if (thumbnail != null) {
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 75, thumbnailStream); // FIXME make compression level configurable
+                            thumbnailStream.flush();
+                            thumbnailStream.close();
+                        }
+                    }
+                } catch (IOException ioe) {
+                    return null;
+                }
+            }
+        }  else {
+            Log.e(LOGTAG, "can't create thumbnail file for " + filePath + ", unsupported medium");
+            thumbnail = null;
+        }
+
+        return thumbnail;
     }
 }
