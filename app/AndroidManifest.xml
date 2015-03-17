@@ -216,14 +216,21 @@
                 <data android:mimeType="application/x-bigbuffalo-bundle" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="info.guardianproject.securereaderinterface.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.guardianproject.securereaderinterface.MainActivity" />
+        </activity>
 
         <!-- Change "authorities" when branching into distinct app -->
 		<provider 
    			android:name="info.guardianproject.securereader.SecureShareContentProvider"
 			android:authorities="info.guardianproject.securereader.secureshareprovider" 
 			android:exported="true"
-			android:enabled="true"
-		/>
+			android:enabled="true"/>
 
 	</application>
 

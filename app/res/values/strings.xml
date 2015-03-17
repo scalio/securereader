@@ -17,6 +17,7 @@
     <string name="title_activity_lock_screen">Radio Zamaneh</string>
     <string name="title_activity_create_account">Radio Zamaneh</string>
     <string name="title_activity_httpd_app_sender">SHARE APP</string>
+    <string name="title_activity_login">Sign in</string>
     <string name="menu_tag">Search by Tag</string>
     <string name="menu_share">Share</string>
     <string name="menu_panic">Panic</string>
@@ -352,6 +353,17 @@
         <item>Video</item>
         <item>Audio</item>
     </string-array>
+    
+        <!-- Login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
     
     <!-- Errors -->
     <string name="error_file_not_found">File not found</string>
