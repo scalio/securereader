@@ -10,14 +10,22 @@ public class Globals {
     public static final String PREF_EULA_ACCEPTED = "eula.accepted";
 
     // request Codes used for media import and capture
-    public static final int REQUEST_VIDEO_CAPTURE = 100;
-    public static final int REQUEST_IMAGE_CAPTURE = 101;
-    public static final int REQUEST_AUDIO_CAPTURE = 102;
-    public static final int REQUEST_FILE_IMPORT   = 103;
+    
+    public static final int REQUEST_PHOTO_IMPORT = 100;
+    public static final int REQUEST_VIDEO_IMPORT = 101;
+    public static final int REQUEST_AUDIO_IMPORT = 102;
+    
+    public static final int REQUEST_PHOTO_CAPTURE = 103;
+    public static final int REQUEST_VIDEO_CAPTURE = 104;
+    public static final int REQUEST_AUDIO_CAPTURE = 105;
+    public static final int REQUEST_TEXT_CAPTURE = 106;
+    
+    public static final int REQUEST_FILE_IMPORT   = 107;
 
     // intent extras
-    public static final String EXTRA_FILE_LOCATION      = "archive_extra_file_location";
-    public static final String EXTRA_CURRENT_MEDIA_ID   = "archive_extra_current_media_id";
+    public static final String EXTRA_MEDIA_FILE_LOCATION   	= "rz_extra_media_file_location";
+    public static final String EXTRA_MEDIA_FILE_PATH 		= "rz_extra_media_file_path";
+    public static final String EXTRA_MEDIA_FILE_TYPE   	 	= "rz_extra_media_file_type";
 
     // prefs
     public static final String PREF_FILE_KEY            = "archive_pref_key";
@@ -35,7 +43,7 @@ public class Globals {
     public final static String SITE_ARCHIVE             = "archive"; //Text, Audio, Photo, Video
     
     public static enum MEDIA_TYPE {
-        AUDIO, IMAGE, VIDEO;
+        PHOTO, VIDEO, AUDIO, TEXT;
     }
 }
 

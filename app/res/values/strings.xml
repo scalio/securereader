@@ -331,9 +331,21 @@
     
     <string name="upload_title">Media Upload</string>
     
-	<string name="import_btn">IMPORT</string>
-    <string name="capture_btn">CAPTURE</string>
-    <string name="upload_btn">UPLOAD</string>
+    
+    <string name="hint_text_upload">Tell us what\'s on your mind</string>
+    
+	<string name="lbl_import">IMPORT</string>
+    <string name="lbl_capture">CAPTURE</string>
+    <string name="lbl_upload">UPLOAD</string>
+    
+    <string name="upload_photo">Upload Photo</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="upload_audio">Upload Audio</string>
+    
+    <string name="lbl_photo">Photo</string>
+    <string name="lbl_video">Video</string>
+    <string name="lbl_audio">Audio</string>
+    <string name="lbl_text">Text</string>
 
     <string-array name="ar_media_capture_options">
         <item>Photo</item>
@@ -341,7 +353,7 @@
         <item>Audio</item>
     </string-array>
     
-        <!-- Errors -->
+    <!-- Errors -->
     <string name="error_file_not_found">File not found</string>
     <string name="error_invalid_media_type">File Type not recognized</string>
     <string name="error_no_media">No Media Found!</string>
