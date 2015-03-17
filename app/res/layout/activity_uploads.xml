@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,64 +8,43 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/btnImport"
-        style="@style/RoundedButtonStyle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/row_margin"
-        android:text="@string/import_btn"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:id="@+id/btnCapture"
-        style="@style/RoundedButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/row_margin"
-        android:layout_alignLeft="@+id/btnImport"
-        android:layout_below="@id/btnImport"
-        android:layout_toLeftOf="@+id/fl_main"
-        android:text="@string/capture_btn" />
-
-    <FrameLayout
-        android:id="@+id/fl_main"
-        android:background="@android:drawable/btn_default"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnImport"
-        android:layout_alignRight="@+id/btnImport"
-        android:layout_alignEnd="@+id/btnImport"
-        android:layout_alignBottom="@+id/btnCapture">
-
-        <Spinner
-            android:id="@+id/spCaptureOptions"
-            android:entries="@array/ar_media_capture_options"
-            android:textSize="14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        
-	</FrameLayout>
-	
-    <ImageView
-        android:id="@+id/ivMedia"
-        android:contentDescription="@string/image_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/row_margin"
-        android:layout_below="@+id/fl_main"
-        android:minHeight="200dp"
-        android:maxHeight="400dp"
-        android:layout_centerHorizontal="true"/>
+    tools:context="info.guardianproject.securereaderinterface.UploadsChooseActivity"
+    android:background="@drawable/background_news" >
     
-    <Button
-        android:id="@+id/btnUpload"
-        style="@style/RoundedButtonStyle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivMedia"
-        android:text="@string/upload_btn"
-        android:visibility="gone" />
-</RelativeLayout>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"  
+    android:orientation="vertical" >
+		
+	    <ImageView
+	        android:id="@+id/ivMedia"
+	        android:contentDescription="@string/image_content"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginBottom="@dimen/value_tiny"
+	        android:minHeight="100dp"
+	        android:maxHeight="300dp"
+	        android:visibility="gone" />
+	    
+	    <EditText
+	        android:id="@+id/etMain"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/settings_group_header_item_background"
+	        android:inputType="textMultiLine"
+	        android:hint="@string/hint_text_upload"
+	        android:layout_marginBottom="@dimen/value_tiny"
+	        android:gravity="top"
+	        android:minHeight="200dp"
+	        android:maxHeight="300dp"
+	        android:visibility="gone" />
+	            
+	    <Button
+	        android:id="@+id/btnUpload"
+	        style="@style/RoundedButtonStyle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/lbl_upload"/>
+	</LinearLayout>
+</ScrollView>
