@@ -32,7 +32,7 @@ public class UploadsActivity extends FragmentActivityWithMenu {
 		
 		//setMenuIdentifier(R.menu.activity_downloads);
 		setDisplayHomeAsUp(true);
-		setActionBarTitle(getString(R.string.abc_action_bar_home_description));
+		setActionBarTitle(getString(R.string.upload_title));
 		
 		// init views
 		ivMedia = (ImageView) findViewById(R.id.ivMedia);
