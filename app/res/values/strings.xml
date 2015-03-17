@@ -329,6 +329,7 @@
     <string name="image_content">content</string>
     
     <string name="upload_title">Media Upload</string>
+    <string name="login_title">Login</string>
     
     
     <string name="hint_text_upload">Tell us what\'s on your mind</string>

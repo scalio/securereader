@@ -9,10 +9,10 @@ import info.guardianproject.securereaderinterface.CreateAccountActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
 import info.guardianproject.securereaderinterface.HelpActivity;
+import info.guardianproject.securereaderinterface.LoginActivity;
 import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.SettingsActivity;
-import info.guardianproject.securereaderinterface.UploadsActivity;
 import info.guardianproject.securereaderinterface.UploadsChooseActivity;
 import info.guardianproject.securereaderinterface.ViewMediaActivity;
 import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
@@ -461,6 +461,15 @@ public class UICallbacks
 		case R.integer.command_choose_uploads:
 		{
 			Intent intent = new Intent(context, UploadsChooseActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			context.startActivity(intent);
+			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			break;
+		}
+		
+		case R.integer.command_login:
+		{
+			Intent intent = new Intent(context, LoginActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
 			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
