@@ -3,12 +3,13 @@ package info.guardianproject.securereaderinterface.uiutil;
 /**
  * Created by micahjlucas on 03/10/15.
  */
-public class Globals {
+public class Global {
 	
-    // EULA
-    public static final String ASSET_EULA         = "EULA";
-    public static final String PREF_EULA_ACCEPTED = "eula.accepted";
-
+    // prefs
+    public static final String PREF_USER_NAME 	  	= "rz_pref_user_name";
+    public static final String PREF_USER_PASSWORD 	= "rz_pref_user_password";
+    public static final String PREF_SHARED_FILE_KEY = "rz_pref_shared_file_key";
+    
     // request codes used for media import and capture
     public static final int REQUEST_PHOTO_IMPORT  = 100;
     public static final int REQUEST_VIDEO_IMPORT  = 101;

@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,7 +32,7 @@ import android.widget.Toast;
 public class Utility {
 	public static final String LOGTAG = "Utility";
 	
-    public static Globals.MEDIA_TYPE getMediaTypeByPath(String mediaPath) {
+    public static Global.MEDIA_TYPE getMediaTypeByPath(String mediaPath) {
         // makes comparisons easier
         mediaPath = mediaPath.toLowerCase();
 
@@ -59,41 +60,41 @@ public class Utility {
         }
 
         if (result.contains("audio")) {
-            return Globals.MEDIA_TYPE.AUDIO;
+            return Global.MEDIA_TYPE.AUDIO;
         } else if(result.contains("image")) {
-            return Globals.MEDIA_TYPE.PHOTO;
+            return Global.MEDIA_TYPE.PHOTO;
         } else if(result.contains("video")) {
-            return Globals.MEDIA_TYPE.VIDEO;
+            return Global.MEDIA_TYPE.VIDEO;
         }
 
         return null;
     }
     
-    public static String getIntentMediaType(Globals.MEDIA_TYPE mediaType) {
+    public static String getIntentMediaType(Global.MEDIA_TYPE mediaType) {
     	String intentType = null;
     	
-        if (mediaType == Globals.MEDIA_TYPE.PHOTO) {
+        if (mediaType == Global.MEDIA_TYPE.PHOTO) {
         	intentType = "image/*";
-        } else if (mediaType == Globals.MEDIA_TYPE.VIDEO){
+        } else if (mediaType == Global.MEDIA_TYPE.VIDEO){
         	intentType = "video/*";
-        } else if (mediaType == Globals.MEDIA_TYPE.AUDIO){
+        } else if (mediaType == Global.MEDIA_TYPE.AUDIO){
         	intentType = "audio/*";
         }
 
         return intentType;
     }
     
-    public static Globals.MEDIA_TYPE getMediaTypeByInt(int intMediaType) {
-    	Globals.MEDIA_TYPE mediaType = null;
+    public static Global.MEDIA_TYPE getMediaTypeByInt(int intMediaType) {
+    	Global.MEDIA_TYPE mediaType = null;
     	
-    	if (intMediaType == Globals.MEDIA_TYPE.PHOTO.ordinal()) {
-    		mediaType =  Globals.MEDIA_TYPE.PHOTO;
-        } else if(intMediaType == Globals.MEDIA_TYPE.VIDEO.ordinal()) {
-        	mediaType = Globals.MEDIA_TYPE.VIDEO;
-        } else if(intMediaType == Globals.MEDIA_TYPE.AUDIO.ordinal()) {
-        	mediaType = Globals.MEDIA_TYPE.AUDIO;
-        } else if(intMediaType == Globals.MEDIA_TYPE.TEXT.ordinal()) {
-        	mediaType = Globals.MEDIA_TYPE.TEXT;
+    	if (intMediaType == Global.MEDIA_TYPE.PHOTO.ordinal()) {
+    		mediaType =  Global.MEDIA_TYPE.PHOTO;
+        } else if(intMediaType == Global.MEDIA_TYPE.VIDEO.ordinal()) {
+        	mediaType = Global.MEDIA_TYPE.VIDEO;
+        } else if(intMediaType == Global.MEDIA_TYPE.AUDIO.ordinal()) {
+        	mediaType = Global.MEDIA_TYPE.AUDIO;
+        } else if(intMediaType == Global.MEDIA_TYPE.TEXT.ordinal()) {
+        	mediaType = Global.MEDIA_TYPE.TEXT;
         }
 
         return mediaType;
@@ -201,7 +202,7 @@ public class Utility {
         });
     }
     
-    public static Bitmap getThumbnail(Context context, String filePath, Globals.MEDIA_TYPE mediaType) {
+    public static Bitmap getThumbnail(Context context, String filePath, Global.MEDIA_TYPE mediaType) {
         Bitmap thumbnail = null;
         String thumbnailFilePath;
         
@@ -209,9 +210,9 @@ public class Utility {
         String lastSegment = uri.getLastPathSegment();
         boolean isDocumentProviderUri = filePath.contains("content:/") && (lastSegment.contains(":"));
         
-        if (mediaType == Globals.MEDIA_TYPE.AUDIO) {
+        if (mediaType == Global.MEDIA_TYPE.AUDIO) {
             thumbnail = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_audio_wave);
-        } else if (mediaType == Globals.MEDIA_TYPE.PHOTO) {
+        } else if (mediaType == Global.MEDIA_TYPE.PHOTO) {
             if (isDocumentProviderUri) {
                 // path of form : content://com.android.providers.media.documents/document/video:183
                 // An Android Document Provider URI. Thumbnail already generated
@@ -245,7 +246,7 @@ public class Utility {
                     }
                 }
             }
-        } else if (mediaType == Globals.MEDIA_TYPE.VIDEO) {
+        } else if (mediaType == Global.MEDIA_TYPE.VIDEO) {
             // path of form : content://com.android.providers.media.documents/document/video:183
             if (isDocumentProviderUri) {
                 // An Android Document Provider URI. Thumbnail already generated
@@ -286,5 +287,16 @@ public class Utility {
         }
 
         return thumbnail;
+    }
+    
+    public static Boolean isUserLoggedIn(Context context) {
+    	String username = SharedPrefHelper.getPref(context, Global.PREF_USER_NAME);
+    	
+    	// if user exists
+    	if(null != username) {
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 }

@@ -10,7 +10,7 @@
     <integer name="command_help">0</integer>
     <integer name="command_downloads">0</integer>
     <integer name="command_choose_uploads">0</integer>
-    <integer name="command_login">0</integer>
+    <integer name="command_account">0</integer>
     <integer name="command_chat">0</integer>
     <integer name="command_shareapp">100</integer>
     <integer name="command_receiveshare">101</integer>

@@ -18,6 +18,7 @@
     <string name="title_activity_create_account">Radio Zamaneh</string>
     <string name="title_activity_httpd_app_sender">SHARE APP</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_logout">Logout</string>
     <string name="menu_tag">Search by Tag</string>
     <string name="menu_share">Share</string>
     <string name="menu_panic">Panic</string>
@@ -329,7 +330,7 @@
     <string name="image_content">content</string>
     
     <string name="upload_title">Media Upload</string>
-    <string name="login_title">Login</string>
+    <string name="account_title">Account</string>
     
     
     <string name="hint_text_upload">Tell us what\'s on your mind</string>

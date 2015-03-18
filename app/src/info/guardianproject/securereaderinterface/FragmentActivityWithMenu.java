@@ -308,9 +308,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 		
-		case R.id.menu_login:
+		case R.id.menu_account:
 		{
-			UICallbacks.handleCommand(this, R.integer.command_login, null);
+			UICallbacks.handleCommand(this, R.integer.command_account, null);
 			return true;
 		}
 

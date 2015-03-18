@@ -39,6 +39,12 @@ public class LoginActivity extends FragmentActivityWithMenu {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+    	// Display home as up
+ 		setDisplayHomeAsUp(true);
+ 		setMenuIdentifier(R.menu.activity_downloads);
+ 		// Set up the action bar.
+ 		setActionBarTitle(getString(R.string.title_activity_logout));
+        
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
 
