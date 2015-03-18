@@ -50,14 +50,4 @@ public class DownloadsActivity extends FragmentActivityWithMenu
 	{
 		return true;
 	}
-
-	// @Override
-	// protected void onResume()
-	// {
-	// super.onResume();
-	// ViewGroup parent = (ViewGroup) (getWindow().getDecorView());
-	// View content = parent.getChildAt(0);
-	// this.performRotateTransition(parent, content);
-	// }
-
 }

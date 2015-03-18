@@ -1,7 +1,7 @@
 package info.guardianproject.securereaderinterface;
 
 
-import info.guardianproject.securereaderinterface.uiutil.Globals;
+import info.guardianproject.securereaderinterface.uiutil.Global;
 import info.guardianproject.securereaderinterface.uiutil.Utility;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -47,8 +47,8 @@ public class UploadsActivity extends FragmentActivityWithMenu {
 		
 		// get intent extras
 		if(null != extras) {
-			int intMediaType = extras.getInt(Globals.EXTRA_MEDIA_FILE_TYPE);
-			String filePath = extras.getString(Globals.EXTRA_MEDIA_FILE_PATH);
+			int intMediaType = extras.getInt(Global.EXTRA_MEDIA_FILE_TYPE);
+			String filePath = extras.getString(Global.EXTRA_MEDIA_FILE_PATH);
 			
 			initMedia(filePath, Utility.getMediaTypeByInt(intMediaType));
 		} else {
@@ -57,7 +57,7 @@ public class UploadsActivity extends FragmentActivityWithMenu {
 		}
 	}
 	
-	private void initMedia(String filePath, Globals.MEDIA_TYPE mediaType) {
+	private void initMedia(String filePath, Global.MEDIA_TYPE mediaType) {
 		// show imageview
 		ivMedia.setVisibility(View.VISIBLE);
 		

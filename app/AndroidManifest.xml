@@ -224,6 +224,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="info.guardianproject.securereaderinterface.MainActivity" />
         </activity>
+        
+        <activity
+            android:name="info.guardianproject.securereaderinterface.LogoutActivity"
+            android:label="@string/title_activity_logout"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.guardianproject.securereaderinterface.MainActivity" />
+        </activity>
 
         <!-- Change "authorities" when branching into distinct app -->
 		<provider 

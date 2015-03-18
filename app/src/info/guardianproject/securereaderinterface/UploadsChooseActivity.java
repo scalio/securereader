@@ -1,6 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
-import info.guardianproject.securereaderinterface.uiutil.Globals;
+import info.guardianproject.securereaderinterface.uiutil.Global;
 import info.guardianproject.securereaderinterface.uiutil.Utility;
 
 import java.io.File;
@@ -37,9 +37,11 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
 
 		setContentView(R.layout.activity_uploads_choose);
 		
-		//setMenuIdentifier(R.menu.activity_downloads);
+		// Display home as up
 		setDisplayHomeAsUp(true);
-		setActionBarTitle(getString(R.string.abc_action_mode_done));
+		setMenuIdentifier(R.menu.activity_downloads);
+		// Set up the action bar.
+		setActionBarTitle(getString(R.string.title_activity_uploads));
 		
 		init();
 	}
@@ -52,19 +54,19 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
         
         btnImportPhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                handleImport(Globals.MEDIA_TYPE.PHOTO);
+                handleImport(Global.MEDIA_TYPE.PHOTO);
             }
         });
         
         btnImportVideo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                handleImport(Globals.MEDIA_TYPE.VIDEO);
+                handleImport(Global.MEDIA_TYPE.VIDEO);
             }
         });
         
         btnImportAudio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                handleImport(Globals.MEDIA_TYPE.AUDIO);
+                handleImport(Global.MEDIA_TYPE.AUDIO);
             }
         });
         
@@ -76,19 +78,19 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
         
         btnCapturePhoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                handleCapture(Globals.MEDIA_TYPE.PHOTO);
+                handleCapture(Global.MEDIA_TYPE.PHOTO);
             }
         });
         
         btnCaptureVideo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	handleCapture(Globals.MEDIA_TYPE.VIDEO);
+            	handleCapture(Global.MEDIA_TYPE.VIDEO);
             }
         });
         
         btnCaptureAudio.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	handleCapture(Globals.MEDIA_TYPE.AUDIO);
+            	handleCapture(Global.MEDIA_TYPE.AUDIO);
             }
         });
         
@@ -100,9 +102,9 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
 	}
 	
 	@SuppressLint("InlinedApi")
-	private void handleImport(Globals.MEDIA_TYPE mediaType) {
+	private void handleImport(Global.MEDIA_TYPE mediaType) {
 		Intent intent = null;
-		int requestId = Globals.REQUEST_FILE_IMPORT;
+		int requestId = Global.REQUEST_FILE_IMPORT;
 		
 		 // ACTION_OPEN_DOCUMENT is the new API 19 action for the Android file manager
         if (Build.VERSION.SDK_INT >= 19) {
@@ -125,11 +127,11 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
 	}
 	
 	
-	private void handleCapture(Globals.MEDIA_TYPE mediaType) {
+	private void handleCapture(Global.MEDIA_TYPE mediaType) {
 		Intent intent = null;
 		int requestCode = -1;	
 		
-		if (mediaType == Globals.MEDIA_TYPE.PHOTO) {
+		if (mediaType == Global.MEDIA_TYPE.PHOTO) {
             intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             File photoFile;
             try {
@@ -139,17 +141,17 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
                 return;
             }
 
-            mContext.getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putString(Globals.EXTRA_MEDIA_FILE_LOCATION, photoFile.getAbsolutePath()).apply();
+            mContext.getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putString(Global.EXTRA_MEDIA_FILE_LOCATION, photoFile.getAbsolutePath()).apply();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-            requestCode = Globals.REQUEST_PHOTO_CAPTURE;
+            requestCode = Global.REQUEST_PHOTO_CAPTURE;
 
-        } else if (mediaType == Globals.MEDIA_TYPE.VIDEO) {
+        } else if (mediaType == Global.MEDIA_TYPE.VIDEO) {
             intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-            requestCode = Globals.REQUEST_VIDEO_CAPTURE;
+            requestCode = Global.REQUEST_VIDEO_CAPTURE;
             
-        } else if (mediaType == Globals.MEDIA_TYPE.AUDIO) {
+        } else if (mediaType == Global.MEDIA_TYPE.AUDIO) {
             intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-            requestCode = Globals.REQUEST_AUDIO_CAPTURE;
+            requestCode = Global.REQUEST_AUDIO_CAPTURE;
         }
 
         if (null != intent && intent.resolveActivity(mContext.getPackageManager()) != null) {
@@ -181,30 +183,30 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
         Log.d(LOGTAG, "onActivityResult, requestCode:" + requestCode + ", resultCode: " + resultCode);
 
         String path = null;
-        Globals.MEDIA_TYPE mediaType = null;
+        Global.MEDIA_TYPE mediaType = null;
 
         if (resultCode == RESULT_OK) {
-            if(requestCode == Globals.REQUEST_AUDIO_CAPTURE) {
+            if(requestCode == Global.REQUEST_AUDIO_CAPTURE) {
                 Uri uri = intent.getData();
                 path = Utility.getRealPathFromURI(getApplicationContext(), uri);
-                mediaType = Globals.MEDIA_TYPE.AUDIO;
+                mediaType = Global.MEDIA_TYPE.AUDIO;
 
                 Log.d(LOGTAG, "onActivityResult, audio path:" + path);
 
-            } else if(requestCode == Globals.REQUEST_PHOTO_CAPTURE) {
-                path = this.getSharedPreferences("prefs", Context.MODE_PRIVATE).getString(Globals.EXTRA_MEDIA_FILE_LOCATION, null);
-                mediaType = Globals.MEDIA_TYPE.PHOTO;
+            } else if(requestCode == Global.REQUEST_PHOTO_CAPTURE) {
+                path = this.getSharedPreferences("prefs", Context.MODE_PRIVATE).getString(Global.EXTRA_MEDIA_FILE_LOCATION, null);
+                mediaType = Global.MEDIA_TYPE.PHOTO;
 
                 Log.d(LOGTAG, "onActivityResult, photo path:" + path);
 
-            } else if(requestCode == Globals.REQUEST_VIDEO_CAPTURE) {
+            } else if(requestCode == Global.REQUEST_VIDEO_CAPTURE) {
                 Uri uri = intent.getData();
                 path = Utility.getRealPathFromURI(getApplicationContext(), uri);
-                mediaType = Globals.MEDIA_TYPE.VIDEO;
+                mediaType = Global.MEDIA_TYPE.VIDEO;
 
                 Log.d(LOGTAG, "onActivityResult, video path:" + path);
 
-            }  else if (requestCode == Globals.REQUEST_FILE_IMPORT) {
+            }  else if (requestCode == Global.REQUEST_FILE_IMPORT) {
                 Uri uri = intent.getData();
                 // Will only allow stream-based access to files
                 if (Build.VERSION.SDK_INT >= 19) {
@@ -225,8 +227,8 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
                 Toast.makeText(getApplicationContext(), R.string.error_invalid_media_type, Toast.LENGTH_SHORT).show();
             } else {       	
             	Intent uploadsActivityIntent = new Intent(this, UploadsActivity.class);
-            	uploadsActivityIntent.putExtra(Globals.EXTRA_MEDIA_FILE_TYPE, mediaType.ordinal());
-            	uploadsActivityIntent.putExtra(Globals.EXTRA_MEDIA_FILE_PATH, path);
+            	uploadsActivityIntent.putExtra(Global.EXTRA_MEDIA_FILE_TYPE, mediaType.ordinal());
+            	uploadsActivityIntent.putExtra(Global.EXTRA_MEDIA_FILE_PATH, path);
             	startActivity(uploadsActivityIntent);            	
             }
         }

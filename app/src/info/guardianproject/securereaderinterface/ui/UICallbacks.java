@@ -10,6 +10,7 @@ import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
 import info.guardianproject.securereaderinterface.HelpActivity;
 import info.guardianproject.securereaderinterface.LoginActivity;
+import info.guardianproject.securereaderinterface.LogoutActivity;
 import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.SettingsActivity;
@@ -19,6 +20,7 @@ import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.securereaderinterface.uiutil.Utility;
 import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
 import java.io.File;
@@ -467,9 +469,16 @@ public class UICallbacks
 			break;
 		}
 		
-		case R.integer.command_login:
+		case R.integer.command_account:
 		{
-			Intent intent = new Intent(context, LoginActivity.class);
+			Intent intent = null;
+			
+			if(Utility.isUserLoggedIn(context)) {
+				intent = new Intent(context, LogoutActivity.class);
+			} else {
+				intent = new Intent(context, LoginActivity.class);
+			}
+
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
 			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
