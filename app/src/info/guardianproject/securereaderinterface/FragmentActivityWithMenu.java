@@ -11,6 +11,7 @@ import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
+import info.guardianproject.securereaderinterface.uiutil.Global;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
@@ -18,8 +19,10 @@ import info.guardianproject.securereaderinterface.views.LeftSideMenu;
 import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -294,31 +297,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		
 		case R.id.menu_radio:
 		{
-			//if not playing
-			if(null == mPlayer) {
-				try {
-		            mPlayer = new MediaPlayer();
-		            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		            mPlayer = MediaPlayer.create(this.getApplicationContext(), Uri.parse("http://icecast.xs4all.nl:8000/zamaneh"));
-		            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-		                public void onPrepared(MediaPlayer mp) {
-		                    mp.start();
-		                }
-		            });
-		        } catch (IllegalStateException e) {
-		            Log.d(LOGTAG, "IllegalStateException: " + e.getMessage());
-		        } catch (IllegalArgumentException e) {
-		            Log.d(LOGTAG, "IllegalArgumentException: " + e.getMessage());
-		        } catch (SecurityException e) {
-		            Log.d(LOGTAG, "SecurityException: " + e.getMessage());
-		        } catch (Exception e) {
-		            Log.d(LOGTAG, "Exception: " + e.getMessage());
-		        }
-			} else {
-				mPlayer.stop();
-				mPlayer.release();
-				mPlayer = null;
-			}
+			handleRadioPlayer();
+			
 			return true;
 		}
 
@@ -789,5 +769,53 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected Feed getCurrentFeed()
 	{
 		return App.getInstance().getCurrentFeed();
+	}
+	
+	private void handleRadioPlayer() {
+		final Context context = getApplicationContext();
+		
+		//if not playing
+		if(null == mPlayer) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.radio_tor_warning)
+			   .setCancelable(false)
+			   .setPositiveButton(R.string.lbl_yes, new DialogInterface.OnClickListener() {
+			       public void onClick(DialogInterface dialog, int id) {
+			    	   startRadioPlayer(context);
+			       }
+			   })
+			   .setNegativeButton(R.string.lbl_no, new DialogInterface.OnClickListener() {
+			       public void onClick(DialogInterface dialog, int id) {
+			            dialog.cancel();
+			       }
+			   });
+			AlertDialog alert = builder.create();
+			alert.show();	
+		} else {
+			mPlayer.stop();
+			mPlayer.release();
+			mPlayer = null;
+		}	
+	}
+	
+	private void startRadioPlayer(Context context) {
+		try {
+            mPlayer = new MediaPlayer();
+            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mPlayer = MediaPlayer.create(context, Uri.parse(Global.RZ_RADIO_URI));
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+        } catch (IllegalStateException e) {
+            Log.d(LOGTAG, "IllegalStateException: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.d(LOGTAG, "IllegalArgumentException: " + e.getMessage());
+        } catch (SecurityException e) {
+            Log.d(LOGTAG, "SecurityException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.d(LOGTAG, "Exception: " + e.getMessage());
+        }
 	}
 }
