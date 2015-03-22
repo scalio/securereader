@@ -25,11 +25,15 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +57,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	private int mIdMenu;
 	private Menu mOptionsMenu;
 	private boolean mDisplayHomeAsUp = false;
+	private MediaPlayer mPlayer;
 
 	/**
 	 * The main menu that will host all content links.
@@ -284,6 +289,36 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			Intent intent = new Intent(this, PanicActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent);
+			return true;
+		}
+		
+		case R.id.menu_radio:
+		{
+			//if not playing
+			if(null == mPlayer) {
+				try {
+		            mPlayer = new MediaPlayer();
+		            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		            mPlayer = MediaPlayer.create(this.getApplicationContext(), Uri.parse("http://icecast.xs4all.nl:8000/zamaneh"));
+		            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+		                public void onPrepared(MediaPlayer mp) {
+		                    mp.start();
+		                }
+		            });
+		        } catch (IllegalStateException e) {
+		            Log.d(LOGTAG, "IllegalStateException: " + e.getMessage());
+		        } catch (IllegalArgumentException e) {
+		            Log.d(LOGTAG, "IllegalArgumentException: " + e.getMessage());
+		        } catch (SecurityException e) {
+		            Log.d(LOGTAG, "SecurityException: " + e.getMessage());
+		        } catch (Exception e) {
+		            Log.d(LOGTAG, "Exception: " + e.getMessage());
+		        }
+			} else {
+				mPlayer.stop();
+				mPlayer.release();
+				mPlayer = null;
+			}
 			return true;
 		}
 
