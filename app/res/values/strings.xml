@@ -22,6 +22,7 @@
     <string name="menu_tag">Search by Tag</string>
     <string name="menu_share">Share</string>
     <string name="menu_panic">Panic</string>
+    <string name="menu_radio">Radio</string>
     <string name="menu_add_post">Add post</string>
     <string name="feed_filter_display_photos">Display photos</string>
     <string name="feed_filter_popular">Popular</string>
@@ -341,6 +342,9 @@
     <string name="lbl_capture">CAPTURE</string>
     <string name="lbl_upload">UPLOAD</string>
     
+    <string name="lbl_yes">Yes</string>
+    <string name="lbl_no">No</string>
+    
     <string name="upload_photo">Upload Photo</string>
     <string name="upload_video">Upload Video</string>
     <string name="upload_audio">Upload Audio</string>
@@ -356,7 +360,7 @@
         <item>Audio</item>
     </string-array>
     
-        <!-- Login -->
+    <!-- Login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -371,5 +375,8 @@
     <string name="error_file_not_found">File not found</string>
     <string name="error_invalid_media_type">File Type not recognized</string>
     <string name="error_no_media">No Media Found!</string>
+    
+    <!-- Login -->
+    <string name="radio_tor_warning">Radio play does not support TOR at this time. This may cause a security vulnerability. Are you sure you wish to continue?</string>
     
 </resources>

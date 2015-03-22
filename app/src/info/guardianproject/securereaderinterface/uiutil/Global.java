@@ -30,5 +30,8 @@ public class Global {
     public static enum MEDIA_TYPE {
         PHOTO, VIDEO, AUDIO, TEXT;
     }
+    
+    //radio 
+    public static final String RZ_RADIO_URI = "http://icecast.xs4all.nl:8000/zamaneh";
 }
 
