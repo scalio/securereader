@@ -9,6 +9,7 @@ import info.guardianproject.securereaderinterface.z.rss.views.MyTransitionViewPa
 
 public class BaseTabSupportFragment extends BaseRefreshFragment {
     public void initTabBar(View view, final int activeTab){
+    	/*
         LinearLayout tab1Layout = (LinearLayout) view.findViewById(R.id.tab1Layout);
         tab1Layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +53,7 @@ public class BaseTabSupportFragment extends BaseRefreshFragment {
                 break;
             default:
                 tab1Layout.setSelected(true);
-        }
+        }*/
     }
 
     public void goToTab(final int tabPosition){

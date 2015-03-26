@@ -352,6 +352,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			UICallbacks.handleCommand(this, R.integer.command_shareapp, null);
 			return true;
 		}
+		
+		case R.id.menu_video_list:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_video_list, null);
+			return true;
+		}
 
 		default:
 			return super.onOptionsItemSelected(item);
