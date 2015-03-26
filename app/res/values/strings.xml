@@ -4,6 +4,7 @@
     <string name="app_name">Radio Zamaneh</string>
     <string name="app_description">Radio Zamaneh is a mobile RSS news reader with enhanced security features, offline reading and sharing capability.</string>
     
+    <string name="title_rz">Radio Zamaneh</string>
     <string name="title_activity_main">Radio Zamaneh</string>
     <string name="title_activity_help">Radio Zamaneh</string>
     <string name="title_activity_downloads">Radio Zamaneh</string>
@@ -331,6 +332,7 @@
     <string name="image_content">content</string>
     
     <string name="upload_title">Media Upload</string>
+    <string name="video_title">Video Feed</string>
     <string name="account_title">Account</string>
     
     

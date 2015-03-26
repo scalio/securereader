@@ -74,6 +74,11 @@
             android:name="info.guardianproject.securereaderinterface.UploadsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_uploads" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.securereaderinterface.VideoListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_rz" >
         </activity>    
         <activity
             android:name="info.guardianproject.securereaderinterface.AddFeedActivity"
