@@ -11,6 +11,7 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontEditText;
 import info.guardianproject.securereaderinterface.widgets.CustomFontRadioButton;
 import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
+import info.guardianproject.securereaderinterface.z.rss.utils.DataStorage;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
@@ -33,6 +34,11 @@ import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.tinymission.rss.Feed;
 
 public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
@@ -102,6 +108,9 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 				mCurrentFeed = feed;
 			}
 		});
+		
+		//init RZ App
+		initRadioZApp();
 	}
 
 	public static Context getContext()
@@ -355,5 +364,28 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 			mCurrentFeed = feed;
 	}
 
+	private DataStorage dataStorage;
+	
+	private void initRadioZApp() {
+		dataStorage = new DataStorage();
+        initImageLoader();
+	}
+	
+    private void initImageLoader() {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        // ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 2).memoryCacheSize(2500000) // 2.5 Mb
+                .denyCacheImageMultipleSizesInMemory().discCacheFileNameGenerator(new Md5FileNameGenerator()) // Not necessary in common
+                .defaultDisplayImageOptions(new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisc(true).imageScaleType(ImageScaleType.IN_SAMPLE_INT).build())
+                .build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
+    }
+
+    public DataStorage getDataStorage() {
+        return dataStorage;
+    }
 	
 }
