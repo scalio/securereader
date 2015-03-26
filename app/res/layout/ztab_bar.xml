@@ -26,6 +26,7 @@
                     android:background="@drawable/tab_button_selector"
                     android:src="@drawable/rss_tab_button" />
             <LinearLayout
+                	android:orientation="horizontal"
                     android:id="@+id/image_divider"
                     android:layout_width="3px"
                     android:layout_marginTop="2px"
@@ -43,7 +44,7 @@
                 android:clickable="true"
                 android:orientation="horizontal">
             <ImageView
-                    android:id="@+id/image_view_tab_icon"
+                    android:id="@+id/image_view_tab_icon2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
@@ -53,7 +54,8 @@
                     android:background="@drawable/tab_button_selector"
                     android:src="@drawable/play_tab_button" />
             <LinearLayout
-                    android:id="@+id/image_divider"
+                	android:orientation="horizontal"
+                    android:id="@+id/image_divider2"
                     android:layout_width="3px"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2px"
@@ -70,7 +72,7 @@
 
                 android:orientation="horizontal">
             <ImageView
-                    android:id="@+id/image_view_tab_icon"
+                    android:id="@+id/image_view_tab_icon3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
@@ -80,7 +82,8 @@
                     android:background="@drawable/tab_button_selector"
                     android:src="@drawable/sound_tab_button" />
             <LinearLayout
-                    android:id="@+id/image_divider"
+                	android:orientation="horizontal"
+                    android:id="@+id/image_divider3"
                     android:layout_width="3px"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2px"
@@ -97,7 +100,7 @@
                 android:background="@drawable/tab_button_selector"
                 android:orientation="horizontal">
             <ImageView
-                    android:id="@+id/image_view_tab_icon"
+                    android:id="@+id/image_view_tab_icon4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
@@ -106,7 +109,8 @@
                     android:padding="3dip"
                     android:src="@drawable/chat_tab_button" />
             <LinearLayout
-                    android:id="@+id/image_divider"
+                	android:orientation="horizontal"
+                    android:id="@+id/image_divider4"
                     android:layout_width="3px"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2px"

@@ -6,11 +6,13 @@
 	<bool name="fulltextfeeds">false</bool>
 		
     <string-array name="built_in_feed_names">
-        <item>Radio Zamaneh</item>
+        <item>Radio Zamaneh Text</item>
+        <item>Radio Zamaneh Audio</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
         <item>http://www.radiozamaneh.com/feed</item>
+        <item>http://feeds.soundcloud.com/users/soundcloud:users:53485163/sounds.rss</item>
     </string-array>
 
 

@@ -57,7 +57,4 @@
 
     <!--</LinearLayout>-->
 
-
-
-    <include layout="@layout/ztab_bar"/>
 </LinearLayout>
