@@ -26,6 +26,5 @@
                 android:layout_weight="1"
                 ptr:ptrHeaderTextColor="@color/font_black"
                 android:background="@android:color/transparent" />
-    <include layout="@layout/ztab_bar"/>
 
 </LinearLayout>
