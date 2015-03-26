@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">​Radio Zamaneh</string>
+    <string name="app_label">​Radio\nZamaneh</string>
+    <string name="noEmailClients">نرم افزاری برای ارسال ایمیل وجود ندارد.</string>
+    <string name="requires_internet_connection">برای ادامه به اتصال به اینترنت نیازمندیم. لطفا اتصال خود را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="loading">در حال بارگذاری...</string>
+    <string name="error_player">در راه اندازی نرم افزار یوتیوب مشکلی وجود دارد.​ (%1$s)</string>
+    <string name="dividerLabel">سر خط خبرها</string>
+   <string name="recordAudioButtonText">ضبط صدا</string>
+    <string name="recordAudioText">صدا</string>
+    <string name="photoButtonRightText">گرفتن عکس جدید</string>
+    <string name="photoButtonLeftText">آپلود از گالری</string>
+    <string name="photoText">عکس</string>
+    <string name="videoButtonRightText">ضبط ویدئو جدید</string>
+    <string name="videoButtonLeftText">آپلود از گالری</string>
+    <string name="videoText">ویدئو</string>
+    <string name="sendTextButtonText">نوشتن مطلب</string>
+    <string name="sendText">متن</string>
+    <string name="writeTextLabel1">نوشتن متن جدید</string>
+    <string name="writeTextLabel2">متن و نام شما</string>
+    <string name="writeTextButton">ارسال</string>
+    <string name="sendFeedback">نظراتتان را بفرستید.</string>
+    <string name="notSupportCamera">دستگاه شما امکان ذخیره عکس و ویديو را ندارد.</string>
+    <string name="sendEmail">ایمیل بفرستید</string>
+    <string name="recordAudioFirst">شما باید اول یک فایل صوتی ضبط کنید و یا یک فایل ضبط شده را انتخاب کنید.</string>
+    <string name="recordingOf">فایل ضبط شده ​​</string>
+    <string name="sendAction">فایل ضبط شده را بفرستید</string>
+    <string name="deleteAction">فایل ضبط شده را پاک کنید</string>
+    <string name="no">نه</string>
+    <string name="yes">بله</string>
+    <string name="confirmDelete">آیا می خواهید که این فایل را پاک کنید؟</string>
+    <string name="selectAction">انتخاب کنید</string>
+    <string name="loadToS3Failed">امکان آپلود فایل به سرور وجود ندارد. لطفا دوباره تلاش کنید.</string>
+    <string name="loadToS3Ok">فایل با موفقیت آپلود شد.​</string>
+    <string name="error">​پیغام خطا! مشکلی وجود دارد.​</string>
+    <string name="sharingText">​این مطلب را دوست دارم.​</string>
+    <string name="facebookMessage">با موفقیت به فیسبوک فرستاده شد</string>
+    <string name="twitterMessage">با موفقیت به توییتر فرستاده شد</string>
+    <string name="facebook_app_id">235195503313961</string>
+
+</resources>

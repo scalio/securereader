@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_shadow">
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/header_img_video"/>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:layout_marginTop="-10dip"
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/videoListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:cacheColorHint="#00000000"
+            android:listSelector="@android:color/transparent"
+            android:scrollbarStyle="outsideOverlay"
+            ptr:ptrAnimationStyle="flip"
+            android:layout_weight="1"
+            ptr:ptrHeaderTextColor="@color/font_black"
+            android:background="@android:color/transparent" />
+    <!--<LinearLayout-->
+                  <!--android:layout_width="match_parent"-->
+                  <!--android:layout_height="match_parent"-->
+                  <!--android:orientation="vertical"-->
+                  <!--android:layout_weight="1"-->
+                  <!--android:gravity="center"-->
+                  <!--android:layout_marginTop="10dip"-->
+                  <!-->-->
+
+        <!--<Button android:id="@+id/buttonOption1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Option 1"-->
+                <!--android:layout_marginTop="20dip"-->
+                <!--/>-->
+        <!--<Button android:id="@+id/buttonOption2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Option 2"-->
+                <!--android:layout_marginTop="20dip"-->
+                <!--/>-->
+
+        <!--<Button android:id="@+id/buttonOption3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="20dip"-->
+                <!--android:text="Option 3"-->
+                <!--/>-->
+
+    <!--</LinearLayout>-->
+
+
+
+    <include layout="@layout/ztab_bar"/>
+</LinearLayout>

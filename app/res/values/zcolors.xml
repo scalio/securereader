@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="audio_list_item_text">#53261c</color>
+    <color name="gray">#99958c</color>
+    <color name="red">#FF0000</color>
+    <color name="divider_color">#d0d0d0</color>
+    <color name="font_black">#343233</color>
+    <color name="video_list_item_bg">#6d655a</color>
+    <color name="upload_item_text_color">#533d2f</color>
+    <color name="button_text_color">#8a8061</color>
+    <color name="main_item_pressed">#ffcdd5ff</color>
+    <color name="main_item_selected">#ffcdd5ff</color>
+
+
+
+</resources>
