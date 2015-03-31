@@ -120,9 +120,6 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
         // filter intent search by mediaType (photo, video, audio)
         intent.setType(Utility.getIntentMediaType(mediaType));
 
-        //String cardMediaId = mCardModel.getStoryPath().getId() + "::" + mCardModel.getId() + "::" + MEDIA_PATH_KEY;
-        // Apply is async and fine for UI thread. commit() is synchronous
-        //mContext.getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putString(Constants.PREFS_CALLING_CARD_ID, cardMediaId).apply();
         ((Activity) mContext).startActivityForResult(intent, requestId);
 	}
 	
@@ -188,23 +185,23 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
         if (resultCode == RESULT_OK) {
             if(requestCode == Global.REQUEST_AUDIO_CAPTURE) {
                 Uri uri = intent.getData();
-                path = Utility.getRealPathFromURI(getApplicationContext(), uri);
+                path = Utility.getPathFromURI(getApplicationContext(), uri);
                 mediaType = Global.MEDIA_TYPE.AUDIO;
 
-                Log.d(LOGTAG, "onActivityResult, audio path:" + path);
+                Log.d(LOGTAG, "onActivityResult, audio path: " + path);
 
             } else if(requestCode == Global.REQUEST_PHOTO_CAPTURE) {
                 path = this.getSharedPreferences("prefs", Context.MODE_PRIVATE).getString(Global.EXTRA_MEDIA_FILE_LOCATION, null);
                 mediaType = Global.MEDIA_TYPE.PHOTO;
 
-                Log.d(LOGTAG, "onActivityResult, photo path:" + path);
+                Log.d(LOGTAG, "onActivityResult, photo path: " + path);
 
             } else if(requestCode == Global.REQUEST_VIDEO_CAPTURE) {
                 Uri uri = intent.getData();
-                path = Utility.getRealPathFromURI(getApplicationContext(), uri);
+                path = Utility.getPathFromURI(getApplicationContext(), uri);
                 mediaType = Global.MEDIA_TYPE.VIDEO;
 
-                Log.d(LOGTAG, "onActivityResult, video path:" + path);
+                Log.d(LOGTAG, "onActivityResult, video path: " + path);
 
             }  else if (requestCode == Global.REQUEST_FILE_IMPORT) {
                 Uri uri = intent.getData();
@@ -213,10 +210,10 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
                     getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
 
-                path = uri.toString();
+                path = Utility.getImportPathFromURI(getApplicationContext(), uri);
                 mediaType = Utility.getMediaTypeByPath(path);
 
-                Log.d(LOGTAG, "onActivityResult, imported file path:" + path);
+                Log.d(LOGTAG, "onActivityResult, imported file path: " + path);
             }
 
             if (null == path) {
