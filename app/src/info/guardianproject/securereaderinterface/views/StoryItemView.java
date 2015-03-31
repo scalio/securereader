@@ -22,6 +22,7 @@ import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Paint;
@@ -37,6 +38,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -381,8 +384,21 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 		}
 	}
 
+	@SuppressLint("SetJavaScriptEnabled") 
 	private void populateViewWithItem(ViewGroup blueprint, Item story)
 	{
+		// Set Audio Webview
+		//
+		if(null != story.getLink() && story.getLink().contains("soundcloud")) {
+			WebView wvAudio = (WebView) blueprint.findViewById(R.id.wvAudio);
+			
+			if(null != wvAudio) {
+				WebSettings webSettings = wvAudio.getSettings();
+				webSettings.setJavaScriptEnabled(true);
+				wvAudio.loadUrl(story.getLink());
+			}	
+		}
+		
 		// Set title
 		//
 		TextView tv = (TextView) blueprint.findViewById(R.id.tvTitle);
