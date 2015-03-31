@@ -1,6 +1,7 @@
 package info.guardianproject.securereaderinterface;
 
 
+import info.guardianproject.securereaderinterface.uiutil.AmazonS3FileUploadService;
 import info.guardianproject.securereaderinterface.uiutil.Global;
 import info.guardianproject.securereaderinterface.uiutil.Utility;
 import android.content.Context;
@@ -16,11 +17,12 @@ public class UploadsActivity extends FragmentActivityWithMenu {
 	public static final boolean LOGGING = false;
 	public static final String LOGTAG = "UploadsActivity";
 	private Context mContext;
-	private boolean isText = false;
+	private boolean mIsText = false;
+	private String mFilePath = null;
 	
-	Button btnUpload;
-	ImageView ivMedia;
-	EditText etMain;
+	private Button btnUpload;
+	private ImageView ivMedia;
+	private EditText etMain;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,27 +36,38 @@ public class UploadsActivity extends FragmentActivityWithMenu {
 		setDisplayHomeAsUp(true);
 		setActionBarTitle(getString(R.string.upload_title));
 		
+		init(extras);
+	}
+	
+	private void init(Bundle extras) {
 		// init views
 		ivMedia = (ImageView) findViewById(R.id.ivMedia);
 		etMain = (EditText) findViewById(R.id.etMain);
-		
-		btnUpload = (Button) findViewById(R.id.btnUpload);
-		btnUpload.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(mContext, "upload", Toast.LENGTH_SHORT).show();
-            }
-        });
 		
 		// get intent extras
 		if(null != extras) {
 			int intMediaType = extras.getInt(Global.EXTRA_MEDIA_FILE_TYPE);
 			String filePath = extras.getString(Global.EXTRA_MEDIA_FILE_PATH);
+			mFilePath = filePath;
 			
 			initMedia(filePath, Utility.getMediaTypeByInt(intMediaType));
 		} else {
-			isText = true;	
+			mIsText = true;	
 			initText();
 		}
+		
+		btnUpload = (Button) findViewById(R.id.btnUpload);
+		btnUpload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	
+            	if(mIsText) {
+            		
+            	} else {
+	                AmazonS3FileUploadService uploadService = AmazonS3FileUploadService.getInstance(mContext);
+	                uploadService.uploadFile(mFilePath);
+            	}
+            }
+        });
 	}
 	
 	private void initMedia(String filePath, Global.MEDIA_TYPE mediaType) {
