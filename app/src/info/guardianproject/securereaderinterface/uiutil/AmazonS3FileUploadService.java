@@ -8,6 +8,10 @@ import info.guardianproject.securereaderinterface.z.rss.utils.StringHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import com.squareup.okhttp.MediaType;
@@ -54,12 +58,19 @@ public class AmazonS3FileUploadService {
 		String url = S3_ENDPOINT + urlPath + "/" + fileName;
 		Log.d(TAG, "uploading to url: " + url);
 
+		DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy H:mm:ss zzz ", Locale.ENGLISH);
+		Date date = new Date();
+		
+		/// Thu, 17 Nov 2005 18:49:58 GMT
+		Log.d(TAG, "Date: " + dateFormat.format(date));
+		
 		Request.Builder builder = new Request.Builder()
 				.url(url)
 				.put(RequestBody.create(MEDIA_TYPE, file))
 				.addHeader("Accept", "*/*")
                 .addHeader("x-amz-auto-make-bucket", "1")
-				.addHeader("authorization", "LOW " + S3_ACCESS_KEY + ":" + S3_SECRET_KEY);
+                .addHeader("x-amz-date", dateFormat.format(date))
+				.addHeader("authorization", "AWS " + S3_ACCESS_KEY + ":" + S3_SECRET_KEY);
 		
 		Request request = builder.build();
 
