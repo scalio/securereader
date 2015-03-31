@@ -8,6 +8,8 @@ import info.guardianproject.securereaderinterface.z.rss.utils.StringHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,8 +33,8 @@ public class AmazonS3FileUploadService {
     private static final MediaType MEDIA_TYPE = MediaType.parse("");
     private static final String S3_BUCKET 	= StringHelper.shuffleDe("54ttehre",4); //andapp01
     private static final String S3_ENDPOINT = "http://" + S3_BUCKET + ".s3.amazonaws.com/";
-    private static final String S3_ACCESS_KEY = StringHelper.shuffleDe("SN894KXZQC9O4ULLCKMC",2); //AKIAJJS2M7AOXVI276LQ
-    private static final String S3_SECRET_KEY = StringHelper.shuffleDe("|GSMm39RGTd{ewn;mNJkip4jSPvpTNhqXqlk;{Kw",2); //uIy9ijoVofLRntNQh2ngiHLk9lucybREP71kKQEz
+    private static String S3_ACCESS_KEY = "AKIAIMGASB5GBKESMWIA";//StringHelper.shuffleDe("SN894KXZQC9O4ULLCKMC",2); //AKIAJJS2M7AOXVI276LQ
+    private static String S3_SECRET_KEY = "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";//StringHelper.shuffleDe("|GSMm39RGTd{ewn;mNJkip4jSPvpTNhqXqlk;{Kw",2); //uIy9ijoVofLRntNQh2ngiHLk9lucybREP71kKQEz
 
     private AmazonS3FileUploadService(Context context) {
     }
@@ -47,7 +49,7 @@ public class AmazonS3FileUploadService {
 	public boolean uploadFile(String mediaPath) {
 		Log.d(TAG, "Upload media: Entering upload"); 
         
-		File file = new File("/storage/emulated/0/Download/images.jpg");
+		File file = new File(mediaPath);
 		if (!file.exists()) {
 			Log.d(TAG, "Invalid File");
 			return false;
@@ -58,17 +60,24 @@ public class AmazonS3FileUploadService {
 		String url = S3_ENDPOINT + urlPath + "/" + fileName;
 		Log.d(TAG, "uploading to url: " + url);
 
-		DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy H:mm:ss zzz ", Locale.ENGLISH);
+		DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy H:mm:ss zzz", Locale.ENGLISH); /// Thu, 17 Nov 2005 18:49:58 GMT
 		Date date = new Date();
-		
-		/// Thu, 17 Nov 2005 18:49:58 GMT
 		Log.d(TAG, "Date: " + dateFormat.format(date));
+		
+		try {
+			S3_ACCESS_KEY = URLEncoder.encode(S3_ACCESS_KEY, "utf-8");
+			S3_SECRET_KEY = URLEncoder.encode(S3_SECRET_KEY, "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Request.Builder builder = new Request.Builder()
 				.url(url)
 				.put(RequestBody.create(MEDIA_TYPE, file))
-				.addHeader("Accept", "*/*")
+				.addHeader("accept", "*/*")
                 .addHeader("x-amz-auto-make-bucket", "1")
+				.addHeader("content-type", "image/jpeg")
                 .addHeader("x-amz-date", dateFormat.format(date))
 				.addHeader("authorization", "AWS " + S3_ACCESS_KEY + ":" + S3_SECRET_KEY);
 		
@@ -106,7 +115,11 @@ public class AmazonS3FileUploadService {
 				}
 			} catch (IOException e) {
 				try {
-					Log.d(TAG, response.body().string());
+					if(null != response) {
+						Log.d(TAG, response.body().string());
+					} else {
+						Log.d(TAG, "exception: " + e.getLocalizedMessage() + ", stacktrace: " + e.getStackTrace());
+					}
 				} catch (IOException e1) {
 				    Log.d(TAG, "exception: " + e1.getLocalizedMessage() + ", stacktrace: " + e1.getStackTrace());
 				}

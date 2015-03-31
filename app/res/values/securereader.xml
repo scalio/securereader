@@ -12,7 +12,7 @@
     
 	<string-array name="built_in_feed_urls">
         <item>http://www.radiozamaneh.com/feed</item>
-        <item>http://feeds.soundcloud.com/users/soundcloud:users:53485163/sounds.rss</item>
+        <item>http://www.radiozamaneh.com/category/radio/feed</item>
     </string-array>
 
 
