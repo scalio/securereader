@@ -1,9 +1,11 @@
 package info.guardianproject.securereaderinterface.uiutil;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.z.rss.utils.StringHelper;
 
 import java.io.File;
@@ -28,15 +30,17 @@ public class AmazonS3FileUploadService {
     // USING: https://github.com/awslabs/aws-sdk-android-samples/blob/master/S3_Uploader/src/com/amazonaws/demo/s3uploader/S3UploaderActivity.java
     private final String UUID_CONSTANT = "rz-";
     private static AmazonS3FileUploadService service;
-
     
     private static final MediaType MEDIA_TYPE = MediaType.parse("");
-    private static final String S3_BUCKET 	= StringHelper.shuffleDe("54ttehre",4); //andapp01
-    private static final String S3_ENDPOINT = "http://" + S3_BUCKET + ".s3.amazonaws.com/";
-    private static String S3_ACCESS_KEY = "AKIAIMGASB5GBKESMWIA";//StringHelper.shuffleDe("SN894KXZQC9O4ULLCKMC",2); //AKIAJJS2M7AOXVI276LQ
-    private static String S3_SECRET_KEY = "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";//StringHelper.shuffleDe("|GSMm39RGTd{ewn;mNJkip4jSPvpTNhqXqlk;{Kw",2); //uIy9ijoVofLRntNQh2ngiHLk9lucybREP71kKQEz
+    private static String S3_ENDPOINT;
+    private static String S3_ACCESS_KEY;
+    private static String S3_SECRET_KEY; 
+    private static String S3_BUCKET;
+    
+    private Resources res;
 
     private AmazonS3FileUploadService(Context context) {
+    	res = context.getResources();
     }
 
     public static synchronized AmazonS3FileUploadService getInstance(Context context) {
@@ -47,7 +51,12 @@ public class AmazonS3FileUploadService {
     }
     
 	public boolean uploadFile(String mediaPath) {
-		Log.d(TAG, "Upload media: Entering upload"); 
+		Log.d(TAG, "Upload media: Entering upload");
+		
+		S3_ACCESS_KEY = res.getString(R.string.aws_access_key);
+		S3_SECRET_KEY = res.getString(R.string.aws_secret_key);
+		S3_BUCKET 	  = res.getString(R.string.aws_bucket);
+		S3_ENDPOINT   = "http://" + S3_BUCKET + ".s3.amazonaws.com/";
         
 		File file = new File(mediaPath);
 		if (!file.exists()) {
