@@ -4,20 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="info.guardianproject.securereaderinterface.UploadsChooseActivity"
-    android:background="@drawable/background_news" >
-    
-        <!--  
+    android:background="@drawable/background_news" 
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"-->
-    
+    android:paddingTop="@dimen/activity_vertical_margin">
+            <!--  
     	<fragment android:name="info.guardianproject.securereaderinterface.z.rss.fragments.Tab4ContainerFragment"
 	            android:id="@+id/videoListFrag"
 	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content" />
+	            android:layout_height="wrap_content" />-->
     
-    <!--  
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"  
@@ -168,6 +165,4 @@
 			        android:text="@string/lbl_capture"/>
 		</RelativeLayout>
 	</LinearLayout>
-	
-	--> 
 </ScrollView>

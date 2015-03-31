@@ -43,9 +43,9 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
 		// Set up the action bar.
 		setActionBarTitle(getString(R.string.title_activity_uploads));
 		
-		//init();
+		init();
 	}
-	/*
+	
 	private void init() {	
 		// imports
 		Button btnImportPhoto = (Button) findViewById(R.id.btnImportPhoto);
@@ -232,7 +232,7 @@ public class UploadsChooseActivity extends FragmentActivityWithMenu {
             	startActivity(uploadsActivityIntent);            	
             }
         }
-    }*/
+    }
 
 	@Override
 	protected boolean useLeftSideMenu() {
