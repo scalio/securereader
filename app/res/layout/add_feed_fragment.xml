@@ -27,7 +27,7 @@
         android:layout_margin="5dp"
         android:background="@drawable/search_field_background" >
 
-        <info.guardianproject.securereaderinterface.widgets.FocusNoHintEditText
+        <info.guardianproject.zt.widgets.FocusNoHintEditText
             android:id="@+id/editManualUrl"
             style="@style/AddFeedUrlStyle"
             android:layout_width="0dip"
@@ -41,7 +41,7 @@
             android:inputType="textUri"
             android:textAppearance="?android:attr/textAppearanceSmall" >
 
-        </info.guardianproject.securereaderinterface.widgets.FocusNoHintEditText>
+        </info.guardianproject.zt.widgets.FocusNoHintEditText>
 
         <Button
             android:id="@+id/btnAddManualUrl"

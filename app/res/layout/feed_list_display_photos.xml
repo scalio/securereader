@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:text="@string/feed_filter_display_photos" />
 
-    <info.guardianproject.securereaderinterface.widgets.CheckableImageView
+    <info.guardianproject.zt.widgets.CheckableImageView
         android:id="@+id/chkShowImages"
         android:layout_width="52dp"
         android:layout_height="52dp"

@@ -41,7 +41,7 @@
         android:layout_below="@id/tvTagResults"
         layout="@layout/story_list_header" />
 
-    <info.guardianproject.securereaderinterface.widgets.SyncableListView
+    <info.guardianproject.zt.widgets.SyncableListView
         android:id="@+id/lvStories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,9 +50,9 @@
         android:listSelector="@android:color/transparent"
         android:scrollbars="vertical" >
 
-    </info.guardianproject.securereaderinterface.widgets.SyncableListView>
+    </info.guardianproject.zt.widgets.SyncableListView>
 
-    <info.guardianproject.securereaderinterface.widgets.AppearingFrameLayout
+    <info.guardianproject.zt.widgets.AppearingFrameLayout
         android:id="@+id/frameLoading"
         android:layout_width="match_parent"
         android:layout_height="58dp"
@@ -73,9 +73,9 @@
             android:focusableInTouchMode="false"
             android:src="@drawable/ic_context_refresh" />
 
-    </info.guardianproject.securereaderinterface.widgets.AppearingFrameLayout>
+    </info.guardianproject.zt.widgets.AppearingFrameLayout>
 
-    <info.guardianproject.securereaderinterface.widgets.AppearingRelativeLayout
+    <info.guardianproject.zt.widgets.AppearingRelativeLayout
         android:id="@+id/frameError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -138,6 +138,6 @@
             android:layout_below="@id/tvError"
             android:background="@drawable/light_grey_bottom_shadow" />
 
-    </info.guardianproject.securereaderinterface.widgets.AppearingRelativeLayout>
+    </info.guardianproject.zt.widgets.AppearingRelativeLayout>
 
 </merge>

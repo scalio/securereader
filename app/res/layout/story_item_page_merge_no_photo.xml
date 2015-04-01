@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/source_top_margin"
         layout="@layout/story_item_page_source" />
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
         style="@style/ItemTitleStyle"
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-<info.guardianproject.securereaderinterface.widgets.HeightLimitedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.zt.widgets.HeightLimitedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="left|center_vertical" >
@@ -30,4 +30,4 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#A4A59B" />
 
-    </info.guardianproject.securereaderinterface.widgets.HeightLimitedLinearLayout>
+    </info.guardianproject.zt.widgets.HeightLimitedLinearLayout>

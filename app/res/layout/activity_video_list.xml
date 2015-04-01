@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-	<fragment android:name="info.guardianproject.securereaderinterface.z.rss.fragments.VideoListFragment"
+	<fragment android:name="info.guardianproject.zt.z.rss.fragments.VideoListFragment"
 	            android:id="@+id/videoListFrag"
 	            android:layout_width="fill_parent"
 	            android:layout_height="match_parent" />

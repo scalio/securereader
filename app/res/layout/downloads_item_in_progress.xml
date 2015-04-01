@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:scaleType="center"
             android:src="@drawable/ic_context_menu" />
         
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
         style="@style/DownloadsItemTitleStyle"
         android:layout_width="match_parent"

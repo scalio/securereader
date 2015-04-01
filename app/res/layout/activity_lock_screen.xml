@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/llRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginTop="30dp"
         android:text="@string/lock_screen_set_passphrase" />
 
-    <info.guardianproject.securereaderinterface.widgets.DropdownSpinner
+    <info.guardianproject.zt.widgets.DropdownSpinner
         android:id="@+id/languagePopup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_launch_dropdown" />
-    </info.guardianproject.securereaderinterface.widgets.DropdownSpinner>
+    </info.guardianproject.zt.widgets.DropdownSpinner>
 
     <TextView
         android:id="@+id/tvChooseLanguage"

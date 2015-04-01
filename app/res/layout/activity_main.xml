@@ -1,4 +1,4 @@
-<info.guardianproject.securereaderinterface.views.StoryListView
+<info.guardianproject.zt.views.StoryListView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/storyList"
         android:layout_width="match_parent"

@@ -70,7 +70,7 @@
             android:text="@string/bluetooth_send_success_1_story"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <info.guardianproject.securereaderinterface.views.StoryItemPageView
+        <info.guardianproject.zt.views.StoryItemPageView
             android:id="@+id/sharedItemView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

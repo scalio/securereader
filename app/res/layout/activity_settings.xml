@@ -1,5 +1,5 @@
-<info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface"
+<info.guardianproject.zt.widgets.InitialScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +30,7 @@
 		  	    android:layout_weight="1"
 		  	    android:text="@string/settings_tor_require" />
 
-    		<info.guardianproject.securereaderinterface.widgets.CheckableImageView
+    		<info.guardianproject.zt.widgets.CheckableImageView
     		    android:id="@+id/chkRequireTor"
     		    android:layout_width="wrap_content"
     		    android:layout_height="match_parent"
@@ -43,7 +43,7 @@
 
         <!-- Chat section -->
 
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <info.guardianproject.zt.widgets.GroupView
             android:id="@+id/groupChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         
         <!-- Panic section -->
         
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <info.guardianproject.zt.widgets.GroupView
             android:id="@+id/groupPanicAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,11 +95,11 @@
                     android:text="@string/settings_panic_wipe_content" />
             </RadioGroup>
 		
-        </info.guardianproject.securereaderinterface.widgets.GroupView>
+        </info.guardianproject.zt.widgets.GroupView>
         
         <!-- Login section -->
 
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <info.guardianproject.zt.widgets.GroupView
             android:id="@+id/groupLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -269,11 +269,11 @@
             </LinearLayout>
             
 
-        </info.guardianproject.securereaderinterface.widgets.GroupView>
+        </info.guardianproject.zt.widgets.GroupView>
 
         <!-- Data & Syncing section -->
 
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <info.guardianproject.zt.widgets.GroupView
             android:id="@+id/groupDataUse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -427,9 +427,9 @@
                     android:text="@string/settings_data_sync_network_all" />
             </RadioGroup>
 
-        </info.guardianproject.securereaderinterface.widgets.GroupView>
+        </info.guardianproject.zt.widgets.GroupView>
 
-        <info.guardianproject.securereaderinterface.widgets.GroupView
+        <info.guardianproject.zt.widgets.GroupView
             android:id="@+id/groupLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -528,7 +528,7 @@
 
             </RadioGroup>
 
-        </info.guardianproject.securereaderinterface.widgets.GroupView>
+        </info.guardianproject.zt.widgets.GroupView>
 
         <LinearLayout
             android:id="@+id/groupScreenshots"
@@ -546,7 +546,7 @@
                 android:layout_weight="1"
                 android:text="@string/settings_enable_screenshots" />
 
-            <info.guardianproject.securereaderinterface.widgets.CheckableImageView
+            <info.guardianproject.zt.widgets.CheckableImageView
                 android:id="@+id/chkEnableScreenshots"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -558,4 +558,4 @@
 
     </LinearLayout>
 
-</info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView>
+</info.guardianproject.zt.widgets.InitialScrollScrollView>

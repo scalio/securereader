@@ -5,7 +5,7 @@
     android:gravity="top"
     android:orientation="vertical"
      xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface">
+     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt">
 
     <include
         android:id="@+id/layout_source"
@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/source_top_margin"
         layout="@layout/story_item_page_source" />
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
         style="@style/ItemTitleStyle"
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
         android:layout_marginTop="@dimen/author_top_margin"
         layout="@layout/story_item_page_author" />
 
-    <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
+    <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
         android:id="@+id/layout_media"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,9 +47,9 @@
             android:layout_height="wrap_content"
             layout="@layout/story_media_content_view" />
 
-	</info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout>    
+	</info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>    
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvContent"
         style="@style/ItemContentStyle"
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/content_top_margin"
         android:text="TextView" />
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvReadMore"
         style="@style/ItemOrwebLinkStyle"
         android:layout_width="match_parent"

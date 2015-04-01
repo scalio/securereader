@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<info.guardianproject.securereaderinterface.views.FeedFilterView xmlns:android="http://schemas.android.com/apk/res/android"
+<info.guardianproject.zt.views.FeedFilterView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
@@ -8,4 +8,4 @@
     android:divider="@color/grey_light"
     android:dividerHeight="1px"
      >
-</info.guardianproject.securereaderinterface.views.FeedFilterView>
+</info.guardianproject.zt.views.FeedFilterView>
