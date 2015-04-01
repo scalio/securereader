@@ -61,6 +61,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	private Menu mOptionsMenu;
 	private boolean mDisplayHomeAsUp = false;
 	private MediaPlayer mPlayer;
+	private boolean isRadioPlaying = false;
 
 	/**
 	 * The main menu that will host all content links.
@@ -245,10 +246,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		super.onCreateOptionsMenu(menu);
 
 		getMenuInflater().inflate(mIdMenu, menu);
-		
 		getMenuInflater().inflate(R.menu.overflow_main, menu);
 		
 		colorizeMenuItems();
+		
+		if(isRadioPlaying) {
+			menu.findItem(R.id.menu_radio).setIcon(R.drawable.ic_action_pause_over_video);
+		} else {
+			menu.findItem(R.id.menu_radio).setIcon(R.drawable.ic_action_play_over_video);
+		}
+		
 		return true;
 	}
 
@@ -801,6 +808,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			mPlayer.stop();
 			mPlayer.release();
 			mPlayer = null;
+			isRadioPlaying = false;
+			
+			invalidateOptionsMenu();
 		}	
 	}
 	
@@ -812,6 +822,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();
+                    isRadioPlaying = true;
+                    invalidateOptionsMenu();
                 }
             });
         } catch (IllegalStateException e) {
