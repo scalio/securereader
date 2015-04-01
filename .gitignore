@@ -26,3 +26,6 @@ build.xml
 
 #OSX
 .DS_Store
+
+#Amazon Keys
+app/res/values/amazon_s3_keys.xml
