@@ -38,7 +38,7 @@ public class SplashScreenActivity extends Activity {
             try {
                 Thread.sleep(Constants.SPLASH_TIME);
             } catch (InterruptedException e) {
-                Log.e("Radio Zamaneh error", e.getMessage());
+                Log.e("Zamaneh Tribune error", e.getMessage());
             }
             return null;
         }

@@ -1,6 +1,6 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.Settings;
+import info.guardianproject.securereader.zt.Settings;
 import info.guardianproject.zt.uiutil.UIHelpers;
 import info.guardianproject.zt.widgets.GroupView;
 import info.guardianproject.zt.widgets.InitialScrollScrollView;

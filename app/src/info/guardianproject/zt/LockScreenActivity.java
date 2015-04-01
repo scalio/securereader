@@ -1,11 +1,11 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.Settings.UiLanguage;
+import info.guardianproject.securereader.zt.Settings.UiLanguage;
 import info.guardianproject.zt.models.LockScreenCallbacks;
 import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.uiutil.UIHelpers;
 import info.guardianproject.zt.widgets.DropdownSpinner;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 import info.guardianproject.zt.R;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordSettings;

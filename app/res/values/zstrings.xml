@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">​Radio Zamaneh</string>
+    <string name="app_name">​Zamaneh Tribune</string>
     <string name="app_label">​Radio\nZamaneh</string>
     <string name="noEmailClients">نرم افزاری برای ارسال ایمیل وجود ندارد.</string>
     <string name="requires_internet_connection">برای ادامه به اتصال به اینترنت نیازمندیم. لطفا اتصال خود را بررسی کنید و دوباره تلاش کنید.</string>

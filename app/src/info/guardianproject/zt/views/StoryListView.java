@@ -1,6 +1,6 @@
 package info.guardianproject.zt.views;
 
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.MainActivity;
 import info.guardianproject.zt.adapters.StoryListAdapter;

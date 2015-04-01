@@ -1,7 +1,7 @@
 package info.guardianproject.zt.ui;
 
 import info.guardianproject.zt.R;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 import info.guardianproject.zt.AddFeedActivity;
 import info.guardianproject.zt.AddPostActivity;
 import info.guardianproject.zt.App;

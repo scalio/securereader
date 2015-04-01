@@ -1,6 +1,6 @@
 package info.guardianproject.zt.views;
 
-import info.guardianproject.securereader.MediaDownloader.MediaDownloaderCallback;
+import info.guardianproject.securereader.zt.MediaDownloader.MediaDownloaderCallback;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.models.OnMediaOrientationListener;
 import info.guardianproject.zt.uiutil.UIHelpers;

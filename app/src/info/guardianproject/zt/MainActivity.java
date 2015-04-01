@@ -1,9 +1,9 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.Settings.SyncMode;
-import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereader.SyncService;
-import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
+import info.guardianproject.securereader.zt.Settings.SyncMode;
+import info.guardianproject.securereader.zt.SocialReader;
+import info.guardianproject.securereader.zt.SyncService;
+import info.guardianproject.securereader.zt.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.zt.adapters.StoryListAdapter;
 import info.guardianproject.zt.models.FeedFilterType;
 import info.guardianproject.zt.ui.ActionProviderShare;

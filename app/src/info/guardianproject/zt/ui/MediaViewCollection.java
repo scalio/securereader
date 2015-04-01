@@ -1,7 +1,7 @@
 package info.guardianproject.zt.ui;
 
 import info.guardianproject.iocipher.File;
-import info.guardianproject.securereader.MediaDownloader.MediaDownloaderCallback;
+import info.guardianproject.securereader.zt.MediaDownloader.MediaDownloaderCallback;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.adapters.DownloadsAdapter;
 import info.guardianproject.zt.views.ApplicationMediaContentPreviewView;

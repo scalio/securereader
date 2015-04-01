@@ -1,7 +1,7 @@
 package info.guardianproject.zt.installer;
 
 import info.guardianproject.zt.R;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.FragmentActivityWithMenu;
 import info.guardianproject.zt.MainActivity;

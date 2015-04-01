@@ -42,7 +42,7 @@ import java.util.Set;
 
 public class IntentReceiver extends BroadcastReceiver {
 
-    private static final String logTag = "Radio Zamaneh";
+    private static final String logTag = "Zamaneh Tribune";
 
     public static String APID_UPDATED_ACTION_SUFFIX = ".apid.updated";
 

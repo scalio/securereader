@@ -186,7 +186,7 @@
             android:name="info.guardianproject.zt.DownloadEpubReaderActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">            
         </activity>
-        <service android:name="info.guardianproject.securereader.SyncService" >
+        <service android:name="info.guardianproject.securereader.zt.SyncService" >
         </service>
         
         <activity
@@ -219,8 +219,8 @@
 
         <!-- Change "authorities" when branching into distinct app -->
 		<provider 
-   			android:name="info.guardianproject.securereader.SecureShareContentProvider"
-			android:authorities="info.guardianproject.securereader.secureshareprovider" 
+   			android:name="info.guardianproject.securereader.zt.SecureShareContentProvider"
+			android:authorities="info.guardianproject.securereader.zt.secureshareprovider" 
 			android:exported="true"
 			android:enabled="true"/>
 		

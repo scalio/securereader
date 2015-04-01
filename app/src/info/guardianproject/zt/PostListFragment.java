@@ -2,7 +2,7 @@ package info.guardianproject.zt;
 
 import java.util.ArrayList;
 
-import info.guardianproject.securereader.SocialReporter;
+import info.guardianproject.securereader.zt.SocialReporter;
 import info.guardianproject.zt.adapters.PostDraftsListAdapter;
 import info.guardianproject.zt.adapters.PostOutgoingListAdapter;
 import info.guardianproject.zt.adapters.PostPublishedListAdapter;

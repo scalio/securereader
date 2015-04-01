@@ -1,13 +1,13 @@
 package info.guardianproject.zt.views;
 
-import info.guardianproject.securereader.Settings.SyncFrequency;
-import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereader.zt.Settings.SyncFrequency;
+import info.guardianproject.securereader.zt.Settings.SyncMode;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.adapters.DownloadsAdapter;
 import info.guardianproject.zt.models.FeedFilterType;
 import info.guardianproject.zt.ui.UICallbacks;
 import info.guardianproject.zt.widgets.CheckableImageView;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
+import info.guardianproject.securereader.zt.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.zt.adapters.FeedListAdapter;
 import info.guardianproject.zt.adapters.FeedListAdapter.FeedListAdapterListener;
 import info.guardianproject.zt.uiutil.HttpTextWatcher;

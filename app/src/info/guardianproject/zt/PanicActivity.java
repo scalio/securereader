@@ -1,7 +1,7 @@
 package info.guardianproject.zt;
 
 import info.guardianproject.zt.R;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.uiutil.AnimationHelpers;
 import android.app.Activity;

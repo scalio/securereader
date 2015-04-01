@@ -57,7 +57,7 @@
         android:id="@+id/tvTitle"
         style="@style/LockScreenTitleStyle"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:layout_above="@id/tvChooseLanguage"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
@@ -70,6 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tvTitle"
         android:scaleType="centerInside"
-        android:src="@drawable/rz_logo" />
+        android:src="@drawable/rz_logo_large" />
 
 </RelativeLayout>

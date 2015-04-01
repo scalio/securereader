@@ -6,8 +6,8 @@
 	<bool name="fulltextfeeds">false</bool>
 		
     <string-array name="built_in_feed_names">
-        <item>Radio Zamaneh Text</item>
-        <item>Radio Zamaneh Audio</item>
+        <item>Zamaneh Tribune Text</item>
+        <item>Zamaneh Tribune Audio</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">

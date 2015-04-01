@@ -1,7 +1,7 @@
 package info.guardianproject.zt.views;
 
 import info.guardianproject.zt.R;
-import info.guardianproject.securereader.Settings.ReaderSwipeDirection;
+import info.guardianproject.securereader.zt.Settings.ReaderSwipeDirection;
 import info.guardianproject.zt.App;
 import info.guardianproject.zt.ItemExpandActivity;
 import info.guardianproject.zt.models.FeedFilterType;
@@ -16,7 +16,7 @@ import info.guardianproject.zt.widgets.HeightLimitedRelativeLayout;
 import info.guardianproject.zt.widgets.PagedView;
 import info.guardianproject.zt.widgets.UpdatingTextView;
 import info.guardianproject.zt.widgets.UpdatingTextView.OnUpdateListener;
-import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.zt.SocialReader;
 
 import java.text.Bidi;
 import java.util.ArrayList;
