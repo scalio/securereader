@@ -250,10 +250,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		
 		colorizeMenuItems();
 		
-		if(isRadioPlaying) {
-			menu.findItem(R.id.menu_radio).setIcon(R.drawable.ic_action_pause_over_video);
-		} else {
-			menu.findItem(R.id.menu_radio).setIcon(R.drawable.ic_action_play_over_video);
+		MenuItem miRadio = menu.findItem(R.id.menu_radio);
+		if(null != miRadio) {
+			if(isRadioPlaying) {	
+				miRadio.setIcon(R.drawable.ic_action_pause_over_video);
+			} else {
+				miRadio.setIcon(R.drawable.ic_action_play_over_video);
+			}
 		}
 		
 		return true;
