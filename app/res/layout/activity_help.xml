@@ -192,14 +192,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
-                    android:text="@string/about_guardian_title" />
+                    android:text="@string/about_zamaneh_title" />
 
                 <TextView
                     android:id="@+id/TextView07"
                     style="@style/HelpTextLinkedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/about_guardian_content" />
+                    android:text="@string/about_zamaneh_content" />
             </LinearLayout>
 
             <LinearLayout
