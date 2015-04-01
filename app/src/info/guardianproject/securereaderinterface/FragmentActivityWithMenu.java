@@ -255,7 +255,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			if(isRadioPlaying) {	
 				miRadio.setIcon(R.drawable.ic_action_pause_over_video);
 			} else {
-				miRadio.setIcon(R.drawable.ic_action_play_over_video);
+				miRadio.setIcon(R.drawable.ic_action_radio);
 			}
 		}
 		
