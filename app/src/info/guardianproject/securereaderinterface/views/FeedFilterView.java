@@ -74,6 +74,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		public ImageView ivFeedImage;
 		public View ivRefresh;
 		public View shortcutView;
+		public View submitTipView;
 	}
 
 	private FeedFilterViewCallbacks mCallbacks;
@@ -309,7 +310,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		{
 			if (convertView == null)
 				convertView = createSharedView();
-			ViewTag holder = (ViewTag) convertView.getTag();
+			final ViewTag holder = (ViewTag) convertView.getTag();
 			
 			holder.ivFeedImage.setImageResource(R.drawable.ic_filter_secure_share);
 			holder.tvCount.setText(mCountShared);
@@ -331,6 +332,15 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 				{
 					if (mCallbacks != null)
 						mCallbacks.receiveShare();
+				}
+			});
+			
+			holder.submitTipView.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					UICallbacks.handleCommand(holder.submitTipView.getContext(), R.integer.command_choose_uploads, null);
 				}
 			});
 			
@@ -535,6 +545,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		holder.ivRefresh = view.findViewById(R.id.ivRefresh);
 		holder.checkView = (CheckableImageView) view.findViewById(R.id.chkShowImages);
 		holder.shortcutView = view.findViewById(R.id.shortcutView);
+		holder.submitTipView = view.findViewById(R.id.submitTipView);
 		view.setTag(holder);
 	}
 }
