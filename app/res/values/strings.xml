@@ -49,11 +49,11 @@
     <string name="help_share_content">Share stories, feeds and the entire app using the Radio Zamaneh Secure Share. It\'s safe, easy and only requires a friend nearby with Bluetooth. App sharing requires a WiFi network or hotspot.</string>
     <string name="help_data_title">Minimize Data Use</string>
     <string name="help_data_content">Tips to reduce your data consumption:\n\n1. Sync only the feeds that matter to you most. Radio Zamaneh allows you to sync individual feeds.\n\n2. Choose Bit Wise syncing mode in your preferences. This syncs only text, with the ability to load photos on a story by story basis.\n\n3. Expire your articles in a timely manner. Choose your time frame in your preferences.</string>
-	<string name="about_guardian_title">About Guardian Project</string>
-    <string name="about_guardian_content">The Guardian Project creates easy to use apps, open-source software libraries, operating system modifications, and customized mobile devices useful to any person looking to protect their communications and personal data from unjust intrusion and monitoring. Visit us at https://guardianproject.info</string>
+	<string name="about_zamaneh_title">About Radio Zamaneh</string>
+    <string name="about_zamaneh_content">Since 2007, Radio Zamaneh has focused particularly on increasing public awareness on democracy and human rights in Iran. We strive for an informed, educated and empowered civil society that can act as a catalyst for change and reform and put an end to increasing violations of basic human rights in Iran.</string>
     <string name="help_terms_group_title">Terms and Licenses</string>
     <string name="help_terms_title">Terms and Licenses</string>
-    <string name="help_terms_content">Software licenses and more information available online at: https://guardianproject.info/apps/Radio Zamaneh</string>
+    <string name="help_terms_content">Software licenses and more information available online at: https://guardianproject.info/apps/</string>
     <string name="help_show_news">Got it. Show me the news!</string>
     <string name="downloads_title">Media Downloads</string>
     <string name="downloads_complete">COMPLETE</string>
