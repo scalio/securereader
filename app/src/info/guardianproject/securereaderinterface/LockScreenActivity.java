@@ -362,11 +362,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	protected void onUiLanguageChanged()
 	{
 		Intent intentThis = getIntent();
-		intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		finish();
-		overridePendingTransition(0, 0);
 		startActivity(intentThis);
-		overridePendingTransition(0, 0);
 	}
 
 	@Override
@@ -386,14 +383,9 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
         if (intent == null)
         	intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
-        App.getInstance().putTransitionBitmap(snap);
 
         startActivity(intent);
         finish();
-        LockScreenActivity.this.overridePendingTransition(0, 0);
     }
       
 	@Override
@@ -451,13 +443,9 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
       Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
       if (intent == null)
       	intent = new Intent(this, MainActivity.class);
-      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-      Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
-      App.getInstance().putTransitionBitmap(snap);
 
       startActivity(intent);
       finish();
-      LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 }
