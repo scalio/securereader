@@ -79,6 +79,7 @@
         android:minHeight="42dp"
         android:layout_marginTop="8dp"
         android:padding="10dp"
-        android:text="@string/menu_submit_tip" />
+        android:text="@string/menu_submit_tip" 
+        android:visibility="gone"/>
 
 </RelativeLayout>
