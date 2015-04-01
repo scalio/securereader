@@ -327,12 +327,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 		
-		case R.id.menu_media_uploads:
-		{
-			UICallbacks.handleCommand(this, R.integer.command_choose_uploads, null);
-			return true;
-		}
-		
 		case R.id.menu_account:
 		{
 			UICallbacks.handleCommand(this, R.integer.command_account, null);

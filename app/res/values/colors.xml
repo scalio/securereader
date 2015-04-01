@@ -57,5 +57,6 @@
    <color name="rz_blue_dark">#108BAE</color>
    <color name="rz_grey_light">#DDDDDD</color>
    <color name="rz_grey_dark">#555555</color>
+   <color name="rz_grey_blue">#002434</color>
    
 </resources>

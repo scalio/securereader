@@ -82,6 +82,7 @@
     <string name="menu_help">About Radio Zamaneh</string>
     <string name="menu_share_app">Share App</string>
     <string name="menu_receive_share">Receive a Share</string>
+    <string name="menu_submit_tip">Submit a Tip</string>
     <string name="menu_tor_connected">Connected to Tor</string>
     <string name="menu_tor_not_connected">Not connected to Tor</string>
     <string name="menu_num_feeds">%1$d feeds</string>

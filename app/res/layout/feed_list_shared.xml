@@ -66,5 +66,19 @@
         android:minHeight="42dp"
         android:padding="10dp"
         android:text="@string/menu_receive_share" />
+    
+    <TextView
+        android:id="@+id/submitTipView"
+        style="@style/LeftSideMenuShortcutItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvFeedName"
+        android:layout_alignRight="@id/tvFeedName"
+        android:layout_below="@id/shortcutView"
+        android:background="@drawable/left_menu_shortcut_item_background"
+        android:minHeight="42dp"
+        android:layout_marginTop="8dp"
+        android:padding="10dp"
+        android:text="@string/menu_submit_tip" />
 
 </RelativeLayout>
