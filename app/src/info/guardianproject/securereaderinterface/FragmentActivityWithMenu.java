@@ -327,6 +327,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 		
+		/*
 		case R.id.menu_account:
 		{
 			UICallbacks.handleCommand(this, R.integer.command_account, null);
@@ -337,7 +338,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		{
 			UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
 			return true;
-		}
+		}*/
 
 		case R.id.menu_preferences:
 		{
