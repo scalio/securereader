@@ -179,7 +179,7 @@
             android:text="@string/story_list_hint_tor_connected_info" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
