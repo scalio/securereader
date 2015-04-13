@@ -516,7 +516,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 							return; // Try again...					
 					}
 					
-					CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+					CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this);
 					
 					char[] passwd = editEnterPassphrase.getText().toString().toCharArray();
 					PassphraseSecrets secrets;
@@ -583,7 +583,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 				// Check old
 				boolean matching = (editNewPassphrase.getText().toString().equals(editConfirmNewPassphrase.getText().toString()));
 				boolean sameAsPassphrase = false;
-				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this, null, null);
+				CacheWordHandler cwh = new CacheWordHandler((Context)SettingsActivity.this);
 				try {
 					cwh.setPassphrase(editNewPassphrase.getText().toString().toCharArray());
 					sameAsPassphrase = true;

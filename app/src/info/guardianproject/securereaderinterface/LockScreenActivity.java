@@ -7,8 +7,7 @@ import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.widgets.DropdownSpinner;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.courier.R;
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.CacheWordSettings;
+import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 
 import java.security.GeneralSecurityException;
@@ -56,7 +55,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private EditText mConfirmNewPassphrase;
 	private Button mBtnOpen;
 
-	private CacheWordActivityHandler mCacheWord;
+	private CacheWordHandler mCacheWord;
 	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private DropdownSpinner mDropdownLanguage;
 	private String[] mLanguageNames;
@@ -68,8 +67,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		CacheWordSettings settings = null;
-		mCacheWord = new CacheWordActivityHandler(this, settings);
+		mCacheWord = new CacheWordHandler(this);
 		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -101,7 +99,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStart();
 		App.getInstance().onLockScreenResumed(this);
-		mCacheWord.onResume();
+        mCacheWord.connectToService();
 	}
 
 	@Override
@@ -109,8 +107,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStop();
 		App.getInstance().onLockScreenPaused(this);
-		    mCacheWord.onPause();
-	    }
+        mCacheWord.disconnectFromService();
+	}
 
 	@Override
 	public boolean isInternalActivityOpened()
