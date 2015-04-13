@@ -28,6 +28,6 @@ rm -f external/CacheWord/cachewordlib/libs/guava-r09.jar
 cp external/securereaderlibrary/libs/guava-11.0.2.jar external/bho/TbChat/libs/
 cp external/securereaderlibrary/libs/guava-11.0.2.jar external/CacheWord/cachewordlib/libs/
 
-cp external/CacheWord/cachewordlib/libs/sqlcipher.jar external/securereaderlibrary/libs/sqlcipher.jar 
-cp external/CacheWord/cachewordlib/libs/iocipher.jar external/securereaderlibrary/libs/iocipher.jar 
+cp external/CacheWord/cachewordhelpers/libs/sqlcipher.jar external/securereaderlibrary/libs/sqlcipher.jar 
+cp external/CacheWord/cachewordhelpers/libs/IOCipher-v0.2.jar external/securereaderlibrary/libs/iocipher.jar 
 
