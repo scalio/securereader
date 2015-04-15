@@ -1,9 +1,7 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.zt.Settings;
+import info.guardianproject.securereader.Settings;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 public class SettingsUI extends Settings
 {

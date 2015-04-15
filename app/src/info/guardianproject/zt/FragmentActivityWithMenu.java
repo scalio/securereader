@@ -2,11 +2,9 @@ package info.guardianproject.zt;
 
 import java.util.ArrayList;
 
-import info.guardianproject.securereader.zt.Settings.SyncMode;
-import info.guardianproject.securereader.zt.SocialReader;
-import info.guardianproject.zt.R;
+import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.zt.models.FeedFilterType;
-import info.guardianproject.zt.ui.ActionProviderShare;
 import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.ui.UICallbacks;
 import info.guardianproject.zt.ui.UICallbacks.OnCallbackListener;

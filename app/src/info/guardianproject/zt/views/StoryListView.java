@@ -1,8 +1,7 @@
 package info.guardianproject.zt.views;
 
-import info.guardianproject.securereader.zt.SocialReader;
+import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.zt.App;
-import info.guardianproject.zt.MainActivity;
 import info.guardianproject.zt.adapters.StoryListAdapter;
 import info.guardianproject.zt.adapters.StoryListAdapter.OnHeaderCreatedListener;
 import info.guardianproject.zt.adapters.StoryListAdapter.OnTagClickedListener;
@@ -34,7 +33,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;

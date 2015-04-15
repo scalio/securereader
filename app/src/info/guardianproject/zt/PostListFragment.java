@@ -2,7 +2,7 @@ package info.guardianproject.zt;
 
 import java.util.ArrayList;
 
-import info.guardianproject.securereader.zt.SocialReporter;
+import info.guardianproject.securereader.SocialReporter;
 import info.guardianproject.zt.adapters.PostDraftsListAdapter;
 import info.guardianproject.zt.adapters.PostOutgoingListAdapter;
 import info.guardianproject.zt.adapters.PostPublishedListAdapter;
@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import info.guardianproject.zt.R;
 import com.tinymission.rss.Item;
 
 public class PostListFragment extends Fragment implements PostDraftsListAdapterListener

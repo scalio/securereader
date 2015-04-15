@@ -1,9 +1,9 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.zt.Settings.SyncMode;
-import info.guardianproject.securereader.zt.SocialReader;
-import info.guardianproject.securereader.zt.SyncService;
-import info.guardianproject.securereader.zt.FeedFetcher.FeedFetchedCallback;
+import info.guardianproject.securereader.Settings.SyncMode;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.SyncService;
+import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.zt.adapters.StoryListAdapter;
 import info.guardianproject.zt.models.FeedFilterType;
 import info.guardianproject.zt.ui.ActionProviderShare;
@@ -12,7 +12,6 @@ import info.guardianproject.zt.views.StoryItemView;
 import info.guardianproject.zt.views.StoryListHintTorView;
 import info.guardianproject.zt.views.StoryListView;
 import info.guardianproject.zt.views.StoryListHintTorView.OnButtonClickedListener;
-import info.guardianproject.zt.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +20,6 @@ import java.util.Iterator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;

@@ -1,7 +1,6 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.zt.R;
-import info.guardianproject.securereader.zt.SocialReader;
+import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.uiutil.AnimationHelpers;
 import android.app.Activity;
@@ -12,16 +11,13 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannedString;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

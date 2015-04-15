@@ -1,6 +1,6 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.zt.FeedFetcher.FeedFetchedCallback;
+import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
 import info.guardianproject.zt.adapters.FeedListAdapter;
 import info.guardianproject.zt.adapters.FeedListAdapter.FeedListAdapterListener;
 import info.guardianproject.zt.uiutil.HttpTextWatcher;
@@ -23,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
-import info.guardianproject.zt.R;
 import com.tinymission.rss.Feed;
 
 public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback

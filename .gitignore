@@ -27,5 +27,11 @@ build.xml
 #OSX
 .DS_Store
 
+# Android Studio
+*.iml
+.idea
+.gradle
+build/
+
 #Amazon Keys
 app/res/values/amazon_s3_keys.xml

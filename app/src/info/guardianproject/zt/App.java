@@ -1,8 +1,8 @@
 package info.guardianproject.zt;
 		
-import info.guardianproject.securereader.zt.Settings;
-import info.guardianproject.securereader.zt.Settings.UiLanguage;
-import info.guardianproject.securereader.zt.SocialReader.SocialReaderLockListener;
+import info.guardianproject.securereader.Settings;
+import info.guardianproject.securereader.Settings.UiLanguage;
+import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;
 import info.guardianproject.zt.models.FeedFilterType;
 import info.guardianproject.zt.ui.UICallbackListener;
 import info.guardianproject.zt.ui.UICallbacks;
@@ -11,8 +11,8 @@ import info.guardianproject.zt.widgets.CustomFontEditText;
 import info.guardianproject.zt.widgets.CustomFontRadioButton;
 import info.guardianproject.zt.widgets.CustomFontTextView;
 import info.guardianproject.zt.z.rss.utils.DataStorage;
-import info.guardianproject.securereader.zt.SocialReader;
-import info.guardianproject.securereader.zt.SocialReporter;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.SocialReporter;
 
 import java.util.ArrayList;
 import java.util.Locale;

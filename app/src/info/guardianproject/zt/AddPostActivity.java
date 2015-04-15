@@ -1,7 +1,7 @@
 package info.guardianproject.zt;
 
-import info.guardianproject.securereader.zt.SocialReader;
-import info.guardianproject.securereader.zt.XMLRPCPublisher.XMLRPCPublisherCallback;
+import info.guardianproject.securereader.SocialReader;
+import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
 import info.guardianproject.zt.ui.MediaViewCollection;
 import info.guardianproject.zt.ui.UICallbacks;
 import info.guardianproject.zt.uiutil.AnimationHelpers;
@@ -12,7 +12,6 @@ import info.guardianproject.zt.views.PostSignInView;
 import info.guardianproject.zt.views.StoryMediaContentView;
 import info.guardianproject.zt.views.CreateAccountView.OnActionListener;
 import info.guardianproject.zt.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.zt.R;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;
