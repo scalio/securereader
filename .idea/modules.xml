@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/external/CacheWord/CacheWord.iml" filepath="$PROJECT_DIR$/external/CacheWord/CacheWord.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/OnionKit/OnionKit.iml" filepath="$PROJECT_DIR$/external/OnionKit/OnionKit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/PullToRefreshLibrary/PullToRefreshLibrary.iml" filepath="$PROJECT_DIR$/external/PullToRefreshLibrary/PullToRefreshLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/bho/TibetanTextLibrary/TibetanTextLibrary.iml" filepath="$PROJECT_DIR$/external/bho/TibetanTextLibrary/TibetanTextLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/TranitionViewPager/TranitionViewPager.iml" filepath="$PROJECT_DIR$/external/TranitionViewPager/TranitionViewPager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/bho/bho.iml" filepath="$PROJECT_DIR$/external/bho/bho.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/CacheWord/cachewordlib/cachewordlib.iml" filepath="$PROJECT_DIR$/external/CacheWord/cachewordlib/cachewordlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/external.iml" filepath="$PROJECT_DIR$/external/external.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/OnionKit/libnetcipher/libnetcipher.iml" filepath="$PROJECT_DIR$/external/OnionKit/libnetcipher/libnetcipher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/securereader.iml" filepath="$PROJECT_DIR$/securereader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/securereaderlibrary/securereaderlibrary.iml" filepath="$PROJECT_DIR$/external/securereaderlibrary/securereaderlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/TranitionViewPager/transitionviewpager/transitionviewpager.iml" filepath="$PROJECT_DIR$/external/TranitionViewPager/transitionviewpager/transitionviewpager.iml" />
+    </modules>
+  </component>
+</project>
