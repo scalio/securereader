@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="IOCipher-v0.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/external/CacheWord/cachewordlib/libs/IOCipher-v0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
