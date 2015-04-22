@@ -34,7 +34,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 import info.guardianproject.zt.R;
-import info.guardianproject.zt.z.rss.activities.MainActivityViewPager;
 
 import java.util.Arrays;
 import java.util.List;

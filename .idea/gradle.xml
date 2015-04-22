@@ -15,11 +15,6 @@
             <option value="$PROJECT_DIR$/external/CacheWord/cachewordlib" />
             <option value="$PROJECT_DIR$/external/OnionKit" />
             <option value="$PROJECT_DIR$/external/OnionKit/libnetcipher" />
-            <option value="$PROJECT_DIR$/external/PullToRefreshLibrary" />
-            <option value="$PROJECT_DIR$/external/TranitionViewPager" />
-            <option value="$PROJECT_DIR$/external/TranitionViewPager/transitionviewpager" />
-            <option value="$PROJECT_DIR$/external/bho" />
-            <option value="$PROJECT_DIR$/external/bho/TibetanTextLibrary" />
             <option value="$PROJECT_DIR$/external/securereaderlibrary" />
           </set>
         </option>

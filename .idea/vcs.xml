@@ -4,9 +4,6 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/CacheWord" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/OnionKit" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external/TranitionViewPager/transitionviewpager" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external/bho" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/external/securereaderlibrary" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/external/supportlibrary" vcs="Git" />
   </component>
 </project>

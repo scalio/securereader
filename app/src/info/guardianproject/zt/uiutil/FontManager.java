@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.ironrabbit.type.CustomTypefaceManager;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -105,14 +103,15 @@ public class FontManager
 		// This is hacky. The tbo library has a bug with composites at the end
 		// of a string not being added to the output... so append some useless chars
 		// (more than 3) and strip off those that still remain after the transform.
+		/*
 		String result = text.toString() + "_####";
 		result = CustomTypefaceManager.handlePrecompose(result);
 		int pos = result.lastIndexOf("_#");
 		if (pos != -1)
-			result = result.substring(0, pos);
-		SpannableStringBuilder ssb = new SpannableStringBuilder(result);
+			result = result.substring(0, pos);*/
+		SpannableStringBuilder ssb = new SpannableStringBuilder(text);
 		ssb.clearSpans();
-		getTibetanSpans(context, ssb);
+		//getTibetanSpans(context, ssb);
 		return ssb;
 	}
 	

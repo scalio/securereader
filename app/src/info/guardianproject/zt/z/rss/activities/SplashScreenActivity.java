@@ -23,10 +23,6 @@ public class SplashScreenActivity extends Activity {
 
 
     private void showMainActivity() {
-//        Intent toMainActivity = new Intent(SplashScreenActivity.this, MainActivity.class);
-        Intent toMainActivity = new Intent(SplashScreenActivity.this, MainActivityViewPager.class);
-
-        startActivity(toMainActivity);
         SplashScreenActivity.this.finish();
     }
 

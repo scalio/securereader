@@ -47,6 +47,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v13:22.0.0'
@@ -59,7 +61,4 @@ dependencies {
     compile project(':external:CacheWord:cachewordlib')
     compile project(':external:OnionKit:libnetcipher')
     compile project(':external:securereaderlibrary')
-    compile project(':external:bho:TibetanTextLibrary')
-    compile project(':external:PullToRefreshLibrary')
-    compile project(':external:TranitionViewPager:transitionviewpager')
 }
