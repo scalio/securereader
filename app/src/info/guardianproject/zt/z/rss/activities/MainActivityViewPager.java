@@ -9,17 +9,15 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
-import com.abhi.animated.TransitionViewPager;
 import info.guardianproject.zt.R;
 import info.guardianproject.zt.z.rss.adapters.MainAdapter;
 import info.guardianproject.zt.z.rss.fragments.BaseRefreshFragment;
 import info.guardianproject.zt.z.rss.fragments.Tab1ContainerFragment;
 import info.guardianproject.zt.z.rss.fragments.Tab4ContainerFragment;
 import info.guardianproject.zt.z.rss.utils.CrashReporter;
-import info.guardianproject.zt.z.rss.views.MyTransitionViewPager;
 
 public class MainActivityViewPager extends FragmentActivity {
-
+/*
     private MyTransitionViewPager viewPager;
 
 	@Override
@@ -145,5 +143,5 @@ public class MainActivityViewPager extends FragmentActivity {
             Log.e("RadioZamaneh MainActivityViewPager", "Can't call onActivityResult for fragment in pager. Error " + e.toString());
         }
     }
-
+*/
 }

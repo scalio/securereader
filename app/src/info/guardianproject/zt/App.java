@@ -1,6 +1,5 @@
 package info.guardianproject.zt;
-		
-import info.guardianproject.courier.R;
+
 import info.guardianproject.securereader.Settings;
 import info.guardianproject.securereader.Settings.UiLanguage;
 import info.guardianproject.securereader.SocialReader.SocialReaderLockListener;

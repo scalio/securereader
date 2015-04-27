@@ -6,9 +6,7 @@ import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.uiutil.UIHelpers;
 import info.guardianproject.zt.widgets.DropdownSpinner;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.zt.R;
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.CacheWordSettings;
+import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 
 import java.security.GeneralSecurityException;
@@ -48,15 +46,15 @@ import android.widget.Toast;
 
 public class LockScreenActivity extends Activity implements LockScreenCallbacks, OnFocusChangeListener, ICacheWordSubscriber
 {
-    private static final String LOGTAG = "LockScreenActivity";
+	private static final String LOGTAG = "LockScreenActivity";
 	public static final boolean LOGGING = false;
-	
+
 	private EditText mEnterPassphrase;
 	private EditText mNewPassphrase;
 	private EditText mConfirmNewPassphrase;
 	private Button mBtnOpen;
 
-	private CacheWordActivityHandler mCacheWord;
+	private CacheWordHandler mCacheWord;
 	private info.guardianproject.zt.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private DropdownSpinner mDropdownLanguage;
 	private String[] mLanguageNames;
@@ -68,13 +66,12 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		CacheWordSettings settings = null;
-		mCacheWord = new CacheWordActivityHandler(this, settings);
-		
+		mCacheWord = new CacheWordHandler(this);
+
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
-			 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-			 WindowManager.LayoutParams.FLAG_SECURE);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+					WindowManager.LayoutParams.FLAG_SECURE);
 		}
 	}
 
@@ -88,20 +85,20 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 
 	@Override
 	protected void onPause() {
-	    super.onPause();
-	    if (mSetUiLanguageReceiver != null)
-	    {
-	    	LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetUiLanguageReceiver);
-	    	mSetUiLanguageReceiver = null;
-	    }
+		super.onPause();
+		if (mSetUiLanguageReceiver != null)
+		{
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(mSetUiLanguageReceiver);
+			mSetUiLanguageReceiver = null;
+		}
 	}
-	
+
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
 		App.getInstance().onLockScreenResumed(this);
-		mCacheWord.onResume();
+		mCacheWord.connectToService();
 	}
 
 	@Override
@@ -109,8 +106,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStop();
 		App.getInstance().onLockScreenPaused(this);
-		    mCacheWord.onPause();
-	    }
+		mCacheWord.disconnectFromService();
+	}
 
 	@Override
 	public boolean isInternalActivityOpened()
@@ -136,7 +133,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		if ((keyCode == KeyEvent.KEYCODE_BACK))
 		{
 			// Back from lock screen means quit app. So send a kill signal to
-			// any open activity and finish!	
+			// any open activity and finish!
 			LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.EXIT_BROADCAST_ACTION));
 			finish();
 			return true;
@@ -160,12 +157,12 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			}
 		});
 
-		
+
 		mDropdownLanguage = (DropdownSpinner) findViewById(R.id.languagePopup);
-		
+
 		if (App.UI_ENABLE_LANGUAGE_CHOICE)
 		{
-			mLanguageNames = new String[] { 
+			mLanguageNames = new String[] {
 					getString(R.string.settings_language_english_nt),
 					getString(R.string.settings_language_tibetan_nt),
 					getString(R.string.settings_language_chinese_nt),
@@ -177,20 +174,24 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					getString(R.string.settings_language_turkish_nt),
 					getString(R.string.settings_language_farsi_nt)
 			};
-			mLanguageCodes = new UiLanguage[] { 
+			mLanguageCodes = new UiLanguage[] {
 					UiLanguage.English,
 					UiLanguage.Tibetan,
 					UiLanguage.Chinese,
 					UiLanguage.Ukrainian,
 					UiLanguage.Russian,
-					UiLanguage.Farsi					
+					UiLanguage.Japanese,
+					UiLanguage.Norwegian,
+					UiLanguage.Spanish,
+					UiLanguage.Turkish,
+					UiLanguage.Farsi
 			};
-			
+
 			ListAdapter adapter = new LanguageListAdapter(this, mLanguageNames);
 			mDropdownLanguage.setAdapter(adapter);
 			selectLanguageByUiLanguage(App.getSettings().uiLanguage(), false);
 			mDropdownLanguage.setOnSelectionChangedListener(new DropdownSpinner.OnSelectionChangedListener() {
-			
+
 				@Override
 				public void onSelectionChanged(int position) {
 					App.getSettings().setUiLanguage(mLanguageCodes[position]);
@@ -203,7 +204,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			mDropdownLanguage.setVisibility(View.GONE);
 		}
 	}
-	
+
 	private boolean selectLanguageByUiLanguage(UiLanguage language, boolean sendNotification)
 	{
 		for (int i = 0; i < mLanguageCodes.length; i++)
@@ -213,10 +214,10 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 				mDropdownLanguage.setCurrentSelection(i, sendNotification);
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
-	
+
 	private void createCreatePassphraseView()
 	{
 		setContentView(R.layout.lock_screen_create_passphrase);
@@ -248,11 +249,11 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 
 				// Store
 				try {
-                    mCacheWord.setPassphrase(mNewPassphrase.getText().toString().toCharArray());
-                } catch (GeneralSecurityException e) {
-                	if (LOGGING)
-                		Log.e(LOGTAG, "Cacheword initialization failed: " + e.getMessage());
-                }
+					mCacheWord.setPassphrase(mNewPassphrase.getText().toString().toCharArray());
+				} catch (GeneralSecurityException e) {
+					if (LOGGING)
+						Log.e(LOGTAG, "Cacheword initialization failed: " + e.getMessage());
+				}
 			}
 		});
 	}
@@ -265,7 +266,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		root.setOnFocusChangeListener(this);
 
 		root.findViewById(R.id.tvError).setVisibility(View.GONE);
-		
+
 		mEnterPassphrase = (EditText) findViewById(R.id.editEnterPassphrase);
 		mEnterPassphrase.setTypeface(Typeface.DEFAULT);
 		mEnterPassphrase.setTransformationMethod(new PasswordTransformationMethod());
@@ -278,7 +279,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			{
 				if (TextUtils.isEmpty(mEnterPassphrase.getText()))
 					return;
-				
+
 				if (App.getSettings().useKillPassphrase() && mEnterPassphrase.getText().toString().equals(App.getSettings().killPassphrase()))
 				{
 					// Kill password entered, wipe!
@@ -290,26 +291,26 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 				}
 
 				// Check passphrase
-			    try {
-                    mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
-                } catch (GeneralSecurityException e) {
-                	if (LOGGING)
-                		Log.e(LOGTAG, "Cacheword pass verification failed: " + e.getMessage());
-                    int failedAttempts = App.getSettings().currentNumberOfPasswordAttempts();
-                    failedAttempts++;
-                    App.getSettings().setCurrentNumberOfPasswordAttempts(failedAttempts);
-                    if (failedAttempts == App.getSettings().numberOfPasswordAttempts())
-                    {
-                        // Ooops, to many attempts! Wipe the data...
-                        App.getInstance().wipe(SocialReader.DATA_WIPE);
-                        finish();
-                    }
+				try {
+					mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
+				} catch (GeneralSecurityException e) {
+					if (LOGGING)
+						Log.e(LOGTAG, "Cacheword pass verification failed: " + e.getMessage());
+					int failedAttempts = App.getSettings().currentNumberOfPasswordAttempts();
+					failedAttempts++;
+					App.getSettings().setCurrentNumberOfPasswordAttempts(failedAttempts);
+					if (failedAttempts == App.getSettings().numberOfPasswordAttempts())
+					{
+						// Ooops, to many attempts! Wipe the data...
+						App.getInstance().wipe(SocialReader.DATA_WIPE);
+						finish();
+					}
 
-                    mEnterPassphrase.setText("");
-                    findViewById(R.id.tvError).setVisibility(View.VISIBLE);
-                    return; // Try again...
-                }
-                
+					mEnterPassphrase.setText("");
+					findViewById(R.id.tvError).setVisibility(View.VISIBLE);
+					return; // Try again...
+				}
+
 				App.getSettings().setCurrentNumberOfPasswordAttempts(0);
 				UIHelpers.hideSoftKeyboard(LockScreenActivity.this);
 
@@ -362,32 +363,40 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	protected void onUiLanguageChanged()
 	{
 		Intent intentThis = getIntent();
+		intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		finish();
+		overridePendingTransition(0, 0);
 		startActivity(intentThis);
+		overridePendingTransition(0, 0);
 	}
 
 	@Override
-    public void onCacheWordUninitialized() {
-	    createFirstTimeView();
-    }
+	public void onCacheWordUninitialized() {
+		createFirstTimeView();
+	}
 
-    @Override
-    public void onCacheWordLocked() {
-        createLockView();
-    }
+	@Override
+	public void onCacheWordLocked() {
+		createLockView();
+	}
 
-    @Override
-    public void onCacheWordOpened() {
-        App.getSettings().setCurrentNumberOfPasswordAttempts(0);
+	@Override
+	public void onCacheWordOpened() {
+		App.getSettings().setCurrentNumberOfPasswordAttempts(0);
 
-        Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
-        if (intent == null)
-        	intent = new Intent(this, MainActivity.class);
+		Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
+		if (intent == null)
+			intent = new Intent(this, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        startActivity(intent);
-        finish();
-    }
-      
+		Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+		App.getInstance().putTransitionBitmap(snap);
+
+		startActivity(intent);
+		finish();
+		LockScreenActivity.this.overridePendingTransition(0, 0);
+	}
+
 	@Override
 	public Object getSystemService(String name)
 	{
@@ -400,7 +409,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		}
 		return super.getSystemService(name);
 	}
-	
+
 	private final class SetUiLanguageReceiver extends BroadcastReceiver
 	{
 		@Override
@@ -417,7 +426,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			});
 		}
 	}
-	
+
 	private class LanguageListAdapter extends ArrayAdapter<String>
 	{
 		public LanguageListAdapter(Context context, String[] languages)
@@ -435,17 +444,21 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 			return v;
 		}
 	}
-	
+
 	public void onUnlocked()
 	{
-      App.getSettings().setCurrentNumberOfPasswordAttempts(0);
+		App.getSettings().setCurrentNumberOfPasswordAttempts(0);
 
-      Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
-      if (intent == null)
-      	intent = new Intent(this, MainActivity.class);
+		Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
+		if (intent == null)
+			intent = new Intent(this, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+		Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+		App.getInstance().putTransitionBitmap(snap);
 
-      startActivity(intent);
-      finish();
+		startActivity(intent);
+		finish();
+		LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 }

@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/external" />
             <option value="$PROJECT_DIR$/external/CacheWord" />
+            <option value="$PROJECT_DIR$/external/CacheWord/cachewordhelpers" />
             <option value="$PROJECT_DIR$/external/CacheWord/cachewordlib" />
             <option value="$PROJECT_DIR$/external/OnionKit" />
             <option value="$PROJECT_DIR$/external/OnionKit/libnetcipher" />

@@ -59,6 +59,7 @@ dependencies {
 
     // project imports
     compile project(':external:CacheWord:cachewordlib')
+    compile project(':external:CacheWord:cachewordhelpers')
     compile project(':external:OnionKit:libnetcipher')
     compile project(':external:securereaderlibrary')
 }
