@@ -23,10 +23,6 @@ public class SplashScreenActivity extends Activity {
 
 
     private void showMainActivity() {
-//        Intent toMainActivity = new Intent(SplashScreenActivity.this, MainActivity.class);
-        Intent toMainActivity = new Intent(SplashScreenActivity.this, MainActivityViewPager.class);
-
-        startActivity(toMainActivity);
         SplashScreenActivity.this.finish();
     }
 
@@ -38,7 +34,7 @@ public class SplashScreenActivity extends Activity {
             try {
                 Thread.sleep(Constants.SPLASH_TIME);
             } catch (InterruptedException e) {
-                Log.e("Radio Zamaneh error", e.getMessage());
+                Log.e("Zamaneh Tribune error", e.getMessage());
             }
             return null;
         }

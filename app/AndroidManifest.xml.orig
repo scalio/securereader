@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 <<<<<<< HEAD
-    package="info.guardianproject.courier"
-	android:versionCode="16"
-	android:versionName="0.2.0">
-=======
     package="info.guardianproject.zt"
 	android:versionCode="12"
 	android:versionName="0.1.6">
->>>>>>> renamed packages.
     <!-- Change package when branching into distinct app -->
 
     <uses-sdk
 		android:minSdkVersion="11"
         android:targetSdkVersion="15" />
 
+=======
+          xmlns:tools="http://schemas.android.com/tools"
+          package="info.guardianproject.zt">
+    <!-- Change package when branching into distinct app -->
+
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -37,17 +38,25 @@
 
     <permission android:name="info.guardianproject.zt.z.rss.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="info.guardianproject.zt.z.rss.permission.C2D_MESSAGE" />
+<<<<<<< HEAD
     
     
 
     <application
+=======
+
+
+    <application
+        tools:replace="android:icon"
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
         android:name="info.guardianproject.zt.App"
         android:icon="@drawable/rz_logo"
         android:label="@string/app_name"
         android:description="@string/app_description"
         android:theme="@style/AppTheme" >
 
-		<activity android:name="net.hockeyapp.android.UpdateActivity" />
+        <!--
+		<activity android:name="net.hockeyapp.android.UpdateActivity" />-->
         
 		<service android:name="info.guardianproject.cacheword.CacheWordService" 
 		    android:enabled="true" android:exported="true" />        
@@ -265,10 +274,14 @@
         <!-- Change "authorities" when branching into distinct app -->
 		<provider 
    			android:name="info.guardianproject.securereader.SecureShareContentProvider"
-			android:authorities="info.guardianproject.securereader.secureshareprovider" 
+			android:authorities="info.guardianproject.securereader.secureshareprovider"
 			android:exported="true"
 			android:enabled="true"/>
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
 		
 		<!-- Radio Z -->
 		<activity

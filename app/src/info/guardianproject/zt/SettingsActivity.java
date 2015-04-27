@@ -9,10 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,11 +26,8 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -41,7 +36,6 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.PassphraseSecrets;
-import info.guardianproject.zt.R;
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {

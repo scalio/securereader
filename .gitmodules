@@ -1,13 +1,11 @@
 [submodule "external/OnionKit"]
 	path = external/OnionKit
-	url = https://github.com/guardianproject/OnionKit.git
-[submodule "external/bho"]
-	path = external/bho
-	url = https://code.google.com/p/bho/
+	url = https://github.com/scalio/NetCipher.git
+
+[submodule "external/CacheWord"]
+	path = external/CacheWord
+	url = https://github.com/scalio/cacheword.git
 
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
-	url = https://github.com/guardianproject/securereaderlibrary.git
-[submodule "external/supportlibrary"]
-	path = external/supportlibrary
-	url = https://android.googlesource.com/platform/frameworks/support
+	url = https://github.com/scalio/securereaderlibrary.git

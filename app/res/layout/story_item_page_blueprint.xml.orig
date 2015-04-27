@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 <<<<<<< HEAD
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
-=======
     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
->>>>>>> renamed packages.
+=======
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
     android:id="@+id/llRoot"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"

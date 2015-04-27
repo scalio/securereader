@@ -21,12 +21,29 @@ local.properties
 *.java.bak
 .metadata
 .settings
-
 build.xml
-<<<<<<< HEAD
-app/ant.properties
-=======
 
-#OSX
+# Gradle
+.gradle
+build/
+
+# Android Studio
+.idea/libraries
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/datasources.xml
+.idea/dataSources.ids
+
+<<<<<<< HEAD
+# OSX
 .DS_Store
->>>>>>> updated gitignore to include DS_Store files.
+
+#Amazon Keys
+app/res/values/amazon_s3_keys.xml
+=======
+# Amazon Keys
+app/res/values/amazon_s3_keys.xml
+
+# OSX
+.DS_Store
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac

@@ -1,13 +1,12 @@
 package info.guardianproject.zt.installer;
 
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/installer/SecureBluetoothReceiverFragment.java
-import info.guardianproject.courier.R;
-=======
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/installer/SecureBluetoothReceiverFragment.java
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.zt.App;
+<<<<<<< HEAD:app/src/info/guardianproject/zt/installer/SecureBluetoothReceiverFragment.java
 import info.guardianproject.zt.FragmentActivityWithMenu;
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac:app/src/info/guardianproject/zt/installer/SecureBluetoothReceiverFragment.java
 import info.guardianproject.zt.LockableFragment;
 import info.guardianproject.zt.MainActivity;
 import info.guardianproject.zt.models.FeedFilterType;
@@ -36,14 +35,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;

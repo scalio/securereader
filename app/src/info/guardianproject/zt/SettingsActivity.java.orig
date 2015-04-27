@@ -9,10 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,11 +26,8 @@ import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -41,11 +36,10 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.PassphraseSecrets;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/SettingsActivity.java
-import info.guardianproject.courier.R;
-=======
+<<<<<<< HEAD:app/src/info/guardianproject/zt/SettingsActivity.java
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/SettingsActivity.java
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac:app/src/info/guardianproject/zt/SettingsActivity.java
 
 public class SettingsActivity extends FragmentActivityWithMenu
 {

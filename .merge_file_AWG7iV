@@ -1,4 +1,3 @@
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/PostActivity.java
 package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereaderinterface.PostListFragment.PostListType;
@@ -11,22 +10,7 @@ import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.courier.R;
-=======
-package info.guardianproject.zt;
-
-import info.guardianproject.zt.PostListFragment.PostListType;
-import info.guardianproject.zt.adapters.StoryListAdapter.OnTagClickedListener;
-import info.guardianproject.zt.uiutil.AnimationHelpers;
-import info.guardianproject.zt.uiutil.UIHelpers;
-import info.guardianproject.zt.uiutil.AnimationHelpers.FadeInFadeOutListener;
-import info.guardianproject.zt.views.CreateAccountView;
-import info.guardianproject.zt.views.FullScreenStoryItemView;
-import info.guardianproject.zt.views.PostSignInView;
-import info.guardianproject.zt.views.CreateAccountView.OnActionListener;
-import info.guardianproject.zt.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/PostActivity.java
+import info.guardianproject.securereaderinterface.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;

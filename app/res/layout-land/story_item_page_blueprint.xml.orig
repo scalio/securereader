@@ -5,7 +5,11 @@
     android:gravity="top"
     android:orientation="vertical"
      xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
      xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt">
+=======
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
 
     <include
         android:id="@+id/layout_source"

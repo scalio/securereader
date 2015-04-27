@@ -154,7 +154,7 @@ public class AudioListFragment extends BaseTabSupportFragment {
         radioImage.setAdjustViewBounds(true);
         radioImage.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
         radioImage.setImageResource(R.drawable.radio);
-        rssListView.addHeaderView(radioImage);
+        //rssListView.addHeaderView(radioImage);
 
         rssListView.setAdapter(adapter);
         rssListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {

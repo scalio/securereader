@@ -76,7 +76,7 @@ public class ShareAppFragment extends Fragment {
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 String uriText = "mailto:"+
-                        "?subject=" + Uri.encode("Radio Zamaneh") +
+                        "?subject=" + Uri.encode("Zamaneh Tribune") +
 //                        "&body=" + Uri.encode(getString(R.string.sharingText));
                          "&body=" + Uri.encode(getString(R.string.sharingText)) +"\n"+ WEB_URL_TO_SHARE+"\n"+WEB_URL_TO_SHARE_2+"\n";
 

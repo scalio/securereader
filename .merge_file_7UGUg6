@@ -1,10 +1,9 @@
-package info.guardianproject.zt;
+package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SyncService;
 import info.guardianproject.securereader.FeedFetcher.FeedFetchedCallback;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/MainActivity.java
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
@@ -13,18 +12,7 @@ import info.guardianproject.securereaderinterface.views.StoryItemView;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView;
 import info.guardianproject.securereaderinterface.views.StoryListView;
 import info.guardianproject.securereaderinterface.views.StoryListHintTorView.OnButtonClickedListener;
-import info.guardianproject.courier.R;
-=======
-import info.guardianproject.zt.adapters.StoryListAdapter;
-import info.guardianproject.zt.models.FeedFilterType;
-import info.guardianproject.zt.ui.ActionProviderShare;
-import info.guardianproject.zt.ui.UICallbacks;
-import info.guardianproject.zt.views.StoryItemView;
-import info.guardianproject.zt.views.StoryListHintTorView;
-import info.guardianproject.zt.views.StoryListView;
-import info.guardianproject.zt.views.StoryListHintTorView.OnButtonClickedListener;
-import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/MainActivity.java
+import info.guardianproject.securereaderinterface.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,9 +54,9 @@ import com.tinymission.rss.Item;
 
 public class MainActivity extends ItemExpandActivity
 {
-	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.zt.showThisFeedType";
-	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.zt.showThisFeedId";
-	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.zt.showThisItemId";
+	public static String INTENT_EXTRA_SHOW_THIS_TYPE = "info.guardianproject.securereaderinterface.showThisFeedType";
+	public static String INTENT_EXTRA_SHOW_THIS_FEED = "info.guardianproject.securereaderinterface.showThisFeedId";
+	public static String INTENT_EXTRA_SHOW_THIS_ITEM = "info.guardianproject.securereaderinterface.showThisItemId";
 
 	public static final boolean LOGGING = false;
 	public static final String LOGTAG = "MainActivity";

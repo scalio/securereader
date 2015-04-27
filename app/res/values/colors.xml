@@ -12,8 +12,8 @@
    <color name="accent_dark_medium">#80A4A59B</color>  
    <color name="accent_dark">#40A4A59B</color>  
    
-   <color name="button_primary">#108BAE</color>
-   <color name="button_primary_selected">#80108BAE</color>
+   <color name="button_primary">#8B6E7F</color>
+   <color name="button_primary_selected">#8B86A0</color>
    <color name="button_secondary">#CECECC</color>
    <color name="button_secondary_selected">#80CECECC</color>
    
@@ -58,5 +58,6 @@
    <color name="rz_grey_light">#DDDDDD</color>
    <color name="rz_grey_dark">#555555</color>
    <color name="rz_grey_blue">#002434</color>
+   <color name="rz_grey_green">#4c6055</color>
    
 </resources>

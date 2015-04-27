@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/rz_blue_dark">
+    android:background="@color/button_primary">
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
             android:layout_marginTop="-10dip"

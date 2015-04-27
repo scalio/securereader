@@ -1,0 +1,18 @@
+[submodule "external/OnionKit"]
+	path = external/OnionKit
+<<<<<<< HEAD
+	url = https://github.com/guardianproject/OnionKit.git
+[submodule "external/bho"]
+	path = external/bho
+	url = https://code.google.com/p/bho/
+=======
+	url = https://github.com/scalio/NetCipher.git
+
+[submodule "external/CacheWord"]
+	path = external/CacheWord
+	url = https://github.com/scalio/cacheword.git
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
+
+[submodule "external/securereaderlibrary"]
+	path = external/securereaderlibrary
+	url = https://github.com/scalio/securereaderlibrary.git

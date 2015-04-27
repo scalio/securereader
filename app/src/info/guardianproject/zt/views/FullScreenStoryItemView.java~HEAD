@@ -1,21 +1,3 @@
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/views/FullScreenStoryItemView.java
-package info.guardianproject.securereaderinterface.views;
-
-import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
-import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
-import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
-import info.guardianproject.securereaderinterface.models.PagedViewContent;
-import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
-import info.guardianproject.securereaderinterface.ui.UICallbacks;
-import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
-import info.guardianproject.securereaderinterface.widgets.PagedView;
-import info.guardianproject.securereaderinterface.widgets.PagedView.PagedViewListener;
-import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
-import info.guardianproject.courier.R;
-=======
 package info.guardianproject.zt.views;
 
 import info.guardianproject.zt.App;
@@ -32,7 +14,6 @@ import info.guardianproject.zt.widgets.PagedView;
 import info.guardianproject.zt.widgets.PagedView.PagedViewListener;
 import info.guardianproject.zt.widgets.compat.Spinner;
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/views/FullScreenStoryItemView.java
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

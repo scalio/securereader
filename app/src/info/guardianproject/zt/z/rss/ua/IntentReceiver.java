@@ -34,7 +34,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 import info.guardianproject.zt.R;
-import info.guardianproject.zt.z.rss.activities.MainActivityViewPager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +41,7 @@ import java.util.Set;
 
 public class IntentReceiver extends BroadcastReceiver {
 
-    private static final String logTag = "Radio Zamaneh";
+    private static final String logTag = "Zamaneh Tribune";
 
     public static String APID_UPDATED_ACTION_SUFFIX = ".apid.updated";
 

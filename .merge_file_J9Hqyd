@@ -1,12 +1,7 @@
-package info.guardianproject.zt;
+package info.guardianproject.securereaderinterface;
 
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/DownloadsActivity.java
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
-import info.guardianproject.courier.R;
-=======
-import info.guardianproject.zt.adapters.DownloadsAdapter;
-import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/DownloadsActivity.java
+import info.guardianproject.securereaderinterface.R;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -55,4 +50,14 @@ public class DownloadsActivity extends FragmentActivityWithMenu
 	{
 		return true;
 	}
+
+	// @Override
+	// protected void onResume()
+	// {
+	// super.onResume();
+	// ViewGroup parent = (ViewGroup) (getWindow().getDecorView());
+	// View content = parent.getChildAt(0);
+	// this.performRotateTransition(parent, content);
+	// }
+
 }

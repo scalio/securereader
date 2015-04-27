@@ -23,11 +23,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/AddFeedFragment.java
-import info.guardianproject.courier.R;
-=======
+<<<<<<< HEAD:app/src/info/guardianproject/zt/AddFeedFragment.java
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/AddFeedFragment.java
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac:app/src/info/guardianproject/zt/AddFeedFragment.java
 import com.tinymission.rss.Feed;
 
 public class AddFeedFragment extends Fragment implements FeedListAdapterListener, FeedFetchedCallback

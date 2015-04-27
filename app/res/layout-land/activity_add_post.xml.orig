@@ -1,9 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 <<<<<<< HEAD
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
-=======
     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
->>>>>>> renamed packages.
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
     android:id="@+id/frame1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

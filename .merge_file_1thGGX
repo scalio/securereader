@@ -1,8 +1,7 @@
-package info.guardianproject.zt;
+package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.XMLRPCPublisher.XMLRPCPublisherCallback;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/AddPostActivity.java
 import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
@@ -13,20 +12,7 @@ import info.guardianproject.securereaderinterface.views.PostSignInView;
 import info.guardianproject.securereaderinterface.views.StoryMediaContentView;
 import info.guardianproject.securereaderinterface.views.CreateAccountView.OnActionListener;
 import info.guardianproject.securereaderinterface.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.courier.R;
-=======
-import info.guardianproject.zt.ui.MediaViewCollection;
-import info.guardianproject.zt.ui.UICallbacks;
-import info.guardianproject.zt.uiutil.AnimationHelpers;
-import info.guardianproject.zt.uiutil.AnimationHelpers.FadeInFadeOutListener;
-import info.guardianproject.zt.uiutil.UIHelpers;
-import info.guardianproject.zt.views.CreateAccountView;
-import info.guardianproject.zt.views.PostSignInView;
-import info.guardianproject.zt.views.StoryMediaContentView;
-import info.guardianproject.zt.views.CreateAccountView.OnActionListener;
-import info.guardianproject.zt.views.PostSignInView.OnAgreeListener;
-import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/AddPostActivity.java
+import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.iocipher.File;
 
 import java.io.IOException;

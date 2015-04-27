@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.zt.R;
 import info.guardianproject.zt.models.FeedFilterType;
-import info.guardianproject.zt.ui.ActionProviderShare;
 import info.guardianproject.zt.ui.LayoutFactoryWrapper;
 import info.guardianproject.zt.ui.UICallbacks;
 import info.guardianproject.zt.ui.UICallbacks.OnCallbackListener;
@@ -249,7 +247,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		getMenuInflater().inflate(R.menu.overflow_main, menu);
 		
 		colorizeMenuItems();
-		
+		/*
 		MenuItem miRadio = menu.findItem(R.id.menu_radio);
 		if(null != miRadio) {
 			if(isRadioPlaying) {	
@@ -257,7 +255,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			} else {
 				miRadio.setIcon(R.drawable.ic_action_radio);
 			}
-		}
+		}*/
 		
 		return true;
 	}
@@ -305,12 +303,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 		
+		/*
 		case R.id.menu_radio:
 		{
 			handleRadioPlayer();
 			
 			return true;
-		}
+		}*/
 
 		case R.id.menu_add_post:
 		{
@@ -327,13 +326,14 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 		
-		/*
+		
 		case R.id.menu_account:
 		{
 			UICallbacks.handleCommand(this, R.integer.command_account, null);
 			return true;
 		}
 
+		/*
 		case R.id.menu_manage_feeds:
 		{
 			UICallbacks.handleCommand(this, R.integer.command_feed_add, null);

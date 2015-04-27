@@ -11,17 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/views/StoryMediaContentView.java
-import info.guardianproject.securereaderinterface.adapters.StoryItemMediaContentPagerAdapter;
-import info.guardianproject.securereaderinterface.ui.MediaViewCollection;
-import info.guardianproject.securereaderinterface.ui.OnMediaItemClickedListener;
-import info.guardianproject.securereaderinterface.ui.MediaViewCollection.MediaContentLoadInfo;
-import info.guardianproject.securereaderinterface.ui.MediaViewCollection.OnMediaLoadedListener;
-import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
-import info.guardianproject.securereaderinterface.widgets.DottedProgressView;
-import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
-import info.guardianproject.courier.R;
-=======
 import info.guardianproject.zt.adapters.StoryItemMediaContentPagerAdapter;
 import info.guardianproject.zt.ui.MediaViewCollection;
 import info.guardianproject.zt.ui.OnMediaItemClickedListener;
@@ -31,7 +20,6 @@ import info.guardianproject.zt.uiutil.UIHelpers;
 import info.guardianproject.zt.widgets.DottedProgressView;
 import info.guardianproject.zt.widgets.NestedViewPager;
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/views/StoryMediaContentView.java
 
 public class StoryMediaContentView extends FrameLayout implements View.OnClickListener, OnMediaLoadedListener 
 {

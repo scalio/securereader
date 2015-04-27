@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_tag" android:title="@string/menu_tag" android:orderInCategory="101" android:icon="@drawable/ic_action_tag" app:showAsAction="always" android:enabled="true"/>
+    <item android:id="@+id/menu_share" android:title="@string/menu_share" android:orderInCategory="102" android:icon="@drawable/ic_action_share" app:showAsAction="always" android:enabled="true"/>
+<<<<<<< HEAD
+    <item android:id="@+id/menu_radio" android:title="@string/menu_radio" android:orderInCategory="103" android:icon="@drawable/ic_action_radio" app:showAsAction="always" android:enabled="true"/>
+=======
+    <!--<item android:id="@+id/menu_radio" android:title="@string/menu_radio" android:orderInCategory="103" android:icon="@drawable/ic_action_radio" app:showAsAction="always" android:enabled="true"/>-->
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac
+    <item android:id="@+id/menu_panic" android:title="@string/menu_panic" android:orderInCategory="104" app:showAsAction="always" android:icon="@drawable/ic_action_panic"/>
+</menu>

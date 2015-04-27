@@ -2,7 +2,10 @@ package info.guardianproject.zt.views;
 
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.zt.App;
+<<<<<<< HEAD:app/src/info/guardianproject/zt/views/StoryListView.java
 import info.guardianproject.zt.MainActivity;
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac:app/src/info/guardianproject/zt/views/StoryListView.java
 import info.guardianproject.zt.adapters.StoryListAdapter;
 import info.guardianproject.zt.adapters.StoryListAdapter.OnHeaderCreatedListener;
 import info.guardianproject.zt.adapters.StoryListAdapter.OnTagClickedListener;
@@ -34,16 +37,11 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/views/StoryListView.java
-import info.guardianproject.courier.R;
-=======
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/views/StoryListView.java
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;

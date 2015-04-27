@@ -2,10 +2,7 @@ package info.guardianproject.zt.z.rss.fragments;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.LinearLayout;
-import info.guardianproject.zt.R;
-import info.guardianproject.zt.z.rss.activities.MainActivityViewPager;
-import info.guardianproject.zt.z.rss.views.MyTransitionViewPager;
+
 
 public class BaseTabSupportFragment extends BaseRefreshFragment {
     public void initTabBar(View view, final int activeTab){
@@ -57,22 +54,7 @@ public class BaseTabSupportFragment extends BaseRefreshFragment {
     }
 
     public void goToTab(final int tabPosition){
-        Activity activity = getActivity();
-        if(activity instanceof MainActivityViewPager){
-            MainActivityViewPager mainActivityViewPager = (MainActivityViewPager) activity;
-            MyTransitionViewPager viewPager = mainActivityViewPager.getViewPager();
-            if(viewPager != null){
-//                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-                    viewPager.setScrollDurationFactor(8);
-                    viewPager.setCurrentItem(tabPosition, true);
-                    viewPager.setScrollDurationFactor(1);
-//                }
-//                else{
-//                    viewPager.setCurrentItem(tabPosition);
-//                }
 
-            }
-        }
     }
 
 

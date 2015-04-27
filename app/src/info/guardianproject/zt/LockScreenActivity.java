@@ -68,7 +68,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		mCacheWord = new CacheWordHandler(this);
+		CacheWordSettings settings = null;
+		mCacheWord = new CacheWordActivityHandler(this, settings);
 		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -100,7 +101,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStart();
 		App.getInstance().onLockScreenResumed(this);
-        mCacheWord.connectToService();
+		mCacheWord.onResume();
 	}
 
 	@Override
@@ -108,8 +109,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStop();
 		App.getInstance().onLockScreenPaused(this);
-        mCacheWord.disconnectFromService();
-	}
+		    mCacheWord.onPause();
+	    }
 
 	@Override
 	public boolean isInternalActivityOpened()

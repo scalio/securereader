@@ -22,11 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/PostListFragment.java
-import info.guardianproject.courier.R;
-=======
+<<<<<<< HEAD:app/src/info/guardianproject/zt/PostListFragment.java
 import info.guardianproject.zt.R;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/PostListFragment.java
+=======
+>>>>>>> f60b531f37f50169f82c2194fcae6e5445b396ac:app/src/info/guardianproject/zt/PostListFragment.java
 import com.tinymission.rss.Item;
 
 public class PostListFragment extends Fragment implements PostDraftsListAdapterListener

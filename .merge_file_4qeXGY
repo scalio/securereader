@@ -1,19 +1,14 @@
-package info.guardianproject.zt;
+package info.guardianproject.securereaderinterface;
 
 import info.guardianproject.securereader.Settings.UiLanguage;
-import info.guardianproject.zt.models.LockScreenCallbacks;
-import info.guardianproject.zt.ui.LayoutFactoryWrapper;
-import info.guardianproject.zt.uiutil.UIHelpers;
-import info.guardianproject.zt.widgets.DropdownSpinner;
+import info.guardianproject.securereaderinterface.models.LockScreenCallbacks;
+import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
+import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
+import info.guardianproject.securereaderinterface.widgets.DropdownSpinner;
 import info.guardianproject.securereader.SocialReader;
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/LockScreenActivity.java
-import info.guardianproject.courier.R;
-import info.guardianproject.cacheword.CacheWordHandler;
-=======
-import info.guardianproject.zt.R;
+import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordSettings;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/LockScreenActivity.java
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 
 import java.security.GeneralSecurityException;
@@ -61,13 +56,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private EditText mConfirmNewPassphrase;
 	private Button mBtnOpen;
 
-<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/LockScreenActivity.java
-	private CacheWordHandler mCacheWord;
-	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
-=======
 	private CacheWordActivityHandler mCacheWord;
-	private info.guardianproject.zt.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
->>>>>>> renamed packages.:app/src/info/guardianproject/zt/LockScreenActivity.java
+	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private DropdownSpinner mDropdownLanguage;
 	private String[] mLanguageNames;
 	private UiLanguage[] mLanguageCodes;
@@ -78,7 +68,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		mCacheWord = new CacheWordHandler(this);
+		CacheWordSettings settings = null;
+		mCacheWord = new CacheWordActivityHandler(this, settings);
 		
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -110,7 +101,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStart();
 		App.getInstance().onLockScreenResumed(this);
-        mCacheWord.connectToService();
+		mCacheWord.onResume();
 	}
 
 	@Override
@@ -118,8 +109,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		super.onStop();
 		App.getInstance().onLockScreenPaused(this);
-        mCacheWord.disconnectFromService();
-	}
+		    mCacheWord.onPause();
+	    }
 
 	@Override
 	public boolean isInternalActivityOpened()
@@ -192,6 +183,10 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					UiLanguage.Chinese,
 					UiLanguage.Ukrainian,
 					UiLanguage.Russian,
+					UiLanguage.Japanese, 
+					UiLanguage.Norwegian, 
+					UiLanguage.Spanish, 
+					UiLanguage.Turkish, 
 					UiLanguage.Farsi					
 			};
 			
@@ -371,8 +366,11 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	protected void onUiLanguageChanged()
 	{
 		Intent intentThis = getIntent();
+		intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		finish();
+		overridePendingTransition(0, 0);
 		startActivity(intentThis);
+		overridePendingTransition(0, 0);
 	}
 
 	@Override
@@ -392,9 +390,14 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
         if (intent == null)
         	intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+        App.getInstance().putTransitionBitmap(snap);
 
         startActivity(intent);
         finish();
+        LockScreenActivity.this.overridePendingTransition(0, 0);
     }
       
 	@Override
@@ -452,9 +455,13 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
       Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
       if (intent == null)
       	intent = new Intent(this, MainActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+      Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+      App.getInstance().putTransitionBitmap(snap);
 
       startActivity(intent);
       finish();
+      LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 }
