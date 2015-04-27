@@ -6,7 +6,7 @@
     android:background="@drawable/left_menu_background"
     android:paddingRight="1dp" >
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton
+    <info.guardianproject.zt.widgets.CustomFontCheckableButton
         android:id="@+id/btnMenuTor"
         style="@style/LeftMenuLabelStyle"
         android:layout_width="150dp"
@@ -17,7 +17,7 @@
         android:text="@string/menu_tor_connected"
         android:textColor="@drawable/button_tor_text_selector" />
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontCheckableButton
+    <info.guardianproject.zt.widgets.CustomFontCheckableButton
         android:id="@+id/btnMenuPhotos"
         style="@style/LeftMenuLabelStyle"
         android:layout_width="150dp"
@@ -29,7 +29,7 @@
         android:text="@string/feed_filter_display_photos"
         android:textColor="@drawable/button_photos_text_selector" />
 
-    <info.guardianproject.securereaderinterface.views.FeedFilterView
+    <info.guardianproject.zt.views.FeedFilterView
         android:id="@+id/viewFeedFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,6 +41,6 @@
         android:dividerHeight="1px"
         android:fillViewport="true" >
 
-    </info.guardianproject.securereaderinterface.views.FeedFilterView>
+    </info.guardianproject.zt.views.FeedFilterView>
     
 </RelativeLayout>

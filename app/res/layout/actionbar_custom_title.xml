@@ -5,7 +5,7 @@
     android:gravity="fill_vertical"
     android:orientation="vertical" >
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
         style="@style/AppActionBarTitleStyle"
         android:layout_width="wrap_content"

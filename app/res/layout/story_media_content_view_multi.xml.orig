@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+<<<<<<< HEAD
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier">
+=======
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt">
+>>>>>>> renamed packages.
+
+    <info.guardianproject.zt.widgets.NestedViewPager
+        android:id="@+id/contentPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <info.guardianproject.zt.widgets.DottedProgressView
+        android:id="@+id/currentPageIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom"
+        android:background="#cdefefef"
+        app:dot_color="@color/grey_light_medium"
+        app:dot_color_current="@color/button_primary"
+        app:dot_distance="25"
+        app:dot_radius="6"
+        app:dot_rim_color="@color/grey_light_medium"
+        app:dot_rim_color_current="@color/button_primary" />
+
+</FrameLayout>

@@ -4,7 +4,7 @@
         android:layout_height="60dp"
         android:background="@drawable/settings_group_header_item_background" >
 
-        <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+        <info.guardianproject.zt.widgets.CustomFontTextView
             android:id="@+id/tvTitle"
             style="@style/SettingsHeadingStyle"
             android:layout_width="match_parent"

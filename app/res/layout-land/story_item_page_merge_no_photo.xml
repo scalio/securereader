@@ -1,5 +1,5 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/llRoot"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -22,14 +22,14 @@
         android:layout_toLeftOf="@id/strut"
         layout="@layout/story_item_page_source" />
 
-    <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
+    <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/strut"
         app:height_limit="1.325" >
 
-        <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+        <info.guardianproject.zt.widgets.CustomFontTextView
             android:id="@+id/tvContent"
             style="@style/ItemContentStyle"
             android:layout_width="match_parent"
@@ -41,9 +41,9 @@
             android:text="TextView"
             app:fade_last_line="false" />
 
-    </info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout>
+    </info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
 
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+    <info.guardianproject.zt.widgets.CustomFontTextView
         android:id="@+id/tvTitle"
         style="@style/ItemTitleStyle"
         android:layout_width="0dp"

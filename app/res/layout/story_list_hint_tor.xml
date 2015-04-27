@@ -1,5 +1,5 @@
 
-    <info.guardianproject.securereaderinterface.views.StoryListHintTorView 
+    <info.guardianproject.zt.views.StoryListHintTorView 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -12,7 +12,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/white_with_bottom_shadow"
             android:orientation="vertical" >
-      <info.guardianproject.securereaderinterface.widgets.CustomFontTextView            
+      <info.guardianproject.zt.widgets.CustomFontTextView            
             android:id="@+id/tvText1"
             style="@style/HelpTitleStyle"
             android:layout_width="match_parent"
@@ -140,7 +140,7 @@
             android:layout_height="1px"
             android:background="@color/grey_light_medium" />
                     
-     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+     <info.guardianproject.zt.widgets.CustomFontTextView
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                     android:background="@drawable/white_with_bottom_shadow"
                     android:orientation="vertical"
                     android:visibility="gone" >
-      <info.guardianproject.securereaderinterface.widgets.CustomFontTextView            
+      <info.guardianproject.zt.widgets.CustomFontTextView            
           	style="@style/HelpTitleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -188,4 +188,4 @@
             android:src="@drawable/ic_context_sync_arrow_pull" />
 
 </LinearLayout>
-    </info.guardianproject.securereaderinterface.views.StoryListHintTorView>
+    </info.guardianproject.zt.views.StoryListHintTorView>

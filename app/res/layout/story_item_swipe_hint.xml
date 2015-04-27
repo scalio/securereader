@@ -25,7 +25,7 @@
                 android:rotation="270"
                 android:src="@drawable/ic_context_coach_arrow" />
 
-            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+            <info.guardianproject.zt.widgets.CustomFontTextView
                 android:id="@+id/CustomFontTextView01"
                 style="@style/StoryItemSwipeHintStyle"
                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                 android:layout_height="40dp"
                 android:src="@drawable/ic_context_coach_arrow" />
 
-            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+            <info.guardianproject.zt.widgets.CustomFontTextView
                 android:id="@+id/textView1"
                 style="@style/StoryItemSwipeHintStyle"
                 android:layout_width="wrap_content"

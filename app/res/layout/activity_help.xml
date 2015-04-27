@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/rl1"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:background="@drawable/white_with_bottom_shadow"
                 android:orientation="vertical" >
 
-                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                <info.guardianproject.zt.widgets.CustomFontTextView
                     android:id="@+id/tvText1"
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
@@ -88,7 +88,7 @@
                     android:background="#ffffff"
                     android:orientation="vertical" >
 
-                    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    <info.guardianproject.zt.widgets.CustomFontTextView
                         android:id="@+id/TextView01"
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                     android:background="#ffffff"
                     android:orientation="vertical" >
 
-                    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                    <info.guardianproject.zt.widgets.CustomFontTextView
                         android:id="@+id/TextView04"
                         style="@style/HelpTitleStyle"
                         android:layout_width="match_parent"
@@ -162,7 +162,7 @@
                 android:background="@drawable/white_with_bottom_shadow"
                 android:orientation="vertical" >
 
-                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                <info.guardianproject.zt.widgets.CustomFontTextView
                     android:id="@+id/TextView05"
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
@@ -186,7 +186,7 @@
                 android:background="@drawable/white_with_bottom_shadow"
                 android:orientation="vertical" >
 
-                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                <info.guardianproject.zt.widgets.CustomFontTextView
                     android:id="@+id/CustomFontTextView01"
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"
@@ -210,7 +210,7 @@
                 android:background="@drawable/white_with_bottom_shadow"
                 android:orientation="vertical" >
 
-                <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+                <info.guardianproject.zt.widgets.CustomFontTextView
                     android:id="@+id/tvTermsTitle"
                     style="@style/HelpTitleStyle"
                     android:layout_width="match_parent"

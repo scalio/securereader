@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+=======
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
+>>>>>>> renamed packages.
+    android:id="@+id/ff2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <EditText
+        android:id="@+id/editTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:ems="10"
+        android:hint="@string/add_post_tag_hint"
+        android:imeOptions="actionDone"
+        android:inputType="text" >
+
+    </EditText>
+
+    <ScrollView
+        android:id="@+id/sv0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/editTags"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            android:id="@+id/llControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/ff3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
+				        android:id="@+id/layout_media"
+        				android:layout_width="match_parent"
+        				android:layout_height="wrap_content"
+        				app:height_limit="1.75" >
+                <include
+                    android:id="@+id/mediaContentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/story_media_content_view" />
+				</info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
+                <ImageView
+                    android:id="@+id/btnMediaAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:minHeight="150dp"
+                    android:src="@drawable/ic_post_add" />
+
+                <LinearLayout
+                    android:id="@+id/llOperationButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/popup_toolbar_background"
+                    android:orientation="horizontal"
+                    android:padding="10dp" >
+
+                    <TextView
+                        android:id="@+id/btnMediaAddMore"
+                        style="@style/PostAddOperationText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.25"
+                        android:drawableTop="@drawable/ic_post_add_more"
+                        android:gravity="center_horizontal"
+                        android:text="@string/add_post_operation_add_more" />
+
+                    <TextView
+                        android:id="@+id/btnMediaReplace"
+                        style="@style/PostAddOperationText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:drawableTop="@drawable/ic_post_swap"
+                        android:gravity="center_horizontal"
+                        android:text="@string/add_post_operation_replace" />
+
+                    <TextView
+                        android:id="@+id/btnMediaView"
+                        style="@style/PostAddOperationText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:drawableTop="@drawable/ic_post_view"
+                        android:gravity="center_horizontal"
+                        android:text="@string/add_post_operation_view" />
+
+                    <TextView
+                        android:id="@+id/btnMediaDelete"
+                        style="@style/PostAddOperationText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:drawableTop="@drawable/ic_post_delete"
+                        android:gravity="center_horizontal"
+                        android:text="@string/add_post_operation_delete" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/flProgressIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" >
+
+	                <ImageView
+	                    android:id="@+id/ivProgressIcon"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_gravity="center"
+	                    android:clickable="false"
+	                    android:focusable="false"
+	                    android:focusableInTouchMode="false"
+	                    android:longClickable="false"
+	                    android:scaleType="fitCenter"
+	                    android:src="@drawable/ic_context_load" />
+				</FrameLayout>
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/add_post_headline_hint"
+                android:imeOptions="actionDone"
+                android:inputType="text" >
+
+            </EditText>
+
+            <EditText
+                android:id="@+id/editContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="@string/add_post_headline_label"
+                android:minHeight="100dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <info.guardianproject.zt.views.PostSignInView
+        android:id="@+id/signIn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" >
+
+    </info.guardianproject.zt.views.PostSignInView>
+    <info.guardianproject.zt.views.CreateAccountView
+        android:id="@+id/createAccount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" >
+    </info.guardianproject.zt.views.CreateAccountView>
+</RelativeLayout>

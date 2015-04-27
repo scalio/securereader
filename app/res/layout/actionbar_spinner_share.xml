@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="fill_vertical" >
 
-    <info.guardianproject.securereaderinterface.widgets.NoSelectionSpinner
+    <info.guardianproject.zt.widgets.NoSelectionSpinner
         android:id="@+id/spinnerShare"
         style="@style/ActionBarSpinnerStyle"
         android:layout_width="56dp"

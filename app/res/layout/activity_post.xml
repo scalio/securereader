@@ -4,23 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <info.guardianproject.securereaderinterface.widgets.NestedViewPager
+    <info.guardianproject.zt.widgets.NestedViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
         tools:context=".PostActivity" />
     
-    <info.guardianproject.securereaderinterface.views.PostSignInView
+    <info.guardianproject.zt.views.PostSignInView
         android:id="@+id/signIn"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </info.guardianproject.securereaderinterface.views.PostSignInView>
+    </info.guardianproject.zt.views.PostSignInView>
 
-    <info.guardianproject.securereaderinterface.views.CreateAccountView
+    <info.guardianproject.zt.views.CreateAccountView
         android:id="@+id/createAccount"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </info.guardianproject.securereaderinterface.views.CreateAccountView>
+    </info.guardianproject.zt.views.CreateAccountView>
     
 </FrameLayout>

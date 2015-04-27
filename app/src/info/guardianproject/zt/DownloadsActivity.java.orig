@@ -1,0 +1,58 @@
+package info.guardianproject.zt;
+
+<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/DownloadsActivity.java
+import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
+import info.guardianproject.courier.R;
+=======
+import info.guardianproject.zt.adapters.DownloadsAdapter;
+import info.guardianproject.zt.R;
+>>>>>>> renamed packages.:app/src/info/guardianproject/zt/DownloadsActivity.java
+import android.os.Bundle;
+import android.widget.ListView;
+
+public class DownloadsActivity extends FragmentActivityWithMenu
+{
+	public static final boolean LOGGING = false;
+	public static final String LOGTAG = "DownloadsActivity";
+	
+	private ListView mListView;
+	private DownloadsAdapter mListAdapter;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		// Display home as up
+		setDisplayHomeAsUp(true);
+
+		setContentView(R.layout.activity_downloads);
+		setMenuIdentifier(R.menu.activity_downloads);
+
+		// Set up the action bar.
+		setActionBarTitle(getString(R.string.downloads_title));
+
+		mListView = (ListView) findViewById(R.id.lvRoot);
+		mListAdapter = DownloadsAdapter.getInstance(this);
+		mListView.setAdapter(mListAdapter);
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onWipe()
+	{
+		super.onWipe();
+		mListAdapter.notifyDataSetChanged();
+	}
+
+	@Override
+	protected boolean useLeftSideMenu()
+	{
+		return true;
+	}
+}

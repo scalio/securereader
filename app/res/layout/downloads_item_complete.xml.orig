@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+=======
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
+>>>>>>> renamed packages.
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
+    <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
+        android:id="@+id/layout_media"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        >    
+
+    	<info.guardianproject.zt.views.StoryMediaContentView
+        	android:id="@+id/mediaContentView"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:layout_alignParentLeft="true"
+        	android:layout_alignParentTop="true"
+        	app:show_placeholder="true" >
+
+    	</info.guardianproject.zt.views.StoryMediaContentView>
+    
+    </info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
+    
+    <info.guardianproject.zt.widgets.CustomFontTextView        
+        android:id="@+id/tvTitle"
+        style="@style/DownloadsItemTitleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/layout_media"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/layout_media"
+        android:background="#ffffff"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/story_item_short_title"
+        app:fade_last_line="true" />
+
+
+
+</RelativeLayout>

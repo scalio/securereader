@@ -28,7 +28,7 @@
             android:stretchMode="columnWidth"
             android1:padding="10dp" >
 
-            <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+            <info.guardianproject.zt.widgets.CustomFontTextView
                 android1:id="@+id/textView2"
                 style="@style/HelpTitleStyle"
                 android1:layout_width="wrap_content"

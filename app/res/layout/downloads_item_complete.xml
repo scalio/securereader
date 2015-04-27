@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
     android:orientation="vertical" >
 
-    <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
+    <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
         android:id="@+id/layout_media"
         android:layout_width="70dp"
         android:layout_height="70dp"
         >    
 
-    	<info.guardianproject.securereaderinterface.views.StoryMediaContentView
+    	<info.guardianproject.zt.views.StoryMediaContentView
         	android:id="@+id/mediaContentView"
         	android:layout_width="match_parent"
         	android:layout_height="match_parent"
@@ -20,11 +20,11 @@
         	android:layout_alignParentTop="true"
         	app:show_placeholder="true" >
 
-    	</info.guardianproject.securereaderinterface.views.StoryMediaContentView>
+    	</info.guardianproject.zt.views.StoryMediaContentView>
     
-    </info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout>
+    </info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
     
-    <info.guardianproject.securereaderinterface.widgets.CustomFontTextView        
+    <info.guardianproject.zt.widgets.CustomFontTextView        
         android:id="@+id/tvTitle"
         style="@style/DownloadsItemTitleStyle"
         android:layout_width="match_parent"

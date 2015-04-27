@@ -1,5 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
     android:id="@+id/frame1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5" >
 
-            <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
+            <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
                 android:id="@+id/layout_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 layout="@layout/story_media_content_view" />
-			</info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout>
+			</info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
             <ImageView
                 android:id="@+id/btnMediaAdd"
                 android:layout_width="wrap_content"
@@ -154,21 +154,21 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <info.guardianproject.securereaderinterface.views.PostSignInView
+    <info.guardianproject.zt.views.PostSignInView
         android:id="@+id/signIn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone" >
 
-    </info.guardianproject.securereaderinterface.views.PostSignInView>
+    </info.guardianproject.zt.views.PostSignInView>
 
-    <info.guardianproject.securereaderinterface.views.CreateAccountView
+    <info.guardianproject.zt.views.CreateAccountView
         android:id="@+id/createAccount"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone" >
 
-    </info.guardianproject.securereaderinterface.views.CreateAccountView>
+    </info.guardianproject.zt.views.CreateAccountView>
 </FrameLayout>

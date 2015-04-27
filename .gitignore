@@ -21,10 +21,20 @@ local.properties
 *.java.bak
 .metadata
 .settings
-
 build.xml
 
-#OSX
+# Gradle
+.gradle
+build/
+
+# Android Studio
+.idea/libraries
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/datasources.xml
+.idea/dataSources.ids
+
+# OSX
 .DS_Store
 
 #Amazon Keys

@@ -13,7 +13,7 @@
             android:scaleType="fitCenter"
             android:src="@drawable/img_stories_received" />
 
-        <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
+        <info.guardianproject.zt.widgets.CustomFontTextView
             android:id="@+id/tvText1"
             style="@style/HelpTitleStyle"
             android:layout_width="match_parent"

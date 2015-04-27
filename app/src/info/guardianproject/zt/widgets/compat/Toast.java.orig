@@ -1,0 +1,32 @@
+package info.guardianproject.zt.widgets.compat;
+
+<<<<<<< HEAD:app/src/info/guardianproject/securereaderinterface/widgets/compat/Toast.java
+import info.guardianproject.courier.R;
+=======
+import info.guardianproject.zt.R;
+>>>>>>> renamed packages.:app/src/info/guardianproject/zt/widgets/compat/Toast.java
+import android.content.Context;
+import android.graphics.Color;
+import android.view.Gravity;
+import android.widget.TextView;
+
+public class Toast extends android.widget.Toast
+{
+	public Toast(Context context)
+	{
+		super(context);
+	}
+	
+	public static Toast makeText(Context context, int resId, int duration)
+	{
+		Toast toast = new Toast(context);
+        toast.setDuration(duration);
+        TextView view = new TextView(context);
+        view.setText(resId);
+        view.setTextColor(Color.WHITE);
+        view.setGravity(Gravity.CENTER);
+        view.setBackgroundResource(R.drawable.toast_frame);
+        toast.setView(view);
+		return toast;
+	}
+}

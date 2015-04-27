@@ -1,0 +1,75 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.courier"
+=======
+    xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.zt"
+>>>>>>> renamed packages.
+    android:id="@+id/llRoot"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/strut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true" />
+
+    <include
+        android:id="@+id/layout_source"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/source_height"
+        android:layout_marginLeft="@dimen/card_left_margin"
+        android:layout_marginRight="@dimen/card_center_margin"
+        android:layout_marginTop="@dimen/source_top_margin"
+        android:layout_toLeftOf="@id/strut"
+        layout="@layout/story_item_page_source" />
+
+    <info.guardianproject.zt.widgets.HeightLimitedRelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/strut"
+        app:height_limit="1.325" >
+
+        <info.guardianproject.zt.widgets.CustomFontTextView
+            android:id="@+id/tvContent"
+            style="@style/ItemContentStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/card_bottom_margin"
+            android:layout_marginLeft="@dimen/card_center_margin"
+            android:layout_marginRight="@dimen/card_right_margin"
+            android:layout_marginTop="@dimen/source_top_margin"
+            android:text="TextView"
+            app:fade_last_line="false" />
+
+    </info.guardianproject.zt.widgets.HeightLimitedRelativeLayout>
+
+    <info.guardianproject.zt.widgets.CustomFontTextView
+        android:id="@+id/tvTitle"
+        style="@style/ItemTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/layout_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/layout_source"
+        android:layout_marginBottom="@dimen/card_bottom_margin"
+        android:layout_marginLeft="@dimen/card_left_margin"
+        android:layout_marginRight="@dimen/card_center_margin"
+        android:layout_marginTop="@dimen/title_top_margin"
+        android:layout_toLeftOf="@id/strut"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:text="@string/story_item_short_title"
+        app:fade_last_line="false" />
+
+    <include
+        android:id="@+id/layout_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_content"
+        layout="@layout/story_item_page_tags" />
+
+</merge>
