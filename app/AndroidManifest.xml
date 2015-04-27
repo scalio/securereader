@@ -36,11 +36,10 @@
         android:theme="@style/AppTheme" >
 
         <!--
-		<activity android:name="net.hockeyapp.android.UpdateActivity" />
-        
-		<service android:name="info.guardianproject.cacheword.CacheWordService" 
-		    android:enabled="true" android:exported="true" />     -->
-        
+		<activity android:name="net.hockeyapp.android.UpdateActivity" />    -->
+
+        <service android:name="info.guardianproject.cacheword.CacheWordService" android:enabled="true" android:exported="false" />
+
         <activity
             android:name="info.guardianproject.zt.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

@@ -28,6 +28,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
@@ -40,7 +42,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.tinymission.rss.Feed;
 
-public class App extends Application implements OnSharedPreferenceChangeListener, SocialReaderLockListener
+public class App extends MultiDexApplication implements OnSharedPreferenceChangeListener, SocialReaderLockListener
 {
 	public static final String LOGTAG = "App";
 	public static final boolean LOGGING = false;
@@ -74,6 +76,12 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	private String mCurrentLanguage;
 	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
 	private Feed mCurrentFeed = null;
+
+	@Override
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(this);
+	}
 
 	@Override
 	public void onCreate()
