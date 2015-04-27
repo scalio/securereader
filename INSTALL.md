@@ -17,7 +17,7 @@ Follow these steps to setup your dev environment:
 
     **Manually**
 
-    Copy `app/libs/android-support-v4.jar` to `external/supportlibrary/v7/appcompat/libs/android-support-v4.jar` and to `external/CacheWord/cachewordlib/libs/android-support-v4.jar` and to `external/OnionKit/libnetcipher/libs/android-support-v4.jar`. 
+    Copy `app/libs/android-support-v4.jar` to `external/supportlibrary/v7/appcompat/libs/android-support-v4.jar` and to `external/OnionKit/libnetcipher/libs/android-support-v4.jar`. 
 
 4. Build Project
 
@@ -32,7 +32,6 @@ Follow these steps to setup your dev environment:
     following projects. Do not check "Copy projects into workspace".
 
         app/
-        external/CacheWord/cachewordlib
         external/OnionKit/libnetcipher
         external/securereaderlibrary
         external/bho/TibetanTextLibrary
