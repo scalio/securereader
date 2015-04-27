@@ -24,7 +24,6 @@ git submodule sync --recursive
 git submodule foreach --recursive git submodule sync
 git submodule update --init --recursive
 
-./setup-ant.sh
 ./fix-support-library.sh
 
 if [ -e ~/.android/ant.properties ]; then
@@ -36,6 +35,8 @@ fi
 ./setup-ant.sh
 cd app/
 faketime "$TIMESTAMP" ant release
+#ant clean
+#ant release
 
 apk=$projectroot/app/bin/$projectname-release.apk
 if [ -e $apk ]; then
