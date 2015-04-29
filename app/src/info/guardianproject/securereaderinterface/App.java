@@ -83,7 +83,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
 		socialReader.setLockListener(this);
 		socialReporter = new SocialReporter(socialReader);
-		applyPassphraseTimeout();
+		//applyPassphraseTimeout();
 		
 		m_settings.registerChangeListener(this);
 		
