@@ -8,7 +8,7 @@ android {
         applicationId "info.guardianproject.zt"
         multiDexEnabled true
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -26,7 +26,7 @@ android {
 
     buildTypes {
         release {
-            //minifyEnabled true
+            minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,22 +46,19 @@ android {
 }
 
 configurations { all*.exclude group: 'com.android.support', module: 'support-v4' }
+//configurations { all*.exclude group: 'com.android.support', module: 'support-v7' }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:support-v13:22.0.0'
-
+    //compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
 
     // project imports
-    compile project(':external:CacheWord:cachewordlib')
-    compile project(':external:CacheWord:cachewordhelpers')
     compile project(':external:OnionKit:libnetcipher')
     compile project(':external:securereaderlibrary')
+    compile project(':external:appcompat')
 }

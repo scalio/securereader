@@ -96,7 +96,7 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
 		socialReader.setLockListener(this);
 		socialReporter = new SocialReporter(socialReader);
-		applyPassphraseTimeout();
+		//applyPassphraseTimeout();
 		
 		m_settings.registerChangeListener(this);
 		

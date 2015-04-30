@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/external/CacheWord/CacheWord.iml" filepath="$PROJECT_DIR$/external/CacheWord/CacheWord.iml" />
       <module fileurl="file://$PROJECT_DIR$/external/OnionKit/OnionKit.iml" filepath="$PROJECT_DIR$/external/OnionKit/OnionKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/external/appcompat/appcompat.iml" filepath="$PROJECT_DIR$/external/appcompat/appcompat.iml" />
       <module fileurl="file://$PROJECT_DIR$/external/CacheWord/cachewordhelpers/cachewordhelpers.iml" filepath="$PROJECT_DIR$/external/CacheWord/cachewordhelpers/cachewordhelpers.iml" />
       <module fileurl="file://$PROJECT_DIR$/external/CacheWord/cachewordlib/cachewordlib.iml" filepath="$PROJECT_DIR$/external/CacheWord/cachewordlib/cachewordlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/external/external.iml" filepath="$PROJECT_DIR$/external/external.iml" />

@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class LockableActivity extends ActionBarActivity  implements OnSharedPreferenceChangeListener 
+public class LockableActivity extends ActionBarActivity implements OnSharedPreferenceChangeListener
 {
 	public static final String LOGTAG = "LockableActivity";
 	public static final boolean LOGGING = false;
