@@ -5,7 +5,6 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "info.guardianproject.zt"
         multiDexEnabled true
         minSdkVersion 16
         targetSdkVersion 22
@@ -14,13 +13,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    productFlavors {
+        radioZamaneh {
+            applicationId "com.guardian.rz"
+        }
+
+        zamanehTribune {
+            applicationId "com.guardian.zt"
+        }
+    }
+
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java/']
+            resources.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
         }
     }
 

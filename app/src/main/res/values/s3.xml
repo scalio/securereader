@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- insert your own keys -->
+    <string name="s3_key">AKIAII3PM4H4EMKW5TKA</string>
+    <string name="s3_secret">rrtit0gqQz0HNaqhApRQqmCCThiQ8r49rg2LJPxy</string>
+    <string name="s3_bucket">storymakerorg</string>
+    <string name="s3_path_prefix">rztest/</string>
+</resources>
