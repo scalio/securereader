@@ -11,6 +11,7 @@
 # generated files
 bin/
 gen/
+build/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -25,17 +26,13 @@ build.xml
 
 # Gradle
 .gradle
-build/
 
 # Android Studio
-.idea/libraries
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/datasources.xml
-.idea/dataSources.ids
+*.idea
+*.iml
 
 # Amazon Keys
-app/res/values/amazon_s3_keys.xml
+app/res/values/s3.xml
 
 # OSX
 .DS_Store
