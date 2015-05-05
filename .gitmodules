@@ -1,5 +1,5 @@
-[submodule "external/OnionKit"]
-	path = external/OnionKit
+[submodule "external/NetCipher"]
+	path = external/NetCipher
 	url = https://github.com/scalio/NetCipher.git
 
 [submodule "external/securereaderlibrary"]
