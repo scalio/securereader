@@ -1,6 +1,3 @@
 include ':app'
-include ':external:CacheWord:cachewordlib'
-include ':external:CacheWord:cachewordhelpers'
-include ':external:OnionKit:libnetcipher'
+include ':external:NetCipher:libnetcipher'
 include ':external:securereaderlibrary'
-include ':external:appcompat'

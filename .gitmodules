@@ -2,10 +2,6 @@
 	path = external/OnionKit
 	url = https://github.com/scalio/NetCipher.git
 
-[submodule "external/CacheWord"]
-	path = external/CacheWord
-	url = https://github.com/scalio/cacheword.git
-
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
 	url = https://github.com/scalio/securereaderlibrary.git
