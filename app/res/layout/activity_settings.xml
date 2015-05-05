@@ -321,16 +321,6 @@
                     android:button="@drawable/radiobutton_settings_selector"
                     android:enabled="true"
                     android:text="@string/settings_data_article_expiration_1_month" />
-
-                <RadioButton
-                    android:id="@+id/rbExpirationNever"
-                    style="@style/SettingsRadioButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/radiobutton_settings_selector"
-                    android:checked="true"
-                    android:enabled="true"
-                    android:text="@string/settings_data_article_expiration_never" />
             </RadioGroup>
 
             <TextView

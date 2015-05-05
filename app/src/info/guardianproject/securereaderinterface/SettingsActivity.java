@@ -212,7 +212,7 @@ public class SettingsActivity extends FragmentActivityWithMenu
 			new ResourceValueMapping(R.id.rbPassphraseTimeout3, 60),
 			new ResourceValueMapping(R.id.rbPassphraseTimeout4, 1440),
 			new ResourceValueMapping(R.id.rbPassphraseTimeout5, 10080),});//Integer.MAX_VALUE / 60000), }); //MAX_INT milliseconds given in minutes
-		this.hookupRadioButton(tabView, "articleExpiration", Settings.ArticleExpiration.class, R.id.rbExpirationNever, R.id.rbExpiration1Day,
+		this.hookupRadioButton(tabView, "articleExpiration", Settings.ArticleExpiration.class, 0, R.id.rbExpiration1Day,
 				R.id.rbExpiration1Week, R.id.rbExpiration1Month);
 		this.hookupRadioButton(tabView, "syncFrequency", Settings.SyncFrequency.class, R.id.rbSyncManual, R.id.rbSyncWhenRunning, R.id.rbSyncInBackground);
 		this.hookupRadioButton(tabView, "syncMode", Settings.SyncMode.class, R.id.rbSyncModeBitwise, R.id.rbSyncModeFlow);

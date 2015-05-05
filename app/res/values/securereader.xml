@@ -28,6 +28,7 @@
 	<bool name="require_tor_default">true</bool>
 
         <!-- Default values that should be referenced in Settings.java -->
+        <string name="article_expiration_default">OneMonth</string>
         <string name="sync_mode_default">BitWise</string>       
         <string name="sync_network_default">WifiAndMobile</string>
         <string name="sync_frequency_default">InBackground</string>
