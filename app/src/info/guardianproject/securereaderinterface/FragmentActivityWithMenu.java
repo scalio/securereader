@@ -326,6 +326,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			return true;
 		}
 
+		case R.id.menu_lock_app:
+		{
+			App.getInstance().socialReader.lockApp();
+			return true;
+		}
+		
 		default:
 			return super.onOptionsItemSelected(item);
 		}

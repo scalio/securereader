@@ -4,4 +4,5 @@
     <item android:id="@+id/menu_preferences" android:title="@string/menu_preferences" android:orderInCategory="113" app:showAsAction="never" android:icon="@drawable/ic_menu_pref"/>
     <item android:id="@+id/menu_about" android:title="@string/menu_help" android:orderInCategory="114" app:showAsAction="never" android:icon="@drawable/ic_menu_help"/>
     <item android:id="@+id/menu_share_app" android:title="@string/menu_share_app" android:orderInCategory="115" app:showAsAction="never" android:icon="@drawable/ic_share_sharer"/>
+    <item android:id="@+id/menu_lock_app" android:title="@string/cacheword_notification_cached_message" android:orderInCategory="116" app:showAsAction="never" />
 </menu>
