@@ -53,9 +53,9 @@ public class AmazonS3FileUploadService {
 	public boolean uploadFile(String mediaPath) {
 		Log.d(TAG, "Upload media: Entering upload");
 		
-		S3_ACCESS_KEY = res.getString(R.string.aws_access_key);
-		S3_SECRET_KEY = res.getString(R.string.aws_secret_key);
-		S3_BUCKET 	  = res.getString(R.string.aws_bucket);
+		S3_ACCESS_KEY = res.getString(R.string.s3_key);
+		S3_SECRET_KEY = res.getString(R.string.s3_secret);
+		S3_BUCKET 	  = res.getString(R.string.s3_bucket);
 		S3_ENDPOINT   = "http://" + S3_BUCKET + ".s3.amazonaws.com/";
         
 		File file = new File(mediaPath);
