@@ -1,6 +1,6 @@
 [submodule "external/NetCipher"]
 	path = external/NetCipher
-	url = https://github.com/scalio/NetCipher.git
+	url = https://github.com/guardianproject/NetCipher.git
 
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
