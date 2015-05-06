@@ -10,10 +10,13 @@ import info.guardianproject.securereaderinterface.models.PagedViewContent;
 import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
+import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
 import info.guardianproject.securereaderinterface.widgets.PagedView;
 import info.guardianproject.securereaderinterface.widgets.PagedView.PagedViewListener;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -32,6 +35,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 
@@ -45,10 +49,10 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 	private View mBtnRead;
 	private View mBtnComments;
 	private CheckableImageView mBtnFavorite;
-	private View mCurrentPageIndicator;
 	private ShareSpinnerAdapter mShareAdapter;
 	private TextSizeSpinnerAdapter mTextSizeAdapter;
-	private PagedView mHorizontalPagerContent;
+	private NestedViewPager mContentPager;
+	private PagerAdapter mContentPagerAdapter;
 
 	private ArrayList<Item> mItems;
 	private int mCurrentIndex;
@@ -76,25 +80,24 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		inflater.inflate(R.layout.story_item, this);
 
-		PagedView oldPagedViewIfAny = mHorizontalPagerContent;
-		initialize();
-		if (oldPagedViewIfAny != null)
-		{
-			this.mHorizontalPagerContent.setContentPrevious(oldPagedViewIfAny.getContentPrevious());
-			this.mHorizontalPagerContent.setContentThis(oldPagedViewIfAny.getContentThis());
-			this.mHorizontalPagerContent.setContentNext(oldPagedViewIfAny.getContentNext());
-		}
+//		PagedView oldPagedViewIfAny = mContentPager;
+//		initialize();
+//		if (oldPagedViewIfAny != null)
+//		{
+//			this.mContentPager.setContentPrevious(oldPagedViewIfAny.getContentPrevious());
+//			this.mContentPager.setContentThis(oldPagedViewIfAny.getContentThis());
+//			this.mContentPager.setContentNext(oldPagedViewIfAny.getContentNext());
+//		}
 		setCurrentStoryIndex(mCurrentIndex);
 		refresh();
 	}
 
 	private void initialize()
 	{
-		mCurrentPageIndicator = findViewById(R.id.contentPageIndicator);
-		mHorizontalPagerContent = (PagedView) findViewById(R.id.horizontalPagerContent);
-		mHorizontalPagerContent.setViewPagerIndicator((ViewPagerIndicator)mCurrentPageIndicator);
-		mHorizontalPagerContent.setListener(this);
-
+		mContentPager = (NestedViewPager) findViewById(R.id.horizontalPagerContent);
+		mContentPagerAdapter = new ContentPagerAdapter();
+		mContentPager.setAdapter(mContentPagerAdapter);
+		
 		View toolbar = findViewById(R.id.storyToolbar);
 
 		// Read story
@@ -145,7 +148,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 				else if (position == 1 && adjustment > -8)
 					adjustment -= 2;
 				App.getSettings().setContentFontSizeAdjustment(adjustment);
-				mHorizontalPagerContent.recreateAllViews();
+				//mContentPager.recreateAllViews();
 			}
 
 			@Override
@@ -263,14 +266,14 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		mItems = items;
 		setCurrentStoryIndex(currentIndex);
 
-		mHorizontalPagerContent.setContentPrevious(createStoryItemPageView(currentIndex - 1));
-
-		StoryItemView contentThis = createStoryItemPageView(currentIndex);
-		if (initialViewPositions != null)
-			contentThis.setStoredPositions(initialViewPositions);
-
-		mHorizontalPagerContent.setContentThis(contentThis);
-		mHorizontalPagerContent.setContentNext(createStoryItemPageView(currentIndex + 1));
+//		mContentPager.setContentPrevious(createStoryItemPageView(currentIndex - 1));
+//
+//		StoryItemView contentThis = createStoryItemPageView(currentIndex);
+//		if (initialViewPositions != null)
+//			contentThis.setStoredPositions(initialViewPositions);
+//
+//		mContentPager.setContentThis(contentThis);
+//		mContentPager.setContentNext(createStoryItemPageView(currentIndex + 1));
 		refresh();
 	}
 
@@ -306,15 +309,14 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 
 	public void refresh()
 	{
-		mHorizontalPagerContent.updateViews(0);
+		mContentPagerAdapter.notifyDataSetChanged();
 	}
 
 	private void showContent()
 	{
 		mBtnRead.setSelected(true);
 		mBtnComments.setSelected(false);
-		mHorizontalPagerContent.setVisibility(View.VISIBLE);
-		mCurrentPageIndicator.setVisibility(View.VISIBLE);
+		mContentPager.setVisibility(View.VISIBLE);
 	}
 
 	private void showComments()
@@ -397,11 +399,62 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 	
 	public void onBeforeCollapse()
 	{
-		PagedViewContent content = mHorizontalPagerContent.getContentThis();
-		if (content != null && content instanceof StoryItemView)
+//		PagedViewContent content = mContentPager.getContentThis();
+//		if (content != null && content instanceof StoryItemView)
+//		{
+//			StoryItemView siv = (StoryItemView) content;
+//			siv.resetToStoredPositions(ExpandingFrameLayout.DEFAULT_COLLAPSE_DURATION);
+//		}
+	}
+	
+	private class ContentPagerAdapter extends PagerAdapter
+	{
+		public ContentPagerAdapter()
 		{
-			StoryItemView siv = (StoryItemView) content;
-			siv.resetToStoredPositions(ExpandingFrameLayout.DEFAULT_COLLAPSE_DURATION);
+			super();
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1)
+		{
+			return arg0 == ((StoryItemView)arg1).getView(null);
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position)
+		{
+			StoryItemView storyItemView = new StoryItemView(mItems.get(position));
+			View view = storyItemView.getView(container);
+			if (view.getParent() != null)
+				((ViewGroup) view.getParent()).removeView(view);
+			((ViewPager) container).addView(view);
+			return storyItemView;
+		}
+
+		@Override
+		public int getItemPosition(Object object)
+		{
+			StoryItemView storyItemView = (StoryItemView)object;
+			Item item = storyItemView.getItem();
+			int index = mItems.indexOf(item);
+			if (index == -1)
+				index = POSITION_NONE;
+			return index;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object)
+		{
+			View view = ((StoryItemView)object).getView(container);
+			((ViewPager) container).removeView(view);
+		}
+
+		@Override
+		public int getCount()
+		{
+			if (mItems == null)
+				return 0;
+			return mItems.size();
 		}
 	}
 }

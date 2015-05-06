@@ -35,7 +35,6 @@ public class PagedView extends NestedViewPager
 	private ArrayList<View> mPageViewsNext;
 	private ArrayList<View> mPageViewsAll;
 	private PagedViewListener mListener;
-	private ViewPagerIndicator mViewPagerIndicator;
 
 	public PagedView(Context context, AttributeSet attrs)
 	{
@@ -63,13 +62,6 @@ public class PagedView extends NestedViewPager
 						public void run()
 						{
 							adjustCurrentIndex(getCurrentItem());
-							if (mViewPagerIndicator != null)
-							{
-								if (mContentThisReversed)
-									mViewPagerIndicator.onCurrentChanged(getCurrentItem() - ((mPageViewsNext != null) ? mPageViewsNext.size() : 0));
-								else
-									mViewPagerIndicator.onCurrentChanged(getCurrentItem() - ((mPageViewsPrevious != null) ? mPageViewsPrevious.size() : 0));
-							}
 						}
 					});
 				}
@@ -90,28 +82,6 @@ public class PagedView extends NestedViewPager
 	public void setListener(PagedViewListener listener)
 	{
 		mListener = listener;
-	}
-
-	@Override
-	public void setViewPagerIndicator(ViewPagerIndicator viewPagerIndicator)
-	{
-		mViewPagerIndicator = viewPagerIndicator;
-		updateViewPagerIndicator();
-	}
-
-	private void updateViewPagerIndicator()
-	{
-		if (mViewPagerIndicator != null)
-		{
-			if (mPageViewsThis != null)
-				mViewPagerIndicator.onTotalChanged(mPageViewsThis.size());
-			else
-				mViewPagerIndicator.onTotalChanged(0);
-			if (mContentThisReversed)
-				mViewPagerIndicator.onCurrentChanged(getCurrentItem() - ((mPageViewsNext != null) ? mPageViewsNext.size() : 0));
-			else
-				mViewPagerIndicator.onCurrentChanged(getCurrentItem() - ((mPageViewsPrevious != null) ? mPageViewsPrevious.size() : 0));
-		}
 	}
 
 	public PagedViewContent getContentThis()
@@ -188,19 +158,19 @@ public class PagedView extends NestedViewPager
 
 	private ArrayList<View> createViewsForContent(PagedViewContent content)
 	{
-		if (content == null)
+//		if (content == null)
 			return null;
 
-		int height = this.getHeight();
-		if (height == 0)
-			return null;
-
-		ArrayList<View> ret = content.createPages(this);
-		for (View view : ret)
-		{
-			view.setTag(content);
-		}
-		return ret;
+//		int height = this.getHeight();
+//		if (height == 0)
+//			return null;
+//
+//		ArrayList<View> ret = content.createPages(this);
+//		for (View view : ret)
+//		{
+//			view.setTag(content);
+//		}
+//		return ret;
 	}
 
 	private void update()
@@ -292,7 +262,6 @@ public class PagedView extends NestedViewPager
 				setCurrentItem(pos, false);
 			}
 		}
-		updateViewPagerIndicator();
 	}
 
 	private int getNumberOfPages()

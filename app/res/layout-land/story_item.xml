@@ -28,14 +28,14 @@
             android:layout_height="0dp"
             android:layout_centerHorizontal="true" />
 
-        <info.guardianproject.securereaderinterface.widgets.PagedView
+        <info.guardianproject.securereaderinterface.widgets.NestedViewPager
             android:id="@+id/horizontalPagerContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="40dp"
             android:scrollbars="none" >
 
-        </info.guardianproject.securereaderinterface.widgets.PagedView>
+        </info.guardianproject.securereaderinterface.widgets.NestedViewPager>
 
         <LinearLayout
             android:id="@+id/storyToolbar"
@@ -88,20 +88,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/bottom_bar_item_background_selector" />
         </LinearLayout>
-
-        <info.guardianproject.securereaderinterface.widgets.PageIndicatorView
-            android:id="@+id/contentPageIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="7dp"
-            android:layout_above="@id/storyToolbar"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="18dp"
-            android:layout_marginLeft="@dimen/card_left_margin"
-            android:layout_marginRight="@dimen/card_center_margin"
-            android:layout_toLeftOf="@id/strut"
-            android:background="@drawable/bottom_bar_item_background_selector"
-            android:drawable="@drawable/page_indicator_dot_selector"
-            android:gravity="center_horizontal" />
     
     </RelativeLayout>
 

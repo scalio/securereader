@@ -10,5 +10,5 @@ public interface PagedViewContent
 {
 	boolean usesReverseSwipe();
 
-	ArrayList<View> createPages(PagedView parent);
+	//ArrayList<View> createPages(PagedView parent);
 }

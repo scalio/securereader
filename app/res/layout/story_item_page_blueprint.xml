@@ -1,9 +1,17 @@
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/info.guardianproject.securereaderinterface"
     android:id="@+id/llRoot"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/story_item_background_selector"
     android:gravity="top"
     android:orientation="vertical"
     android:paddingBottom="10dp"
@@ -67,6 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="@dimen/card_left_margin"
         android:layout_marginRight="@dimen/card_right_margin"
         android:background="#ffffff"
@@ -77,3 +86,5 @@
         android:text="@string/story_item_read_with_orweb" />
 
 </LinearLayout>
+</info.guardianproject.securereaderinterface.widgets.AnimatedRelativeLayout>
+</ScrollView>
