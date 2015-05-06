@@ -21,7 +21,6 @@ import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout;
 import info.guardianproject.securereaderinterface.views.FullScreenStoryItemView;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.ExpansionListener;
-import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.SwipeListener;
 import info.guardianproject.securereaderinterface.views.StoryListView.StoryListListener;
 import info.guardianproject.securereaderinterface.R;
 
@@ -81,7 +80,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			mLeftSideMenu.setDragEnabled(false);
 
 			mFullView = new FullScreenStoryItemView(this);
-			mFullStoryView = new ExpandingFrameLayout(this, mFullView);
+			mFullStoryView = new ExpandingFrameLayout(this, mFullView, getSupportActionBar().getHeight());
 			mInFullScreenMode = true;
 			
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT,
@@ -115,30 +114,6 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			int fromHeight = (storyView != null) ? storyView.getHeight() : listStories.getHeight();
 
 			mFullOpeningOffset = location[1] - locationLv[1];
-
-			mFullStoryView.setSwipeListener(new SwipeListener()
-			{
-				@Override
-				public void onSwipeUp()
-				{
-					// Only once
-					mFullStoryView.setSwipeListener(null);
-					exitFullScreenMode();
-				}
-
-				@Override
-				public void onSwipeDown()
-				{
-					mFullStoryView.post(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							mFullStoryView.showActionBar(getSupportActionBar().getHeight());
-						}
-					});
-				}
-			});
 
 			mFullStoryView.setExpansionListener(new ExpansionListener()
 			{

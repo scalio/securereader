@@ -56,24 +56,24 @@ public class ExpandingFrameLayout extends FrameLayout
 	int mCurrentTop = 0;
 	int mCurrentHeight = 0;
 
+	private int mTopAtScrollStart = 0;
+	private float mYAtScrollStart = 0;
+	
 	private boolean mHasExpanded;
 	private ExpansionListener mExpansionListener;
-
-	// Swipe listener
-	//
-	private GestureDetector mGestureDetector;
-	private SwipeListener mSwipeListener;
 
 	//
 	private boolean isTakingSnap;
 	private boolean mUseBitmap = false;
 	private Bitmap mBitmap;
+	private int mActionBarHeight;
 
-	public ExpandingFrameLayout(Context context, View content)
+	public ExpandingFrameLayout(Context context, View content, int actionBarHeight)
 	{
 		super(context);
 
 		mContentView = content;
+		mActionBarHeight = actionBarHeight;
 
 		FrameLayout.LayoutParams lays = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
 				| Gravity.TOP);
@@ -82,8 +82,6 @@ public class ExpandingFrameLayout extends FrameLayout
 		setBackgroundColor(0xffffffff);
 
 		addView(mContentView);
-
-		mSwipeListener = null;
 	}
 
 	private final Runnable mExpandRunnable = new Runnable()
@@ -399,18 +397,6 @@ public class ExpandingFrameLayout extends FrameLayout
 		}
 	}
 
-	/*
-	 * Add a listener for swipe events (up and down)
-	 */
-	public void setSwipeListener(SwipeListener listener)
-	{
-		mSwipeListener = listener;
-		if (mSwipeListener != null)
-			createGestureDetector();
-		else
-			mGestureDetector = null;
-	}
-
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev)
 	{
@@ -420,73 +406,39 @@ public class ExpandingFrameLayout extends FrameLayout
 		this.getLocationOnScreen(location);
 		if ((location[1] + mCurrentTop) > ev.getY())
 			return false;
-		if (mGestureDetector != null)
-			mGestureDetector.onTouchEvent(ev);
+
+			if (ev.getAction() == MotionEvent.ACTION_DOWN)
+			{
+				mTopAtScrollStart = mCurrentTop;
+				mYAtScrollStart = ev.getY();
+			}
+			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
+			{
+				final ViewConfiguration configuration = ViewConfiguration.get(getContext());
+				int touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+				if (mCurrentTop > mTopAtScrollStart)
+				{
+					if ((mCurrentTop - mTopAtScrollStart) > touchSlop)
+						showActionBar(mActionBarHeight);
+					else
+						hideActionBar();
+				}
+				else if (mCurrentTop < mTopAtScrollStart)
+				{
+					if ((mTopAtScrollStart - mCurrentTop) > touchSlop)
+						hideActionBar();
+					else
+						showActionBar(mActionBarHeight);
+				}
+			}
+			else if (ev.getAction() == MotionEvent.ACTION_MOVE)
+			{
+				double yDelta = ev.getY() - mYAtScrollStart;
+				int newTop = (int)(mTopAtScrollStart + yDelta);
+				setSize(mCurrentClip, Math.max(0, Math.min(newTop, mActionBarHeight)), mCurrentHeight);
+				ev.offsetLocation(0, -mCurrentTop + mTopAtScrollStart);
+			}
 		return super.dispatchTouchEvent(ev);
-	}
-
-//	@Override
-//	public boolean onInterceptTouchEvent(MotionEvent ev)
-//	{
-//		if (mGestureDetector != null)
-//		{
-//			if (mGestureDetector.onTouchEvent(ev))
-//				return true;
-//		}
-//		return super.onInterceptTouchEvent(ev);
-//	}
-//
-//	@Override
-//	public boolean onTouchEvent(MotionEvent event)
-//	{
-//		if (mGestureDetector != null)
-//		{
-//			if (mGestureDetector.onTouchEvent(event))
-//				return true;
-//		}
-//		return super.onTouchEvent(event);
-//	}
-
-	public void createGestureDetector()
-	{
-		if (mGestureDetector == null)
-		{
-			mGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener()
-			{	
-				private int mTouchSlop;
-
-				public GestureDetector.SimpleOnGestureListener init()
-				{
-					final ViewConfiguration configuration = ViewConfiguration.get(getContext());
-					mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
-					return this;
-				}
-				
-				@Override
-				public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-				{
-					try
-					{			
-						double xDelta = e1.getX() - e2.getX();
-						double yDelta = e2.getY() - e1.getY();
-						if (yDelta > mTouchSlop)
-						{
-							if (Math.abs(xDelta) > (Math.abs(yDelta) / 2))
-								return false;
-		
-							if (mSwipeListener != null)
-								mSwipeListener.onSwipeDown();
-							return false;
-						}
-					}
-					catch (Exception e)
-					{
-						// nothing
-					}
-					return false;
-				}
-			}.init());
-		}
 	}
 
 	private final Runnable hideActionBarRunnable = new Runnable()
@@ -502,16 +454,18 @@ public class ExpandingFrameLayout extends FrameLayout
 	{
 		removeCallbacks(hideActionBarRunnable);
 
-		final ExpandAnim anim = new ExpandAnim(mCurrentClip, actionBarHeight, mCurrentTop, mCurrentTop, getHeight(), getHeight());
-		anim.setDuration(300);
+		long duration = 300 * (actionBarHeight - mCurrentTop) / mActionBarHeight;
+		final ExpandAnim anim = new ExpandAnim(mCurrentClip, 0, mCurrentTop, actionBarHeight, getHeight(), getHeight());
+		anim.setDuration(duration);
 		this.startAnimation(anim);
 		this.postDelayed(hideActionBarRunnable, 5000);
 	}
 
 	public void hideActionBar()
 	{
-		final ExpandAnim anim = new ExpandAnim(mCurrentClip, 0, mCurrentTop, mCurrentTop, getHeight(), getHeight());
-		anim.setDuration(300);
+		long duration = 300 * (mCurrentTop) / mActionBarHeight;
+		final ExpandAnim anim = new ExpandAnim(mCurrentClip, mCurrentClip, mCurrentTop, 0, getHeight(), getHeight());
+		anim.setDuration(duration);
 		this.startAnimation(anim);
 	}
 
