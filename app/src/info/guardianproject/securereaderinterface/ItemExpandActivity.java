@@ -145,8 +145,9 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		if (view != null)
 		{
 			Rect rect = UIHelpers.getRectRelativeToView(parent, view);
-			rect.offset(0, view.getPaddingTop());
-			rect.bottom -= view.getPaddingBottom();
+			rect.offset(view.getPaddingLeft(), view.getPaddingTop());
+			rect.right -= (view.getPaddingRight() + view.getPaddingLeft());
+			rect.bottom -= (view.getPaddingBottom() + view.getPaddingTop());
 			positions.put(view.getId(), rect);
 		}
 	}

@@ -56,6 +56,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 
 	private ArrayList<Item> mItems;
 	private int mCurrentIndex;
+	private SparseArray<Rect> mInitialViewPositions;
 
 	public FullScreenStoryItemView(Context context)
 	{
@@ -265,7 +266,12 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 	{
 		mItems = items;
 		setCurrentStoryIndex(currentIndex);
-
+		mInitialViewPositions = initialViewPositions;
+		mContentPager.setCurrentItem(currentIndex);
+//		StoryItemView storyItemView = (StoryItemView) mContentPager.getAdapter().instantiateItem(mContentPager, currentIndex);
+//		if (initialViewPositions != null)
+//			storyItemView.setStoredPositions(initialViewPositions);
+		
 //		mContentPager.setContentPrevious(createStoryItemPageView(currentIndex - 1));
 //
 //		StoryItemView contentThis = createStoryItemPageView(currentIndex);
@@ -427,6 +433,13 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 			View view = storyItemView.getView(container);
 			if (view.getParent() != null)
 				((ViewGroup) view.getParent()).removeView(view);
+			
+			if (mInitialViewPositions != null && position == mContentPager.getCurrentItem())
+			{
+				storyItemView.setStoredPositions(mInitialViewPositions);
+				mInitialViewPositions = null;
+			}
+			
 			((ViewPager) container).addView(view);
 			return storyItemView;
 		}

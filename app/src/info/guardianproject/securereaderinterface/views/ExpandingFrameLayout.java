@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Region.Op;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -221,8 +221,13 @@ public class ExpandingFrameLayout extends FrameLayout
 
 			try
 			{
-		mBitmap = Bitmap.createBitmap(bmp, params.leftMargin, params.topMargin, bmp.getWidth() - params.rightMargin - params.leftMargin,
-				bmp.getHeight() - params.bottomMargin - params.topMargin).copy(bmp.getConfig(), false);
+				mBitmap = Bitmap.createBitmap(bmp.getWidth() - params.rightMargin - params.leftMargin, bmp.getHeight() - params.bottomMargin - params.topMargin, bmp.getConfig());
+				mBitmap.eraseColor(Color.WHITE);
+				Canvas canvas = new Canvas(mBitmap);  // create a canvas to draw on the new image
+				Rect source = new Rect(params.leftMargin, params.topMargin, params.leftMargin + bmp.getWidth() - params.rightMargin, params.topMargin + bmp.getHeight() - params.bottomMargin);
+				Rect dest = new Rect(0, 0, source.width(), source.height());
+				canvas.drawBitmap(bmp, source, dest, null);
+				bmp.recycle();  // clear out old image 
 			}
 			catch(Exception e)
 			{

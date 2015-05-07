@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Region.Op;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,6 +20,8 @@ public class AnimatedRelativeLayout extends RelativeLayout
 	private SparseArray<Rect> mEndPositions;
 	private float mAnimationValue;
 	private boolean mAnimating;
+	private boolean mAttached;
+	private boolean mLaidOut;
 
 	public AnimatedRelativeLayout(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -50,27 +53,37 @@ public class AnimatedRelativeLayout extends RelativeLayout
 	{
 		return mAnimating;
 	}
+	
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		if (changed)
+		{
+			mLaidOut = true;
+			applyAnimation(false, 1000);
+		}
+	}
 
 	@Override
 	protected void onAttachedToWindow()
 	{
 		super.onAttachedToWindow();
+		mAttached = true;
 		applyAnimation(false, 1000);
+	}
+	
+	@Override
+	protected void onDetachedFromWindow() 
+	{
+		super.onDetachedFromWindow();
+		mAttached = false;
 	}
 
 	private void applyAnimation(final boolean reversed, int duration)
 	{
-		if (mStartPositions != null && mStartPositions.size() > 0)
+		if (mStartPositions != null && mStartPositions.size() > 0 && !mAnimating && mAttached && mLaidOut)
 		{
 			mEndPositions = new SparseArray<Rect>();
-
-			// Since the RelativeLayout clips children, set the "real" position
-			// of the view to the
-			// leftmost and topmost coordinate and size to the biggest size.
-			// Then use
-			// translation for the animations. When the animation is done we can
-			// reset the actual
-			// view size and position again.
 			for (int index = 0; index < mStartPositions.size(); index++)
 			{
 				int id = mStartPositions.keyAt(index);
@@ -78,16 +91,15 @@ public class AnimatedRelativeLayout extends RelativeLayout
 				View view = findViewById(id);
 				if (view != null)
 				{
-					LayoutParams lpView = (LayoutParams) view.getLayoutParams();
-					Rect currentRect = new Rect(lpView.leftMargin, lpView.topMargin, lpView.leftMargin + view.getWidth(), lpView.topMargin + view.getHeight());
+					Rect currentRect = new Rect(view.getLeft(), view.getTop(), view.getLeft() + view.getWidth(), view.getTop() + view.getHeight());
 					mEndPositions.put(id, currentRect);
 
+					// Adjust start rect with paddings for current view
 					Rect startRect = mStartPositions.get(id);
-					LayoutParams lp = (LayoutParams) view.getLayoutParams();
-					lp.height = Math.max(currentRect.height(), startRect.height());
-					lp.leftMargin = Math.min(currentRect.left, startRect.left);
-					lp.topMargin = Math.min(currentRect.top, startRect.top);
-					view.setLayoutParams(lp);
+					startRect.offset(-view.getPaddingLeft(), -view.getPaddingTop());
+					startRect.right += view.getPaddingLeft() + view.getPaddingRight();
+					startRect.bottom += view.getPaddingTop() + view.getPaddingBottom();
+					mStartPositions.put(id, startRect);
 				}
 			}
 
@@ -130,24 +142,6 @@ public class AnimatedRelativeLayout extends RelativeLayout
 	private void resetAnimatedProperties()
 	{
 		mAnimating = false;
-		if (mStartPositions != null)
-		{
-			for (int index = 0; index < mStartPositions.size(); index++)
-			{
-				int id = mStartPositions.keyAt(index);
-
-				View view = findViewById(id);
-				if (view != null)
-				{
-					Rect endRect = mEndPositions.get(id);
-					LayoutParams lp = (LayoutParams) view.getLayoutParams();
-					lp.height = endRect.height();
-					lp.leftMargin = endRect.left;
-					lp.topMargin = endRect.top;
-					view.setLayoutParams(lp);
-				}
-			}
-		}
 		if (mOriginalStartPositions == null)
 			mOriginalStartPositions = mStartPositions;
 		mStartPositions = null;
@@ -198,21 +192,14 @@ public class AnimatedRelativeLayout extends RelativeLayout
 					Rect startRect = mStartPositions.get(child.getId());
 					Rect endRect = mEndPositions.get(child.getId());
 
-					boolean invertedLeft = endRect.left < startRect.left;
-					boolean invertedTop = endRect.top < startRect.top;
-
 					int height = (int) (startRect.height() + (mAnimationValue * (endRect.height() - startRect.height())));
 
-					int leftDelta = (int) ((invertedLeft ? (1 - mAnimationValue) : (mAnimationValue)) * (endRect.left - startRect.left));
-					int topDelta = (int) ((invertedTop ? (1 - mAnimationValue) : (mAnimationValue)) * (endRect.top - startRect.top));
-
-					if (invertedLeft)
-						leftDelta = -leftDelta;
-					if (invertedTop)
-						topDelta = -topDelta;
+					int leftDelta = (int) ((1 - mAnimationValue) * (startRect.left - endRect.left));
+					int topDelta = (int) ((1 - mAnimationValue) * (startRect.top - endRect.top));
 					clipSet = true;
 					canvas.clipRect(child.getLeft() + leftDelta, child.getTop() + topDelta, child.getRight() + leftDelta, child.getTop() + topDelta + height,
 							Op.INTERSECT);
+					Log.d("ANIM", "Translate " + child.getId() + " by " + leftDelta + "," + topDelta);
 					canvas.translate(leftDelta, topDelta);
 				}
 			}

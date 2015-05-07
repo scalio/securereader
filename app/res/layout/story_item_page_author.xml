@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="top|left"
     android:background="#e8e9ea"
-    android:gravity="top|left" >
+    android:gravity="top|left"
+    android:paddingBottom="2dp" >
 
     <View android:background="@color/button_primary"
 	    android:layout_width="match_parent"

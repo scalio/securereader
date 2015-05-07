@@ -373,6 +373,27 @@ public class StoryItemView implements PagedViewContent, OnUpdateListener, OnMedi
 	public void setStoredPositions(SparseArray<Rect> storedPositions)
 	{
 		mStoredPositions = storedPositions;
+		
+		// Animations?
+		if (mView != null)
+		{
+			AnimatedRelativeLayout animatedRoot = (AnimatedRelativeLayout) mView.findViewById(R.id.animatedRoot);
+			if (animatedRoot != null)
+			{
+				animatedRoot.setStartPositions(mStoredPositions);
+			}
+		}
+//		mStoredPositions = getStoredPositions();
+//		View page1 = ret.get(0);
+//		if (page1 != null && page1 instanceof AnimatedRelativeLayout)
+//		{
+//			((AnimatedRelativeLayout) page1).setStartPositions(mStoredPositions);
+//		}
+//
+//		mPages = ret;
+//		mStoredPositions = getStoredPositions();
+//		this.updateTime();
+//		return ret;
 	}
 
 	public void resetToStoredPositions(int duration)
