@@ -31,6 +31,12 @@ android {
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
         }
+
+        radioZamaneh {
+            java.srcDirs = ['src/radioZamaneh/java/']
+            resources.srcDirs = ['src/radioZamaneh/java']
+            res.srcDirs = ['src/radioZamaneh/res']
+        }
     }
 
     buildTypes {
