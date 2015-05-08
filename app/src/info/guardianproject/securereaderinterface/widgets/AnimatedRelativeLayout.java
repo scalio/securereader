@@ -85,7 +85,7 @@ public class AnimatedRelativeLayout extends RelativeLayout
 		if (mStartPositions != null && mStartPositions.size() > 0 && !mAnimating && mAttached && mLaidOut)
 		{
 			mEndPositions = new SparseArray<Rect>();
-			for (int index = 0; index < mStartPositions.size(); index++)
+			for (int index = mStartPositions.size() - 1; index >= 0; index--)
 			{
 				int id = mStartPositions.keyAt(index);
 
@@ -93,7 +93,6 @@ public class AnimatedRelativeLayout extends RelativeLayout
 				if (view != null)
 				{
 					Rect currentRect = new Rect(view.getLeft(), view.getTop(), view.getLeft() + view.getWidth(), view.getTop() + view.getHeight());
-					mEndPositions.put(id, currentRect);
 
 					// Adjust start rect with paddings for current view
 					Rect startRect = mStartPositions.get(id);
@@ -101,6 +100,11 @@ public class AnimatedRelativeLayout extends RelativeLayout
 					startRect.right += view.getPaddingLeft() + view.getPaddingRight();
 					startRect.bottom += view.getPaddingTop() + view.getPaddingBottom();
 					mStartPositions.put(id, startRect);
+					
+					if (startRect.equals(currentRect))
+						mStartPositions.remove(id);
+					else
+						mEndPositions.put(id, currentRect);
 				}
 			}
 
@@ -198,7 +202,6 @@ public class AnimatedRelativeLayout extends RelativeLayout
 					clipSet = true;
 					canvas.clipRect(child.getLeft() + leftDelta, child.getTop() + topDelta, child.getRight() + leftDelta, child.getTop() + topDelta + height,
 							Op.INTERSECT);
-					Log.d("ANIM", "Translate " + child.getId() + " by " + leftDelta + "," + topDelta);
 					canvas.translate(leftDelta, topDelta);
 				}
 			}
