@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+	<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical" 
+           android:background="@color/light_grey"
+           android:padding="16dp">
+                       
+	    <TextView
+	        android:id="@+id/tv_choose_account_header"     
+	        android:text="@string/connect_account" 
+	        style="@style/LabelHeader"/>
+	      
+		<View
+			style="@style/DividerHorizontal"/>
+
+		<ScrollView
+		    android:id="@+id/scrollView1"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dp"
+		    android:layout_weight="1" 
+		    >
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical" >
+
+		        <TextView
+		            style="@style/LabelGeneral"
+		            android:animateLayoutChanges="true"
+		            android:paddingBottom="4dp"
+		            android:paddingTop="8dp"
+		            android:text="@string/accounts_connected" />
+
+		        <LinearLayout
+		            android:id="@+id/accounts_connected_container"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:animateLayoutChanges="true"
+		            android:background="@android:color/white"
+		            android:divider="?android:dividerHorizontal"
+		            android:orientation="vertical"
+		            android:showDividers="middle" >
+		        </LinearLayout>
+
+		        <TextView
+		            android:id="@+id/tv_accounts_connected_empty"
+		            android:layout_width="fill_parent"
+		            android:layout_height="fill_parent"
+		            android:background="@android:color/white"
+		            android:gravity="center"
+		            android:padding="16dp"
+		            android:text="@string/account_none_found"
+		            android:textSize="14sp" />
+
+		        <TextView
+		            style="@style/LabelGeneral"
+		            android:animateLayoutChanges="true"
+		            android:paddingBottom="4dp"
+		            android:paddingTop="8dp"
+		            android:text="@string/accounts_available" />
+
+		        <LinearLayout
+		            android:id="@+id/accounts_available_container"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:animateLayoutChanges="true"
+		            android:background="@android:color/white"
+		            android:divider="?android:dividerHorizontal"
+		            android:orientation="vertical"
+		            android:showDividers="middle" >
+		        </LinearLayout>
+
+		        <TextView
+		            android:id="@+id/tv_accounts_available_empty"
+		            android:layout_width="fill_parent"
+		            android:layout_height="fill_parent"
+		            android:background="@android:color/white"
+		            android:gravity="center"
+		            android:padding="16dp"
+		            android:text="@string/account_none_found"
+		            android:textSize="14sp" />
+		    </LinearLayout>
+
+		</ScrollView>
+
+        <Switch
+            android:id="@+id/switchTor"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:checked="false"
+            android:text="@string/upload_securely_via_tor"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textViewTor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/use_tor_to_upload_securely_and_anonymously_"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/divider"
+            style="@style/DividerHorizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
+
+        <Switch
+            android:id="@+id/switchStoryMaker"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:checked="false"
+            android:text="@string/publish_to_storymaker"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textStoryMaker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_to_storymaker_cc_to_publish_"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"/>
+   		
+   		 <Button
+   		     android:id="@+id/btnContinue"
+		     android:layout_width="fill_parent"
+		     android:layout_height="wrap_content"
+		     android:text="@string/lbl_continue"
+		     android:layout_marginTop="16dp"
+		     android:enabled="false"
+		     android:visibility="gone"/>
+   		 
+  		</LinearLayout>
