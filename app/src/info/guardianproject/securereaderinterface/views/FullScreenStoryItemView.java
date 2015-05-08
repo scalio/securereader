@@ -12,8 +12,6 @@ import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -88,23 +86,6 @@ public class FullScreenStoryItemView extends FrameLayout
 		mContentPager = (NestedViewPager) findViewById(R.id.horizontalPagerContent);
 		mContentPagerAdapter = new ContentPagerAdapter();
 		mContentPager.setAdapter(mContentPagerAdapter);
-		mContentPager.setOnPageChangeListener(new OnPageChangeListener()
-		{
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-			}
-
-			@Override
-			public void onPageSelected(int index) 
-			{
-				mCurrentIndex = index;
-			}
-		}
-		);
 		
 		View toolbar = findViewById(R.id.storyToolbar);
 
@@ -282,7 +263,7 @@ public class FullScreenStoryItemView extends FrameLayout
 		setCurrentStoryIndex(currentIndex);
 		mInitialViewPositions = initialViewPositions;
 		mFinalViewPositions = initialViewPositions;
-		mContentPager.setCurrentItem(currentIndex);
+		//mContentPager.setCurrentItem(currentIndex);
 		refresh();
 	}
 
@@ -383,23 +364,40 @@ public class FullScreenStoryItemView extends FrameLayout
 	
 	private class ContentPagerAdapter extends PagerAdapter
 	{
-		private Object mCurrentObject;
+		private StoryItemView mLeftView;
+		private StoryItemView mCurrentView;
+		private StoryItemView mRightView;
+		private ArrayList<StoryItemView> mViews;
 		
 		public ContentPagerAdapter()
 		{
 			super();
+			mViews = new ArrayList<StoryItemView>();
+			updateViews();
 		}
 
 		public StoryItemView getCurrentView()
 		{
-			return (StoryItemView) mCurrentObject;
+			return mCurrentView;
 		}
 		
 		@Override
 		public void setPrimaryItem(ViewGroup container, int position,
 				Object object) {
+			int newIndex = mCurrentIndex;
+			if (mCurrentView != null)
+			{
+				if (mCurrentView.usesReverseSwipe())
+					newIndex = newIndex + getItemPosition(mCurrentView) - position;
+				else
+					newIndex = newIndex + position - getItemPosition(mCurrentView);
+			}
 			super.setPrimaryItem(container, position, object);
-			mCurrentObject = object;
+			if (newIndex != mCurrentIndex)
+			{
+				mCurrentIndex = newIndex;
+				notifyDataSetChanged();
+			}
 		}
 
 		@Override
@@ -411,7 +409,7 @@ public class FullScreenStoryItemView extends FrameLayout
 		@Override
 		public Object instantiateItem(ViewGroup container, int position)
 		{
-			StoryItemView storyItemView = new StoryItemView(mItems.get(position));
+			StoryItemView storyItemView = mViews.get(position);
 			View view = storyItemView.getView(container);
 			if (view.getParent() != null)
 				((ViewGroup) view.getParent()).removeView(view);
@@ -421,7 +419,6 @@ public class FullScreenStoryItemView extends FrameLayout
 				storyItemView.setStoredPositions(mInitialViewPositions);
 				mInitialViewPositions = null;
 			}
-			
 			((ViewPager) container).addView(view);
 			return storyItemView;
 		}
@@ -430,8 +427,7 @@ public class FullScreenStoryItemView extends FrameLayout
 		public int getItemPosition(Object object)
 		{
 			StoryItemView storyItemView = (StoryItemView)object;
-			Item item = storyItemView.getItem();
-			int index = mItems.indexOf(item);
+			int index = mViews.indexOf(storyItemView);
 			if (index == -1)
 				index = POSITION_NONE;
 			return index;
@@ -440,15 +436,82 @@ public class FullScreenStoryItemView extends FrameLayout
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
-			((StoryItemView)object).recycle();
+			container.removeView(((StoryItemView)object).getView(container));
 		}
 
 		@Override
 		public int getCount()
 		{
-			if (mItems == null)
-				return 0;
-			return mItems.size();
+			return mViews.size();
+		}
+
+		private StoryItemView getViewForItem(Item item, ArrayList<StoryItemView> reuseViews)
+		{
+			StoryItemView ret = null;
+			for (StoryItemView storyItemView : reuseViews)
+			{
+				if (storyItemView.getItem().getDatabaseId() == item.getDatabaseId())
+				{
+					ret = storyItemView;
+					reuseViews.remove(storyItemView);
+					break;
+				}
+			}
+			if (ret == null)
+				ret = new StoryItemView(item);
+			return ret;
+		}
+		
+		private void updateViews()
+		{
+			mLeftView = null;
+			mCurrentView = null;
+			mRightView = null;
+			
+			if (mItems != null && mCurrentIndex >= 0 && mCurrentIndex < mItems.size())
+				mCurrentView = getViewForItem(mItems.get(mCurrentIndex), mViews);
+			
+			if (mCurrentView != null)
+			{
+				if (mCurrentView.usesReverseSwipe())
+				{
+					if (mCurrentIndex > 0)
+						mRightView = getViewForItem(mItems.get(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItems.size() - 1))
+						mLeftView = getViewForItem(mItems.get(mCurrentIndex + 1), mViews);
+				}
+				else
+				{
+					if (mCurrentIndex > 0)
+						mLeftView = getViewForItem(mItems.get(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItems.size() - 1))
+						mRightView = getViewForItem(mItems.get(mCurrentIndex + 1), mViews);
+				}
+			}
+						
+			// Clean up views not used anymore
+			//
+			for (StoryItemView storyItemView : mViews)
+			{
+				storyItemView.recycle();
+			}
+			mViews.clear();
+			
+			if (mLeftView != null)
+				mViews.add(mLeftView);
+			if (mCurrentView != null)
+				mViews.add(mCurrentView);
+			if (mRightView != null)
+				mViews.add(mRightView);
+		}
+
+		@Override
+		public void notifyDataSetChanged()
+		{
+			updateViews();
+			super.notifyDataSetChanged();
+			if (mCurrentView != null)
+				mContentPager.setCurrentItem(this.getItemPosition(mCurrentView));
 		}
 	}
 }

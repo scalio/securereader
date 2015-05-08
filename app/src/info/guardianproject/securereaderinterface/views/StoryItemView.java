@@ -61,8 +61,6 @@ public class StoryItemView implements OnUpdateListener, OnMediaLoadedListener
 	
 	public void recycle()
 	{
-		if (mView != null && mView.getParent() != null)
-			((ViewGroup) mView.getParent()).removeView(mView);
 		if (mMediaViewCollection != null)
 		{
 			mMediaViewCollection.removeListener(this);
