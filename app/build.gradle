@@ -53,6 +53,11 @@ android {
 
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'LICENSE.txt'
     }
 
     lintOptions {
@@ -78,4 +83,5 @@ dependencies {
     // project imports
     compile project(':external:NetCipher:libnetcipher')
     compile project(':external:securereaderlibrary')
+    compile project(':external:SecureShareLib:SecureShareUILibrary')
 }
