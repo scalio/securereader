@@ -12,6 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnDrawListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
@@ -274,8 +280,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			@Override
 			public void run()
 			{
-				scrollToCurrentItem();
 				updateList();
+				scrollToCurrentItem();
 				mFullListStories.post(new Runnable()
 				{
 					@Override
@@ -292,6 +298,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		});
 	}
 
+	boolean bWaitingForCallToScroll = false;
+	
 	private void scrollToCurrentItem()
 	{		
 		// Try to find index of current item, so that we can
@@ -307,19 +315,37 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				Item item = (Item) adapter.getItem(iItem);
 				if (item.getDatabaseId() == currentItem.getDatabaseId())
 				{
-					mFullListStories.setSelectionFromTop(iItem, mFullOpeningOffset);
-					
-					for (int i = mFullListStories.getFirstVisiblePosition(); i < mFullListStories.getCount() && i <= mFullListStories.getLastVisiblePosition(); i++)
+					bWaitingForCallToScroll = true;
+					mFullListStories.setOnScrollListener(new OnScrollListener()
 					{
-						item = (Item) mFullListStories.getItemAtPosition(i);
-						if (item.getDatabaseId() == currentItem.getDatabaseId()) 
-						{
-							View storyView = mFullListStories.getChildAt(i - mFullListStories.getFirstVisiblePosition());
-							if (storyView != null)
-								this.setCollapsedSizeToStoryViewSize(storyView);
-							break;
+						@Override
+						public void onScrollStateChanged(AbsListView view,
+								int scrollState) {
 						}
-					}
+
+						@Override
+						public void onScroll(AbsListView view,
+								int firstVisibleItem, int visibleItemCount,
+								int totalItemCount) {
+							if (!bWaitingForCallToScroll)
+								mFullListStories.setOnScrollListener(null);
+							
+					        Item currentItem = mFullView.getCurrentStory();
+					        for (int i = firstVisibleItem; i < totalItemCount && i < (firstVisibleItem + visibleItemCount); i++)
+							{
+								Item item = (Item) mFullListStories.getItemAtPosition(i);
+								if (item.getDatabaseId() == currentItem.getDatabaseId()) 
+								{
+									View storyView = mFullListStories.getChildAt(i - mFullListStories.getFirstVisiblePosition());
+									if (storyView != null)
+										setCollapsedSizeToStoryViewSize(storyView);
+									break;
+								}
+							}
+						}
+					});
+					mFullListStories.setSelectionFromTop(iItem, mFullOpeningOffset);
+					bWaitingForCallToScroll = false;
 					break;
 				}
 			}
