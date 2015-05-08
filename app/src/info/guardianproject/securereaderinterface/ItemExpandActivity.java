@@ -94,27 +94,6 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			this.prepareFullScreenView(mFullView);
 
 			mFullListStories = listStories;
-
-			// // Get screen position of the story view
-			int[] locationLv = new int[2];
-			mFullListStories.getLocationOnScreen(locationLv);
-
-			int[] location = new int[2];
-			if (storyView != null)
-				storyView.getLocationOnScreen(location);
-			else
-				location = locationLv;
-
-			// Get from top and bottom
-			int[] locationTopFrame = new int[2];
-			screenFrame.getLocationOnScreen(locationTopFrame);
-
-			int fromClip = Math.max(0, locationLv[1] - location[1]);
-			int fromTop = location[1] - locationTopFrame[1] - params.topMargin;
-			int fromHeight = (storyView != null) ? storyView.getHeight() : listStories.getHeight();
-
-			mFullOpeningOffset = location[1] - locationLv[1];
-
 			mFullStoryView.setExpansionListener(new ExpansionListener()
 			{
 				@Override
@@ -135,10 +114,34 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				}
 			});
 
-			mFullStoryView.setCollapsedSize(fromClip, fromTop, fromHeight);
+			setCollapsedSizeToStoryViewSize(storyView);
 		}
 	}
 
+	private void setCollapsedSizeToStoryViewSize(View storyView)
+	{
+		// // Get screen position of the story view
+		int[] locationLv = new int[2];
+		mFullListStories.getLocationOnScreen(locationLv);
+
+		int[] location = new int[2];
+		if (storyView != null)
+			storyView.getLocationOnScreen(location);
+		else
+			location = locationLv;
+
+		// Get from top and bottom
+		int[] locationTopFrame = new int[2];
+		getTopFrame().getLocationOnScreen(locationTopFrame);
+
+		int fromClip = Math.max(0, locationLv[1] - location[1]);
+		int fromTop = location[1] - locationTopFrame[1];
+		int fromHeight = (storyView != null) ? storyView.getHeight() : mFullListStories.getHeight();
+
+		mFullOpeningOffset = location[1] - locationLv[1];
+		mFullStoryView.setCollapsedSize(fromClip, fromTop, fromHeight);
+	}
+	
 	private void getStoredPositionForViewWithId(ViewGroup parent, int viewId, SparseArray<Rect> positions)
 	{
 		View view = parent.findViewById(viewId);
@@ -290,7 +293,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 	}
 
 	private void scrollToCurrentItem()
-	{
+	{		
 		// Try to find index of current item, so that we can
 		// scroll the
 		// list to the actual story the user was reading
@@ -301,9 +304,22 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			ListAdapter adapter = mFullListStories.getAdapter();
 			for (int iItem = 0; iItem < adapter.getCount(); iItem++)
 			{
-				if (adapter.getItemId(iItem) == currentItem.getDatabaseId())
+				Item item = (Item) adapter.getItem(iItem);
+				if (item.getDatabaseId() == currentItem.getDatabaseId())
 				{
 					mFullListStories.setSelectionFromTop(iItem, mFullOpeningOffset);
+					
+					for (int i = mFullListStories.getFirstVisiblePosition(); i < mFullListStories.getCount() && i <= mFullListStories.getLastVisiblePosition(); i++)
+					{
+						item = (Item) mFullListStories.getItemAtPosition(i);
+						if (item.getDatabaseId() == currentItem.getDatabaseId()) 
+						{
+							View storyView = mFullListStories.getChildAt(i - mFullListStories.getFirstVisiblePosition());
+							if (storyView != null)
+								this.setCollapsedSizeToStoryViewSize(storyView);
+							break;
+						}
+					}
 					break;
 				}
 			}

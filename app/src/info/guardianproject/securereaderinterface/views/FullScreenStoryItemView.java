@@ -4,19 +4,15 @@ import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
 import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
-import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
-import info.guardianproject.securereaderinterface.models.PagedViewContent;
-import info.guardianproject.securereaderinterface.models.ViewPagerIndicator;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableImageView;
 import info.guardianproject.securereaderinterface.widgets.NestedViewPager;
-import info.guardianproject.securereaderinterface.widgets.PagedView;
-import info.guardianproject.securereaderinterface.widgets.PagedView.PagedViewListener;
 import info.guardianproject.securereaderinterface.widgets.compat.Spinner;
 import info.guardianproject.securereaderinterface.R;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -41,7 +37,7 @@ import android.widget.FrameLayout;
 
 import com.tinymission.rss.Item;
 
-public class FullScreenStoryItemView extends FrameLayout implements PagedViewListener
+public class FullScreenStoryItemView extends FrameLayout
 {
 	protected static final String LOGTAG = "FullScreenStoryItemView";
 	public static final boolean LOGGING = false;
@@ -52,11 +48,13 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 	private ShareSpinnerAdapter mShareAdapter;
 	private TextSizeSpinnerAdapter mTextSizeAdapter;
 	private NestedViewPager mContentPager;
-	private PagerAdapter mContentPagerAdapter;
+	private ContentPagerAdapter mContentPagerAdapter;
 
 	private ArrayList<Item> mItems;
 	private int mCurrentIndex;
 	private SparseArray<Rect> mInitialViewPositions;
+	private SparseArray<Rect> mFinalViewPositions;
+	
 
 	public FullScreenStoryItemView(Context context)
 	{
@@ -80,15 +78,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		super.onConfigurationChanged(newConfig);
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		inflater.inflate(R.layout.story_item, this);
-
-//		PagedView oldPagedViewIfAny = mContentPager;
-//		initialize();
-//		if (oldPagedViewIfAny != null)
-//		{
-//			this.mContentPager.setContentPrevious(oldPagedViewIfAny.getContentPrevious());
-//			this.mContentPager.setContentThis(oldPagedViewIfAny.getContentThis());
-//			this.mContentPager.setContentNext(oldPagedViewIfAny.getContentNext());
-//		}
+		initialize();
 		setCurrentStoryIndex(mCurrentIndex);
 		refresh();
 	}
@@ -98,6 +88,23 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		mContentPager = (NestedViewPager) findViewById(R.id.horizontalPagerContent);
 		mContentPagerAdapter = new ContentPagerAdapter();
 		mContentPager.setAdapter(mContentPagerAdapter);
+		mContentPager.setOnPageChangeListener(new OnPageChangeListener()
+		{
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			@Override
+			public void onPageSelected(int index) 
+			{
+				mCurrentIndex = index;
+			}
+		}
+		);
 		
 		View toolbar = findViewById(R.id.storyToolbar);
 
@@ -149,6 +156,13 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 				else if (position == 1 && adjustment > -8)
 					adjustment -= 2;
 				App.getSettings().setContentFontSizeAdjustment(adjustment);
+				
+				for (int iChild = 0; iChild < mContentPager.getChildCount(); iChild++)
+				{
+					StoryItemView storyItemView = (StoryItemView) mContentPager.getChildAt(iChild).getTag();
+					if (storyItemView != null)
+						storyItemView.updateTextSize();
+				}
 				//mContentPager.recreateAllViews();
 			}
 
@@ -267,19 +281,8 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		mItems = items;
 		setCurrentStoryIndex(currentIndex);
 		mInitialViewPositions = initialViewPositions;
+		mFinalViewPositions = initialViewPositions;
 		mContentPager.setCurrentItem(currentIndex);
-//		StoryItemView storyItemView = (StoryItemView) mContentPager.getAdapter().instantiateItem(mContentPager, currentIndex);
-//		if (initialViewPositions != null)
-//			storyItemView.setStoredPositions(initialViewPositions);
-		
-//		mContentPager.setContentPrevious(createStoryItemPageView(currentIndex - 1));
-//
-//		StoryItemView contentThis = createStoryItemPageView(currentIndex);
-//		if (initialViewPositions != null)
-//			contentThis.setStoredPositions(initialViewPositions);
-//
-//		mContentPager.setContentThis(contentThis);
-//		mContentPager.setContentNext(createStoryItemPageView(currentIndex + 1));
 		refresh();
 	}
 
@@ -301,16 +304,6 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		Item current = getCurrentStory();
 		if (current != null)
 			DownloadsAdapter.viewed(current.getDatabaseId());
-	}
-
-	private StoryItemView createStoryItemPageView(int index)
-	{
-		if (index < 0 || index >= mItems.size())
-			return null;
-
-		Item item = mItems.get(index);
-		StoryItemView content = new StoryItemView(item);
-		return content;
 	}
 
 	public void refresh()
@@ -380,44 +373,33 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		// mBtnComments.findViewById(R.id.tvNumComments)).setText(String.valueOf(numberOfComments));
 		// }
 	}
-
-	@Override
-	public PagedViewContent onMovedToPrevious()
-	{
-		if (mCurrentIndex > 0)
-		{
-			setCurrentStoryIndex(mCurrentIndex - 1);
-			return createStoryItemPageView(mCurrentIndex - 1);
-		}
-		return null;
-	}
-
-	@Override
-	public PagedViewContent onMovedToNext()
-	{
-		if (mCurrentIndex < (mItems.size() - 1))
-		{
-			setCurrentStoryIndex(mCurrentIndex + 1);
-			return createStoryItemPageView(mCurrentIndex + 1);
-		}
-		return null;
-	}
 	
 	public void onBeforeCollapse()
 	{
-//		PagedViewContent content = mContentPager.getContentThis();
-//		if (content != null && content instanceof StoryItemView)
-//		{
-//			StoryItemView siv = (StoryItemView) content;
-//			siv.resetToStoredPositions(ExpandingFrameLayout.DEFAULT_COLLAPSE_DURATION);
-//		}
+		StoryItemView storyItemView = mContentPagerAdapter.getCurrentView();
+		if (storyItemView != null)
+			storyItemView.resetToStoredPositions(mFinalViewPositions, ExpandingFrameLayout.DEFAULT_COLLAPSE_DURATION);
 	}
 	
 	private class ContentPagerAdapter extends PagerAdapter
 	{
+		private Object mCurrentObject;
+		
 		public ContentPagerAdapter()
 		{
 			super();
+		}
+
+		public StoryItemView getCurrentView()
+		{
+			return (StoryItemView) mCurrentObject;
+		}
+		
+		@Override
+		public void setPrimaryItem(ViewGroup container, int position,
+				Object object) {
+			super.setPrimaryItem(container, position, object);
+			mCurrentObject = object;
 		}
 
 		@Override
@@ -458,8 +440,7 @@ public class FullScreenStoryItemView extends FrameLayout implements PagedViewLis
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object)
 		{
-			View view = ((StoryItemView)object).getView(container);
-			((ViewPager) container).removeView(view);
+			((StoryItemView)object).recycle();
 		}
 
 		@Override

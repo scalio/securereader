@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 
 public class AnimatedRelativeLayout extends RelativeLayout
 {
-	private SparseArray<Rect> mOriginalStartPositions;
+	public static final int START_ANIMATION_DURATION = 1000;
+
 	private SparseArray<Rect> mStartPositions;
 	private SparseArray<Rect> mEndPositions;
 	private float mAnimationValue;
@@ -43,9 +44,9 @@ public class AnimatedRelativeLayout extends RelativeLayout
 		mStartPositions = startPositions;
 	}
 
-	public void animateToStartPositions(int duration)
+	public void animateToStartPositions(SparseArray<Rect> storedPositions, int duration)
 	{
-		mStartPositions = mOriginalStartPositions;
+		mStartPositions = storedPositions;
 		applyAnimation(true, duration);
 	}
 	
@@ -60,7 +61,7 @@ public class AnimatedRelativeLayout extends RelativeLayout
 		if (changed)
 		{
 			mLaidOut = true;
-			applyAnimation(false, 1000);
+			applyAnimation(false, START_ANIMATION_DURATION);
 		}
 	}
 
@@ -69,7 +70,7 @@ public class AnimatedRelativeLayout extends RelativeLayout
 	{
 		super.onAttachedToWindow();
 		mAttached = true;
-		applyAnimation(false, 1000);
+		applyAnimation(false, START_ANIMATION_DURATION);
 	}
 	
 	@Override
@@ -142,8 +143,6 @@ public class AnimatedRelativeLayout extends RelativeLayout
 	private void resetAnimatedProperties()
 	{
 		mAnimating = false;
-		if (mOriginalStartPositions == null)
-			mOriginalStartPositions = mStartPositions;
 		mStartPositions = null;
 		this.clearAnimation();
 	}

@@ -323,14 +323,13 @@ public class ExpandingFrameLayout extends FrameLayout
 	 */
 	public void collapse(int duration)
 	{
-		ViewGroup.MarginLayoutParams params = (MarginLayoutParams) this.getLayoutParams();
-		int toHeight = ((View) getParent()).getHeight() - params.topMargin - params.bottomMargin;
-
+		removeCallbacks(hideActionBarRunnable);
+		
 		// TODO - remove old snapshot and take new one here to save memory?
 		takeSnapshot();
 		mUseBitmap = true;
 
-		final ExpandAnim anim = new ExpandAnim(0, mCollapsedClip, 0, mCollapsedTop, toHeight, mCollapsedHeight);
+		final ExpandAnim anim = new ExpandAnim(mCurrentClip, mCollapsedClip, mCurrentTop, mCollapsedTop, mCurrentHeight, mCollapsedHeight);
 		anim.setDuration(duration);
 		anim.setAnimationListener(new AnimationListener()
 		{
