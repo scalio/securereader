@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/btnMenuTor"
-        android:background="@color/rz_grey_green"
+        android:background="@color/rz_nav_drawer"
         android:cacheColorHint="@android:color/transparent"
         android:choiceMode="singleChoice"
         android:divider="@drawable/left_menu_divider"
