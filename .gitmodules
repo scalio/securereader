@@ -5,3 +5,8 @@
 [submodule "external/securereaderlibrary"]
 	path = external/securereaderlibrary
 	url = https://github.com/scalio/securereaderlibrary.git
+
+[submodule "external/SecureShareLib"]
+	path = external/SecureShareLib
+	url = https://github.com/StoryMaker/SecureShareLib.git
+	branch = zt_temp
