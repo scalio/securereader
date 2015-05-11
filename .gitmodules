@@ -10,3 +10,7 @@
 	path = external/SecureShareLib
 	url = https://github.com/StoryMaker/SecureShareLib.git
 	branch = zt_temp
+
+[submodule "external/SecureShareLib/SecureShareUILibrary/external/facebook-sdk"]
+	path = external/SecureShareLib/SecureShareUILibrary/external/facebook-sdk
+	url = https://github.com/scalio/facebook-android-sdk.git
