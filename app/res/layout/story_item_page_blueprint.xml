@@ -8,7 +8,8 @@
         android:id="@+id/animatedRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipChildren="false" >
+        android:clipChildren="false"
+        android:paddingBottom="10dp" >
 
             <info.guardianproject.securereaderinterface.widgets.HeightLimitedRelativeLayout
                 android:id="@+id/layout_media"

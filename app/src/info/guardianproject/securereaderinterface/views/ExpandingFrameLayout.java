@@ -58,6 +58,8 @@ public class ExpandingFrameLayout extends FrameLayout
 
 	private int mTopAtScrollStart = 0;
 	private float mYAtScrollStart = 0;
+	private boolean mIsScrolling = false;
+	private int mTouchSlop;
 	
 	private boolean mHasExpanded;
 	private ExpansionListener mExpansionListener;
@@ -415,21 +417,22 @@ public class ExpandingFrameLayout extends FrameLayout
 			{
 				mTopAtScrollStart = mCurrentTop;
 				mYAtScrollStart = ev.getY();
+				final ViewConfiguration configuration = ViewConfiguration.get(getContext());
+				mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
 			}
 			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
 			{
-				final ViewConfiguration configuration = ViewConfiguration.get(getContext());
-				int touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+				mIsScrolling = false;
 				if (mCurrentTop > mTopAtScrollStart)
 				{
-					if ((mCurrentTop - mTopAtScrollStart) > touchSlop)
+					if ((mCurrentTop - mTopAtScrollStart) > mTouchSlop)
 						showActionBar(mActionBarHeight);
 					else
 						hideActionBar();
 				}
 				else if (mCurrentTop < mTopAtScrollStart)
 				{
-					if ((mTopAtScrollStart - mCurrentTop) > touchSlop)
+					if ((mTopAtScrollStart - mCurrentTop) > mTouchSlop)
 						hideActionBar();
 					else
 						showActionBar(mActionBarHeight);
@@ -438,6 +441,10 @@ public class ExpandingFrameLayout extends FrameLayout
 			else if (ev.getAction() == MotionEvent.ACTION_MOVE)
 			{
 				double yDelta = ev.getY() - mYAtScrollStart;
+				if (yDelta > 0)
+					yDelta = Math.max(0, yDelta - mTouchSlop);
+				else if (yDelta < 0)
+					yDelta = Math.min(0, yDelta + mTouchSlop);
 				int newTop = (int)(mTopAtScrollStart + yDelta);
 				setSize(mCurrentClip, Math.max(0, Math.min(newTop, mActionBarHeight)), mCurrentHeight);
 				ev.offsetLocation(0, -mCurrentTop + mTopAtScrollStart);
