@@ -277,20 +277,6 @@ public class ExpandingFrameLayout extends FrameLayout
 				mBitmap = null;
 				if (mExpansionListener != null)
 					mExpansionListener.onExpanded();
-
-				// Show hint screen?
-				if (!App.getSettings().hasShownSwipeUpHint())
-				{
-					postDelayed(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							showSwipeHint();
-							App.getSettings().setHasShownSwipeUpHint(true);
-						}
-					}, 3000);
-				}
 			}
 
 			@Override
@@ -478,14 +464,5 @@ public class ExpandingFrameLayout extends FrameLayout
 		final ExpandAnim anim = new ExpandAnim(mCurrentClip, mCurrentClip, mCurrentTop, 0, getHeight(), getHeight());
 		anim.setDuration(duration);
 		this.startAnimation(anim);
-	}
-
-	private void showSwipeHint()
-	{
-		LayoutInflater inflater = LayoutInflater.from(getContext());
-		final View view = inflater.inflate(R.layout.story_item_swipe_hint, this, false);
-		AnimationHelpers.fadeOut(view, 0, 0, false);
-		addView(view);
-		AnimationHelpers.fadeIn(view, 500, 3000, true);
 	}
 }

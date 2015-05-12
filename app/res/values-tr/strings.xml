@@ -94,8 +94,6 @@
   <string name="story_item_short_tag_results">##%1s## için sonuçlar gösteriliyor</string>
   <string name="story_item_share_popup_title">Öyküyü paylaş</string>
   <string name="story_item_search_by_tag_hint">#etikete göre ara</string>
-  <string name="story_item_swipe_hint_up">Kapatmak için yukarı</string>
-  <string name="story_item_swipe_hint_over">Okumak için üzerine</string>
   <string name="story_item_read_with_orweb">Makalenin tamamını oku</string>
   <string name="error_feed_404">Besleme bulunamadı</string>
   <string name="error_feed_bad_url">Besleme bağlantısı geçerli değil, lütfen düzenlemek ya da silmek için \"beslemeleri yönet\" ziyaret edin.</string>

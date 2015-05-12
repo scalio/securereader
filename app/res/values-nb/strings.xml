@@ -95,8 +95,6 @@ I innstillings-panelet kan du velge at denne funksjonen isteden også sletter he
   <string name="story_item_short_tag_results">Viser resultater for ##%1s##</string>
   <string name="story_item_share_popup_title">Del historie via</string>
   <string name="story_item_search_by_tag_hint">Søk etter #tag</string>
-  <string name="story_item_swipe_hint_up">Oppoversveip for å lukke</string>
-  <string name="story_item_swipe_hint_over">Oversveip for å lese</string>
   <string name="story_item_read_with_orweb">Les hele artikkelen</string>
   <string name="error_feed_404">Nyhetsstrøm ikke funnet</string>
   <string name="error_feed_bad_url">Nettadresse for nyhetsstrøm ugyldig, gå til \"behandle nyhetsstrømmer\" for å endre eller slette den.</string>

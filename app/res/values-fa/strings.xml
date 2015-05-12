@@ -96,8 +96,6 @@
   <string name="story_item_short_tag_results">نمایش یافته‌ها برای  ##%1s##</string>
   <string name="story_item_share_popup_title">به‌اشتراک‌گذاری گزارش از طریق</string>
   <string name="story_item_search_by_tag_hint">جست‌وجو بر اساس #برچسب</string>
-  <string name="story_item_swipe_hint_up">بفرستید بالا تا بسته شود</string>
-  <string name="story_item_swipe_hint_over">بکشید تا بخوانید</string>
   <string name="story_item_read_with_orweb">با اوروب، آنلاین بخوانید</string>
   <string name="error_feed_404">خوراک پیدا نشد</string>
   <string name="error_feed_bad_url">آدرس خوراک، درست نیست. لطفا به «مدیریت خوراک‌ها» بروید تا آن را اصلاح یا حذف کنید.‏</string>

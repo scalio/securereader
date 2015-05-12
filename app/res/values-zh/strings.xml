@@ -100,8 +100,6 @@
   <string name="story_item_short_tag_results">显示##%1s##的结果</string>
   <string name="story_item_share_popup_title">通过以下分享故事：</string>
   <string name="story_item_search_by_tag_hint">按#tag搜索</string>
-  <string name="story_item_swipe_hint_up">接近</string>
-  <string name="story_item_swipe_hint_over">细读</string>
   <string name="story_item_read_with_orweb">通过Orweb在线阅读</string>
   <string name="error_feed_404">未找到摘要</string>
   <string name="error_feed_bad_url">摘要URL无效，请访问“摘要管理”修改或删除。</string>

@@ -94,8 +94,6 @@
   <string name="story_item_short_tag_results">Mostrando resultados para ##%1s##</string>
   <string name="story_item_share_popup_title">Compartir historia vía</string>
   <string name="story_item_search_by_tag_hint">Buscar por #etiqueta</string>
-  <string name="story_item_swipe_hint_up">Arriba para cerrar</string>
-  <string name="story_item_swipe_hint_over">Encima para leer</string>
   <string name="story_item_read_with_orweb">Leer artículo completo</string>
   <string name="error_feed_404">La suscripción (feed) no fue encontrada</string>
   <string name="error_feed_bad_url">La URL de la suscripción (feed) no es válida, por favor visite \"administrar suscripciones (feeds)\" para modificarla o borrarla.</string>

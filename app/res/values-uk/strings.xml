@@ -93,8 +93,6 @@
   <string name="story_item_short_tag_results">Показую результати до ##%1s##</string>
   <string name="story_item_share_popup_title">Поділитись новиною через</string>
   <string name="story_item_search_by_tag_hint">Пошук за #ярликом</string>
-  <string name="story_item_swipe_hint_up">Вгору, щоб закрити</string>
-  <string name="story_item_swipe_hint_over">Перейти до читання</string>
   <string name="story_item_read_with_orweb">Читати статтю повністю</string>
   <string name="error_feed_404">Стрічка не була знайдена</string>
   <string name="error_feed_bad_url">Адреса URL каналу не дійсна, будь ласка, перейдіть до \"Kерувати стрічками новин\", щоб змінити або видалити її. </string>

@@ -94,8 +94,6 @@
   <string name="story_item_short_tag_results"> ##%1s##་ཆེད་དུ་གྲུབ་འབྲས་སྟོན་བཞིན་པ།</string>
   <string name="story_item_share_popup_title">དེ་བརྒྱུད་གསར་འགྱུར་བགོ་འགྲེམས་བྱོས།</string>
   <string name="story_item_search_by_tag_hint">#དྲ་སྦྲེལ་བརྒྱུད་ནས་འཚོལ། </string>
-  <string name="story_item_swipe_hint_up">སྒོ་རྒྱག་ལ་ཉེ། </string>
-  <string name="story_item_swipe_hint_over">བསྐྱར་དུ་ཀློགས། </string>
   <string name="story_item_read_with_orweb">Orwebབརྒྱུད་དྲ་ཐོག་རྩོམ་ཡིག་ཆ་ཚང་ཀློགས། </string>
   <string name="error_feed_404">གསར་བྱུང་དེ་རྙེད་མ་སོང་། </string>
   <string name="error_feed_bad_url">གསར་བྱུང་དྲ་བྱང་ཁུངས་ཐུབ་མིན་པས་དོ་དམ་གསར་བྱུང་བརྒྱུད་དེ་བཟོ་བཅོས་སམ་འབྲི་སུབ་གཏོང་།</string>
