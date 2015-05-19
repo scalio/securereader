@@ -3,6 +3,7 @@ package info.guardianproject.securereaderinterface.views;
 import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.adapters.ShareSpinnerAdapter;
+import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.adapters.TextSizeSpinnerAdapter;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothSenderFragment;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -24,6 +25,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -48,7 +50,7 @@ public class FullScreenStoryItemView extends FrameLayout
 	private NestedViewPager mContentPager;
 	private ContentPagerAdapter mContentPagerAdapter;
 
-	private ArrayList<Item> mItems;
+	private StoryListAdapter mItemAdapter;
 	private int mCurrentIndex;
 	private SparseArray<Rect> mInitialViewPositions;
 	private SparseArray<Rect> mFinalViewPositions;
@@ -61,6 +63,16 @@ public class FullScreenStoryItemView extends FrameLayout
 		inflater.inflate(R.layout.story_item, this);
 		initialize();
 	}
+
+	public FullScreenStoryItemView(Context context, AttributeSet attrs) 
+	{
+		super(context, attrs);
+		LayoutInflater inflater = LayoutInflater.from(context);
+		inflater.inflate(R.layout.story_item, this);
+		initialize();
+	}
+
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
@@ -252,14 +264,19 @@ public class FullScreenStoryItemView extends FrameLayout
 
 	public Item getCurrentStory()
 	{
-		if (mItems == null || mCurrentIndex < 0 || mCurrentIndex >= mItems.size())
+		if (mItemAdapter == null)
 			return null;
-		return mItems.get(mCurrentIndex);
+		return (Item) mItemAdapter.getItem(mCurrentIndex);
 	}
 
-	public void setStory(ArrayList<Item> items, int currentIndex, SparseArray<Rect> initialViewPositions)
+	public int getCurrentStoryIndex()
 	{
-		mItems = items;
+		return mCurrentIndex;
+	}
+	
+	public void setStory(StoryListAdapter itemAdapter, int currentIndex, SparseArray<Rect> initialViewPositions)
+	{
+		mItemAdapter = itemAdapter;
 		setCurrentStoryIndex(currentIndex);
 		mInitialViewPositions = initialViewPositions;
 		mFinalViewPositions = initialViewPositions;
@@ -271,20 +288,20 @@ public class FullScreenStoryItemView extends FrameLayout
 	{
 		mCurrentIndex = index;
 		updateNumberOfComments();
-		mBtnFavorite.setChecked(getCurrentStory().getFavorite());
-		mShareAdapter.clear();
-		Intent shareIntent = App.getInstance().socialReader.getShareIntent(getCurrentStory());
-		mShareAdapter.addSecureBTShareResolver(shareIntent);
-		//mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
-		// mShareAdapter.addIntentResolvers(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory()),
-		// PackageHelper.URI_CHATSECURE,
-		// R.string.share_via_secure_chat, R.drawable.ic_share_sharer);
-
-		mShareAdapter.addIntentResolvers(shareIntent);
-
 		Item current = getCurrentStory();
 		if (current != null)
+		{
+			mBtnFavorite.setChecked(current.getFavorite());
+			mShareAdapter.clear();
+			Intent shareIntent = App.getInstance().socialReader.getShareIntent(current);
+			mShareAdapter.addSecureBTShareResolver(shareIntent);
+			//mShareAdapter.addSecureChatShareResolver(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory(), true));
+			// mShareAdapter.addIntentResolvers(App.getInstance().socialReader.getSecureShareIntent(getCurrentStory()),
+			// PackageHelper.URI_CHATSECURE,
+			// R.string.share_via_secure_chat, R.drawable.ic_share_sharer);
+			mShareAdapter.addIntentResolvers(shareIntent);
 			DownloadsAdapter.viewed(current.getDatabaseId());
+		}
 	}
 
 	public void refresh()
@@ -468,24 +485,24 @@ public class FullScreenStoryItemView extends FrameLayout
 			mCurrentView = null;
 			mRightView = null;
 			
-			if (mItems != null && mCurrentIndex >= 0 && mCurrentIndex < mItems.size())
-				mCurrentView = getViewForItem(mItems.get(mCurrentIndex), mViews);
+			if (mItemAdapter != null && mCurrentIndex >= 0 && mCurrentIndex < mItemAdapter.getCount())
+				mCurrentView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex), mViews);
 			
 			if (mCurrentView != null)
 			{
 				if (mCurrentView.usesReverseSwipe())
 				{
 					if (mCurrentIndex > 0)
-						mRightView = getViewForItem(mItems.get(mCurrentIndex - 1), mViews);
-					if (mCurrentIndex < (mItems.size() - 1))
-						mLeftView = getViewForItem(mItems.get(mCurrentIndex + 1), mViews);
+						mRightView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItemAdapter.getCount() - 1))
+						mLeftView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex + 1), mViews);
 				}
 				else
 				{
 					if (mCurrentIndex > 0)
-						mLeftView = getViewForItem(mItems.get(mCurrentIndex - 1), mViews);
-					if (mCurrentIndex < (mItems.size() - 1))
-						mRightView = getViewForItem(mItems.get(mCurrentIndex + 1), mViews);
+						mLeftView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex - 1), mViews);
+					if (mCurrentIndex < (mItemAdapter.getCount() - 1))
+						mRightView = getViewForItem((Item)mItemAdapter.getItem(mCurrentIndex + 1), mViews);
 				}
 			}
 						

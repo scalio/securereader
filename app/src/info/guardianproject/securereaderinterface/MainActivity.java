@@ -16,6 +16,7 @@ import info.guardianproject.securereaderinterface.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import android.annotation.SuppressLint;
@@ -23,6 +24,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
+import android.database.DataSetObserver;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -268,6 +272,23 @@ public class MainActivity extends ItemExpandActivity
 		setIntent(intent);
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		
+		// save index and top position
+		Point scrollPosition = mStoryListView.saveScrollPosition();
+		
+		setContentView(R.layout.activity_main);
+		mStoryListView = (StoryListView) findViewById(R.id.storyList);
+		mStoryListView.setListener(this);
+		mStoryListView.setAdapter(mAdapter);
+
+		// restore index and position
+		mStoryListView.restoreScrollPosition(scrollPosition);
+	}
+	
 	private void syncSpinnerToCurrentItem()
 	{
 		if (getCurrentFeedFilterType() == FeedFilterType.ALL_FEEDS)
@@ -530,7 +551,7 @@ public class MainActivity extends ItemExpandActivity
 					if (LOGGING) 
 						Log.v(LOGTAG, "Found item at index " + itemIndex);
 					
-					this.openStoryFullscreen(items, itemIndex, mStoryListView.getListView(), null);
+					this.openStoryFullscreen(mAdapter, itemIndex, mStoryListView.getListView(), null);
 				}
 			}
 			mShowFeedId = 0;
@@ -596,6 +617,7 @@ public class MainActivity extends ItemExpandActivity
 	private FeedFilterType mCurrentShownFeedFilterType = null;
 	private Feed mCurrentShownFeed = null;
 	private boolean mBackShouldOpenAllFeeds;
+	private StoryListAdapter mAdapter;
 
 	@Override
 	public void onCommand(int command, Bundle commandParameters)
@@ -778,7 +800,7 @@ public class MainActivity extends ItemExpandActivity
 				{
 					headerViewId = R.layout.story_list_hint_tor;
 				}
-				mStoryListView.updateItems(mContext, items, headerViewId, mIsUpdate);
+				updateStoryListItems(mContext, items, headerViewId, mIsUpdate);
 				checkShowStoryFullScreen(items);
 			}
 				break;
@@ -816,7 +838,7 @@ public class MainActivity extends ItemExpandActivity
 				}
 
 				boolean shouldShowAddFavoriteHint = fakedItems || favoriteItems == null || favoriteItems.size() == 0;
-				mStoryListView.updateItems(mContext, favoriteItems, shouldShowAddFavoriteHint ? R.layout.story_list_hint_add_favorite : 0, mIsUpdate);
+				updateStoryListItems(mContext, favoriteItems, shouldShowAddFavoriteHint ? R.layout.story_list_hint_add_favorite : 0, mIsUpdate);
 				break;
 			}
 
@@ -828,7 +850,7 @@ public class MainActivity extends ItemExpandActivity
 			{
 				ArrayList<Item> items = flattenFeedArray(result);
 				boolean shouldShowNoSharedHint = (items == null || items.size() == 0);
-				mStoryListView.updateItems(mContext, items, shouldShowNoSharedHint ? R.layout.story_list_hint_no_shared : 0, mIsUpdate);
+				updateStoryListItems(mContext, items, shouldShowNoSharedHint ? R.layout.story_list_hint_no_shared : 0, mIsUpdate);
 				checkShowStoryFullScreen(items);
 			}
 				break;
@@ -920,5 +942,46 @@ public class MainActivity extends ItemExpandActivity
 		{
 			super.onBackPressed();
 		}
+	}
+	
+	private void updateStoryListItems(Context context, ArrayList<Item> items, int headerView, boolean isUpdate)
+	{
+		ArrayList<Item> sortedItems = sortItemsOnPublicationTime(items);
+		if (mAdapter == null)
+		{
+			mAdapter = new StoryListAdapter(context, sortedItems);
+		}
+		else if (!isUpdate)
+		{
+			mStoryListView.setAdapter(null);
+		}
+		this.mStoryListView.setAdapter(mAdapter);
+		mAdapter.setHeaderView(headerView, false);
+		mAdapter.updateItems(sortedItems);
+	}
+
+	private ArrayList<Item> sortItemsOnPublicationTime(ArrayList<Item> unsortedItems)
+	{
+		if (unsortedItems == null)
+			return null;
+
+		ArrayList<Item> items = new ArrayList<Item>(unsortedItems);
+		Collections.sort(items, new Comparator<Item>()
+		{
+			@Override
+			public int compare(Item i1, Item i2)
+			{
+				if (i1.equals(i2))
+					return 0;
+				else if (i1.getPublicationTime() == null && i2.getPublicationTime() == null)
+					return 0;
+				else if (i1.getPublicationTime() == null)
+					return 1;
+				else if (i2.getPublicationTime() == null)
+					return -1;
+				return i2.getPublicationTime().compareTo(i1.getPublicationTime());
+			}
+		});
+		return items;
 	}
 }

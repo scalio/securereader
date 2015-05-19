@@ -1,7 +1,6 @@
 package info.guardianproject.securereaderinterface.views;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.graphics.Region.Op;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -19,10 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
-
-import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
-import info.guardianproject.securereaderinterface.R;
 
 public class ExpandingFrameLayout extends FrameLayout
 {
@@ -58,7 +52,6 @@ public class ExpandingFrameLayout extends FrameLayout
 
 	private int mTopAtScrollStart = 0;
 	private float mYAtScrollStart = 0;
-	private boolean mIsScrolling = false;
 	private int mTouchSlop;
 	
 	private boolean mHasExpanded;
@@ -120,23 +113,6 @@ public class ExpandingFrameLayout extends FrameLayout
 				post(mExpandNowRunnable);
 			}
 		}
-	}
-
-	@Override
-	protected void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-		this.post(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				// On orientation change we stop the clipping and go full screen
-				mCurrentTop = 0;
-				mCurrentHeight = getHeight();
-				invalidate();
-			}
-		});
 	}
 
 	@Override
@@ -408,7 +384,6 @@ public class ExpandingFrameLayout extends FrameLayout
 			}
 			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
 			{
-				mIsScrolling = false;
 				if (mCurrentTop > mTopAtScrollStart)
 				{
 					if ((mCurrentTop - mTopAtScrollStart) > mTouchSlop)

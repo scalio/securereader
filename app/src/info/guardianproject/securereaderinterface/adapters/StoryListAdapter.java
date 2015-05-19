@@ -281,7 +281,7 @@ public class StoryListAdapter extends BaseAdapter implements OnMediaLoadedListen
 		{
 			int positionInList = mPosition - (hasHeaderView() ? 1 : 0);
 			if (mListener != null)
-				mListener.onStoryClicked(mFilteredStories, positionInList, v);
+				mListener.onStoryClicked(StoryListAdapter.this, positionInList, v);
 		}
 	}
 

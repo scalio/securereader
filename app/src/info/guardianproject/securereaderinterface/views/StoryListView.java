@@ -2,7 +2,6 @@ package info.guardianproject.securereaderinterface.views;
 
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.App;
-import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnHeaderCreatedListener;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter.OnTagClickedListener;
@@ -17,32 +16,24 @@ import info.guardianproject.securereaderinterface.widgets.HeightLimitedLinearLay
 import info.guardianproject.securereaderinterface.widgets.SyncableListView;
 import info.guardianproject.securereaderinterface.widgets.SyncableListView.OnPullDownListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 import android.content.Context;
-import android.content.res.Configuration;
-import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import info.guardianproject.securereaderinterface.R;
 
 import com.tinymission.rss.Feed;
-import com.tinymission.rss.Item;
 
 public class StoryListView extends RelativeLayout implements OnTagClickedListener, OnPullDownListener, OnHeaderCreatedListener 
 {
@@ -56,11 +47,9 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 		 */
 		void onResync();
 
-		void onStoryClicked(ArrayList<Item> items, int indexOfStory, View storyView);
+		void onStoryClicked(StoryListAdapter adapter, int indexOfStory, View storyView);
 
 		void onHeaderCreated(View headerView, int resIdHeader);
-
-		void onListViewUpdated(ListView newList);
 	}
 
 	private TextView mTvTagResults;
@@ -77,9 +66,6 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 	private AppearingFrameLayout mFrameLoading;
 	private AppearingRelativeLayout mFrameError;
 	private View mIvLoading;
-
-	private long mOldItemId = Integer.MIN_VALUE;
-	private int mOldY;
 	
 	public StoryListView(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -130,9 +116,9 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 		});
 
 		mListStories = (SyncableListView) rootView.findViewById(R.id.lvStories);
-		if (mAdapter == null)
-			createOrUpdateAdapter(getContext(), null, 0);
-		mListStories.setAdapter(mAdapter);
+		//if (mAdapter == null)
+		//	createOrUpdateAdapter(getContext(), null, 0);
+		//mListStories.setAdapter(mAdapter);
 		mListHeader = (HeightLimitedLinearLayout) rootView.findViewById(R.id.storyListHeader);
 		mListHeader.setVisibility(View.INVISIBLE);
 		mFrameLoading.setVisibility(View.GONE);
@@ -252,7 +238,8 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 			mTvTagResults.setVisibility(View.VISIBLE);
 			mBtnCloseTagSearch.setVisibility(View.VISIBLE);
 		}
-		mAdapter.setTagFilter(feed, tag);
+		if (mAdapter != null)
+			mAdapter.setTagFilter(feed, tag);
 	}
 
 	@Override
@@ -370,104 +357,18 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 			mListener.onResync();
 	}
 
-	@Override
-	protected void onConfigurationChanged(Configuration newConfig)
+	public void setAdapter(StoryListAdapter adapter)
 	{
-		super.onConfigurationChanged(newConfig);
-		post(new Runnable()
+		if (mAdapter != adapter)
 		{
-			@Override
-			public void run() {
-				// Remember old scroll position, so we can restore that after
-				// orientation change!
-				//
-				saveListPosition(false);
-				removeAllViews();
-				init();
-				if (mAdapter != null)
-					mAdapter.notifyDataSetChanged();
-					
-				// Tell our listener that we recreated the list view!
-				if (mListener != null)
-					mListener.onListViewUpdated(mListStories);
-			}
-		});
-	}
-
-	private void createOrUpdateAdapter(Context context, ArrayList<Item> items, int headerView)
-	{
-		if (mAdapter == null)
-		{
-			mAdapter = new StoryListAdapter(context, null);
-			mAdapter.setListener(mListener);
-			mAdapter.setOnTagClickedListener(this);
-			mAdapter.registerDataSetObserver(new DataSetObserver()
+			mAdapter = adapter;
+			if (mAdapter != null)
 			{
-				@Override
-				public void onChanged()
-				{
-					super.onChanged();
-					scrollToSavedPosition();
-				}
-			});
-		}
-		mAdapter.setOnHeaderCreatedListener(this);
-		mAdapter.setHeaderView(headerView, false);
-		mAdapter.updateItems(sortItemsOnPublicationTime(items));
-	}
-
-	public void updateItems(Context context, ArrayList<Item> items, int headerView, final boolean rememberPosition)
-	{
-		// Remember old position so we can restore it after update if we want.
-		saveListPosition(!rememberPosition);
-		createOrUpdateAdapter(context, items, headerView);
-	}
-
-	private void saveListPosition(boolean reset) 
-	{
-		long oldItemId = -1;
-		int oldY = 0;
-		if (mListStories != null && !reset && mListStories.getCount() > 0)
-		{
-			int oldIndex = mListStories.getFirstVisiblePosition();
-			if (oldIndex != -1)
-				oldItemId = mListStories.getAdapter().getItemId(oldIndex);
-			View child = mListStories.getChildAt(0);
-			if (child != null)
-				oldY = child.getTop();
-			
-			if (LOGGING)	
-				Log.v(LOGTAG, "Remember list position " + oldItemId + "," + oldY);
-		}
-		mOldItemId = oldItemId;
-		mOldY = oldY;
-	}
-	
-	private void scrollToSavedPosition()
-	{
-		if (mOldItemId != Integer.MIN_VALUE)
-		{
-			int index = 0;
-			int offset = 0;
-			
-			if (LOGGING)
-				Log.v(LOGTAG, "Scrolling list back to item " + mOldItemId + "," + mOldY);
-			
-			if (mOldItemId != -1)
-			{
-				ListAdapter adapter = mListStories.getAdapter();
-				for (int iItem = 0; iItem < adapter.getCount(); iItem++)
-				{
-					if (adapter.getItemId(iItem) == mOldItemId)
-					{
-						index = iItem;
-						offset = mOldY;
-						break;
-					}
-				}
+				mAdapter.setListener(mListener);
+				mAdapter.setOnTagClickedListener(this);
+				mAdapter.setOnHeaderCreatedListener(this);
 			}
-			mListStories.setSelectionFromTop(index, offset);
-			mOldItemId = Integer.MIN_VALUE;
+			mListStories.setAdapter(mAdapter);
 		}
 	}
 
@@ -527,31 +428,6 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 			mListener.onHeaderCreated(headerView, resIdHeader);
 	}
 
-	private ArrayList<Item> sortItemsOnPublicationTime(ArrayList<Item> unsortedItems)
-	{
-		if (unsortedItems == null)
-			return null;
-
-		ArrayList<Item> items = new ArrayList<Item>(unsortedItems);
-		Collections.sort(items, new Comparator<Item>()
-		{
-			@Override
-			public int compare(Item i1, Item i2)
-			{
-				if (i1.equals(i2))
-					return 0;
-				else if (i1.getPublicationTime() == null && i2.getPublicationTime() == null)
-					return 0;
-				else if (i1.getPublicationTime() == null)
-					return 1;
-				else if (i2.getPublicationTime() == null)
-					return -1;
-				return i2.getPublicationTime().compareTo(i1.getPublicationTime());
-			}
-		});
-		return items;
-	}
-
 	public void showError(String error)
 	{
 		if (mFrameError != null)
@@ -572,5 +448,18 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 	public void setCurrentFeed(Feed feed) 
 	{
 		mFeed = feed;
+	}
+
+	public Point saveScrollPosition()
+	{
+		int index = mListStories.getFirstVisiblePosition();
+		View v = mListStories.getChildAt(0);
+		int top = (v == null) ? 0 : (v.getTop() - mListStories.getPaddingTop());
+		return new Point(index, top);
+	}
+	
+	public void restoreScrollPosition(Point pt)
+	{
+		mListStories.setSelectionFromTop(pt.x, pt.y);
 	}
 }

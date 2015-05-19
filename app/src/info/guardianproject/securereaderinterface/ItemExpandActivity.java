@@ -1,8 +1,7 @@
 package info.guardianproject.securereaderinterface;
 
 
-import java.util.ArrayList;
-
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout;
@@ -61,46 +60,89 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 	}
 
 	@Override
-	public void onStoryClicked(ArrayList<Item> stories, int index, View storyView)
+	public void onStoryClicked(StoryListAdapter adapter, int index, View storyView)
 	{
 		if (storyView != null)
-			openStoryFullscreen(stories, index, (ListView) storyView.getParent(), storyView);
+		{
+			openStoryFullscreen(adapter, index, (ListView) storyView.getParent(), storyView);
+		}
 	}
 
-	public void openStoryFullscreen(ArrayList<Item> stories, int index, ListView listStories, View storyView)
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		updateItemView();
+	}
+
+	@Override
+	public void setContentView(View view) {
+		super.setContentView(view);
+		updateItemView();
+	}
+
+	@Override
+	public void setContentView(View view, LayoutParams params) {
+		super.setContentView(view, params);
+		updateItemView();
+	}
+
+	private void updateItemView() 
 	{
-		FrameLayout screenFrame = getTopFrame();
-
-		if (stories != null && screenFrame != null)
+		if (mFullView != null)
 		{
-			// Remove old view (if set) from view tree
-			//
-			removeFullStoryView();
-
+			View container = findViewById(R.id.storyContainer);
+			if (container != null && isInFullScreenMode()) {
+				((ViewGroup)mFullView.getParent()).removeView(mFullView);
+				
+				// Close old full screen view
+				//
+				configureActionBarForFullscreen(false);
+				this.removeFullStoryView(false);
+				this.mInFullScreenMode = false;
+				scrollToCurrentItem();
+				
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+						FrameLayout.LayoutParams.MATCH_PARENT,
+						FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
+						| Gravity.TOP);
+				mFullView.setLayoutParams(params);
+				((FrameLayout)container).addView(mFullView);
+			} else if (container == null && !isInFullScreenMode()) {
+				((ViewGroup)mFullView.getParent()).removeView(mFullView);
+//				createFullScreenContainer(mFullView);
+//				mFullStoryView.setCollapsedSize(0, 0, getTopFrame().getHeight());
+			}
+		}
+	}
+	
+	private void createFullScreenContainer(FullScreenStoryItemView content) {
+		FrameLayout screenFrame = getTopFrame();
+		if (screenFrame != null) {
 			// Disable drag of the left side menu
 			//
 			mLeftSideMenu.setDragEnabled(false);
 
-			mFullView = new FullScreenStoryItemView(this);
-			mFullStoryView = new ExpandingFrameLayout(this, mFullView, getSupportActionBar().getHeight());
-			mInFullScreenMode = true;
-			
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT,
-					Gravity.LEFT | Gravity.TOP);
-			// params.topMargin = UIHelpers.getStatusBarHeight(this);
-			mFullStoryView.setLayoutParams(params);
+			// Remove old view (if set) from view tree
+			//
+			removeFullStoryView(false);
 
+	        TypedArray ta = getTheme().obtainStyledAttributes(new int[] { R.attr.actionBarSize });
+	        int actionBarHeight = ta.getDimensionPixelSize(0, getSupportActionBar().getHeight());
+	        ta.recycle();
+			
+			mFullStoryView = new ExpandingFrameLayout(this, content, actionBarHeight);
+			mInFullScreenMode = true;
+
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+					FrameLayout.LayoutParams.MATCH_PARENT,
+					FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
+							| Gravity.TOP);
+			mFullStoryView.setLayoutParams(params);
 			screenFrame.addView(mFullStoryView);
 
-			mFullView.setStory(stories, index, getStoredPositions((ViewGroup) storyView));
-			this.prepareFullScreenView(mFullView);
-
-			mFullListStories = listStories;
-			mFullStoryView.setExpansionListener(new ExpansionListener()
-			{
+			mFullStoryView.setExpansionListener(new ExpansionListener() {
 				@Override
-				public void onExpanded()
-				{
+				public void onExpanded() {
 					configureActionBarForFullscreen(true);
 
 					// Minimize overdraw by hiding list
@@ -108,15 +150,38 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				}
 
 				@Override
-				public void onCollapsed()
-				{
-					removeFullStoryView();
-					mLeftSideMenu.setDragEnabled(true);
+				public void onCollapsed() {
+					removeFullStoryView(true);
 					refreshMenu();
 				}
 			});
+		}
+	}
+	
+	public void openStoryFullscreen(StoryListAdapter adapter, int index,
+			ListView listStories, View storyView) {
+		if (adapter != null) {
+			
+			mFullListStories = listStories;
+			
+			View container = findViewById(R.id.storyContainer);
+			if (container != null) {
+				mFullView = new FullScreenStoryItemView(this);
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+					FrameLayout.LayoutParams.MATCH_PARENT,
+					FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
+							| Gravity.TOP);
+				mFullView.setLayoutParams(params);
+				((FrameLayout)container).addView(mFullView);
+			} else if (getTopFrame() != null) {
 
-			setCollapsedSizeToStoryViewSize(storyView);
+				mFullView = new FullScreenStoryItemView(this);
+				createFullScreenContainer(mFullView);
+				setCollapsedSizeToStoryViewSize(storyView);
+			}
+			this.prepareFullScreenView(mFullView);
+			mFullView.setStory(adapter, index,
+					getStoredPositions((ViewGroup) storyView));
 		}
 	}
 
@@ -191,14 +256,19 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		return null;
 	}
 
-	private void removeFullStoryView()
+	private void removeFullStoryView(boolean animated)
 	{
 		if (mFullStoryView != null)
 		{
 			try
 			{
-				AnimationHelpers.fadeOut(mFullStoryView, 500, 0, true);
+				if (animated)
+					AnimationHelpers.fadeOut(mFullStoryView, 500, 0, true);
+				else
+					((ViewGroup)mFullStoryView.getParent()).removeView(mFullStoryView);
+				mFullStoryView.setExpansionListener(null);
 				mFullStoryView = null;
+				mLeftSideMenu.setDragEnabled(true);
 			}
 			catch (Exception ex)
 			{
@@ -263,8 +333,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 	{
 		mInFullScreenMode = false;
 		configureActionBarForFullscreen(false);
-		// getSupportActionBar().hide();
-		// getSupportActionBar().show();
+		mFullListStories.setVisibility(View.VISIBLE);
 		mFullStoryView.post(new Runnable()
 		{
 			// Reason for post? We need to give the call above
@@ -276,14 +345,12 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			@Override
 			public void run()
 			{
-				updateList();
 				scrollToCurrentItem();
 				mFullListStories.post(new Runnable()
 				{
 					@Override
 					public void run()
 					{
-						mFullListStories.setVisibility(View.VISIBLE);
 						if (mFullView != null)
 							mFullView.onBeforeCollapse();
 						if (mFullStoryView != null)
@@ -296,82 +363,40 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 
 	boolean bWaitingForCallToScroll = false;
 	
-	private void scrollToCurrentItem()
-	{		
-		// Try to find index of current item, so that we can
-		// scroll the
-		// list to the actual story the user was reading
-		// while in full screen mode.
-		Item currentItem = mFullView.getCurrentStory();
-		if (currentItem != null && mFullListStories.getAdapter() != null)
-		{
-			ListAdapter adapter = mFullListStories.getAdapter();
-			for (int iItem = 0; iItem < adapter.getCount(); iItem++)
-			{
-				Item item = (Item) adapter.getItem(iItem);
-				if (item.getDatabaseId() == currentItem.getDatabaseId())
-				{
-					bWaitingForCallToScroll = true;
-					mFullListStories.setOnScrollListener(new OnScrollListener()
-					{
-						@Override
-						public void onScrollStateChanged(AbsListView view,
-								int scrollState) {
-						}
-
-						@Override
-						public void onScroll(AbsListView view,
-								int firstVisibleItem, int visibleItemCount,
-								int totalItemCount) {
-							if (!bWaitingForCallToScroll)
-								mFullListStories.setOnScrollListener(null);
-							
-					        Item currentItem = mFullView.getCurrentStory();
-					        for (int i = firstVisibleItem; i < totalItemCount && i < (firstVisibleItem + visibleItemCount); i++)
-							{
-								Item item = (Item) mFullListStories.getItemAtPosition(i);
-								if (item.getDatabaseId() == currentItem.getDatabaseId()) 
-								{
-									View storyView = mFullListStories.getChildAt(i - mFullListStories.getFirstVisiblePosition());
-									if (storyView != null)
-										setCollapsedSizeToStoryViewSize(storyView);
-									break;
-								}
-							}
-						}
-					});
-					mFullListStories.setSelectionFromTop(iItem, mFullOpeningOffset);
-					bWaitingForCallToScroll = false;
-					break;
+	private void scrollToCurrentItem() {
+		bWaitingForCallToScroll = true;
+		if (mFullStoryView != null) {
+			mFullListStories.setOnScrollListener(new OnScrollListener() {
+				@Override
+				public void onScrollStateChanged(AbsListView view,
+						int scrollState) {
 				}
-			}
+
+				@Override
+				public void onScroll(AbsListView view, int firstVisibleItem,
+						int visibleItemCount, int totalItemCount) {
+					if (!bWaitingForCallToScroll)
+						mFullListStories.setOnScrollListener(null);
+
+					Item currentItem = mFullView.getCurrentStory();
+					for (int i = firstVisibleItem; i < totalItemCount
+							&& i < (firstVisibleItem + visibleItemCount); i++) {
+						Item item = (Item) mFullListStories
+								.getItemAtPosition(i);
+						if (item.getDatabaseId() == currentItem.getDatabaseId()) {
+							View storyView = mFullListStories.getChildAt(i
+									- mFullListStories
+											.getFirstVisiblePosition());
+							if (storyView != null)
+								setCollapsedSizeToStoryViewSize(storyView);
+							break;
+						}
+					}
+				}
+			});
 		}
+		mFullListStories.setSelectionFromTop(mFullView.getCurrentStoryIndex(),
+				mFullOpeningOffset);
+		bWaitingForCallToScroll = false;
 	}
-
-	/**
-	 * Called before we collapse the full screen view. This is to update all
-	 * list view items that are visible. We might have loaded media etc while in
-	 * full screen mode, so we need to pick that up in the list.
-	 */
-	private void updateList()
-	{
-		if (mFullListStories == null || mFullListStories.getCount() == 0)
-			return;
-
-		if (mFullListStories.getAdapter() != null && mFullListStories.getAdapter() instanceof BaseAdapter)
-		{
-			((BaseAdapter) mFullListStories.getAdapter()).notifyDataSetChanged();
-		}
-	}
-
-	@Override
-	public void onListViewUpdated(ListView newList)
-	{
-		// List view has been recreated (probably due to orientation change).
-		// Remember the new one!
-		mFullListStories = newList;
-		if (isInFullScreenMode() && mFullListStories != null)
-			mFullListStories.setVisibility(View.INVISIBLE);
-	}
-
 }
