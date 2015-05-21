@@ -442,6 +442,7 @@ public class MainActivity extends ItemExpandActivity
 	@Override
 	protected void configureActionBarForFullscreen(boolean fullscreen)
 	{
+		super.configureActionBarForFullscreen(fullscreen);
 		if (mMenuItemFeed != null)
 			mMenuItemFeed.setVisible(!fullscreen);
 		if (mMenuItemShare != null)

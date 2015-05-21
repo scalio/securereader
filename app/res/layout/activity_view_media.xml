@@ -1,9 +1,25 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/view_media_fragment"
-    android:name="info.guardianproject.securereaderinterface.ViewMediaFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    tools:context=".ViewMediaActivity" 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout="@layout/view_media_fragment" >
-</fragment>
+    android:layout_height="match_parent">
 
+    <!-- The action bar -->
+    
+    <!-- The main content view -->
+    <fragment
+   		android:id="@+id/view_media_fragment"
+   		android:name="info.guardianproject.securereaderinterface.ViewMediaFragment"
+   		android:layout_width="match_parent"
+   		android:layout_height="match_parent"
+   		tools:layout="@layout/view_media_fragment" >
+	</fragment>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/actionbar" />
+
+</RelativeLayout>

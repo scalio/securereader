@@ -1,7 +1,6 @@
 package info.guardianproject.securereaderinterface;
 
 
-import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -130,11 +129,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			//
 			removeFullStoryView(false);
 
-	        TypedArray ta = getTheme().obtainStyledAttributes(new int[] { R.attr.actionBarSize });
-	        int actionBarHeight = ta.getDimensionPixelSize(0, getSupportActionBar().getHeight());
-	        ta.recycle();
-			
-			mFullStoryView = new ExpandingFrameLayout(this, content, actionBarHeight);
+			mFullStoryView = new ExpandingFrameLayout(this, content);
 			mInFullScreenMode = true;
 
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -142,6 +137,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 					RelativeLayout.LayoutParams.MATCH_PARENT);
 			mFullStoryView.setLayoutParams(params);
 			screenFrame.addView(mFullStoryView);
+			mToolbar.bringToFront();
 
 			mFullStoryView.setExpansionListener(new ExpansionListener() {
 				@Override
@@ -288,8 +284,9 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		}
 	}
 
-	protected void configureActionBarForFullscreen(boolean b)
+	protected void configureActionBarForFullscreen(boolean isFullscreen)
 	{
+		setUsePullDownActionBar(isFullscreen);
 	}
 
 	private boolean isInFullScreenMode()

@@ -12,6 +12,7 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListe
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
+import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.ExpandAnim;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 import android.annotation.SuppressLint;
@@ -26,6 +27,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -33,9 +36,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,7 +60,17 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	private int mIdMenu;
 	private Menu mOptionsMenu;
 	private boolean mDisplayHomeAsUp = false;
-
+	
+	/**
+	 *  These are for action bar pull down support (e.g. used in full screen item view)
+	 *
+	 */
+	private boolean mUsePullDownActionBar = false;
+	private int mToolbarHideOffset = 0;
+	private int mHideOffsetAtScrollStart = 0;
+	private float mYAtScrollStart = 0;
+	private int mTouchSlop;
+	
 	/**
 	 * The main menu that will host all content links.
 	 */
@@ -62,7 +79,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	protected ActionBarDrawerToggle mDrawerToggle;
 	
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
-	private Toolbar mToolbar;
+	protected Toolbar mToolbar;
 
 
 	protected void setMenuIdentifier(int idMenu)
@@ -92,6 +109,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		}
 	}
 
+	protected void setContentViewNoBase(int layoutResID) 
+	{
+		super.setContentView(layoutResID);
+	}
+
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -791,5 +814,133 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	protected Feed getCurrentFeed()
 	{
 		return App.getInstance().getCurrentFeed();
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		if (mUsePullDownActionBar && mToolbar != null)
+		{
+			if (ev.getAction() == MotionEvent.ACTION_DOWN)
+			{
+				mHideOffsetAtScrollStart = mToolbarHideOffset;
+				mYAtScrollStart = ev.getY();
+				final ViewConfiguration configuration = ViewConfiguration.get(this);
+				mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+			}
+			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
+			{
+				int diff = mToolbarHideOffset - mHideOffsetAtScrollStart;
+				if (diff < 0)
+				{
+					if (-diff > mTouchSlop)
+						showActionBar();
+					else
+						hideActionBar();
+				}
+				else if (diff > 0)
+				{
+					if (diff > mTouchSlop)
+						hideActionBar();
+					else
+						showActionBar();
+				}
+			}
+			else if (ev.getAction() == MotionEvent.ACTION_MOVE)
+			{
+				double yDelta = ev.getY() - mYAtScrollStart;
+				if (yDelta > 0)
+					yDelta = Math.max(0, yDelta - mTouchSlop);
+				else if (yDelta < 0)
+					yDelta = Math.min(0, yDelta + mTouchSlop);
+				int newTop = (int)(mHideOffsetAtScrollStart - yDelta);
+				setToolbarHideOffset(Math.max(0, Math.min(newTop, mToolbar.getHeight())));
+				ev.offsetLocation(0, mToolbarHideOffset - mHideOffsetAtScrollStart);
+			}
+		}
+		return super.dispatchTouchEvent(ev);
+	}
+
+	
+	public boolean getUsePullDownActionBar()
+	{
+		return this.mUsePullDownActionBar;
+	}
+	
+	public void setUsePullDownActionBar(boolean usePullDownActionBar)
+	{
+		mUsePullDownActionBar = usePullDownActionBar;
+		if (!mUsePullDownActionBar)
+		{
+			// Show the bar!
+			mToolbar.removeCallbacks(hideActionBarRunnable);
+			animateActionBarHideOffsetTo(0);
+		}
+		else
+		{
+			// Use pulldown. If visible, it will be hidden soon...
+			mToolbar.postDelayed(hideActionBarRunnable, 5000);
+		}
+	}
+	
+	private final Runnable hideActionBarRunnable = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			hideActionBar();
+		}
+	};
+
+	public void showActionBar()
+	{
+		if (mToolbar != null)
+		{
+			mToolbar.removeCallbacks(hideActionBarRunnable);
+			animateActionBarHideOffsetTo(0);
+			mToolbar.postDelayed(hideActionBarRunnable, 5000);
+		}
+	}
+
+	public void hideActionBar()
+	{
+		animateActionBarHideOffsetTo(mToolbar.getHeight());
+	}
+
+	private void animateActionBarHideOffsetTo(int target)
+	{
+		if (mToolbar.getHeight() > 0)
+		{
+			int distance = Math.abs(mToolbarHideOffset - target);
+			long duration = (300 * distance) / mToolbar.getHeight();
+			final ActionBarAnim anim = new ActionBarAnim(target);
+			anim.setDuration(duration);
+			mToolbar.startAnimation(anim);
+		}
+	}
+	
+	private void setToolbarHideOffset(int offset)
+	{
+		mToolbarHideOffset = offset;
+		ViewCompat.setTranslationY(mToolbar, -mToolbarHideOffset);
+	}
+	
+	public class ActionBarAnim extends Animation
+	{
+		int fromOffset;
+		int toOffset;
+
+		public ActionBarAnim(int toOffset)
+		{
+			this.fromOffset = mToolbarHideOffset;
+			this.toOffset = toOffset;
+		}
+
+		@Override
+		protected void applyTransformation(float interpolatedTime, Transformation t)
+		{
+			int newOffset = (int) (fromOffset + ((toOffset - fromOffset) * interpolatedTime));
+			setToolbarHideOffset(newOffset);
+		}
 	}
 }

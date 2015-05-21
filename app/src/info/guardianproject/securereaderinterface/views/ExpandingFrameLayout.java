@@ -6,12 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Region.Op;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -49,10 +46,6 @@ public class ExpandingFrameLayout extends FrameLayout
 	int mCurrentClip = 0;
 	int mCurrentTop = 0;
 	int mCurrentHeight = 0;
-
-	private int mTopAtScrollStart = 0;
-	private float mYAtScrollStart = 0;
-	private int mTouchSlop;
 	
 	private boolean mHasExpanded;
 	private ExpansionListener mExpansionListener;
@@ -61,14 +54,12 @@ public class ExpandingFrameLayout extends FrameLayout
 	private boolean isTakingSnap;
 	private boolean mUseBitmap = false;
 	private Bitmap mBitmap;
-	private int mActionBarHeight;
 
-	public ExpandingFrameLayout(Context context, View content, int actionBarHeight)
+	public ExpandingFrameLayout(Context context, View content)
 	{
 		super(context);
 
 		mContentView = content;
-		mActionBarHeight = actionBarHeight;
 
 		FrameLayout.LayoutParams lays = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
 				| Gravity.TOP);
@@ -287,8 +278,6 @@ public class ExpandingFrameLayout extends FrameLayout
 	 */
 	public void collapse(int duration)
 	{
-		removeCallbacks(hideActionBarRunnable);
-		
 		// TODO - remove old snapshot and take new one here to save memory?
 		takeSnapshot();
 		mUseBitmap = true;
@@ -363,81 +352,5 @@ public class ExpandingFrameLayout extends FrameLayout
 		{
 			return true;
 		}
-	}
-
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev)
-	{
-		// If the event is within our clipped area we should not react to it!
-		//
-		int[] location = new int[2];
-		this.getLocationOnScreen(location);
-		if ((location[1] + mCurrentTop) > ev.getY())
-			return false;
-
-			if (ev.getAction() == MotionEvent.ACTION_DOWN)
-			{
-				mTopAtScrollStart = mCurrentTop;
-				mYAtScrollStart = ev.getY();
-				final ViewConfiguration configuration = ViewConfiguration.get(getContext());
-				mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
-			}
-			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
-			{
-				if (mCurrentTop > mTopAtScrollStart)
-				{
-					if ((mCurrentTop - mTopAtScrollStart) > mTouchSlop)
-						showActionBar(mActionBarHeight);
-					else
-						hideActionBar();
-				}
-				else if (mCurrentTop < mTopAtScrollStart)
-				{
-					if ((mTopAtScrollStart - mCurrentTop) > mTouchSlop)
-						hideActionBar();
-					else
-						showActionBar(mActionBarHeight);
-				}
-			}
-			else if (ev.getAction() == MotionEvent.ACTION_MOVE)
-			{
-				double yDelta = ev.getY() - mYAtScrollStart;
-				if (yDelta > 0)
-					yDelta = Math.max(0, yDelta - mTouchSlop);
-				else if (yDelta < 0)
-					yDelta = Math.min(0, yDelta + mTouchSlop);
-				int newTop = (int)(mTopAtScrollStart + yDelta);
-				setSize(mCurrentClip, Math.max(0, Math.min(newTop, mActionBarHeight)), mCurrentHeight);
-				ev.offsetLocation(0, -mCurrentTop + mTopAtScrollStart);
-			}
-		return super.dispatchTouchEvent(ev);
-	}
-
-	private final Runnable hideActionBarRunnable = new Runnable()
-	{
-		@Override
-		public void run()
-		{
-			hideActionBar();
-		}
-	};
-
-	public void showActionBar(int actionBarHeight)
-	{
-		removeCallbacks(hideActionBarRunnable);
-
-		long duration = 300 * (actionBarHeight - mCurrentTop) / mActionBarHeight;
-		final ExpandAnim anim = new ExpandAnim(mCurrentClip, 0, mCurrentTop, actionBarHeight, getHeight(), getHeight());
-		anim.setDuration(duration);
-		this.startAnimation(anim);
-		this.postDelayed(hideActionBarRunnable, 5000);
-	}
-
-	public void hideActionBar()
-	{
-		long duration = 300 * (mCurrentTop) / mActionBarHeight;
-		final ExpandAnim anim = new ExpandAnim(mCurrentClip, mCurrentClip, mCurrentTop, 0, getHeight(), getHeight());
-		anim.setDuration(duration);
-		this.startAnimation(anim);
 	}
 }

@@ -382,6 +382,7 @@ public class PostActivity extends ItemExpandActivity implements ActionBar.TabLis
 	@Override
 	protected void configureActionBarForFullscreen(boolean fullscreen)
 	{
+		super.configureActionBarForFullscreen(fullscreen);
 		if (mMenuAddPost != null)
 			mMenuAddPost.setVisible(!fullscreen);
 		if (mMenuItemTag != null)
