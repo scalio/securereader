@@ -7,7 +7,7 @@
 
     <uses-sdk
 		android:minSdkVersion="9"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -32,8 +32,7 @@
         <activity
             android:name="info.guardianproject.securereaderinterface.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppThemeNoActionBar" >
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
