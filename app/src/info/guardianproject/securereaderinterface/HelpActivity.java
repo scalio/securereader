@@ -101,13 +101,6 @@ public class HelpActivity extends FragmentActivityWithMenu
 		return getIntent().getBooleanExtra("useLeftSideMenu", true);
 	}
 
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		performRotateTransition((ViewGroup)mDrawerLayout.getParent());
-	}
-
 	private String getBuildVersion()
 	{
 		String ret = "unknown";
