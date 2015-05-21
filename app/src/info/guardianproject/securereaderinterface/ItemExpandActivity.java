@@ -151,7 +151,6 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				@Override
 				public void onCollapsed() {
 					removeFullStoryView(true);
-					refreshMenu();
 				}
 			});
 		}

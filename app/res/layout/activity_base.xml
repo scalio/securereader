@@ -5,7 +5,9 @@
     android:id="@+id/layout_root"
     tools:context=".MainActivity" 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    >
 
     <!-- The action bar -->
     <include android:id="@+id/toolbar" layout="@layout/actionbar" />

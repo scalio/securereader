@@ -6,7 +6,8 @@
     style="@style/Widget.Reader.ActionBar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:minHeight="?attr/actionBarSize" >
+    android:minHeight="?attr/actionBarSize" 
+    >
 
     <info.guardianproject.securereaderinterface.widgets.CustomFontTextView
         android:id="@+id/toolbar_title"

@@ -2,12 +2,9 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         
-        <item name="actionBarThemeColorTitle">#888888</item> -->
-        <item name="actionBarThemeColorIconTint">#888888</item>
-        <item name="actionBarThemeColorDivider">@color/claret</item>
-        <item name="actionBarThemeBackground">@drawable/actionbar_light_background</item>
-        <item name="actionBarThemeButtonBackground">@drawable/actionbar_light_button_selector</item>
-        <item name="actionBarThemeItemBackground">@drawable/actionbar_light_item_selector</item>
+        <item name="colorPrimary">@color/claret</item>
+        <item name="colorPrimaryDark">#444444</item>
+        <item name="colorControlNormal">#ffffff</item>
                 
         <item name="actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
         <item name="actionBarTabStyle">@style/AppActionBarTabStyle</item>
@@ -17,39 +14,27 @@
     </style>
 
     <style name="Widget.Reader.ActionBar" parent="AppTheme">
-        <item name="android:background">?attr/actionBarThemeBackground</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation">4dp</item>
         <item name="theme">@style/ThemeOverlay.Reader.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.Reader.ActionBarPopup</item>
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
     </style>
 
-    <style name="AppActionBarPopupListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:divider">?attr/actionBarThemeColorDivider</item>
-        <item name="android:dividerHeight">1px</item>
-        <item name="android:listSelector">?attr/actionBarThemeItemBackground</item>
-    </style>
-
-    <style name="ThemeOverlay.Reader.ActionBarPopup" parent="ThemeOverlay.AppCompat.Light">
-        <item name="dropDownListViewStyle">@style/AppActionBarPopupListView</item>
-    </style>
-
-    <style name="ThemeOverlay.Reader.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">?attr/actionBarThemeColorIconTint</item>
-        <item name="selectableItemBackground">?attr/actionBarThemeButtonBackground</item>
+    <style name="ThemeOverlay.Reader.ActionBar" parent="AppTheme">
         <item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
         <item name="actionButtonStyle">@style/AppActionButtonStyle</item>
     </style>
 
     <style name="AppThemeReporter" parent="AppTheme">
-        <item name="actionBarThemeColorTitle">#ffffff</item> -->
-        <item name="actionBarThemeColorIconTint">#ff0000ff</item>
-        <item name="actionBarThemeColorDivider">@color/claret</item>
-        <item name="actionBarThemeBackground">@drawable/actionbar_dark_background</item>
-        <item name="actionBarThemeButtonBackground">@drawable/actionbar_dark_button_selector</item>
-        <item name="actionBarThemeItemBackground">@drawable/actionbar_dark_item_selector</item>
     </style>
 
     <style name="AppActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">56dip</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+    
+    <style name="AppActionBarOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <!-- <item name="android:src">@drawable/ic_action_overflow</item> -->
         <item name="android:minWidth">56dip</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
@@ -77,24 +62,17 @@
         <item name="android:background">@drawable/actionbar_light_button_inverted_selector</item>
     </style>
 
-    <style name="ActionBarSpinnerStyle" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
-        <item name="android:dropDownListViewStyle">@style/AppActionBarPopupListView</item>
-        <item name="dropDownListViewStyle">@style/AppActionBarPopupListView</item>
-        <item name="listPopupWindowStyle">@style/AppActionBarPopupListView</item>
+    <style name="ActionBarSpinnerStyle" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:overlapAnchor">true</item>
     </style>
 
     <style name="AppActionBarTitleStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">?attr/actionBarThemeColorTitle</item>
+        <item name="android:textColor">?attr/colorControlNormal</item>
         <item name="font">Glegoo-Regular</item>
-    </style>
-
-    <style name="AppActionBarOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-        <!-- <item name="android:src">@drawable/ic_action_overflow</item> -->
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:minWidth">56dip</item>
-        <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
 
     <!-- Shared styles -->

@@ -82,7 +82,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 								// every view!
 	private String mCountFavorites;
 	private String mCountShared;
-	private String mCountNumInProgress;
 
 	public FeedFilterView(Context context)
 	{
@@ -134,13 +133,12 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 		return isOnline;
 	}
 
-	public void updateList(ArrayList<Feed> feeds)
+	public void updateList(ArrayList<Feed> feeds, int countFavorites, int countShared)
 	{
 		mIsOnline = isOnline();
 		mListFeeds = feeds;
-		mCountFavorites = String.valueOf(App.getInstance().socialReader.getAllFavoritesCount());
-		mCountShared = String.valueOf(App.getInstance().socialReader.getAllSharedCount());
-		mCountNumInProgress = String.valueOf(DownloadsAdapter.getNumInProgress());
+		mCountFavorites = String.valueOf(countFavorites);
+		mCountShared = String.valueOf(countShared);
 		invalidateViews();
 	}
 	

@@ -12,7 +12,6 @@ import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListe
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
-import info.guardianproject.securereaderinterface.views.ExpandingFrameLayout.ExpandAnim;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 import android.annotation.SuppressLint;
@@ -152,20 +151,26 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 			}
 			else
 			{
+				mMenuViewHolder = null;
 				mLeftSideMenu = mDrawerLayout.findViewById(R.id.left_drawer);
 				mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0)
 				{
+					private boolean isClosed = true;
+					
 					@Override
 					public void onDrawerClosed(View drawerView) {
 						super.onDrawerClosed(drawerView);
 						runDeferredCommands();
+						isClosed = true;
 					}
 
 					@Override
-					public void onDrawerStateChanged(int newState) {
-						super.onDrawerStateChanged(newState);
-						if (newState == DrawerLayout.STATE_DRAGGING)
+					public void onDrawerSlide(View drawerView, float slideOffset) {
+						super.onDrawerSlide(drawerView, slideOffset);
+						if (isClosed && slideOffset > 0)
 						{
+							isClosed = false;
+							updateLeftSideMenu();
 							if (mMenuViewHolder != null)
 							{
 								mMenuViewHolder.viewFeedFilter.post(new Runnable()
@@ -178,11 +183,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 								});
 							}
 							mMenuViewHolder.viewFeedFilter.invalidateViews();
-							new UpdateTorStatusTask().execute();	
 						}
-
 					}
-					
 				};
 				mDrawerLayout.setDrawerListener(mDrawerToggle);
 				mDrawerToggle.syncState();
@@ -242,8 +244,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	protected void onStart()
 	{
 		super.onStart();
-		if (mLeftSideMenu != null)
-			initializeMenu();
+		performRotateTransition((ViewGroup)mDrawerLayout.getParent());
 	}
 
 	@SuppressLint("NewApi")
@@ -253,9 +254,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		super.onResume();
 		if (!isFinishing())
 		{
-			if (Build.VERSION.SDK_INT >= 11)
-				invalidateOptionsMenu();
-			refreshMenu();
+			invalidateOptionsMenu();
+			updateLeftSideMenu();
 		}
 	}
 
@@ -440,14 +440,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		}
 	}
 
-	public void initializeMenu()
-	{
-		View menu = mLeftSideMenu;
-		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
-		performRotateTransition((ViewGroup)mDrawerLayout.getParent());
-		refreshMenu();
-	}
-
 	@SuppressLint("NewApi")
 	protected void performRotateTransition(final ViewGroup container)
 	{
@@ -532,11 +524,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
 	private MenuViewHolder mMenuViewHolder;
 
-	protected void refreshMenu()
+	protected void updateLeftSideMenu()
 	{
 		if (mLeftSideMenu != null)
 		{
-			new UpdateMenuFeedsTask().execute();
+			createMenuViewHolder();
+			new UpdateLeftSideMenuTask().execute();
 		}
 	}
 
@@ -582,27 +575,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		}
 	}
 	
-	class UpdateMenuFeedsTask extends ThreadedTask<Void, Void, Void>
+	class UpdateLeftSideMenuTask extends ThreadedTask<Void, Void, Void>
 	{
 		private ArrayList<Feed> feeds;
-
-		@Override
-		protected Void doInBackground(Void... values)
-		{
-			createMenuViewHolder();
-			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			mMenuViewHolder.viewFeedFilter.updateList(feeds);
-		}
-	}
-
-	class UpdateTorStatusTask extends ThreadedTask<Void, Void, Void>
-	{
+		private int countFavorites;
+		private int countShared;
 		private boolean isUsingTor;
 		private boolean showImages;
 		private boolean isOnline;
@@ -611,6 +588,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		protected Void doInBackground(Void... values)
 		{
 			createMenuViewHolder();
+			feeds = App.getInstance().socialReader.getSubscribedFeedsList();
+			countFavorites = App.getInstance().socialReader.getAllFavoritesCount();
+			countShared = App.getInstance().socialReader.getAllSharedCount();
 			isUsingTor = App.getInstance().socialReader.useTor();
 			isOnline = App.getInstance().socialReader.isTorOnline();
 			showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
@@ -620,6 +600,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		@Override
 		protected void onPostExecute(Void result)
 		{
+			mMenuViewHolder.viewFeedFilter.updateList(feeds, countFavorites, countShared);
+			
 			// Update TOR connection status
 			//
 			if (isUsingTor)

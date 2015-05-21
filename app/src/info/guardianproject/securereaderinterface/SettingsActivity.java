@@ -712,5 +712,9 @@ public class SettingsActivity extends FragmentActivityWithMenu
 	{
 		mLastChangedSetting = key;
 		super.onSharedPreferenceChanged(sharedPreferences, key);
+		if (key.equals(Settings.KEY_REQUIRE_TOR) || key.equals(Settings.KEY_SYNC_MODE))
+		{
+			updateLeftSideMenu();
+		}
 	}
 }
