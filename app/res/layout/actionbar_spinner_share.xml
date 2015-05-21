@@ -6,7 +6,7 @@
 
     <info.guardianproject.securereaderinterface.widgets.NoSelectionSpinner
         android:id="@+id/spinnerShare"
-        style="@style/ActionBarSpinnerStyle"
+        style="?attr/actionDropDownStyle"
         android:layout_width="56dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"

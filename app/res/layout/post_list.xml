@@ -30,7 +30,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/accent_on_selected_selector"
+            android:background="@drawable/accent_on_selected_white_selector"
             android:scaleType="center"
             android:src="@drawable/ic_context_cancel" />
 

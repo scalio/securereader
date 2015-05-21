@@ -13,7 +13,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_weight="1"
-            android:background="@drawable/accent_on_selected_selector"
+            android:background="@drawable/accent_on_selected_white_selector"
             android:paddingRight="5dp"
             android:scaleType="center"
             android:src="@drawable/ic_context_cancel" />

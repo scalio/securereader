@@ -25,7 +25,11 @@
             android:background="@drawable/edit_text_background_selector"
             android:ems="10"
             android:hint="@string/story_item_search_by_tag_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+
     </LinearLayout>
 
     <ListView

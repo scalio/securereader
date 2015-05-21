@@ -31,8 +31,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.PopupWindowCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -330,7 +332,8 @@ public class MainActivity extends ItemExpandActivity
 		{
 		case R.id.menu_tag:
 		{
-			showTagSearchPopup(getSupportActionBar().getCustomView());
+			View view = mToolbar.findViewById(item.getItemId());
+			showTagSearchPopup(view);
 			return true;
 		}
 		}
@@ -397,7 +400,7 @@ public class MainActivity extends ItemExpandActivity
 
 			mMenuPopup.setOutsideTouchable(true);
 			mMenuPopup.setBackgroundDrawable(new ColorDrawable(0x80ffffff));
-			mMenuPopup.showAsDropDown(anchorView);
+			PopupWindowCompat.showAsDropDown(mMenuPopup, anchorView, 0, 0, Gravity.TOP);
 			mMenuPopup.getContentView().setOnClickListener(new View.OnClickListener()
 			{
 				@Override

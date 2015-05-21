@@ -153,6 +153,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 			{
 				mMenuViewHolder = null;
 				mLeftSideMenu = mDrawerLayout.findViewById(R.id.left_drawer);
+				if (mLeftSideMenu != null)
+					((FeedFilterView)mLeftSideMenu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
 				mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0)
 				{
 					private boolean isClosed = true;
