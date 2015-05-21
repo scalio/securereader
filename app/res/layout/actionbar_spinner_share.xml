@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="56dp"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     android:gravity="fill_vertical" >
 
     <info.guardianproject.securereaderinterface.widgets.NoSelectionSpinner
@@ -10,8 +10,8 @@
         android:layout_width="56dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="?attr/actionBarThemeButtonBackground"
         android:gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:addStatesFromChildren="true"
  />
 

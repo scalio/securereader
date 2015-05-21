@@ -233,7 +233,7 @@ public class ShareSpinnerAdapter extends BaseAdapter implements SpinnerAdapter
 			{
 				ImageView iv = (ImageView) view;
 				if (iv != null)
-					UIHelpers.colorizeDrawable(mContext, iv.getDrawable());
+					UIHelpers.colorizeDrawable(mContext, R.attr.colorControlNormal, iv.getDrawable());
 			}
 
 			view.setOnClickListener(new View.OnClickListener()

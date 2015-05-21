@@ -94,18 +94,9 @@ public class MainActivity extends ItemExpandActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		mCurrentSyncMode = App.getSettings().syncMode();
-
-		// We do a little song and dance number here - This activity's theme is
- 		// set to NoActionBar in the manifest, but here we change to default app
- 		// theme again and request the action bar. This is because, at first
- 		// startup, the system will show a screen with default action bar and
- 		// default background. We don't want that. Instead we want to show solid
- 		// color (same as lock screen background) and no action bar. See
- 		// AppThemeNoActionBar theme for more information.
- 		setTheme(R.style.AppTheme);
 		super.onCreate(savedInstanceState);
 	
-		getSupportActionBar().hide();
+		//getSupportActionBar().hide();
 
 		setContentView(R.layout.activity_main);
 		setMenuIdentifier(R.menu.activity_main);
@@ -169,7 +160,7 @@ public class MainActivity extends ItemExpandActivity
 				{
 					mIsInitialized = true;
 					UICallbacks.setFeedFilter(App.getInstance().getCurrentFeedFilterType(), App.getInstance().getCurrentFeedId(), MainActivity.this);
-					getSupportActionBar().show();
+					//getSupportActionBar().show();
 				}
 			}
 
@@ -239,8 +230,8 @@ public class MainActivity extends ItemExpandActivity
 		if (!isFinishing() && App.getSettings().hasShownHelp())
 		{
 			boolean willShowMenuHint = false;
-			if (mLeftSideMenu != null)
-				willShowMenuHint = mLeftSideMenu.showMenuHintIfNotShown();
+			//if (mLeftSideMenu != null)
+			//	willShowMenuHint = mLeftSideMenu.showMenuHintIfNotShown();
 			if (socialReader.getFeedsList().size() > 0)
 			{
 				if (willShowMenuHint)
@@ -318,7 +309,7 @@ public class MainActivity extends ItemExpandActivity
 		mMenuItemShare = menu.findItem(R.id.menu_share);
 		if (mMenuItemShare != null)
 		{
-			mShareActionProvider = new ActionProviderShare(this);
+			mShareActionProvider = new ActionProviderShare(getSupportActionBar().getThemedContext());
 			mShareActionProvider.setFeed(getCurrentFeed());
 			MenuItemCompat.setActionProvider(mMenuItemShare, mShareActionProvider);
 		}

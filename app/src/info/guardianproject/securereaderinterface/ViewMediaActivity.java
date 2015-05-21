@@ -32,10 +32,10 @@ public class ViewMediaActivity extends FragmentActivityWithMenu // implements
 	{
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		super.onCreate(savedInstanceState);
-		this.setDisplayHomeAsUp(true);
 		mHandler = new Handler();
 		setContentView(R.layout.activity_view_media);
 		setMenuIdentifier(R.menu.activity_view_media);
+		this.setDisplayHomeAsUp(true);
 
 		// Send the URI along to the fragment, so we know what to show!
 		//

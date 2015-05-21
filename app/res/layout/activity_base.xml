@@ -1,0 +1,32 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root"
+    tools:context=".MainActivity" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- The action bar -->
+    <include android:id="@+id/toolbar" layout="@layout/actionbar" />
+    
+	<android.support.v4.widget.DrawerLayout
+    	android:id="@+id/drawer"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/toolbar" >
+    
+	    <!-- The main content view -->
+	    <ViewStub android:id="@+id/content_root"
+	        android:layout_width="match_parent"
+       		android:layout_height="match_parent" />
+    
+    	<!-- The navigation drawer -->
+   		<include
+   		    android:id="@+id/left_drawer"
+       		android:layout_width="300dp"
+       		android:layout_height="match_parent"
+       		android:layout_gravity="start"
+       		layout="@layout/left_side_menu" />
+	</android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

@@ -11,10 +11,10 @@ public class AddFeedActivity extends FragmentActivityWithMenu
 	{
 		super.onCreate(savedInstanceState);
 
-		// Display home as up
-		setDisplayHomeAsUp(true);
-
 		setContentView(R.layout.activity_add_feed);
 		setMenuIdentifier(R.menu.activity_add_feed);
+		
+		// Display home as up
+		setDisplayHomeAsUp(true);
 	}
 }

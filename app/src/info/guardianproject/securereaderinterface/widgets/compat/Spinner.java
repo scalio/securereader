@@ -100,8 +100,8 @@ public class Spinner extends RelativeLayout implements OnItemClickListener
 				Rect rectGlobal = new Rect();
 				this.getGlobalVisibleRect(rectGlobal);
 				Rect rectGlobalParent = new Rect();
-				Window window = ((Activity)getContext()).getWindow();
-				window.getDecorView().getWindowVisibleDisplayFrame(rectGlobalParent);
+				
+				getWindowVisibleDisplayFrame(rectGlobalParent);
 				
 				Rect backgroundRect = new Rect();
 	            if (mDropDownBackground != null) 

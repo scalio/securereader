@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -60,6 +61,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private DropdownSpinner mDropdownLanguage;
 	private String[] mLanguageNames;
 	private UiLanguage[] mLanguageCodes;
+	private View mRootView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -114,6 +116,16 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	public boolean isInternalActivityOpened()
 	{
 		return false;
+	}
+
+
+	
+
+	@Override
+	public void setContentView(int layoutResID) 
+	{
+		mRootView = LayoutInflater.from(this).inflate(layoutResID, null);
+		super.setContentView(mRootView);
 	}
 
 	private Bitmap takeSnapshot(View view)
@@ -390,7 +402,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
         	intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+        Bitmap snap = takeSnapshot(mRootView);
         App.getInstance().putTransitionBitmap(snap);
 
         startActivity(intent);
@@ -455,7 +467,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
       	intent = new Intent(this, MainActivity.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-      Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
+      Bitmap snap = takeSnapshot(mRootView);
       App.getInstance().putTransitionBitmap(snap);
 
       startActivity(intent);

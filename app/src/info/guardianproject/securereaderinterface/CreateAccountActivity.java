@@ -19,11 +19,11 @@ public class CreateAccountActivity extends FragmentActivityWithMenu implements O
 	{
 		super.onCreate(savedInstanceState);
 
-		// Display home as up
-		setDisplayHomeAsUp(true);
-
 		setContentView(R.layout.activity_create_account);
 		setMenuIdentifier(R.menu.activity_create_account);
+
+		// Display home as up
+		setDisplayHomeAsUp(true);
 
 		mViewCreateAccount = (CreateAccountView) findViewById(R.id.createAccount);
 		mViewCreateAccount.setActionListener(this);

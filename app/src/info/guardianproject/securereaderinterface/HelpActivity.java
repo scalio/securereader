@@ -10,7 +10,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,13 +25,13 @@ public class HelpActivity extends FragmentActivityWithMenu
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (useLeftSideMenu())
-			setDisplayHomeAsUp(true);
 		setContentView(R.layout.activity_help);
 		setMenuIdentifier(R.menu.activity_help);
 
+		if (useLeftSideMenu())
+			setDisplayHomeAsUp(true);
+
 		// Set up the action bar.
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		setActionBarTitle(getString(R.string.help_title));
 
 		Button btnConnect = (Button) findViewById(R.id.btnConnectTor);
@@ -106,10 +105,7 @@ public class HelpActivity extends FragmentActivityWithMenu
 	protected void onResume()
 	{
 		super.onResume();
-
-		ViewGroup parent = (ViewGroup) (getWindow().getDecorView());
-		View content = parent.getChildAt(0);
-		this.performRotateTransition(parent, content);
+		performRotateTransition((ViewGroup)mDrawerLayout.getParent());
 	}
 
 	private String getBuildVersion()
@@ -159,7 +155,7 @@ public class HelpActivity extends FragmentActivityWithMenu
 			ZipEntry ze = zf.getEntry("classes.dex");
 			long time = ze.getTime();
 			buildDate = SimpleDateFormat.getInstance().format(new java.util.Date(time));
-
+			zf.close();
 		}
 		catch (Exception e)
 		{

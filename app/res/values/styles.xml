@@ -1,212 +1,175 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">          
-        
-        <item name="actionBarThemeColorTitle">#888888</item>
-        <item name="actionBarThemeColorIconTint">#888888</item>
-        <item name="actionBarThemeBackground">@drawable/actionbar_light_background</item>
-        <item name="actionBarThemeItemBackground">@drawable/actionbar_light_item_selector</item>
-        <item name="actionBarThemeButtonBackground">@drawable/actionbar_light_button_selector</item>
-        
-		<item name="android:actionBarStyle">@style/AppActionBarStyle</item>
-		<item name="actionBarStyle">@style/AppActionBarStyle</item>
- 	    <item name="android:actionButtonStyle">@style/AppActionButtonStyle</item>
-		<item name="actionButtonStyle">@style/AppActionButtonStyle</item>
-		<item name="android:actionBarItemBackground">?attr/actionBarThemeItemBackground</item>
-		<item name="actionBarItemBackground">?attr/actionBarThemeItemBackground</item>
-		
-		<item name="android:homeAsUpIndicator">@null</item>
-		<item name="homeAsUpIndicator">@null</item>
-		
-		<item name="actionBarMenuIcon">@drawable/ic_action_menu</item>
-		<item name="actionBarMenuIconInset">6dp</item>
 
-		<item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
-    	<item name="android:actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
-								    	    				
-<!-- 		<item name="android:actionBarSize">54dp</item> -->
-	    <item name="android:actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
-        <item name="android:actionBarTabStyle">@style/AppActionBarTabStyle</item>
-		<item name="android:actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
-		<item name="android:spinnerDropDownItemStyle">@style/DropDownItem</item>
-		<item name="android:spinnerItemStyle">@style/SpinnerItem</item>
-		<item name="android:dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
-<!-- 		<item name="actionBarSize">54dp</item> -->
-		<item name="actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        
+        <item name="actionBarThemeColorTitle">#888888</item> -->
+        <item name="actionBarThemeColorIconTint">#888888</item>
+        <item name="actionBarThemeColorDivider">@color/claret</item>
+        <item name="actionBarThemeBackground">@drawable/actionbar_light_background</item>
+        <item name="actionBarThemeButtonBackground">@drawable/actionbar_light_button_selector</item>
+        <item name="actionBarThemeItemBackground">@drawable/actionbar_light_item_selector</item>
+                
+        <item name="actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
         <item name="actionBarTabStyle">@style/AppActionBarTabStyle</item>
-		<item name="actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
-		<item name="spinnerDropDownItemStyle">@style/DropDownItem</item>
-		<item name="dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
-		<item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
-		<item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
-	</style>
-    
-    <style name="AppThemeNoActionBar" parent="AppTheme">
-		<item name="android:windowActionBar">false</item>
-		<item name="android:windowTitleSize">0dp</item>
-		<item name="windowActionBar">false</item>
-		<item name="android:windowBackground">@color/lock_screen_background</item>
-	</style>
-    
-    <style name="AppThemeReporter" parent="AppTheme">
-        <item name="actionBarThemeColorTitle">#ffffff</item>
-        <item name="actionBarThemeColorIconTint">#ffffffff</item>
-        <item name="actionBarThemeBackground">@drawable/actionbar_dark_background</item>
-        <item name="actionBarThemeItemBackground">@drawable/actionbar_dark_item_selector</item>
-        <item name="actionBarThemeButtonBackground">@drawable/actionbar_dark_button_selector</item>	
-		<item name="actionBarMenuIcon">@drawable/ic_action_menu_read</item>
+        <item name="actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
+        <item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
+        <item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
     </style>
-     
-    <style name="AppActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar">
+
+    <style name="Widget.Reader.ActionBar" parent="AppTheme">
         <item name="android:background">?attr/actionBarThemeBackground</item>
-        <item name="background">?attr/actionBarThemeBackground</item>
+        <item name="theme">@style/ThemeOverlay.Reader.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.Reader.ActionBarPopup</item>
+        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
     </style>
-    
+
+    <style name="AppActionBarPopupListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:divider">?attr/actionBarThemeColorDivider</item>
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:listSelector">?attr/actionBarThemeItemBackground</item>
+    </style>
+
+    <style name="ThemeOverlay.Reader.ActionBarPopup" parent="ThemeOverlay.AppCompat.Light">
+        <item name="dropDownListViewStyle">@style/AppActionBarPopupListView</item>
+    </style>
+
+    <style name="ThemeOverlay.Reader.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">?attr/actionBarThemeColorIconTint</item>
+        <item name="selectableItemBackground">?attr/actionBarThemeButtonBackground</item>
+        <item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
+        <item name="actionButtonStyle">@style/AppActionButtonStyle</item>
+    </style>
+
+    <style name="AppThemeReporter" parent="AppTheme">
+        <item name="actionBarThemeColorTitle">#ffffff</item> -->
+        <item name="actionBarThemeColorIconTint">#ff0000ff</item>
+        <item name="actionBarThemeColorDivider">@color/claret</item>
+        <item name="actionBarThemeBackground">@drawable/actionbar_dark_background</item>
+        <item name="actionBarThemeButtonBackground">@drawable/actionbar_dark_button_selector</item>
+        <item name="actionBarThemeItemBackground">@drawable/actionbar_dark_item_selector</item>
+    </style>
+
     <style name="AppActionButtonStyle" parent="Widget.AppCompat.ActionButton">
-    	<item name="android:minWidth">56dip</item>
-    	<item name="android:background">?attr/actionBarThemeButtonBackground</item>
-    	<item name="background">?attr/actionBarThemeButtonBackground</item>
+        <item name="android:minWidth">56dip</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
-  
+
     <style name="AppActionBarTabBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
-	    <item name="android:showDividers">middle</item>
-	    <item name="android:divider">@null</item>
-	</style>
-    
+        <item name="android:showDividers">middle</item>
+        <item name="android:divider">@null</item>
+    </style>
+
     <!-- style for the tabs -->
     <style name="AppActionBarTabStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_background_selector</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
-	</style>
-    
+    </style>
+
     <style name="AppActionBarTabTextStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabText">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@drawable/tab_foreground_selector</item>
     </style>
-       
-    <style name="DropDownItem" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
-        <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
-<!--         <item name="android:background">@drawable/accent_on_selected_selector</item> -->
-	</style>
-	
-    <style name="SpinnerItem" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
-        <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
-    </style>
-     
+
     <style name="ActionBarGreenButton" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
         <item name="android:textAppearance">?android:attr/textAppearanceInverse</item>
         <item name="android:background">@drawable/actionbar_light_button_inverted_selector</item>
     </style>
-    
+
     <style name="ActionBarSpinnerStyle" parent="@style/Widget.AppCompat.Light.DropDownItem.Spinner">
-        <item name="android:dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
-        <item name="dropDownListViewStyle">@style/ActionBarSpinnerDropdownListStyle</item>
-        <item name="listPopupWindowStyle">@style/ActionBarSpinnerDropdownListStyle</item>
-    </style>
-    
-    <style name="ActionBarSpinnerDropdownListStyle" parent="android:style/Widget.ListView.DropDown">
-    	<item name="android:divider">@color/grey_light</item>
-    	<item name="android:dividerHeight">1px</item>
-	</style>
-    
-    <style name="AppActionBarTitleStyle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
-<!--         <item name="android:textColor">@color/actionBarColorTitle</item> -->
-        <item name="font">Glegoo-Regular</item>
+        <item name="android:dropDownListViewStyle">@style/AppActionBarPopupListView</item>
+        <item name="dropDownListViewStyle">@style/AppActionBarPopupListView</item>
+        <item name="listPopupWindowStyle">@style/AppActionBarPopupListView</item>
     </style>
 
-    <style name="AppActionBarFeedTitleStyle">
-        <item name="android:textSize">12sp</item>
+    <style name="AppActionBarTitleStyle">
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">?attr/actionBarThemeColorTitle</item>
         <item name="font">Glegoo-Regular</item>
     </style>
-    
- 	<style name="AppActionBarOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-		<item name="android:src">@drawable/ic_action_overflow</item>
-		<item name="android:background">?attr/actionBarThemeButtonBackground</item>
-		<item name="android:minWidth">20dip</item>
+
+    <style name="AppActionBarOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <!-- <item name="android:src">@drawable/ic_action_overflow</item> -->
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:minWidth">56dip</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
-    
-    
-    <!-- Shared styles                                 -->
-    <!--                                               -->
-    <!--                                               -->
-    
+
+    <!-- Shared styles -->
+    <!--  -->
+    <!--  -->
+
     <style name="SearchFieldStyle" parent="android:Widget.Holo.Light.TextView">
-<!-- 		<item name="android:padding">0dp</item> -->
+
+        <!-- <item name="android:padding">0dp</item> -->
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
-    </style> 
-       
+    </style>
+
     <style name="AddFeedUrlStyle" parent="SearchFieldStyle">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@android:color/black</item>
-    </style>  
-       
-   <style name="LockScreenEditStyle" parent="android:Widget.Holo.Light.TextView">
+    </style>
+
+    <style name="LockScreenEditStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
         <item name="android:textColorHint">@color/grey_light_medium</item>
-    </style> 
-    
-   <style name="LockScreenEditCreateStyle" parent="LockScreenEditStyle">
-        <item name="android:textSize">16sp</item>
-   </style>     
+    </style>
 
-	<style name="LockScreenTitleStyle" parent="android:Widget.Holo.Light.TextView">
+    <style name="LockScreenEditCreateStyle" parent="LockScreenEditStyle">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="LockScreenTitleStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">36sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#7C796A</item>
         <item name="font">Glegoo-Regular</item>
-    </style> 
-       
-   <style name="LockScreenLanguageStyle" parent="android:Widget.Holo.Light.TextView">
+    </style>
+
+    <style name="LockScreenLanguageStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_light_medium</item>
         <item name="android:textColorHint">@color/grey_light_medium</item>
-    </style> 
+    </style>
 
     <style name="LockScreenErrorStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#E34136</item>
         <item name="font">Roboto-Regular</item>
-    </style> 
-   
-   
+    </style>
+
     <style name="PopupListTitleStyle">
         <item name="android:background">@color/grey_light_medium</item>
-		<item name="android:padding">10dp</item>
+        <item name="android:padding">10dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_dark</item>
-		<item name="android:textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
     </style>
-    
+
     <style name="PopupListItemStyle">
         <item name="android:textSize">19sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_dark</item>
-		<item name="android:textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
     </style>
-    
-    
-    
-    <!-- Left side menu                                -->
-    <!--                                               -->
-    <!--                                               -->
-    
+
+    <!-- Left side menu -->
+    <!--  -->
+    <!--  -->
+
     <style name="LeftSideMenuItemStyle">
         <item name="android:gravity">center_vertical</item>
-       	<item name="android:textSize">16sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textAppearance">@style/LeftSideMenuItemAppearance</item>
         <item name="android:textStyle">normal</item>
@@ -215,59 +178,59 @@
 
     <style name="LeftSideMenuItemAppearance">
         <item name="font">Lato-Light</item>
-	</style>  
-    
+    </style>
+
     <style name="LeftSideMenuItemCurrentAppearance">
         <item name="font">Lato-Bold</item>
-	</style>  
-        
+    </style>
+
     <style name="LeftSideMenuShortcutItemStyle">
         <item name="font">Lato-Light</item>
         <item name="android:gravity">center_vertical</item>
-       	<item name="android:textSize">13sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textAllCaps">true</item>
-	</style>
-    
+    </style>
+
     <style name="LeftSideMenuItemSubStyle">
         <item name="android:gravity">center_vertical</item>
-       	<item name="android:textSize">12sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#000</item>
-	</style>
-	
+    </style>
+
     <style name="LeftMenuLabelStyle" parent="android:Widget.Holo.Light.TextView">
         <item name="font">Glegoo-Regular</item>
-		<item name="android:padding">0dp</item>
+        <item name="android:padding">0dp</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/grey_dark</item>
     </style>
-    
-    <!--  Bottom toolbar -->
+
+    <!-- Bottom toolbar -->
     <style name="BottomToolbarStyle">
         <item name="android:background">@drawable/bottom_bar_background</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@null</item>
-    	<item name="android:dividerHeight">0dp</item>
-    	<item name="android:showDividers">none</item>
-    	<item name="android:dividerPadding">0dp</item>
-    	<item name="android:paddingBottom">0dp</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:showDividers">none</item>
+        <item name="android:dividerPadding">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
     </style>
-    
+
     <style name="StorySearchByTagItemStyle" parent="android:Widget.Holo.Light.TextView">
-		<item name="android:padding">15dp</item>
+        <item name="android:padding">15dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/accent</item>
         <item name="android:background">@color/grey_light_light</item>
     </style>
-    
+
     <style name="StoryItemCommentsIndicatorStyle">
-		<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/grey_light_medium</item>
-	</style>
+    </style>
 
     <style name="StoryItemSwipeHintStyle">
         <item name="android:textColor">#ffffff</item>
@@ -296,72 +259,70 @@
         <item name="android:linksClickable">true</item>
         <item name="android:textColorLink">#000000</item>
     </style>
-    
+
     <style name="HelpButtonStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:background">@drawable/button_primary_background_selector</item>
-	</style>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/button_primary_background_selector</item>
+    </style>
 
     <style name="HelpButtonDiscreteStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:background">@drawable/button_secondary_background_selector</item>
-	</style>
-    
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/button_secondary_background_selector</item>
+    </style>
+
     <style name="DialogTabItemStyle">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/button_primary</item>
-		<item name="android:textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
     </style>
-    
-    
-	<style name="Theme.Transparent" parent="android:Theme">
-	    <item name="android:windowIsTranslucent">true</item>
-	    <item name="android:windowBackground">@android:color/transparent</item>
- 	    <item name="android:windowContentOverlay">@null</item>
- 	    <item name="android:windowNoTitle">true</item>
-<!-- 	    <item name="android:windowIsFloating">true</item> -->
- 	    <item name="android:backgroundDimEnabled">false</item>
-	</style>
-    
-	<style name="AppTheme.Transparent" parent="AppTheme">
-	    <item name="android:windowIsTranslucent">true</item>
-	    <item name="android:windowBackground">@android:color/transparent</item>
-	</style>
 
-	<style name="AppTheme.Dialog" parent="AppTheme">
-	    <item name="android:windowIsTranslucent">true</item>
-	    <item name="android:windowBackground">@android:color/transparent</item>
-	    <item name="android:windowFrame">@null</item>
-	    <item name="android:windowIsFloating">false</item>
-	    <item name="android:windowContentOverlay">@null</item>
-	    <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-	    <item name="android:windowNoTitle">true</item>
-	    <item name="android:backgroundDimEnabled">true</item>
-	</style>
-	
-		
-	<style name="RoundedButtonStyle">
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- <item name="android:windowIsFloating">true</item> -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="RoundedButtonStyle">
         <item name="android:padding">5dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:background">@drawable/rounded_button_background</item>
-	</style>
-	
-	<style name="DownloadPlaceholderTextStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:background">@drawable/rounded_button_background</item>
+    </style>
+
+    <style name="DownloadPlaceholderTextStyle">
         <item name="android:textColor">#92938D</item>
         <item name="android:textSize">19sp</item>
         <item name="font">Roboto-Regular</item>
-	</style>
-		
+    </style>
+
 </resources>

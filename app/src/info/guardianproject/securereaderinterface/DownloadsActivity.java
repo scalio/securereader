@@ -18,12 +18,12 @@ public class DownloadsActivity extends FragmentActivityWithMenu
 	{
 		super.onCreate(savedInstanceState);
 
-		// Display home as up
-		setDisplayHomeAsUp(true);
-
 		setContentView(R.layout.activity_downloads);
 		setMenuIdentifier(R.menu.activity_downloads);
 
+		// Display home as up
+		setDisplayHomeAsUp(true);
+		
 		// Set up the action bar.
 		setActionBarTitle(getString(R.string.downloads_title));
 

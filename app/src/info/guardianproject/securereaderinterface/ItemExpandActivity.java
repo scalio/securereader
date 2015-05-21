@@ -4,6 +4,7 @@ package info.guardianproject.securereaderinterface;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -16,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import info.guardianproject.securereaderinterface.adapters.StoryListAdapter;
 import info.guardianproject.securereaderinterface.uiutil.AnimationHelpers;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
@@ -92,7 +94,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 		{
 			View container = findViewById(R.id.storyContainer);
 			if (container != null && isInFullScreenMode()) {
-				((ViewGroup)mFullView.getParent()).removeView(mFullView);
+				if (mFullView.getParent() != null)
+					((ViewGroup)mFullView.getParent()).removeView(mFullView);
 				
 				// Close old full screen view
 				//
@@ -108,7 +111,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 				mFullView.setLayoutParams(params);
 				((FrameLayout)container).addView(mFullView);
 			} else if (container == null && !isInFullScreenMode()) {
-				((ViewGroup)mFullView.getParent()).removeView(mFullView);
+				if (mFullView.getParent() != null)
+					((ViewGroup)mFullView.getParent()).removeView(mFullView);
 //				createFullScreenContainer(mFullView);
 //				mFullStoryView.setCollapsedSize(0, 0, getTopFrame().getHeight());
 			}
@@ -116,11 +120,11 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 	}
 	
 	private void createFullScreenContainer(FullScreenStoryItemView content) {
-		FrameLayout screenFrame = getTopFrame();
+		RelativeLayout screenFrame = getTopFrame();
 		if (screenFrame != null) {
 			// Disable drag of the left side menu
 			//
-			mLeftSideMenu.setDragEnabled(false);
+			mDrawerLayout.closeDrawers();
 
 			// Remove old view (if set) from view tree
 			//
@@ -133,10 +137,9 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 			mFullStoryView = new ExpandingFrameLayout(this, content, actionBarHeight);
 			mInFullScreenMode = true;
 
-			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-					FrameLayout.LayoutParams.MATCH_PARENT,
-					FrameLayout.LayoutParams.MATCH_PARENT, Gravity.LEFT
-							| Gravity.TOP);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.MATCH_PARENT,
+					RelativeLayout.LayoutParams.MATCH_PARENT);
 			mFullStoryView.setLayoutParams(params);
 			screenFrame.addView(mFullStoryView);
 
@@ -241,19 +244,9 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 	{
 	}
 
-	private FrameLayout getTopFrame()
+	private RelativeLayout getTopFrame()
 	{
-		try
-		{
-			FrameLayout parent = (FrameLayout) (((FrameLayout) getWindow().getDecorView()).getChildAt(0));
-			return parent;
-		}
-		catch (Exception ex)
-		{
-			if (LOGGING)
-				Log.e(LOGTAG, "Failed to get top level frame: " + ex.toString());
-		}
-		return null;
+		return (RelativeLayout) findViewById(R.id.layout_root);
 	}
 
 	private void removeFullStoryView(boolean animated)
@@ -268,7 +261,7 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 					((ViewGroup)mFullStoryView.getParent()).removeView(mFullStoryView);
 				mFullStoryView.setExpansionListener(null);
 				mFullStoryView = null;
-				mLeftSideMenu.setDragEnabled(true);
+				mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 			}
 			catch (Exception ex)
 			{

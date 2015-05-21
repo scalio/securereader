@@ -89,7 +89,8 @@ public class StoryListView extends RelativeLayout implements OnTagClickedListene
 	{
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		View rootView = inflater.inflate(R.layout.story_list, this, true);
-
+		rootView.setBackgroundResource(R.drawable.background_news);
+		
 		mTvTagResults = (TextView) rootView.findViewById(R.id.tvTagResults);
 		mBtnCloseTagSearch = rootView.findViewById(R.id.btnCloseTagSearch);
 		mTvTagResults.setVisibility(View.GONE);

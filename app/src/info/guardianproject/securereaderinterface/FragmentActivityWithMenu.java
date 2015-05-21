@@ -6,7 +6,6 @@ import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
-import info.guardianproject.securereaderinterface.ui.ActionProviderShare;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
@@ -14,8 +13,6 @@ import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
-import info.guardianproject.securereaderinterface.views.LeftSideMenu;
-import info.guardianproject.securereaderinterface.views.LeftSideMenu.LeftSideMenuListener;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -29,20 +26,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBar;
-import android.util.TypedValue;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tinymission.rss.Feed;
 import com.tinymission.rss.Item;
 
-public class FragmentActivityWithMenu extends LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks, OnCallbackListener
+public class FragmentActivityWithMenu extends LockableActivity implements FeedFilterViewCallbacks, OnCallbackListener
 {
 	public static final String LOGTAG = "FragmentActivityWithMenu";
 	public static final boolean LOGGING = false;
@@ -57,9 +57,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	/**
 	 * The main menu that will host all content links.
 	 */
-	LeftSideMenu mLeftSideMenu;
-
+	protected View mLeftSideMenu;
+	protected DrawerLayout mDrawerLayout;
+	protected ActionBarDrawerToggle mDrawerToggle;
+	
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
+	private Toolbar mToolbar;
 
 
 	protected void setMenuIdentifier(int idMenu)
@@ -70,6 +73,23 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	protected boolean useLeftSideMenu()
 	{
 		return true;
+	}
+
+	@Override
+	public void setContentView(int layoutResID) 
+	{
+		View view = LayoutInflater.from(this).inflate(R.layout.activity_base, null);
+		ViewStub stub = (ViewStub)view.findViewById(R.id.content_root);
+		if (stub != null)
+		{
+			stub.setLayoutResource(layoutResID);
+			stub.inflate();
+			super.setContentView(view);
+		}
+		else
+		{
+			super.setContentView(layoutResID);
+		}
 	}
 
 	@Override
@@ -86,64 +106,112 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		LocalBroadcastManager.getInstance(this).registerReceiver(mSetUiLanguageReceiver, new IntentFilter(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
 		mWipeReceiver = new WipeReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(mWipeReceiver, new IntentFilter(App.WIPE_BROADCAST_ACTION));
-
-		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-
-		if (useLeftSideMenu())
+	}
+	
+	@Override
+	public void onContentChanged() 
+	{
+		super.onContentChanged();
+	    mToolbar = (Toolbar) findViewById(R.id.toolbar);
+	    if (mToolbar != null)
+	    {
+	    	setSupportActionBar(mToolbar);
+	    	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    	getSupportActionBar().setDisplayShowTitleEnabled(false);
+	    	setActionBarTitle(getSupportActionBar().getTitle());
+	    }
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+		if (mDrawerLayout != null)
 		{
-			mLeftSideMenu = new LeftSideMenu(this, actionBar, R.layout.left_side_menu);
-			mLeftSideMenu.setListener(this);
-		}
+			if (!useLeftSideMenu())
+			{
+				mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			}
+			else
+			{
+				mLeftSideMenu = mDrawerLayout.findViewById(R.id.left_drawer);
+				mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, 0, 0)
+				{
+					@Override
+					public void onDrawerClosed(View drawerView) {
+						super.onDrawerClosed(drawerView);
+						runDeferredCommands();
+					}
 
-		setDisplayHomeAsUp(false);
-		actionBar.setDisplayShowHomeEnabled(true);
-		actionBar.setDisplayUseLogoEnabled(true);
-		actionBar.setDisplayShowTitleEnabled(false);
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setHomeButtonEnabled(true);
+					@Override
+					public void onDrawerStateChanged(int newState) {
+						super.onDrawerStateChanged(newState);
+						if (newState == DrawerLayout.STATE_DRAGGING)
+						{
+							if (mMenuViewHolder != null)
+							{
+								mMenuViewHolder.viewFeedFilter.post(new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();	
+									}
+								});
+							}
+							mMenuViewHolder.viewFeedFilter.invalidateViews();
+							new UpdateTorStatusTask().execute();	
+						}
+
+					}
+					
+				};
+				mDrawerLayout.setDrawerListener(mDrawerToggle);
+				mDrawerToggle.syncState();
+			}
+		}
+		
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		if (mDrawerToggle != null)
+			mDrawerToggle.syncState();
 	}
 
 	public void setDisplayHomeAsUp(boolean displayHomeAsUp)
 	{
-		Drawable logo = null;
+		mDisplayHomeAsUp = displayHomeAsUp;
 		if (displayHomeAsUp)
 		{
-			logo = this.getResources().getDrawable(R.drawable.actionbar_logo_up).mutate();
-
-			TypedValue outValue = new TypedValue();
-			getTheme().resolveAttribute(R.attr.actionBarThemeBackground, outValue, true);
-			if (outValue.resourceId == R.drawable.actionbar_dark_background)
-				logo = this.getResources().getDrawable(R.drawable.actionbar_logo_up_read).mutate();
+			if (mDrawerToggle != null)
+			{
+				mDrawerToggle.setDrawerIndicatorEnabled(false);
+			}
+			else
+			{
+				getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			}
 		}
 		else
-			logo = this.getResources().getDrawable(R.drawable.actionbar_logo).mutate();
-		// UIHelpers.colorizeDrawable(this, logo);
-		getSupportActionBar().setLogo(logo);
-		mDisplayHomeAsUp = displayHomeAsUp;
-		
-		if (mLeftSideMenu != null)
-			mLeftSideMenu.setDisplayMenuIndicator(!displayHomeAsUp);
+		{
+			if (mDrawerToggle != null)
+			{
+				mDrawerToggle.setDrawerIndicatorEnabled(true);
+			}
+			else
+			{
+				getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+			}
+		}
 	}
 
-	public void setActionBarTitle(String title)
+	public void setActionBarTitle(CharSequence title)
 	{
-		if (title != null)
+		if (mToolbar != null)
 		{
-			if (getSupportActionBar().getCustomView() == null)
+			TextView tvTitle = (TextView) mToolbar.findViewById(R.id.toolbar_title);
+			if (tvTitle != null)
 			{
-				View titleView = getLayoutInflater().inflate(R.layout.actionbar_custom_title, null);
-				getSupportActionBar().setCustomView(titleView,
-						new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+				tvTitle.setText(title);
+				tvTitle.setSelected(true);
 			}
-			getSupportActionBar().setDisplayShowCustomEnabled(true);
-			TextView tvTitle = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tvTitle);
-			tvTitle.setText(title);
-			tvTitle.setSelected(true);
-		}
-		else
-		{
-			getSupportActionBar().setDisplayShowCustomEnabled(false);
 		}
 	}
 
@@ -244,9 +312,16 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		return true;
 	}
 
+	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	private void colorizeMenuItems()
 	{
-		if (mOptionsMenu == null)
+		if (mOptionsMenu == null || getSupportActionBar() == null)
 			return;
 		for (int i = 0; i < mOptionsMenu.size(); i++)
 		{
@@ -254,31 +329,36 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			Drawable d = item.getIcon();
 			if (d != null)
 			{
-				d = d.getConstantState().newDrawable(getResources()).mutate();
-				UIHelpers.colorizeDrawable(this, d);
-				item.setIcon(d);
+				d.mutate();
+				UIHelpers.colorizeDrawable(getSupportActionBar().getThemedContext(), R.attr.colorControlNormal, d);
 			}
 		}
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (mDrawerToggle != null)
+			mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
+		if (mDisplayHomeAsUp && item.getItemId() == android.R.id.home)
+		{
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			this.startActivity(intent);
+			this.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+			return true;
+		}
+		
+		if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item))
+			return true;
+		
 		switch (item.getItemId())
 		{
-		case android.R.id.home:
-			if (mDisplayHomeAsUp)
-			{
-				Intent intent = new Intent(this, MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				this.startActivity(intent);
-				this.overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-				return true;
-			}
-			if (mLeftSideMenu != null)
-				mLeftSideMenu.toggle();
-			return true;
-
 		case R.id.menu_panic:
 		{
 			Intent intent = new Intent(this, PanicActivity.class);
@@ -339,69 +419,68 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	public void initializeMenu()
 	{
-		View menuRoot = mLeftSideMenu.getMenuRootView();
-		View menu = mLeftSideMenu.getMenuView();
-		View parent = (View) menuRoot.getParent();
+		View menu = mLeftSideMenu;
 		((FeedFilterView)menu.findViewById(R.id.viewFeedFilter)).setFeedFilterViewCallbacks(this);
-		performRotateTransition(parent, menuRoot);
+		performRotateTransition((ViewGroup)mDrawerLayout.getParent());
 		refreshMenu();
 	}
 
 	@SuppressLint("NewApi")
-	protected void performRotateTransition(final View parent, final View content)
+	protected void performRotateTransition(final ViewGroup container)
 	{
 		// Get bitmap from intent!!!
 		Bitmap bmp = App.getInstance().getTransitionBitmap();
 		if (bmp != null)
 		{
+			getWindow().setBackgroundDrawableResource(R.drawable.background_news);
+
 			final ImageView snap = new ImageView(this);
 			snap.setImageBitmap(bmp);
-			((ViewGroup) parent).addView(snap);
+			container.addView(snap);
+			snap.bringToFront();
 
 			if (Build.VERSION.SDK_INT >= 11)
 			{
-				content.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+				container.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 				snap.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 			}
 			else
 			{
-				content.setDrawingCacheEnabled(true);
+				container.setDrawingCacheEnabled(true);
 				snap.setDrawingCacheEnabled(true);
 			}
 
-			content.setVisibility(View.INVISIBLE);
-
 			// Animate!!!
-			ActivitySwitcher.animationOut(snap, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener()
+			ActivitySwitcher.animationOut(container, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener()
 			{
 				@Override
 				public void onAnimationFinished()
 				{
-					ActivitySwitcher.animationIn(content, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener()
+					container.removeView(snap);
+					App.getInstance().putTransitionBitmap(null);
+
+					ActivitySwitcher.animationIn(container, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener()
 					{
 						@Override
 						public void onAnimationFinished()
 						{
-							content.post(new Runnable()
+							container.post(new Runnable()
 							{
 								@Override
 								@SuppressLint("NewApi")
 								public void run()
 								{
-									((ViewGroup) parent).removeView(snap);
-									App.getInstance().putTransitionBitmap(null);
-
 									if (Build.VERSION.SDK_INT >= 11)
 									{
-										content.setLayerType(View.LAYER_TYPE_NONE, null);
+										container.setLayerType(View.LAYER_TYPE_NONE, null);
 									}
 									else
 									{
-										content.setDrawingCacheEnabled(false);
+										container.setDrawingCacheEnabled(false);
 									}
 
-									content.setVisibility(View.VISIBLE);
-									content.clearAnimation();
+									container.clearAnimation();
+									getWindow().setBackgroundDrawable(null);
 									onAfterResumeAnimation();
 								}
 							});
@@ -430,33 +509,11 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 
 	private MenuViewHolder mMenuViewHolder;
 
-	@Override
-	public void onBeforeShow()
-	{
-		if (mMenuViewHolder != null)
-		{
-			mMenuViewHolder.viewFeedFilter.post(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					mMenuViewHolder.viewFeedFilter.setSelectionAfterHeaderView();	
-				}
-			});
-		}
-		mMenuViewHolder.viewFeedFilter.invalidateViews();
-		new UpdateTorStatusTask().execute();
-	}
-
 	protected void refreshMenu()
 	{
 		if (mLeftSideMenu != null)
 		{
-			View menuView = mLeftSideMenu.getMenuView();
-			if (menuView != null)
-			{
-				new UpdateMenuFeedsTask().execute();
-			}
+			new UpdateMenuFeedsTask().execute();
 		}
 	}
 
@@ -465,7 +522,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 		if (mMenuViewHolder == null)
 		{
 			mMenuViewHolder = new MenuViewHolder();
-			View menuView = mLeftSideMenu.getMenuView();
+			View menuView = mLeftSideMenu;
 			mMenuViewHolder.btnTorStatus = (CheckableButton) menuView.findViewById(R.id.btnMenuTor);
 			mMenuViewHolder.btnShowPhotos = (CheckableButton) menuView.findViewById(R.id.btnMenuPhotos);
 			mMenuViewHolder.viewFeedFilter = (FeedFilterView) menuView.findViewById(R.id.viewFeedFilter);
@@ -480,7 +537,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 					{
 						if (App.getInstance().socialReader.isOnline() == SocialReader.NOT_ONLINE_NO_TOR)
 						{
-							mLeftSideMenu.hide();
+							mDrawerLayout.closeDrawers();
 							App.getInstance().socialReader.connectTor(FragmentActivityWithMenu.this);
 						}
 					}
@@ -554,20 +611,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 			}
 			mMenuViewHolder.btnShowPhotos.setChecked(showImages);
 		}
-	}
-	
-	@Override
-	public void onHide()
-	{
-		runDeferredCommands();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		super.onConfigurationChanged(newConfig);
-		if (this.mLeftSideMenu != null)
-			mLeftSideMenu.onConfigurationChanged();
 	}
 
 	@Override
@@ -688,9 +731,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements LeftSi
 	private void waitForMenuCloseAndRunCommand(Runnable runnable)
 	{
 		mDeferredCommands.add(runnable);
-		if (mLeftSideMenu != null && mLeftSideMenu.isOpen())
+		if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START))
 		{
-			mLeftSideMenu.hide();
+			mDrawerLayout.closeDrawer(Gravity.START);
 		}
 		else
 		{

@@ -15,6 +15,7 @@
         <attr name="actionBarThemeBackground" format="reference"/>
         <attr name="actionBarThemeItemBackground" format="reference"/>
         <attr name="actionBarThemeButtonBackground" format="reference"/>
+        <attr name="actionBarThemeColorDivider" format="color"/>
     </declare-styleable>
          
     <declare-styleable name="DottedProgressView">

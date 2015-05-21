@@ -201,13 +201,13 @@ public class UIHelpers
 		return text;
 	}
 
-	public static void colorizeDrawable(Context context, Drawable drawable)
+	public static void colorizeDrawable(Context context, int idAttr, Drawable drawable)
 	{
 		if (drawable == null)
 			return;
 
 		TypedValue outValue = new TypedValue();
-		context.getTheme().resolveAttribute(R.attr.actionBarThemeColorIconTint, outValue, true);
+		context.getTheme().resolveAttribute(idAttr, outValue, true);
 		if ((outValue.data & 0xff000000) != 0)
 			drawable.setColorFilter(outValue.data, Mode.SRC_ATOP);
 		else

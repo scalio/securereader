@@ -91,8 +91,8 @@ public class HTTPDAppSender extends FragmentActivityWithMenu
 					new AppInfo("info.guardianproject.browser", "", "", 0) };
 		APPS_TO_DISPLAY[1] = new AppInfo(getPackageName(), "", "", 0); 
 		
-		setDisplayHomeAsUp(true);
 		setContentView(R.layout.httpd_app_sender);
+		setDisplayHomeAsUp(true);
 		textView = (TextView) findViewById(R.id.tvUrl);
 
 		setMenuIdentifier(R.menu.activity_httpd_app_sender);
