@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -62,11 +63,15 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private String[] mLanguageNames;
 	private UiLanguage[] mLanguageCodes;
 	private View mRootView;
+	private LayoutInflater mInflater;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		mInflater = inflater.cloneInContext(this);
+		LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		mCacheWord = new CacheWordHandler(this);
@@ -415,10 +420,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	{
 		if (LAYOUT_INFLATER_SERVICE.equals(name))
 		{
-			LayoutInflater mParent = (LayoutInflater) super.getSystemService(name);
-			LayoutInflater inflater = mParent.cloneInContext(this);
-			inflater.setFactory(new LayoutFactoryWrapper(this));
-			return inflater;
+			if (mInflater != null)
+				return mInflater;
 		}
 		return super.getSystemService(name);
 	}

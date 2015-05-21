@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.LayoutInflaterCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannedString;
@@ -34,11 +35,15 @@ public class PanicActivity extends Activity implements OnTouchListener
 	private View mArrow;
 	private ImageView mSymbol;
 	private boolean mOnlyTesting;
+	private LayoutInflater mInflater;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		mInflater = inflater.cloneInContext(this);
+		LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
 		getWindow().setBackgroundDrawable(null);
 		setContentView(R.layout.activity_panic);
 
@@ -208,10 +213,8 @@ public class PanicActivity extends Activity implements OnTouchListener
 	{
 		if (LAYOUT_INFLATER_SERVICE.equals(name))
 		{
-			LayoutInflater mParent = (LayoutInflater) super.getSystemService(name);
-			LayoutInflater inflater = mParent.cloneInContext(this);
-			inflater.setFactory(new LayoutFactoryWrapper(this));
-			return inflater;
+			if (mInflater != null)
+				return mInflater;
 		}
 		return super.getSystemService(name);
 	}

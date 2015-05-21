@@ -26,6 +26,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -79,6 +81,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
 	protected Toolbar mToolbar;
+	private LayoutInflater mInflater;
 
 
 	protected void setMenuIdentifier(int idMenu)
@@ -118,6 +121,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		LayoutInflater inflater = LayoutInflater.from(this);
+		mInflater = inflater.cloneInContext(this);
+		LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
 		this.getWindow().setBackgroundDrawable(null);
 
 		UICallbacks.getInstance().addListener(this);
@@ -447,6 +453,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	{
 		// Get bitmap from intent!!!
 		Bitmap bmp = App.getInstance().getTransitionBitmap();
+		App.getInstance().putTransitionBitmap(null);
 		if (bmp != null)
 		{
 			getWindow().setBackgroundDrawableResource(R.drawable.background_news);
@@ -474,7 +481,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 				public void onAnimationFinished()
 				{
 					container.removeView(snap);
-					App.getInstance().putTransitionBitmap(null);
 
 					ActivitySwitcher.animationIn(container, getWindowManager(), new ActivitySwitcher.AnimationFinishedListener()
 					{
@@ -639,10 +645,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	{
 		if (LAYOUT_INFLATER_SERVICE.equals(name))
 		{
-			LayoutInflater mParent = (LayoutInflater) super.getSystemService(name);
-			LayoutInflater inflater = mParent.cloneInContext(mParent.getContext());
-			inflater.setFactory(new LayoutFactoryWrapper(this));
-			return inflater;
+			if (mInflater != null)
+				return mInflater;
 		}
 		return super.getSystemService(name);
 	}
