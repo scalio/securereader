@@ -21,13 +21,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.LayoutInflaterCompat;
-import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -68,9 +68,13 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	 */
 	private boolean mUsePullDownActionBar = false;
 	private int mToolbarHideOffset = 0;
-	private int mHideOffsetAtScrollStart = 0;
-	private float mYAtScrollStart = 0;
-	private int mTouchSlop;
+	private int mPullDownStartToolbarOffset = 0;
+	private float mPullDownStartY = 0;
+	private int mPullDownTouchSlop = 0;
+	private float mPullDownScrollAdjustment;
+	private RectF mPullDownSlopRect;
+	private RectF mPullDownCloseRect;
+	private RectF mPullDownOpenRect;
 	
 	/**
 	 * The main menu that will host all content links.
@@ -81,6 +85,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	
 	private ArrayList<Runnable> mDeferredCommands = new ArrayList<Runnable>();
 	protected Toolbar mToolbar;
+	protected View mToolbarShadow;
 	private LayoutInflater mInflater;
 
 
@@ -143,6 +148,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	    mToolbar = (Toolbar) findViewById(R.id.toolbar);
 	    if (mToolbar != null)
 	    {
+	    	mToolbarShadow = findViewById(R.id.toolbar_shadow);
 	    	setSupportActionBar(mToolbar);
 	    	getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    	getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -803,52 +809,111 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	{
 		return App.getInstance().getCurrentFeed();
 	}
-	
+
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev)
-	{
-		if (mUsePullDownActionBar && mToolbar != null)
-		{
-			if (ev.getAction() == MotionEvent.ACTION_DOWN)
-			{
-				mHideOffsetAtScrollStart = mToolbarHideOffset;
-				mYAtScrollStart = ev.getY();
-				final ViewConfiguration configuration = ViewConfiguration.get(this);
-				mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
-			}
-			else if (ev.getAction() == MotionEvent.ACTION_CANCEL || ev.getAction() == MotionEvent.ACTION_UP)
-			{
-				int diff = mToolbarHideOffset - mHideOffsetAtScrollStart;
-				if (diff < 0)
-				{
-					if (-diff > mTouchSlop)
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (mUsePullDownActionBar && mToolbar != null) {
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				if (mPullDownTouchSlop == 0) {
+					final ViewConfiguration configuration = ViewConfiguration
+							.get(this);
+					mPullDownTouchSlop = ViewConfigurationCompat
+							.getScaledPagingTouchSlop(configuration);
+				}
+				calcRects(ev.getY(), mPullDownTouchSlop);				
+				mPullDownStartY = ev.getY();
+				mPullDownStartToolbarOffset = mToolbarHideOffset;
+			} else if (ev.getAction() == MotionEvent.ACTION_CANCEL
+					|| ev.getAction() == MotionEvent.ACTION_UP) {
+				int diff = mToolbarHideOffset - mPullDownStartToolbarOffset;
+				if (diff < 0) {
+					if (-diff > mPullDownTouchSlop)
 						showActionBar();
 					else
 						hideActionBar();
-				}
-				else if (diff > 0)
-				{
-					if (diff > mTouchSlop)
+				} else if (diff > 0) {
+					if (diff > mPullDownTouchSlop)
 						hideActionBar();
 					else
 						showActionBar();
 				}
-			}
-			else if (ev.getAction() == MotionEvent.ACTION_MOVE)
-			{
-				double yDelta = ev.getY() - mYAtScrollStart;
-				if (yDelta > 0)
-					yDelta = Math.max(0, yDelta - mTouchSlop);
-				else if (yDelta < 0)
-					yDelta = Math.min(0, yDelta + mTouchSlop);
-				int newTop = (int)(mHideOffsetAtScrollStart - yDelta);
-				setToolbarHideOffset(Math.max(0, Math.min(newTop, mToolbar.getHeight())));
-				ev.offsetLocation(0, mToolbarHideOffset - mHideOffsetAtScrollStart);
+			} else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+				if (mPullDownSlopRect != null && mPullDownSlopRect.contains(10, ev.getY())) {
+					// Just ignore
+					ev.offsetLocation(0, mPullDownStartY - ev.getY());
+				} else {
+					// If we have overcome the touch slop while starting the scroll, remember
+					// this, because we have to offset ALL coming move events with this
+					// value.
+					if (mPullDownSlopRect != null) {
+						this.mPullDownScrollAdjustment = (ev.getY() < mPullDownStartY) ? mPullDownTouchSlop
+								: -mPullDownTouchSlop;
+						mPullDownSlopRect = null;
+					}
+					ev.offsetLocation(0, mPullDownScrollAdjustment);
+
+					if (mPullDownCloseRect != null && mPullDownCloseRect.contains(10, ev.getY())) {
+						int newTop = (int) (this.getMaxHideOffset() - (ev
+								.getY() - mPullDownCloseRect.top));
+						setToolbarHideOffset(Math.max(0,
+								Math.min(newTop, getMaxHideOffset())));
+
+						ev.offsetLocation(0, mToolbarHideOffset
+								- mPullDownStartToolbarOffset);
+					} else if (mPullDownOpenRect != null
+							&& mPullDownOpenRect.contains(10, ev.getY())) {
+						int newTop = (int) (mPullDownOpenRect.bottom - ev.getY());
+						setToolbarHideOffset(Math.max(0,
+								Math.min(newTop, getMaxHideOffset())));
+
+						ev.offsetLocation(0, mToolbarHideOffset
+								- mPullDownStartToolbarOffset);
+					} else {
+						if (mPullDownCloseRect != null && ev.getY() < mPullDownCloseRect.top) {
+							// Max hidden
+							setToolbarHideOffset(getMaxHideOffset());
+						} else if (mPullDownOpenRect != null
+								&& ev.getY() > mPullDownOpenRect.bottom) {
+							// Max shown
+							setToolbarHideOffset(0);
+						}
+						calcRects(ev.getY(), 0);
+						ev.offsetLocation(0, mToolbarHideOffset
+								- mPullDownStartToolbarOffset);
+					}
+				}
 			}
 		}
 		return super.dispatchTouchEvent(ev);
 	}
 
+	private void calcRects(float y, int slopSize)
+	{
+		int deltaUp = getMaxHideOffset() - mToolbarHideOffset;
+		int deltaDown = mToolbarHideOffset;
+		if (deltaUp > 0 && deltaDown > 0)
+		{
+			mPullDownSlopRect = new RectF(0,y - slopSize,10000,y + slopSize);
+			mPullDownCloseRect = new RectF(0,mPullDownSlopRect.top - deltaUp,10000,mPullDownSlopRect.top);
+			mPullDownOpenRect = new RectF(0,mPullDownSlopRect.bottom,10000,mPullDownSlopRect.bottom + deltaDown);
+		}
+		else if (deltaUp > 0)
+		{
+			mPullDownSlopRect = new RectF(0,y - slopSize,10000,y);
+			mPullDownCloseRect = new RectF(0,mPullDownSlopRect.top - deltaUp,10000,mPullDownSlopRect.top);
+			mPullDownOpenRect = null;	
+		}
+		else if (deltaDown > 0)
+		{
+			mPullDownSlopRect = new RectF(0,y,10000,y + slopSize);
+			mPullDownCloseRect = null;
+			mPullDownOpenRect = new RectF(0,mPullDownSlopRect.bottom,10000,mPullDownSlopRect.bottom + deltaDown);
+		}
+		// Reset rect if no size
+		if (slopSize == 0)
+			mPullDownSlopRect = null;
+	}
+	
 	
 	public boolean getUsePullDownActionBar()
 	{
@@ -892,15 +957,23 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
 	public void hideActionBar()
 	{
-		animateActionBarHideOffsetTo(mToolbar.getHeight());
+		animateActionBarHideOffsetTo(getMaxHideOffset());
 	}
 
+	private int getMaxHideOffset()
+	{
+		int maxOffset = mToolbar.getHeight();
+		if (mToolbarShadow != null)
+			maxOffset += mToolbarShadow.getHeight();
+		return maxOffset;
+	}
+	
 	private void animateActionBarHideOffsetTo(int target)
 	{
-		if (mToolbar.getHeight() > 0)
+		if (getMaxHideOffset() > 0)
 		{
 			int distance = Math.abs(mToolbarHideOffset - target);
-			long duration = (300 * distance) / mToolbar.getHeight();
+			long duration = (300 * distance) / getMaxHideOffset();
 			final ActionBarAnim anim = new ActionBarAnim(target);
 			anim.setDuration(duration);
 			mToolbar.startAnimation(anim);
@@ -911,6 +984,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	{
 		mToolbarHideOffset = offset;
 		ViewCompat.setTranslationY(mToolbar, -mToolbarHideOffset);
+		if (mToolbarShadow != null)
+			ViewCompat.setTranslationY(mToolbarShadow, -mToolbarHideOffset);
 	}
 	
 	public class ActionBarAnim extends Animation

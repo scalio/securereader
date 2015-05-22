@@ -137,6 +137,8 @@ public class ItemExpandActivity extends FragmentActivityWithMenu implements Stor
 					RelativeLayout.LayoutParams.MATCH_PARENT);
 			mFullStoryView.setLayoutParams(params);
 			screenFrame.addView(mFullStoryView);
+			if (mToolbarShadow != null)
+				mToolbarShadow.bringToFront();
 			mToolbar.bringToFront();
 
 			mFullStoryView.setExpansionListener(new ExpansionListener() {

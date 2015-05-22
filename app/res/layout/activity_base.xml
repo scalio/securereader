@@ -6,7 +6,6 @@
     tools:context=".MainActivity" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
     >
 
     <!-- The action bar -->
@@ -31,4 +30,12 @@
        		android:layout_gravity="start"
        		layout="@layout/left_side_menu" />
 	</android.support.v4.widget.DrawerLayout>
+	
+	<View
+    	android:id="@+id/toolbar_shadow"
+    	android:layout_width="match_parent"
+    	android:layout_height="6dp"
+    	android:layout_below="@id/toolbar" 
+    	android:background="@drawable/actionbar_shadow"
+    	/>
 </RelativeLayout>
