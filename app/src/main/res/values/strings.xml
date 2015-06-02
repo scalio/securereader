@@ -31,6 +31,7 @@
     <string name="feed_filter_shared_stories">Stories Received</string>
     <string name="feed_filter_all_feeds">All Feeds</string>
     <string name="feed_filter_add_new">Manage Feeds</string>
+    <string name="feed_filter_video">Videos</string>
     <string name="feed_share_popup_title">Share feed via</string>
     <string name="story_list_hint_add_favorite_text1">Make a list of your top stories here by tapping "favorite" in a story</string>
     <string name="story_list_hint_add_favorite_text2">Here are some favorites from fellow readers to hold you over:</string>
