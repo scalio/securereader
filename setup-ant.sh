@@ -1,7 +1,7 @@
 #!/bin/sh
 
 projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' app/res/values/strings.xml`
-target="android-19"
+target="android-22"
 
 echo "Setting up build for $projectname"
 echo ""
