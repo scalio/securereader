@@ -470,15 +470,6 @@ public class UICallbacks
 			break;
 		}
 		
-		case R.integer.command_video_list:
-		{
-			Intent intent = new Intent(context, VideoListActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			context.startActivity(intent);
-			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-			break;
-		}
-		
 		case R.integer.command_account:
 		{
 			Intent intent = null;
