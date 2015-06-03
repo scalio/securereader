@@ -198,16 +198,16 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
         if (position == 0)
             return FeedFilterItemType.ALL_FEEDS;
         else if (position == 1)
+            return FeedFilterItemType.VIDEO_FEED;
+        else if (position == 2)
             return FeedFilterItemType.FAVORITES;
-        else if (position == 2 && App.UI_ENABLE_POPULAR_ITEMS)
+        else if (position == 3 && App.UI_ENABLE_POPULAR_ITEMS)
             return FeedFilterItemType.POPULAR;
         if (App.UI_ENABLE_POPULAR_ITEMS)
             position -= 1; // Offset 1 if popular is enabled
 
-        if (position == 2)
-            return FeedFilterItemType.SHARED;
         if (position == 3)
-            return FeedFilterItemType.VIDEO_FEED;
+            return FeedFilterItemType.SHARED;
 
         return FeedFilterItemType.FEED;
     }
@@ -402,11 +402,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                 break;
             }
             case VIDEO_FEED: {
-                //Intent intent = new Intent(super.getContext(), VideoListActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                //super.getContext().startActivity(intent);
-                ////((Activity) super.getContext()).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-
                 if (convertView == null)
                     convertView = createVideoView();
 
@@ -420,9 +415,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                         }
                     }
                 };
-
-                //boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.FAVORITES);
-                //holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
                 returnView = convertView;
                 break;
