@@ -49,7 +49,7 @@ import com.tinymission.rss.Item;
 
 public class FragmentActivityWithMenu extends info.guardianproject.zt.LockableActivity implements LeftSideMenuListener, FeedFilterViewCallbacks, OnCallbackListener
 {
-	public static final String LOGTAG = "FragmentActivityWithMenu";
+	public static final String LOGTAG = "FragmentActWithMenu";
 	public static final boolean LOGGING = false;
 	
 	private KillReceiver mKillReceiver;
@@ -247,7 +247,7 @@ public class FragmentActivityWithMenu extends info.guardianproject.zt.LockableAc
 		getMenuInflater().inflate(R.menu.overflow_main, menu);
 		
 		colorizeMenuItems();
-		/*
+
 		MenuItem miRadio = menu.findItem(R.id.menu_radio);
 		if(null != miRadio) {
 			if(isRadioPlaying) {	
@@ -255,7 +255,7 @@ public class FragmentActivityWithMenu extends info.guardianproject.zt.LockableAc
 			} else {
 				miRadio.setIcon(R.drawable.ic_action_radio);
 			}
-		}*/
+		}
 		
 		return true;
 	}
@@ -303,13 +303,12 @@ public class FragmentActivityWithMenu extends info.guardianproject.zt.LockableAc
 			return true;
 		}
 		
-		/*
+
 		case R.id.menu_radio:
 		{
 			handleRadioPlayer();
-			
 			return true;
-		}*/
+		}
 
 		case R.id.menu_add_post:
 		{
