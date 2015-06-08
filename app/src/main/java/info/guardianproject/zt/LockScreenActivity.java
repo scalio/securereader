@@ -363,11 +363,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	protected void onUiLanguageChanged()
 	{
 		Intent intentThis = getIntent();
-		intentThis.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		finish();
-		overridePendingTransition(0, 0);
 		startActivity(intentThis);
-		overridePendingTransition(0, 0);
 	}
 
 	@Override
@@ -383,18 +380,12 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	@Override
 	public void onCacheWordOpened() {
 		info.guardianproject.zt.App.getSettings().setCurrentNumberOfPasswordAttempts(0);
-
 		Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
 		if (intent == null)
 			intent = new Intent(this, info.guardianproject.zt.MainActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-		Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
-		info.guardianproject.zt.App.getInstance().putTransitionBitmap(snap);
 
 		startActivity(intent);
 		finish();
-		LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 
 	@Override
@@ -452,13 +443,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
 		if (intent == null)
 			intent = new Intent(this, info.guardianproject.zt.MainActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-		Bitmap snap = takeSnapshot(((ViewGroup) (getWindow().getDecorView())).getChildAt(0));
-		App.getInstance().putTransitionBitmap(snap);
 
 		startActivity(intent);
 		finish();
-		LockScreenActivity.this.overridePendingTransition(0, 0);
 	}
 }
