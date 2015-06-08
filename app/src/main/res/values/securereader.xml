@@ -6,13 +6,15 @@
 	<bool name="fulltextfeeds">false</bool>
 		
     <string-array name="built_in_feed_names">
-        <item>Zamaneh Tribune Text</item>
-        <item>Zamaneh Tribune Audio</item>
+        <item>Text Feed</item>
+        <item>Audio Feed</item>
+        <item>Video Feed</item>
     </string-array>
     
 	<string-array name="built_in_feed_urls">
         <item>http://www.radiozamaneh.com/feed</item>
         <item>http://www.radiozamaneh.com/category/radio/feed</item>
+        <item>http://www.placeholder.com</item>
     </string-array>
 
 

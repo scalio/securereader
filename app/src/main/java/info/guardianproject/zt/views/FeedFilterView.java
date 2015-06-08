@@ -36,7 +36,7 @@ import com.tinymission.rss.Feed;
 
 public class FeedFilterView extends ListView implements ListAdapter, OnItemClickListener {
     private enum FeedFilterItemType {
-        DISPLAY_PHOTOS(0), RECEIVE_SHARE(1), ALL_FEEDS(2), FAVORITES(3), POPULAR(4), SHARED(5), FEED(6), VIDEO_FEED(7);
+        DISPLAY_PHOTOS(0), RECEIVE_SHARE(1), ALL_FEEDS(2), FAVORITES(3), POPULAR(4), SHARED(5), FEED(6);
 
         private final int value;
 
@@ -167,7 +167,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
     }
 
     private int getCountSpecials() {
-        return 4;//3 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
+        return 3;//3 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
     }
 
     @Override
@@ -198,15 +198,13 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
         if (position == 0)
             return FeedFilterItemType.ALL_FEEDS;
         else if (position == 1)
-            return FeedFilterItemType.VIDEO_FEED;
-        else if (position == 2)
             return FeedFilterItemType.FAVORITES;
-        else if (position == 3 && App.UI_ENABLE_POPULAR_ITEMS)
+        else if (position == 2 && App.UI_ENABLE_POPULAR_ITEMS)
             return FeedFilterItemType.POPULAR;
         if (App.UI_ENABLE_POPULAR_ITEMS)
             position -= 1; // Offset 1 if popular is enabled
 
-        if (position == 3)
+        if (position == 2)
             return FeedFilterItemType.SHARED;
 
         return FeedFilterItemType.FEED;
@@ -357,8 +355,38 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                 holder.ivFeedImage.setVisibility(View.VISIBLE);
 
                 // TODO - feed images
+                String feedTitle = "";
+                switch (position) {
+                    case 3: {
+                        feedTitle = mContext.getString(R.string.feed_filter_text);
+                        listener = new ViewFeed(feed);
+                        break;
+                    }
+                    case 4: {
+                        feedTitle = mContext.getString(R.string.feed_filter_audio);
+                        listener = new ViewFeed(feed);
 
-                holder.tvName.setText(feed.getTitle());
+                        break;
+                    }
+                    case 5: {
+                        feedTitle = mContext.getString(R.string.feed_filter_video);
+
+                        listener = new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (mCallbacks != null) {
+                                    Intent intent = new Intent(mContext, VideoListActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    mContext.startActivity(intent);
+                                }
+                            }
+                        };
+
+                        break;
+                    }
+                }
+
+                holder.tvName.setText(feedTitle);//feed.getTitle());
                 if (TextUtils.isEmpty(feed.getTitle()))
                     holder.tvName.setText(R.string.add_feed_not_loaded);
 
@@ -369,7 +397,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                     holder.ivRefresh.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate));
                 else
                     holder.ivRefresh.clearAnimation();
-                listener = new ViewFeed(feed);
+
 
                 boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SINGLE_FEED &&
                         App.getInstance().getCurrentFeed() != null
@@ -401,24 +429,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                 returnView = convertView;
                 break;
             }
-            case VIDEO_FEED: {
-                if (convertView == null)
-                    convertView = createVideoView();
-
-                listener = new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mCallbacks != null) {
-                            Intent intent = new Intent(mContext, VideoListActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            mContext.startActivity(intent);
-                        }
-                    }
-                };
-
-                returnView = convertView;
-                break;
-            }
         }
 
         if (returnView != null)
@@ -428,7 +438,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
     @Override
     public int getViewTypeCount() {
-        return 8;
+        return 7;
     }
 
     @Override
@@ -494,12 +504,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
 
     public View createAllFeedsView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_item, this, false);
-        createViewHolder(view);
-        return view;
-    }
-
-    public View createVideoView() {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.feed_list_videos, this, false);
         createViewHolder(view);
         return view;
     }
