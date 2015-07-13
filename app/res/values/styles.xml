@@ -6,28 +6,30 @@
         <item name="colorPrimaryDark">#444444</item>
         <item name="colorControlNormal">#ffffff</item>
                 
-        <item name="actionBarTabBarStyle">@style/AppActionBarTabBarStyle</item>
+        <item name="actionBarStyle">@style/AppActionBarStyle</item>
         <item name="actionBarTabStyle">@style/AppActionBarTabStyle</item>
-        <item name="actionBarTabTextStyle">@style/AppActionBarTabTextStyle</item>
+        <item name="actionBarTextStyle">@style/AppActionBarTitleStyle</item>
         <item name="android:alertDialogStyle">@style/ModalDialogStyleOld</item>
         <item name="android:alertDialogTheme">@style/ModalDialogTheme</item>
     </style>
-
-    <style name="Widget.Reader.ActionBar" parent="AppTheme">
+    
+    <style name="AppActionBarStyle">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:elevation">4dp</item>
-        <item name="theme">@style/ThemeOverlay.Reader.ActionBar</item>
+        <item name="theme">@style/ThemeOverlayActionBar</item>
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>
     </style>
 
-    <style name="ThemeOverlay.Reader.ActionBar" parent="AppTheme">
+    <style name="ThemeOverlayActionBar">
         <item name="actionOverflowButtonStyle">@style/AppActionBarOverflowButtonStyle</item>
         <item name="actionButtonStyle">@style/AppActionButtonStyle</item>
     </style>
 
     <style name="AppThemeReporter" parent="AppTheme">
+        <item name="colorPrimary">#848879</item>
+        <item name="colorPrimaryDark">#BAE24B</item>
     </style>
-
+    
     <style name="AppActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">56dip</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
@@ -39,19 +41,11 @@
         <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
 
-    <style name="AppActionBarTabBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabBar">
-        <item name="android:showDividers">middle</item>
-        <item name="android:divider">@null</item>
-    </style>
-
     <!-- style for the tabs -->
     <style name="AppActionBarTabStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_background_selector</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
-    </style>
-
-    <style name="AppActionBarTabTextStyle" parent="@style/Widget.AppCompat.Light.ActionBar.TabText">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@drawable/tab_foreground_selector</item>

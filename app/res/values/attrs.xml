@@ -10,6 +10,7 @@
     <attr name="height_limit" format="float" default="0"/>
     	
     <declare-styleable name="CustomAppTheming">
+        <attr name="actionBarTextStyle" format="reference" />
     </declare-styleable>
          
     <declare-styleable name="DottedProgressView">
