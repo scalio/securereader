@@ -142,7 +142,7 @@ public class ShowRssFragment extends Fragment{
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 String uriText = "mailto:"+
-                        "?subject=" + Uri.encode("Zamaneh Tribune") +
+                        "?subject=" + Uri.encode("Tribune Zamaneh") +
 //                        "&body=" + Uri.encode(getString(R.string.sharingText));
                         "&body=" + Uri.encode(getString(R.string.sharingText)) +"\n"+ sharingArticle+"\n";
 

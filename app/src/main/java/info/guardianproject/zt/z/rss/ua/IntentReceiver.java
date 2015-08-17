@@ -31,7 +31,7 @@ import android.content.Intent;
 
 public class IntentReceiver extends BroadcastReceiver {
 
-    private static final String logTag = "Zamaneh Tribune";
+    private static final String logTag = "Tribune Zamaneh";
 
     public static String APID_UPDATED_ACTION_SUFFIX = ".apid.updated";
 

@@ -15,11 +15,11 @@ android {
 
     productFlavors {
         radioZamaneh {
-            applicationId "com.guardian.rz"
+            applicationId "com.radiozamaneh.rz"
         }
 
-        zamanehTribune {
-            applicationId "com.guardian.zt"
+        tribuneZamaneh {
+            applicationId "com.radiozamaneh.tz"
         }
     }
 

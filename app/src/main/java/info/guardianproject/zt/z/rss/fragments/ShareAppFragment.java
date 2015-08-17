@@ -75,8 +75,9 @@ public class ShareAppFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
+                // FIXME this should be localized text
                 String uriText = "mailto:"+
-                        "?subject=" + Uri.encode("Zamaneh Tribune") +
+                        "?subject=" + Uri.encode("Tribune Zamaneh") + 
 //                        "&body=" + Uri.encode(getString(R.string.sharingText));
                          "&body=" + Uri.encode(getString(R.string.sharingText)) +"\n"+ WEB_URL_TO_SHARE+"\n"+WEB_URL_TO_SHARE_2+"\n";
 
