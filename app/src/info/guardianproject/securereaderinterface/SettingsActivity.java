@@ -40,10 +40,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.cacheword.PassphraseSecrets;
 import info.guardianproject.securereaderinterface.R;
 
-public class SettingsActivity extends FragmentActivityWithMenu
+public class SettingsActivity extends FragmentActivityWithMenu implements ICacheWordSubscriber
 {
 	private static final boolean LOGGING = false;
 	private static final String LOGTAG = "Settings";
@@ -716,5 +717,17 @@ public class SettingsActivity extends FragmentActivityWithMenu
 		{
 			updateLeftSideMenu();
 		}
+	}
+
+	@Override
+	public void onCacheWordLocked() {
+	}
+
+	@Override
+	public void onCacheWordOpened() {
+	}
+
+	@Override
+	public void onCacheWordUninitialized() {
 	}
 }
