@@ -32,4 +32,10 @@ public class SettingsUI extends Settings
 		mPrefs.edit().putBoolean(KEY_ENABLE_SCREENSHOTS, enable).commit();
 	}
 	
+	@Override
+	public void resetSettings()
+	{
+		mPrefs.edit().clear().commit();
+		super.resetSettings();
+	}
 }

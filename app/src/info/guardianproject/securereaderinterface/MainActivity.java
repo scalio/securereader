@@ -151,10 +151,13 @@ public class MainActivity extends ItemExpandActivity
 			// If we have not shown help yet, open that on top
 			if (!App.getSettings().hasShownHelp())
 			{
-				Intent intent = new Intent(this, HelpActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				intent.putExtra("useLeftSideMenu", false);
-				startActivity(intent);
+				if (!App.getInstance().isActivityLocked())
+				{
+					Intent intent = new Intent(this, HelpActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					intent.putExtra("useLeftSideMenu", false);
+					startActivity(intent);
+				}
 			}
 			else
 			{

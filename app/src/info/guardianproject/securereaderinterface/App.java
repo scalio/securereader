@@ -69,6 +69,8 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	private FeedFilterType mCurrentFeedFilterType = FeedFilterType.ALL_FEEDS;
 	private Feed mCurrentFeed = null;
 
+	private boolean mIsWiping = false;
+	
 	@Override
 	public void onCreate()
 	{
@@ -201,12 +203,23 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 		socialReader.setCacheWordTimeout(m_settings.passphraseTimeout());
 	}
 
-	public void wipe(int wipeMethod)
+	public void wipe(Context context, int wipeMethod)
 	{
+		mIsWiping = true;
 		socialReader.doWipe(wipeMethod);
+		m_settings.resetSettings();
+		mLastResumed = null;
 
 		// Notify activities (if any)
-		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
+		LocalBroadcastManager.getInstance(this).sendBroadcastSync(new Intent(App.WIPE_BROADCAST_ACTION));
+
+		mIsWiping = false;
+		if (wipeMethod == SocialReader.DATA_WIPE)
+		{
+			Intent intent = new Intent(m_context, LockScreenActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		}
 	}
 	
 	public static View createView(String name, Context context, AttributeSet attrs)
@@ -275,7 +288,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	
 	private void showLockScreenIfLocked()
 	{
-		if (mIsLocked && mLastResumed != null && mLockScreen == null)
+		if (mIsLocked && mLastResumed != null && mLockScreen == null && !mIsWiping)
 		{
 			Intent intent = new Intent(App.this, LockScreenActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

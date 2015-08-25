@@ -304,11 +304,10 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			new Handler().post(new Runnable()
+			runOnUiThread(new Runnable()
 			{
 				@Override
-				public void run()
-				{
+				public void run() {
 					onWipe();
 				}
 			});
@@ -320,7 +319,6 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	 */
 	protected void onWipe()
 	{
-
 	}
 
 	@Override
