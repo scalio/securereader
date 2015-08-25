@@ -56,7 +56,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 	private EditText mNewPassphrase;
 	private EditText mConfirmNewPassphrase;
 	private Button mBtnOpen;
-
+	private View mErrorView;
+	
 	private CacheWordHandler mCacheWord;
 	private info.guardianproject.securereaderinterface.LockScreenActivity.SetUiLanguageReceiver mSetUiLanguageReceiver;
 	private DropdownSpinner mDropdownLanguage;
@@ -283,7 +284,8 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 		View root = findViewById(R.id.llRoot);
 		root.setOnFocusChangeListener(this);
 
-		root.findViewById(R.id.tvError).setVisibility(View.GONE);
+		mErrorView = root.findViewById(R.id.tvError);
+		mErrorView.setVisibility(View.GONE);
 		
 		mEnterPassphrase = (EditText) findViewById(R.id.editEnterPassphrase);
 		mEnterPassphrase.setTypeface(Typeface.DEFAULT);
@@ -303,7 +305,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
 					// Kill password entered, wipe!
 					App.getInstance().wipe(SocialReader.DATA_WIPE);
 					mEnterPassphrase.setText("");
-					findViewById(R.id.tvError).setVisibility(View.VISIBLE);
+					mErrorView.setVisibility(View.VISIBLE);
 					finish();
 					return; // Try again...
 				}
@@ -325,7 +327,7 @@ public class LockScreenActivity extends Activity implements LockScreenCallbacks,
                     }
 
                     mEnterPassphrase.setText("");
-                    findViewById(R.id.tvError).setVisibility(View.VISIBLE);
+					mErrorView.setVisibility(View.VISIBLE);
                     return; // Try again...
                 }
                 
