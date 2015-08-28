@@ -93,13 +93,14 @@ public class MediaViewCollection
 	{
 		if (mStory != null)
 		{
+			int idxView = 0;
 			for (int i = 0; i < mStory.getNumberOfMediaContent(); i++)
 			{
 				MediaContent mediaContent = mStory.getMediaContent(i);
 				if (mediaContent == null || mediaContent.getUrl() == null || mediaContent.getType() == null)
 					continue;
 
-				MediaContentLoadInfo info = new MediaContentLoadInfo(mediaContent, i);
+				MediaContentLoadInfo info = new MediaContentLoadInfo(mediaContent, idxView++);
 				mLoadInfos.add(info);
 			}
 		}
