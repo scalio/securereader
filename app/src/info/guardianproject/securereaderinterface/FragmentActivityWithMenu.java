@@ -373,6 +373,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+		App.getInstance().setCurrentLanguageInConfig(this);
 		if (mDrawerToggle != null)
 			mDrawerToggle.onConfigurationChanged(newConfig);
 	}

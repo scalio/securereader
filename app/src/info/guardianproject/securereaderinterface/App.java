@@ -74,12 +74,11 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	@Override
 	public void onCreate()
 	{
-		super.onCreate();
-
 		m_singleton = this;
 		m_context = this;
 		m_settings = new SettingsUI(m_context);
-		applyUiLanguage();
+		applyUiLanguage(false);
+		super.onCreate();
 
 		socialReader = SocialReader.getInstance(this.getApplicationContext());
 		socialReader.setLockListener(this);
@@ -139,7 +138,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	{
 		if (key.equals(Settings.KEY_UI_LANGUAGE))
 		{
-			applyUiLanguage();
+			applyUiLanguage(true);
 		}
 		else if (key.equals(Settings.KEY_PASSPHRASE_TIMEOUT))
 		{
@@ -150,53 +149,37 @@ public class App extends Application implements OnSharedPreferenceChangeListener
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		applyUiLanguage();
+		applyUiLanguage(false);
 	}
 
 	@SuppressLint("NewApi")
-	private void applyUiLanguage()
+	private void applyUiLanguage(boolean sendNotifications)
 	{
-		UiLanguage lang = m_settings.uiLanguage();
-
 		// Update language!
 		//
-		Configuration config = new Configuration();
-		
-		String language = "en";
-		if (lang == UiLanguage.Farsi)
-			language = "ar";
-		else if (lang == UiLanguage.Tibetan)
-			language = "bo";
-		else if (lang == UiLanguage.Chinese)
-			language = "zh";
-		else if (lang == UiLanguage.Ukrainian)
-			language = "uk";
-		else if (lang == UiLanguage.Russian)
-			language = "ru";
-		else if (lang == UiLanguage.Spanish)
-			language = "es";
-		else if (lang == UiLanguage.Japanese)
-			language = "ja";
-		else if (lang == UiLanguage.Norwegian)
-			language = "nb";
-		else if (lang == UiLanguage.Turkish)
-			language = "tr";
-		
+		String language = m_settings.uiLanguageCode();
 		if (language.equals(mCurrentLanguage))
 			return;
 		mCurrentLanguage = language;
-		
+		setCurrentLanguageInConfig(m_context);
+
+		// Notify activities (if any)
+		if (sendNotifications)
+			LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
+	}
+
+	public void setCurrentLanguageInConfig(Context context)
+	{
+		Configuration config = new Configuration();
+		String language = m_settings.uiLanguageCode();
 		Locale loc = new Locale(language);
 		if (Build.VERSION.SDK_INT >= 17)
 			config.setLocale(loc);
 		else
 			config.locale = loc;
 		Locale.setDefault(loc);
-		getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-	
-		// Notify activities (if any)
-		LocalBroadcastManager.getInstance(m_context).sendBroadcastSync(new Intent(App.SET_UI_LANGUAGE_BROADCAST_ACTION));
-}
+		context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+	}
 
 	private void applyPassphraseTimeout()
 	{
