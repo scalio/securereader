@@ -14,3 +14,6 @@
 [submodule "external/SecureShareLib/SecureShareUILibrary/external/facebook-sdk"]
 	path = external/SecureShareLib/SecureShareUILibrary/external/facebook-sdk
 	url = https://github.com/scalio/facebook-android-sdk.git
+[submodule "external/secureshare"]
+	path = external/secureshare
+	url = git@github.com:StoryMaker/SecureShareLib.git
