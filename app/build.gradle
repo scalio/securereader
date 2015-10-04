@@ -83,5 +83,5 @@ dependencies {
     // project imports
     compile project(':external:NetCipher:libnetcipher')
     compile project(':external:securereaderlibrary')
-    compile project(':external:SecureShareLib:SecureShareUILibrary')
+    compile project(':external:secureshare:SecureShareUILibrary')
 }
