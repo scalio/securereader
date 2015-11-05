@@ -1,0 +1,604 @@
+<info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_news"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+
+        <!-- Proxy section -->
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupProxy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_proxy" >
+
+            <RadioGroup
+                android:id="@+id/radioGroupProxy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbProxyTor"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_tor" />
+
+                <RadioButton
+                    android:id="@+id/rbProxyPsiphon"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_psiphon" />
+
+                <RadioButton
+                    android:id="@+id/rbProxyNone"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_proxy_none" />
+
+            </RadioGroup>
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+
+        <!-- Chat section -->
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_sub_text="@string/settings_gibberbot_connected"
+            app:header_text="@string/settings_heading_chat" />
+
+
+        <!-- Panic section -->
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupPanicAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_panic_action" >
+
+            <TextView
+                style="@style/SettingsOptionInfoStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/settings_panic_action_info" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupPanic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbWipeApp"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_panic_wipe_app" />
+
+                <RadioButton
+                    android:id="@+id/rbWipeContent"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_panic_wipe_content" />
+            </RadioGroup>
+
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+        <!-- Login section -->
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_login" >
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_passphrase_timeout" />
+
+            <TextView
+                style="@style/SettingsOptionInfoStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_passphrase_timeout_info" />
+
+            <LinearLayout
+                android:id="@+id/llPassphrase2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroupLaunch"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout1"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_security_passphrase_timeout1" />
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout2"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_passphrase_timeout2" />
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout3"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_security_passphrase_timeout3" />
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout4"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_passphrase_timeout4" />
+
+                    <RadioButton
+                        android:id="@+id/rbPassphraseTimeout5"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_passphrase_timeout5" />
+
+                </RadioGroup>
+
+                <ImageView
+                    android:id="@+id/btnSetLaunchPassphrase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_context_password"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_password_attempts" />
+
+            <TextView
+                style="@style/SettingsOptionInfoStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_password_attempts_label" />
+
+            <RadioGroup
+                android:id="@+id/rgNumberOfPasswordAttempts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbNumberOfPasswordAttempts1"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_security_password_attempts_1" />
+
+                <RadioButton
+                    android:id="@+id/rbNumberOfPasswordAttempts2"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_security_password_attempts_2" />
+
+                <RadioButton
+                    android:id="@+id/rbNumberOfPasswordAttempts3"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_security_password_attempts_3" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_kill_passphrase" />
+
+            <TextView
+                style="@style/SettingsOptionInfoStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_security_kill_passphrase_info" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <RadioGroup
+                    android:id="@+id/radioGroupKillPassword"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <RadioButton
+                        android:id="@+id/rbKillPassphraseOn"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/settings_security_kill_passphrase_on" />
+
+                    <RadioButton
+                        android:id="@+id/rbKillPassphraseOff"
+                        style="@style/SettingsRadioButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_security_kill_passphrase_off" />
+                </RadioGroup>
+
+                <ImageView
+                    android:id="@+id/btnSetKillPassphrase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_context_password" />
+
+            </LinearLayout>
+
+
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+        <!-- Data & Syncing section -->
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupDataUse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_data_use" >
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_data_article_expiration" />
+
+            <RadioGroup
+                android:id="@+id/rgExpiration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbExpiration1Day"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/radiobutton_settings_selector"
+                    android:enabled="true"
+                    android:text="@string/settings_data_article_expiration_1_day" />
+
+                <RadioButton
+                    android:id="@+id/rbExpiration1Week"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/radiobutton_settings_selector"
+                    android:enabled="true"
+                    android:text="@string/settings_data_article_expiration_1_week" />
+
+                <RadioButton
+                    android:id="@+id/rbExpiration1Month"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/radiobutton_settings_selector"
+                    android:enabled="true"
+                    android:text="@string/settings_data_article_expiration_1_month" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_data_syncing" />
+
+            <RadioGroup
+                android:id="@+id/rgSyncing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbSyncManual"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/settings_data_syncing_manual_only" />
+
+                <RadioButton
+                    android:id="@+id/rbSyncWhenRunning"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_data_syncing_automatic_running" />
+
+                <RadioButton
+                    android:id="@+id/rbSyncInBackground"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_data_syncing_automatic_background" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_data_sync_mode" />
+
+            <RadioGroup
+                android:id="@+id/rgSyncMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbSyncModeBitwise"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_data_sync_mode_bitwise" />
+
+                <RadioButton
+                    android:id="@+id/rbSyncModeFlow"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:enabled="true"
+                    android:text="@string/settings_data_sync_mode_flow" />
+            </RadioGroup>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_data_sync_network" />
+
+            <RadioGroup
+                android:id="@+id/rgSyncNetwork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbSyncNetworkWifiOnly"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_data_sync_network_wifi" />
+
+                <RadioButton
+                    android:id="@+id/rbSyncNetworkWifiAndMobile"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:enabled="true"
+                    android:text="@string/settings_data_sync_network_all" />
+            </RadioGroup>
+
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+        <info.guardianproject.securereaderinterface.widgets.GroupView
+            android:id="@+id/groupLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/grey_light"
+            android:orientation="vertical"
+            app:collapse_layout="@layout/add_feed_closer"
+            app:header_layout="@layout/settings_group_header_item"
+            app:header_text="@string/settings_heading_language" >
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_language_option_group_default" />
+
+            <RadioGroup
+                android:id="@+id/rgUiLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageEnglish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/settings_language_english_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageChinese"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_chinese_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageTibetan"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_tibetan_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageUkrainian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_ukrainian_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageRussian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_russian_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageJapanese"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_japanese_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageNorwegian"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_norwegian_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageSpanish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_spanish_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageTurkish"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_turkish_nt" />
+
+                <RadioButton
+                    android:id="@+id/rbUiLanguageFarsi"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_language_farsi_nt" />
+
+            </RadioGroup>
+
+            <TextView
+                style="@style/SettingsOptionGroupStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_reader_swipe_direction"
+                android:visibility="gone" />
+
+            <RadioGroup
+                android:id="@+id/rgReaderSwipeDirection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" >
+
+                <RadioButton
+                    android:id="@+id/rbSwipeDirectionRtl"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_reader_swipe_direction_rtl" />
+
+                <RadioButton
+                    android:id="@+id/rbSwipeDirectionLtr"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="@string/settings_reader_swipe_direction_ltr" />
+
+                <RadioButton
+                    android:id="@+id/rbSwipeDirectionAutomatic"
+                    style="@style/SettingsRadioButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/settings_reader_swipe_direction_automatic" />
+
+            </RadioGroup>
+
+        </info.guardianproject.securereaderinterface.widgets.GroupView>
+
+        <LinearLayout
+            android:id="@+id/groupScreenshots"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/settings_group_header_item_background"
+            android:onClick="screenshotsSectionClicked" >
+
+            <TextView
+                style="@style/SettingsHeadingStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="@string/settings_enable_screenshots" />
+
+            <CheckBox
+                android:id="@+id/chkEnableScreenshots"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:button="@drawable/abc_btn_check_material"
+                android:buttonTint="@color/checkbox_color_selector"
+                android:padding="5dp"
+                android:theme="@style/SettingsCheckboxStyle"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</info.guardianproject.securereaderinterface.widgets.InitialScrollScrollView>

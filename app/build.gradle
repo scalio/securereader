@@ -1,0 +1,154 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+    useLibrary  'org.apache.http.legacy'
+
+    defaultConfig {
+        applicationId "info.guardianproject.securereaderinterface"
+        minSdkVersion 9
+        targetSdkVersion 23
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    productFlavors {
+        Master {
+            applicationId = "info.guardianproject.securereaderinterface"
+        }
+        YakReader {
+            applicationId = "info.guardianproject.yakreader"
+        }
+    }
+
+    dexOptions {
+        jumboMode = true
+        javaMaxHeapSize "4g"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'LICENSE.txt'
+    }
+
+    ext.preprocessFile =
+    {
+        currentFlavor, sourceFile ->
+            currentFlavor = currentFlavor.toUpperCase()
+
+            def fileContents = sourceFile.text
+            def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
+            def symbols = []
+            groups.each {
+                if (!symbols.contains(it[1]))
+                    symbols << it[1];
+            }
+            if (symbols.contains(currentFlavor))
+                symbols.remove(currentFlavor)
+
+            symbols.each {
+                fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
+            }
+            fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + currentFlavor + "(.*?)#endif\\*\\/") { all, text ->
+                "${text}"
+            }
+            sourceFile.text = fileContents
+    }
+
+    ext.preprocessAllFiles =
+    {
+        flavor ->
+        project.copy {
+            from 'src/main/java'
+            into 'src/preprocessed/java'
+            include '**/*.java'
+        }
+        fileTree('src/preprocessed/java').matching {'**/*.java'}.each {
+            println "PreProcessing " + it
+            preprocessFile(flavor.name, it)
+        }
+    }
+
+    productFlavors.all { flavor ->
+        task "preprocessFiles${flavor.name.capitalize()}" << {
+            File f = file("lastbuild.flavor");
+            if (!f.exists() || f.text != flavor.name)
+            {
+                if (f.exists()) {
+                    println "##### Changed flavor from " + f.text + " to " + flavor.name + " #####"
+                } else {
+                    println "##### Changed flavor to " + flavor.name + " #####"
+                }
+                if (!f.exists()) {
+                   f.createNewFile()
+                }
+                f.text = flavor.name
+                preprocessAllFiles(flavor)
+            }
+        }
+        task "preprocessFilesCopy${flavor.name.capitalize()}" {
+            inputs.dir 'src/main/java'
+            outputs.dir 'src/preprocessed/java'
+            doLast {
+                println "Something has changed, preprocessing files"
+                preprocessAllFiles(flavor)
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        compileTask ->
+
+            if (compileTask.name.endsWith("ReleaseJavaWithJavac") || compileTask.name.endsWith("DebugJavaWithJavac")) {
+
+                def flavor = (compileTask.name =~ /compile(.*?)(Release|Debug)JavaWithJavac/)[0][1]
+
+
+                task("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}") << {
+
+                    println("Use preprocessed files for flavor: " + flavor)
+
+                    compileTask.source = compileTask.source - fileTree(dir: 'src/main/java', include: '**/*.java')
+                    compileTask.source = compileTask.source + fileTree(dir: 'src/preprocessed/java', include: '**/*.java')
+
+                    def matchPart = "src/" + flavor.toLowerCase() + "/java/"
+                    def mainFiles = []
+                    compileTask.source.findAll { it.path.contains(matchPart) }.each { File file ->
+                        def mainPath = file.path.replace(matchPart, "src/preprocessed/java/")
+                        mainFiles << mainPath
+                    }
+                    def duplicates = compileTask.source.findAll { mainFiles.contains(it.path) }
+                    duplicates.each { File file ->
+                        println "Removing duplicate java file: " + file
+                    }
+                    compileTask.source = compileTask.source - files(duplicates)
+                }
+                tasks.getByName("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}").dependsOn "preprocessFilesCopy${flavor.capitalize()}"
+                tasks.getByName("preprocessFilesCopy${flavor.capitalize()}").dependsOn "preprocessFiles${flavor.capitalize()}"
+                compileTask.dependsOn "usePreprocessedAndRemoveDups${compileTask.name.capitalize()}"
+            }
+    }
+}
+
+dependencies {
+    compile (project(':external:securereaderlibrary')) {
+        exclude module: 'support-v4'
+    }
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.google.code.gson:gson:2.3'
+}

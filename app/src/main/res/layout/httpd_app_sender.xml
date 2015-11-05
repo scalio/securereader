@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sv2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="10dp" >
+
+        <TextView
+            android:id="@+id/tvInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/httpd_app_sender_instructions" />
+
+        <LinearLayout
+            android:id="@+id/llSender"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvInstructions"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/llSender"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/llSender"
+            android:text="@string/httpd_app_sender_sender"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/button_primary" />
+
+        <TextView
+            android:id="@+id/tvSenderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvSender"
+            android:layout_below="@id/tvSender"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/httpd_app_sender_sender_title"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/tvSenderPart1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvSenderTitle"
+            android:layout_below="@id/tvSenderTitle"
+            android:layout_marginRight="10dp"
+            android:text="@string/httpd_app_sender_sender_part1"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <LinearLayout
+            android:id="@+id/llReceiver"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvSenderPart1"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvReceiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/llReceiver"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/llReceiver"
+            android:text="@string/httpd_app_sender_receiver"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/button_primary" />
+
+        <LinearLayout
+            android:id="@+id/llReceiverInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvReceiver"
+            android:layout_below="@id/tvReceiver"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvReceiverPart1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/httpd_app_sender_receiver_part1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/tvReceiverPart2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/httpd_app_sender_receiver_part2"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/tvReceiverPart3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/httpd_app_sender_receiver_part3"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/tvUrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://nothing yet"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/tvReceiverPart4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/httpd_app_sender_receiver_part4"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>
