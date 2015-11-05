@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<resources> 
+   <color name="actionbar_dark_background">#848778</color>  
+   <color name="actionbar_dark_dividers">#94103C</color>  
+   <color name="actionbar_dark_bottom_edge">@color/rz_grey_dark</color>  
+</resources>

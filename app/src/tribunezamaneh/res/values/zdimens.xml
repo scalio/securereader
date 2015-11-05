@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="tab_height">55dip</dimen>
+    <dimen name="tab_bottom_margin">0dip</dimen>
+    <dimen name="margin_right_list_item">15dip</dimen>
+    <dimen name="main_text_size">16sp</dimen>
+    <dimen name="main_text_size_header">20sp</dimen>
+    <dimen name="video_image_height">260dip</dimen>
+    <dimen name="button_text_size">14sp</dimen>
+    <dimen name="share_image_size">80dip</dimen>
+    <dimen name="doc_image_size">60dip</dimen>
+    <dimen name="share_text_size">18sp</dimen>
+    <dimen name="share_text_size_header">20sp</dimen>
+    <dimen name="min_edit_text_size">100dip</dimen>
+
+</resources>
+

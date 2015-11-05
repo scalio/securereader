@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
+    >
+
+   <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="@drawable/divider_line"
+           android:layout_weight="1"
+           />
+    <TextView
+            android:id="@+id/dividerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dividerLabel"
+            android:textColor="#4d442f"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="@dimen/main_text_size"
+            android:background="@drawable/divider_button_bg"/>
+   <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginLeft="1dip"
+                    android:src="@drawable/divider_right_img"/>
+
+</LinearLayout>
