@@ -13,6 +13,14 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
+/*#if FLAVOR_TRIBUNEZAMANEH
+import info.guardianproject.zt.z.rss.utils.DataStorage;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+#endif*/
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -103,6 +111,11 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 				mCurrentFeed = feed;
 			}
 		});
+
+		/*#if FLAVOR_TRIBUNEZAMANEH
+		//init RZ App
+		initRadioZApp();
+		#endif*/
 	}
 
 	@Override
@@ -356,4 +369,30 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 		if (mCurrentFeed != null && mCurrentFeed.getDatabaseId() == feed.getDatabaseId())
 			mCurrentFeed = feed;
 	}
+
+	/*#if FLAVOR_TRIBUNEZAMANEH
+	private DataStorage dataStorage;
+
+	private void initRadioZApp() {
+		dataStorage = new DataStorage();
+        initImageLoader();
+	}
+
+    private void initImageLoader() {
+        // This configuration tuning is custom. You can tune every option, you may tune some of them,
+        // or you can create default configuration by
+        // ImageLoaderConfiguration.createDefault(this);
+        // method.
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 2).memoryCacheSize(2500000) // 2.5 Mb
+                .denyCacheImageMultipleSizesInMemory().discCacheFileNameGenerator(new Md5FileNameGenerator()) // Not necessary in common
+                .defaultDisplayImageOptions(new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisc(true).imageScaleType(ImageScaleType.IN_SAMPLE_INT).build())
+                .build();
+        // Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(config);
+    }
+
+    public DataStorage getDataStorage() {
+        return dataStorage;
+    }
+	#endif*/
 }

@@ -76,7 +76,19 @@ android {
         YakReader {
             applicationId = "info.guardianproject.yakreader"
         }
-    }
+        TribuneZamaneh {
+            applicationId = "info.guardianproject.zt"
+            minSdkVersion 16
+            dependencies {
+                compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
+                compile (project(':external:SecureShareLib:SecureShareUILibrary'))
+                        {
+                            exclude module: 'support-v4'
+                            exclude module: 'NetCipher'
+                        }
+            }
+        }    
+	}
 
     dexOptions {
         jumboMode = true

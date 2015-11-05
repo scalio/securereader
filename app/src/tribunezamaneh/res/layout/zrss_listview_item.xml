@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dip"
+    android:paddingBottom="5dip"
+    android:clickable="true"
+     >
+
+    <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/list_item_3"
+              android:layout_marginRight="@dimen/margin_right_list_item"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dip">
+        <TextView
+                android:id="@+id/textRss"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="@dimen/main_text_size"
+                android:textColor="@color/black" />
+
+        <RelativeLayout
+                android:layout_width="100dip"
+                android:layout_height="100dip"
+                android:layout_gravity="right"
+                android:layout_toRightOf="@+id/textRss"
+                android:layout_alignParentRight="true">
+            <ImageView
+                    android:id="@+id/imageRss"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:visibility="visible"
+                    android:src="@drawable/image_placeholder"/>
+
+            <ImageView
+                    android:id="@+id/imageRssRoundedBorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hapticFeedbackEnabled="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:visibility="visible"
+                    android:src="@drawable/list_item_rounded_image_border_3" />
+        </RelativeLayout>
+
+   </LinearLayout>
+
+</RelativeLayout>
