@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          >
+    <!-- Change package when branching into distinct app -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /><!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />	<!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /><!-- This app has permission to register with GCM and receive message -->
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+
+    <permission android:name="info.guardianproject.zt.z.rss.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <uses-permission android:name="info.guardianproject.zt.z.rss.permission.C2D_MESSAGE" />
+
+
+    <application
+        tools:replace="android:icon"
+        android:icon="@drawable/rz_logo"
+        android:label="@string/app_name"
+        android:description="@string/app_description"
+        android:theme="@style/AppTheme"
+        >
+        <service android:name="info.guardianproject.cacheword.CacheWordService"
+                 android:enabled="true" android:exported="false" />
+
+
+<!--        <activity
+            android:name="info.guardianproject.zt.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppThemeNoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
+        <activity
+            android:name="info.guardianproject.zt.HelpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.DownloadsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_downloads" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.UploadsChooseActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_uploads" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.UploadsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_uploads" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.VideoListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_rz" >
+        </activity>    
+        <activity
+            android:name="info.guardianproject.zt.AddFeedActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_add_feed" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="*"/>
+                <data android:pathPrefix="/feed"/>
+                <data android:pathPattern=".*feed/*"/>
+                <!--
+                To match all files with a specific file ending, you have to use this
+                craziness because of Android limitations in their regex parser
+                https://stackoverflow.com/questions/1733195/android-intent-filter-for-a-particular-file-extension
+                https://stackoverflow.com/questions/3400072/pathpattern-to-match-file-extension-does-not-work-if-a-period-exists-elsewhere-i/8599921
+                -->
+                <data android:pathPattern=".*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\..*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.rss"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="*"/>
+
+                <!--
+                The ultimate in crack smoking!  Some apps will only respect these file associations
+                if the mimeType is not set, and other apps will only respect them if mimeType is set
+                to */*.  Therefore we have two whole copies of the same thing, besides setting the mimeType.
+                -->
+                <data android:mimeType="*/*" />
+
+                <data android:pathPrefix="/feed"/>
+                <data android:pathPattern=".*feed/*"/>
+                <data android:pathPattern=".*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.xml"/>
+                <data android:pathPattern=".*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\..*\\.rss"/>
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.rss"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="feeds.feedburner.com"/>
+                <data android:host="feeds2.feedburner.com"/>
+                <data android:host="feedproxy.google.com"/>
+                <data android:host="feedsproxy.google.com"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="*"/>
+                <data android:mimeType="application/atom+xml"/>
+                <data android:mimeType="application/rdf+xml"/>
+                <data android:mimeType="application/rss+xml"/>
+                <data android:mimeType="application/xml"/>
+                <data android:mimeType="text/xml"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="itpc" />
+                <data android:scheme="pcast" />
+                <data android:scheme="feed" />
+                <data android:scheme="rss" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.ALTERNATIVE" />
+                <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
+                <data android:mimeType="application/atom+xml"/>
+                <data android:mimeType="application/rdf+xml"/>
+                <data android:mimeType="application/rss+xml"/>
+                <data android:mimeType="application/xml"/>
+                <data android:mimeType="text/*"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.PanicActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_panic"
+            android:theme="@style/Theme.Transparent" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.ViewMediaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_view_media" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.SettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.LockScreenActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_lock_screen" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.KillActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.installer.HTTPDAppSender"    
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.CreateAccountActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_create_account">
+        </activity>
+        <activity 
+            android:name="info.guardianproject.zt.DownloadEpubReaderActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">            
+        </activity>
+        <service android:name="info.guardianproject.securereader.SyncService" >
+        </service>
+        
+        <activity
+            android:name="info.guardianproject.zt.installer.SecureShareReceiveActivity"
+            android:label="@string/title_secure_share_receive"
+            android:theme="@style/AppTheme.Transparent" >
+			<intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/x-bigbuffalo-bundle" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="info.guardianproject.zt.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.guardianproject.zt.MainActivity" />
+        </activity>
+        
+        <activity
+            android:name="info.guardianproject.zt.LogoutActivity"
+            android:label="@string/title_activity_logout"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="info.guardianproject.zt.MainActivity" />
+        </activity>
+
+        <!-- Change "authorities" when branching into distinct app -->
+		<provider
+            tools:replace="android:authorities"
+   			android:name="info.guardianproject.securereader.SecureShareContentProvider"
+			android:authorities="${applicationId}.secureshareprovider"
+			android:exported="true"
+			android:enabled="true"/>
+
+		
+		<!-- Radio Z -->
+		<activity
+                android:name="info.guardianproject.zt.z.rss.activities.SplashScreenActivity"
+                android:label="@string/app_label">
+        </activity>
+
+        <activity
+            android:name="info.guardianproject.zt.z.rss.activities.HelpActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboardHidden|orientation">
+        </activity>
+        <activity
+                android:name="info.guardianproject.zt.z.rss.activities.Help2Activity"
+                android:label="@string/app_name"
+                android:configChanges="keyboardHidden|orientation">
+        </activity>
+        <activity android:label="@string/app_name"
+                  android:name="info.guardianproject.zt.z.rss.activities.youtube.YouTubePlayerViewActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+        <activity android:label="@string/app_name"
+                  android:name="info.guardianproject.zt.z.rss.activities.LoadingDialogActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+
+	</application>
+
+</manifest>

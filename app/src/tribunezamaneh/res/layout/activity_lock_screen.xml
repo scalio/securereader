@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lock_screen_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp" >
+
+    <Button
+        android:id="@+id/btnStartCreatePassphrase"
+        style="@style/RoundedButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/lock_screen_set_passphrase" />
+
+    <info.guardianproject.securereaderinterface.widgets.DropdownSpinner
+        android:id="@+id/languagePopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btnStartCreatePassphrase"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/dropdown_spinner_background"
+        android:divider="@drawable/dropdown_spinner_divider"
+        app:dropdown_background="@drawable/dropdown_spinner_background" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_launch_dropdown" />
+    </info.guardianproject.securereaderinterface.widgets.DropdownSpinner>
+
+    <TextView
+        android:id="@+id/tvChooseLanguage"
+        style="@style/LockScreenLanguageStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/languagePopup"
+        android:layout_centerHorizontal="true"
+        android:text="@string/lock_screen_choose_language"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/LockScreenTitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_above="@id/tvChooseLanguage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tvTitle"
+        android:scaleType="centerInside"
+        android:src="@drawable/rz_logo_large" />
+
+</RelativeLayout>
