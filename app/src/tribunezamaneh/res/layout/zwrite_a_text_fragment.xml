@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clickable="true"
+        >
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:background="@drawable/bg">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/header_img_upload_text"/>
+        <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dip"
+                    android:paddingBottom="30dip">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#dfdcd4" >
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView android:id="@+id/writeTextTopLabelTextView"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/share_text_size_header"
+                          android:textStyle="bold"
+                          android:textColor="@color/upload_item_text_color"
+                          android:layout_weight="1"
+                          android:layout_gravity="center_vertical|right"
+                          android:gravity="center_vertical|right"
+                          android:text="@string/writeTextLabel1"
+                          android:layout_marginRight="10dip"
+                        />
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/doc_image_size"
+                        android:src="@drawable/pic_doc"
+                        android:adjustViewBounds="true"
+                        android:layout_marginTop="5dip"
+                        android:layout_marginRight="5dip"
+                        android:scaleType="fitCenter"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dip"
+                    android:layout_weight="1">
+                <EditText
+                        android:id="@+id/writeText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="top|right"
+                        android:minHeight="@dimen/min_edit_text_size"
+                        android:padding="5dip"
+                        android:background="@drawable/text_edit_bg_shape"
+                        />
+                <TextView android:id="@+id/writeTextLabel2TextView"
+                          android:layout_width="wrap_content"
+                          android:layout_height="match_parent"
+                          android:textSize="@dimen/share_text_size"
+                          android:textColor="@color/upload_item_text_color"
+                          android:layout_gravity="top|right"
+                          android:gravity="top|right"
+                          android:text="@string/writeTextLabel2"
+                          android:layout_marginRight="20dip"
+                          android:layout_marginLeft="10dip"
+                        />
+                </LinearLayout>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:layout_marginBottom="20dip"
+                    android:orientation="vertical">
+                <Button android:id="@+id/saveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/upload_item_text_color"
+                        android:text="@string/writeTextButton"
+                        android:textSize="@dimen/button_text_size"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:minWidth="150dip"
+                        android:background="@drawable/button_selector"/>
+            </LinearLayout>
+           </LinearLayout>
+          </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
