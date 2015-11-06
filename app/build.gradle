@@ -10,7 +10,7 @@ class PreprocessFilesForFlavorTask extends DefaultTask {
     def File outputDir
 
     @Input
-    def taskFlavor
+    def String taskFlavor
 
     @TaskAction
     void execute(IncrementalTaskInputs inputs) {
@@ -19,9 +19,18 @@ class PreprocessFilesForFlavorTask extends DefaultTask {
         if (!inputs.incremental)
             project.delete(outputDir.listFiles())
 
+        taskFlavor = taskFlavor.toUpperCase()
         inputs.outOfDate { change ->
-            println "PreProcessing: ${change.file.name}"
-            def targetFile = new File(outputDir, change.file.name)
+            println "PreProcessing: ${change.file.name} for " + taskFlavor
+
+            String filePath = change.file.path
+            def mainMatch = "src/main/java/"
+            filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
+
+            def targetFile = new File(outputDir, filePath)
+            targetFile.parentFile.mkdirs()
+            if (!targetFile.exists())
+                targetFile.createNewFile()
 
             def fileContents = change.file.text
             def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
@@ -103,7 +112,7 @@ android {
                     println "##### Changed flavor to " + flavor.name + " #####"
                 }
                 if (!f.exists()) {
-                   f.createNewFile()
+                    f.createNewFile()
                 }
                 f.text = flavor.name
                 file('src/preprocessed').delete()
@@ -131,13 +140,26 @@ android {
                     compileTask.source = compileTask.source - fileTree(dir: 'src/main/java', include: '**/*.java')
                     compileTask.source = compileTask.source + fileTree(dir: 'src/preprocessed/java', include: '**/*.java')
 
-                    def matchPart = "src/" + flavor.toLowerCase() + "/java/"
-                    def mainFiles = []
-                    compileTask.source.findAll { it.path.contains(matchPart) }.each { File file ->
-                        def mainPath = file.path.replace(matchPart, "src/preprocessed/java/")
-                        mainFiles << mainPath
+
+                    def flavorMatch = "src/" + flavor.toLowerCase() + "/java/"
+                    def mainMatch = "src/preprocessed/java/"
+
+                    def flavorFilesRelative = [];
+                    def duplicates = [];
+                    compileTask.source.findAll {
+                        it.path.contains(flavorMatch)
+                    }.each {
+                        String filePath = it.path
+                        flavorFilesRelative << filePath.substring(filePath.indexOf(flavorMatch) + flavorMatch.length())
                     }
-                    def duplicates = compileTask.source.findAll { mainFiles.contains(it.path) }
+                    compileTask.source.findAll {
+                        it.path.contains(mainMatch)
+                    }.each {
+                        String filePath = it.path
+                        filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
+                        if (flavorFilesRelative.contains(filePath))
+                            duplicates << it
+                    }
                     duplicates.each { File file ->
                         println "Removing duplicate java file: " + file
                     }
