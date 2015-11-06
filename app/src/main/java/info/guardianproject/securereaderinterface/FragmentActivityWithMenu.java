@@ -1,10 +1,13 @@
 package info.guardianproject.securereaderinterface;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereader.Settings.ProxyType;
 import info.guardianproject.securereader.Settings.SyncMode;
 import info.guardianproject.securereader.SocialReader;
-import info.guardianproject.securereaderinterface.R;
+import info.guardianproject.securereaderinterface.adapters.DownloadsAdapter;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
 import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
@@ -28,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
@@ -200,13 +204,15 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             if (mDrawerToggle != null) {
                 mDrawerToggle.setDrawerIndicatorEnabled(false);
             } else {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         } else {
             if (mDrawerToggle != null) {
                 mDrawerToggle.setDrawerIndicatorEnabled(true);
             } else {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         }
     }
@@ -224,7 +230,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     @Override
     protected void onStart() {
         super.onStart();
-        performRotateTransition((ViewGroup) mDrawerLayout.getParent());
+        if (mDrawerLayout != null)
+            performRotateTransition((ViewGroup) mDrawerLayout.getParent());
     }
 
     @SuppressLint("NewApi")
@@ -298,6 +305,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         colorizeMenuItems();
         return true;
     }
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -500,7 +508,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         private ArrayList<Feed> feeds;
         private int countFavorites;
         private int countShared;
-        private boolean isUsingTor;
+        private boolean isUsingProxy;
+        private boolean isUsingPsiphon;
         private boolean showImages;
         private boolean isOnline;
 
@@ -510,8 +519,9 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             feeds = App.getInstance().socialReader.getSubscribedFeedsList();
             countFavorites = App.getInstance().socialReader.getAllFavoritesCount();
             countShared = App.getInstance().socialReader.getAllSharedCount();
-            isUsingTor = App.getInstance().socialReader.useProxy();
-            isOnline = App.getInstance().socialReader.isTorOnline();
+            isUsingProxy = App.getInstance().socialReader.useProxy();
+            isUsingPsiphon = (App.getSettings().proxyType() == ProxyType.Psiphon);
+            isOnline = App.getInstance().socialReader.isProxyOnline();
             showImages = (App.getSettings().syncMode() == SyncMode.LetItFlow);
             return null;
         }
@@ -522,12 +532,17 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
             // Update TOR connection status
             //
-            if (isUsingTor) {
+            if (isUsingProxy) {
                 mMenuViewHolder.btnTorStatus.setChecked(isOnline);
-                mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
+                if (isUsingPsiphon)
+                    mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_psiphon_connected : R.string.menu_psiphon_not_connected);
+                else
+                    mMenuViewHolder.btnTorStatus.setText(isOnline ? R.string.menu_tor_connected : R.string.menu_tor_not_connected);
+                mMenuViewHolder.btnTorStatus.setCompoundDrawablesWithIntrinsicBounds(null, mMenuViewHolder.btnTorStatus.getContext().getResources().getDrawable(isUsingPsiphon ? R.drawable.button_psiphon_icon_selector : R.drawable.button_tor_icon_selector), null, null);
             } else {
                 mMenuViewHolder.btnTorStatus.setChecked(false);
                 mMenuViewHolder.btnTorStatus.setText(R.string.menu_tor_not_connected);
+                mMenuViewHolder.btnTorStatus.setCompoundDrawablesWithIntrinsicBounds(null, mMenuViewHolder.btnTorStatus.getContext().getResources().getDrawable(R.drawable.button_tor_icon_selector), null, null);
             }
             mMenuViewHolder.btnShowPhotos.setChecked(showImages);
         }
@@ -569,6 +584,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             @Override
             public void run() {
                 UICallbacks.setFeedFilter(FeedFilterType.FAVORITES, 0, FragmentActivityWithMenu.this);
+                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
             }
         });
     }
@@ -579,6 +595,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             @Override
             public void run() {
                 UICallbacks.setFeedFilter(FeedFilterType.POPULAR, 0, FragmentActivityWithMenu.this);
+                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
             }
         });
     }
@@ -599,6 +616,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
             @Override
             public void run() {
                 UICallbacks.setFeedFilter(FeedFilterType.SHARED, 0, FragmentActivityWithMenu.this);
+                UICallbacks.handleCommand(FragmentActivityWithMenu.this, R.integer.command_news_list, null);
             }
         });
     }
@@ -629,8 +647,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
     private void waitForMenuCloseAndRunCommand(Runnable runnable) {
         mDeferredCommands.add(runnable);
-        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
+        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             runDeferredCommands();
         }
@@ -785,6 +803,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         return this.mUsePullDownActionBar;
     }
 
+    public int getPullDownActionBarHeight() {
+        if (mToolbar != null)
+            return mToolbar.getHeight() - (getUsePullDownActionBar() ? this.mToolbarHideOffset : 0);
+        return 0;
+    }
+
     public void setUsePullDownActionBar(boolean usePullDownActionBar) {
         mUsePullDownActionBar = usePullDownActionBar;
         if (!mUsePullDownActionBar) {
@@ -794,6 +818,33 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         } else {
             // Use pulldown. If visible, it will be hidden soon...
             mToolbar.postDelayed(hideActionBarRunnable, 5000);
+        }
+    }
+
+    public interface PullDownActionBarListener {
+        void onOffsetChanged(int height, int offset);
+    }
+
+    private ArrayList<WeakReference<PullDownActionBarListener>> pullDownListeners = new ArrayList<WeakReference<PullDownActionBarListener>>();
+
+    public void addPullDownActionBarListener(PullDownActionBarListener newListener) {
+        boolean alreadyAdded = false;
+        for (int i = pullDownListeners.size() - 1; i >= 0; i--) {
+            PullDownActionBarListener listener = pullDownListeners.get(i).get();
+            if (listener == null)
+                pullDownListeners.remove(i);
+            else if (listener == newListener)
+                alreadyAdded = true; // No break, we want to cleanup list at the same time...
+        }
+        if (!alreadyAdded)
+            pullDownListeners.add(new WeakReference<PullDownActionBarListener>(newListener));
+    }
+
+    public void removePullDownActionBarListener(PullDownActionBarListener oldListener) {
+        for (int i = pullDownListeners.size() - 1; i >= 0; i--) {
+            PullDownActionBarListener listener = pullDownListeners.get(i).get();
+            if (listener == null || listener == oldListener)
+                pullDownListeners.remove(i);
         }
     }
 
@@ -838,6 +889,18 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         ViewCompat.setTranslationY(mToolbar, -mToolbarHideOffset);
         if (mToolbarShadow != null)
             ViewCompat.setTranslationY(mToolbarShadow, -mToolbarHideOffset);
+        onSetToolbarHideOffset(offset);
+        for (int i = pullDownListeners.size() - 1; i >= 0; i--) {
+            PullDownActionBarListener listener = pullDownListeners.get(i).get();
+            if (listener == null)
+                pullDownListeners.remove(i);
+            else
+                listener.onOffsetChanged(mToolbar.getHeight() - offset, offset);
+        }
+    }
+
+    protected void onSetToolbarHideOffset(int offset) {
+        // Can be overridden
     }
 
     public class ActionBarAnim extends Animation {
