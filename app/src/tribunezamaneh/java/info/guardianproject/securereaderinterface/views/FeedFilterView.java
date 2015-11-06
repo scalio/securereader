@@ -162,6 +162,24 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
         }
     }
 
+    private class ViewVideoFeed implements View.OnClickListener {
+        private final Feed mFeed;
+
+        public ViewVideoFeed(Feed feed) {
+            mFeed = feed;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mCallbacks != null) {
+                Intent intent = new Intent(mContext, VideoListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                mContext.startActivity(intent);
+                UICallbacks.setFeedFilter(FeedFilterType.SINGLE_FEED, mFeed.getDatabaseId(), this);
+            }
+        }
+    }
+
     private int getCountSpecials() {
         return 3;//3 + (App.UI_ENABLE_POPULAR_ITEMS ? 1 : 0);
     }
@@ -365,18 +383,7 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                     }
                     case 5: {
                         feedTitle = mContext.getString(R.string.feed_filter_video);
-
-                        listener = new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (mCallbacks != null) {
-                                    Intent intent = new Intent(mContext, VideoListActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    mContext.startActivity(intent);
-                                }
-                            }
-                        };
-
+                        listener = new ViewVideoFeed(feed);
                         break;
                     }
                 }
