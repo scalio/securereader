@@ -13,14 +13,12 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontTextView;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereader.SocialReporter;
 
-/*#if FLAVOR_TRIBUNEZAMANEH
 import info.guardianproject.zt.z.rss.utils.DataStorage;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-#endif*/
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -112,10 +110,8 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 			}
 		});
 
-		/*#if FLAVOR_TRIBUNEZAMANEH
 		//init RZ App
 		initRadioZApp();
-		#endif*/
 	}
 
 	@Override
@@ -370,7 +366,6 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
 			mCurrentFeed = feed;
 	}
 
-	/*#if FLAVOR_TRIBUNEZAMANEH
 	private DataStorage dataStorage;
 
 	private void initRadioZApp() {
@@ -394,5 +389,4 @@ public class App extends MultiDexApplication implements OnSharedPreferenceChange
     public DataStorage getDataStorage() {
         return dataStorage;
     }
-	#endif*/
 }

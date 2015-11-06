@@ -1,22 +1,26 @@
 package info.guardianproject.securereaderinterface.ui;
 
+import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.R;
 import info.guardianproject.securereader.SocialReader;
 import info.guardianproject.securereaderinterface.AddFeedActivity;
 import info.guardianproject.securereaderinterface.AddPostActivity;
-import info.guardianproject.securereaderinterface.App;
 import info.guardianproject.securereaderinterface.CreateAccountActivity;
 import info.guardianproject.securereaderinterface.DownloadEpubReaderActivity;
 import info.guardianproject.securereaderinterface.DownloadsActivity;
 import info.guardianproject.securereaderinterface.HelpActivity;
+import info.guardianproject.zt.LoginActivity;
+import info.guardianproject.zt.LogoutActivity;
 import info.guardianproject.securereaderinterface.MainActivity;
 import info.guardianproject.securereaderinterface.PostActivity;
 import info.guardianproject.securereaderinterface.SettingsActivity;
+import info.guardianproject.zt.UploadsChooseActivity;
 import info.guardianproject.securereaderinterface.ViewMediaActivity;
 import info.guardianproject.securereaderinterface.installer.HTTPDAppSender;
 import info.guardianproject.securereaderinterface.installer.SecureBluetooth;
 import info.guardianproject.securereaderinterface.installer.SecureBluetoothReceiverFragment;
 import info.guardianproject.securereaderinterface.models.FeedFilterType;
+import info.guardianproject.zt.uiutil.Utility;
 import info.guardianproject.securereaderinterface.widgets.compat.Toast;
 
 import java.io.File;
@@ -449,6 +453,32 @@ public class UICallbacks
 		case R.integer.command_downloads:
 		{
 			Intent intent = new Intent(context, DownloadsActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			context.startActivity(intent);
+			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			break;
+		}
+		
+		
+		case R.integer.command_choose_uploads:
+		{
+			Intent intent = new Intent(context, UploadsChooseActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			context.startActivity(intent);
+			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+			break;
+		}
+		
+		case R.integer.command_account:
+		{
+			Intent intent = null;
+			
+			if(Utility.isUserLoggedIn(context)) {
+				intent = new Intent(context, LogoutActivity.class);
+			} else {
+				intent = new Intent(context, LoginActivity.class);
+			}
+
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			context.startActivity(intent);
 			((Activity) context).overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);

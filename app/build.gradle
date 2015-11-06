@@ -1,63 +1,63 @@
 apply plugin: 'com.android.application'
 
 
-
-class PreprocessFilesForFlavorTask extends DefaultTask {
-    @InputDirectory
-    def File inputDir
-
-    @OutputDirectory
-    def File outputDir
-
-    @Input
-    def String taskFlavor
-
-    @TaskAction
-    void execute(IncrementalTaskInputs inputs) {
-        println inputs.incremental ? "CHANGED inputs considered out of date"
-                : "ALL inputs considered out of date"
-        if (!inputs.incremental)
-            project.delete(outputDir.listFiles())
-
-        taskFlavor = taskFlavor.toUpperCase()
-        inputs.outOfDate { change ->
-            println "PreProcessing: ${change.file.name} for " + taskFlavor
-
-            String filePath = change.file.path
-            def mainMatch = "src/main/java/"
-            filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
-
-            def targetFile = new File(outputDir, filePath)
-            targetFile.parentFile.mkdirs()
-            if (!targetFile.exists())
-                targetFile.createNewFile()
-
-            def fileContents = change.file.text
-            def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
-            def symbols = []
-            groups.each {
-                if (!symbols.contains(it[1]))
-                    symbols << it[1];
-            }
-            if (symbols.contains(taskFlavor))
-                symbols.remove(taskFlavor)
-
-            symbols.each {
-                fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
-            }
-            fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + taskFlavor + "(.*?)#endif\\*\\/") { all, text ->
-                "${text}"
-            }
-            targetFile.text = fileContents
-        }
-
-        inputs.removed { change ->
-            println "removed: ${change.file.name}"
-            def targetFile = new File(outputDir, change.file.name)
-            targetFile.delete()
-        }
-    }
-}
+//
+//class PreprocessFilesForFlavorTask extends DefaultTask {
+//    @InputDirectory
+//    def File inputDir
+//
+//    @OutputDirectory
+//    def File outputDir
+//
+//    @Input
+//    def String taskFlavor
+//
+//    @TaskAction
+//    void execute(IncrementalTaskInputs inputs) {
+//        println inputs.incremental ? "CHANGED inputs considered out of date"
+//                : "ALL inputs considered out of date"
+//        if (!inputs.incremental)
+//            project.delete(outputDir.listFiles())
+//
+//        taskFlavor = taskFlavor.toUpperCase()
+//        inputs.outOfDate { change ->
+//            println "PreProcessing: ${change.file.name} for " + taskFlavor
+//
+//            String filePath = change.file.path
+//            def mainMatch = "src/main/java/"
+//            filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
+//
+//            def targetFile = new File(outputDir, filePath)
+//            targetFile.parentFile.mkdirs()
+//            if (!targetFile.exists())
+//                targetFile.createNewFile()
+//
+//            def fileContents = change.file.text
+//            def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
+//            def symbols = []
+//            groups.each {
+//                if (!symbols.contains(it[1]))
+//                    symbols << it[1];
+//            }
+//            if (symbols.contains(taskFlavor))
+//                symbols.remove(taskFlavor)
+//
+//            symbols.each {
+//                fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
+//            }
+//            fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + taskFlavor + "(.*?)#endif\\*\\/") { all, text ->
+//                "${text}"
+//            }
+//            targetFile.text = fileContents
+//        }
+//
+//        inputs.removed { change ->
+//            println "removed: ${change.file.name}"
+//            def targetFile = new File(outputDir, change.file.name)
+//            targetFile.delete()
+//        }
+//    }
+//}
 
 android {
     compileSdkVersion 23
@@ -113,75 +113,75 @@ android {
         exclude 'LICENSE.txt'
     }
 
-    productFlavors.all { flavor ->
-        task "preprocessFiles${flavor.name.capitalize()}" << {
-            File f = file("lastbuild.flavor");
-            if (!f.exists() || f.text != flavor.name)
-            {
-                if (f.exists()) {
-                    println "##### Changed flavor from " + f.text + " to " + flavor.name + " #####"
-                } else {
-                    println "##### Changed flavor to " + flavor.name + " #####"
-                }
-                if (!f.exists()) {
-                    f.createNewFile()
-                }
-                f.text = flavor.name
-                file('src/preprocessed').delete()
-            }
-        }
-        task "incrementalPreprocess${flavor.name.capitalize()}" (type: PreprocessFilesForFlavorTask) {
-            inputDir = file('src/main/java')
-            outputDir = file('src/preprocessed/java')
-            taskFlavor = flavor.name
-        }
-    }
+//    productFlavors.all { flavor ->
+//        task "preprocessFiles${flavor.name.capitalize()}" << {
+//            File f = file("lastbuild.flavor");
+//            if (!f.exists() || f.text != flavor.name)
+//            {
+//                if (f.exists()) {
+//                    println "##### Changed flavor from " + f.text + " to " + flavor.name + " #####"
+//                } else {
+//                    println "##### Changed flavor to " + flavor.name + " #####"
+//                }
+//                if (!f.exists()) {
+//                    f.createNewFile()
+//                }
+//                f.text = flavor.name
+//                file('src/preprocessed').delete()
+//            }
+//        }
+//        task "incrementalPreprocess${flavor.name.capitalize()}" (type: PreprocessFilesForFlavorTask) {
+//            inputDir = file('src/main/java')
+//            outputDir = file('src/preprocessed/java')
+//            taskFlavor = flavor.name
+//        }
+//    }
 
-    tasks.withType(JavaCompile) {
-        compileTask ->
-
-            if (compileTask.name.endsWith("ReleaseJavaWithJavac") || compileTask.name.endsWith("DebugJavaWithJavac")) {
-
-                def flavor = (compileTask.name =~ /compile(.*?)(Release|Debug)JavaWithJavac/)[0][1]
-
-
-                task("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}") << {
-
-                    println("Use preprocessed files for flavor: " + flavor)
-
-                    compileTask.source = compileTask.source - fileTree(dir: 'src/main/java', include: '**/*.java')
-                    compileTask.source = compileTask.source + fileTree(dir: 'src/preprocessed/java', include: '**/*.java')
-
-
-                    def flavorMatch = "src/" + flavor.toLowerCase() + "/java/"
-                    def mainMatch = "src/preprocessed/java/"
-
-                    def flavorFilesRelative = [];
-                    def duplicates = [];
-                    compileTask.source.findAll {
-                        it.path.contains(flavorMatch)
-                    }.each {
-                        String filePath = it.path
-                        flavorFilesRelative << filePath.substring(filePath.indexOf(flavorMatch) + flavorMatch.length())
-                    }
-                    compileTask.source.findAll {
-                        it.path.contains(mainMatch)
-                    }.each {
-                        String filePath = it.path
-                        filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
-                        if (flavorFilesRelative.contains(filePath))
-                            duplicates << it
-                    }
-                    duplicates.each { File file ->
-                        println "Removing duplicate java file: " + file
-                    }
-                    compileTask.source = compileTask.source - files(duplicates)
-                }
-                tasks.getByName("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}").dependsOn "incrementalPreprocess${flavor.capitalize()}"
-                tasks.getByName("incrementalPreprocess${flavor.capitalize()}").dependsOn "preprocessFiles${flavor.capitalize()}"
-                compileTask.dependsOn "usePreprocessedAndRemoveDups${compileTask.name.capitalize()}"
-            }
-    }
+//    tasks.withType(JavaCompile) {
+//        compileTask ->
+//
+//            if (compileTask.name.endsWith("ReleaseJavaWithJavac") || compileTask.name.endsWith("DebugJavaWithJavac")) {
+//
+//                def flavor = (compileTask.name =~ /compile(.*?)(Release|Debug)JavaWithJavac/)[0][1]
+//
+//
+//                task("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}") << {
+//
+//                    println("Use preprocessed files for flavor: " + flavor)
+//
+//                    compileTask.source = compileTask.source - fileTree(dir: 'src/main/java', include: '**/*.java')
+//                    compileTask.source = compileTask.source + fileTree(dir: 'src/preprocessed/java', include: '**/*.java')
+//
+//
+//                    def flavorMatch = "src/" + flavor.toLowerCase() + "/java/"
+//                    def mainMatch = "src/preprocessed/java/"
+//
+//                    def flavorFilesRelative = [];
+//                    def duplicates = [];
+//                    compileTask.source.findAll {
+//                        it.path.contains(flavorMatch)
+//                    }.each {
+//                        String filePath = it.path
+//                        flavorFilesRelative << filePath.substring(filePath.indexOf(flavorMatch) + flavorMatch.length())
+//                    }
+//                    compileTask.source.findAll {
+//                        it.path.contains(mainMatch)
+//                    }.each {
+//                        String filePath = it.path
+//                        filePath = filePath.substring(filePath.indexOf(mainMatch) + mainMatch.length())
+//                        if (flavorFilesRelative.contains(filePath))
+//                            duplicates << it
+//                    }
+//                    duplicates.each { File file ->
+//                        println "Removing duplicate java file: " + file
+//                    }
+//                    compileTask.source = compileTask.source - files(duplicates)
+//                }
+//                tasks.getByName("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}").dependsOn "incrementalPreprocess${flavor.capitalize()}"
+//                tasks.getByName("incrementalPreprocess${flavor.capitalize()}").dependsOn "preprocessFiles${flavor.capitalize()}"
+//                compileTask.dependsOn "usePreprocessedAndRemoveDups${compileTask.name.capitalize()}"
+//            }
+//    }
 }
 
 dependencies {

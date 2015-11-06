@@ -13,20 +13,26 @@ import info.guardianproject.securereaderinterface.ui.LayoutFactoryWrapper;
 import info.guardianproject.securereaderinterface.ui.UICallbacks;
 import info.guardianproject.securereaderinterface.ui.UICallbacks.OnCallbackListener;
 import info.guardianproject.securereaderinterface.uiutil.ActivitySwitcher;
+import info.guardianproject.zt.uiutil.Global;
 import info.guardianproject.securereaderinterface.uiutil.UIHelpers;
 import info.guardianproject.securereaderinterface.views.FeedFilterView;
 import info.guardianproject.securereaderinterface.views.FeedFilterView.FeedFilterViewCallbacks;
 import info.guardianproject.securereaderinterface.widgets.CheckableButton;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +44,7 @@ import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,6 +72,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     private int mIdMenu;
     private Menu mOptionsMenu;
     private boolean mDisplayHomeAsUp = false;
+    private MediaPlayer mPlayer;
+    private boolean isRadioPlaying = false;
 
     /**
      * These are for action bar pull down support (e.g. used in full screen item view)
@@ -121,6 +130,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setBackgroundDrawable(null);
         LayoutInflater inflater = LayoutInflater.from(this);
         mInflater = inflater.cloneInContext(this);
         LayoutInflaterCompat.setFactory(mInflater, new LayoutFactoryWrapper(inflater.getFactory()));
@@ -303,6 +313,15 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         getMenuInflater().inflate(R.menu.overflow_main, menu);
 
         colorizeMenuItems();
+
+        MenuItem miRadio = menu.findItem(R.id.menu_radio);
+        if (null != miRadio) {
+            if (isRadioPlaying) {
+                miRadio.setIcon(R.drawable.ic_action_pause_over_video);
+            } else {
+                miRadio.setIcon(R.drawable.ic_action_radio);
+            }
+        }
         return true;
     }
 
@@ -354,6 +373,12 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
                 return true;
             }
 
+
+            case R.id.menu_radio: {
+                handleRadioPlayer();
+                return true;
+            }
+
             case R.id.menu_add_post: {
                 Intent intent = new Intent(this, AddPostActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -367,10 +392,18 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
                 return true;
             }
 
-            case R.id.menu_manage_feeds: {
-                UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
+
+            case R.id.menu_account: {
+                UICallbacks.handleCommand(this, R.integer.command_account, null);
                 return true;
             }
+
+		/*
+        case R.id.menu_manage_feeds:
+		{
+			UICallbacks.handleCommand(this, R.integer.command_feed_add, null);
+			return true;
+		}*/
 
             case R.id.menu_preferences: {
                 UICallbacks.handleCommand(this, R.integer.command_settings, null);
@@ -916,6 +949,59 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             int newOffset = (int) (fromOffset + ((toOffset - fromOffset) * interpolatedTime));
             setToolbarHideOffset(newOffset);
+        }
+    }
+
+    private void handleRadioPlayer() {
+        final Context context = getApplicationContext();
+
+        //if not playing
+        if (null == mPlayer) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.radio_tor_warning)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.lbl_yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startRadioPlayer(context);
+                        }
+                    })
+                    .setNegativeButton(R.string.lbl_no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+            isRadioPlaying = false;
+
+            invalidateOptionsMenu();
+        }
+    }
+
+    private void startRadioPlayer(Context context) {
+        try {
+            mPlayer = new MediaPlayer();
+            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mPlayer = MediaPlayer.create(context, Uri.parse(Global.RZ_RADIO_URI));
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                    isRadioPlaying = true;
+                    invalidateOptionsMenu();
+                }
+            });
+        } catch (IllegalStateException e) {
+            Log.d(LOGTAG, "IllegalStateException: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.d(LOGTAG, "IllegalArgumentException: " + e.getMessage());
+        } catch (SecurityException e) {
+            Log.d(LOGTAG, "SecurityException: " + e.getMessage());
+        } catch (Exception e) {
+            Log.d(LOGTAG, "Exception: " + e.getMessage());
         }
     }
 }
