@@ -5,7 +5,7 @@ import info.guardianproject.securereaderinterface.widgets.CustomFontSpan;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-/*#if FLAVOR_YAKREADER
+/*#if FLAVOR_YAKREADER_TODO
 import org.ironrabbit.type.CustomTypefaceManager;
 #endif*/
 import android.content.Context;
@@ -100,7 +100,7 @@ public class FontManager
 		}
 	}
 
-	/*#if FLAVOR_YAKREADER
+	/*#if FLAVOR_YAKREADER_TODO
 	public static SpannableStringBuilder getTibetanText(Context context, String text)
 	{
 		// This is hacky. The tbo library has a bug with composites at the end
@@ -120,7 +120,7 @@ public class FontManager
 
 	public static CharSequence transformText(TextView view, CharSequence text)
 	{
-		/*#if FLAVOR_YAKREADER
+		/*#if FLAVOR_YAKREADER_TODO
 		if (isTibetan(text))
 		{
 			if (text instanceof Spannable)
