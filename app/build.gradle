@@ -1,5 +1,55 @@
 apply plugin: 'com.android.application'
 
+
+
+class PreprocessFilesForFlavorTask extends DefaultTask {
+    @InputDirectory
+    def File inputDir
+
+    @OutputDirectory
+    def File outputDir
+
+    @Input
+    def taskFlavor
+
+    @TaskAction
+    void execute(IncrementalTaskInputs inputs) {
+        println inputs.incremental ? "CHANGED inputs considered out of date"
+                : "ALL inputs considered out of date"
+        if (!inputs.incremental)
+            project.delete(outputDir.listFiles())
+
+        inputs.outOfDate { change ->
+            println "PreProcessing: ${change.file.name}"
+            def targetFile = new File(outputDir, change.file.name)
+
+            def fileContents = change.file.text
+            def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
+            def symbols = []
+            groups.each {
+                if (!symbols.contains(it[1]))
+                    symbols << it[1];
+            }
+            if (symbols.contains(taskFlavor))
+                symbols.remove(taskFlavor)
+
+            symbols.each {
+                fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
+            }
+            fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + taskFlavor + "(.*?)#endif\\*\\/") { all, text ->
+                "${text}"
+            }
+            targetFile.text = fileContents
+        }
+
+        inputs.removed { change ->
+            println "removed: ${change.file.name}"
+            def targetFile = new File(outputDir, change.file.name)
+            targetFile.delete()
+        }
+    }
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.0"
@@ -42,44 +92,6 @@ android {
         exclude 'LICENSE.txt'
     }
 
-    ext.preprocessFile =
-    {
-        currentFlavor, sourceFile ->
-            currentFlavor = currentFlavor.toUpperCase()
-
-            def fileContents = sourceFile.text
-            def groups = (fileContents =~ /#if FLAVOR_(\S+)\s*/)
-            def symbols = []
-            groups.each {
-                if (!symbols.contains(it[1]))
-                    symbols << it[1];
-            }
-            if (symbols.contains(currentFlavor))
-                symbols.remove(currentFlavor)
-
-            symbols.each {
-                fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + it + ".*?#endif\\*\\/", "")
-            }
-            fileContents = fileContents.replaceAll("(?s)\\/\\*#if FLAVOR_" + currentFlavor + "(.*?)#endif\\*\\/") { all, text ->
-                "${text}"
-            }
-            sourceFile.text = fileContents
-    }
-
-    ext.preprocessAllFiles =
-    {
-        flavor ->
-        project.copy {
-            from 'src/main/java'
-            into 'src/preprocessed/java'
-            include '**/*.java'
-        }
-        fileTree('src/preprocessed/java').matching {'**/*.java'}.each {
-            println "PreProcessing " + it
-            preprocessFile(flavor.name, it)
-        }
-    }
-
     productFlavors.all { flavor ->
         task "preprocessFiles${flavor.name.capitalize()}" << {
             File f = file("lastbuild.flavor");
@@ -94,16 +106,13 @@ android {
                    f.createNewFile()
                 }
                 f.text = flavor.name
-                preprocessAllFiles(flavor)
+                file('src/preprocessed').delete()
             }
         }
-        task "preprocessFilesCopy${flavor.name.capitalize()}" {
-            inputs.dir 'src/main/java'
-            outputs.dir 'src/preprocessed/java'
-            doLast {
-                println "Something has changed, preprocessing files"
-                preprocessAllFiles(flavor)
-            }
+        task "incrementalPreprocess${flavor.name.capitalize()}" (type: PreprocessFilesForFlavorTask) {
+            inputDir = file('src/main/java')
+            outputDir = file('src/preprocessed/java')
+            taskFlavor = flavor.name
         }
     }
 
@@ -134,8 +143,8 @@ android {
                     }
                     compileTask.source = compileTask.source - files(duplicates)
                 }
-                tasks.getByName("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}").dependsOn "preprocessFilesCopy${flavor.capitalize()}"
-                tasks.getByName("preprocessFilesCopy${flavor.capitalize()}").dependsOn "preprocessFiles${flavor.capitalize()}"
+                tasks.getByName("usePreprocessedAndRemoveDups${compileTask.name.capitalize()}").dependsOn "incrementalPreprocess${flavor.capitalize()}"
+                tasks.getByName("incrementalPreprocess${flavor.capitalize()}").dependsOn "preprocessFiles${flavor.capitalize()}"
                 compileTask.dependsOn "usePreprocessedAndRemoveDups${compileTask.name.capitalize()}"
             }
     }
@@ -152,3 +161,4 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.google.code.gson:gson:2.3'
 }
+
