@@ -18,8 +18,7 @@ public class VideoListActivity extends FragmentActivityWithMenu {
 		mContext = this;
 
 		setContentView(R.layout.activity_video_list);
-		
-		setDisplayHomeAsUp(true);
+		setMenuIdentifier(R.menu.activity_main);
 		setActionBarTitle(getString(R.string.video_title));
 	}
 
