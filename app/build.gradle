@@ -85,8 +85,8 @@ android {
         YakReader {
             applicationId = "info.guardianproject.yakreader"
         }
-        TribuneZamaneh {
-            applicationId = "info.guardianproject.zt"
+        tribuneZamaneh {
+            applicationId = "com.radiozamaneh.tz"
             minSdkVersion 16
             dependencies {
                 compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
@@ -95,6 +95,13 @@ android {
                             exclude module: 'support-v4'
                             exclude module: 'NetCipher'
                         }
+            }
+        } 
+        radioZamaneh {
+            applicationId = "com.radiozamaneh.rz"
+            minSdkVersion 16
+            dependencies {
+                compile 'com.navercorp.pulltorefresh:library:3.2.0@aar'
             }
         }    
 	}

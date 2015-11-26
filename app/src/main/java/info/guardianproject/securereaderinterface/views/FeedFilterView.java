@@ -70,7 +70,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
         public ImageView ivFeedImage;
         public View ivRefresh;
         public View shortcutView;
-        public View submitTipView;
     }
 
     private FeedFilterViewCallbacks mCallbacks;
@@ -313,13 +312,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
                     }
                 });
 
-                holder.submitTipView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UICallbacks.handleCommand(holder.submitTipView.getContext(), R.integer.command_choose_uploads, null);
-                    }
-                });
-
                 boolean isChecked = (App.getInstance().getCurrentFeedFilterType() == FeedFilterType.SHARED);
                 holder.tvName.setTextAppearance(holder.tvName.getContext(), isChecked ? R.style.LeftSideMenuItemCurrentAppearance : R.style.LeftSideMenuItemAppearance);
 
@@ -518,7 +510,6 @@ public class FeedFilterView extends ListView implements ListAdapter, OnItemClick
         holder.ivRefresh = view.findViewById(R.id.ivRefresh);
         holder.checkView = (CheckableImageView) view.findViewById(R.id.chkShowImages);
         holder.shortcutView = view.findViewById(R.id.shortcutView);
-        holder.submitTipView = view.findViewById(R.id.submitTipView);
         view.setTag(holder);
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clickable="true" >
+    <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:background="@color/button_primary"
+                  android:layout_marginBottom="25dip">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dip"
+            >
+        <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/video_image_height"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+              />
+
+        <ImageView
+                android:id="@+id/imagePlay"
+                android:layout_width="70dip"
+                android:layout_height="70dip"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_centerInParent="true"
+                android:src="@drawable/play_video" />
+    </RelativeLayout>
+
+     <TextView
+                android:id="@+id/videoTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:gravity="right|center_vertical"
+                android:layout_margin="10dip"
+                android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>
