@@ -315,6 +315,7 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
         colorizeMenuItems();
 
         MenuItem miRadio = menu.findItem(R.id.menu_radio);
+
         if (null != miRadio) {
             if (isRadioPlaying) {
                 miRadio.setIcon(R.drawable.ic_action_pause_over_video);
@@ -984,9 +985,8 @@ public class FragmentActivityWithMenu extends LockableActivity implements FeedFi
 
     private void startRadioPlayer(Context context) {
         try {
-            mPlayer = new MediaPlayer();
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer = MediaPlayer.create(context, Uri.parse(Global.RZ_RADIO_URI));
+            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();

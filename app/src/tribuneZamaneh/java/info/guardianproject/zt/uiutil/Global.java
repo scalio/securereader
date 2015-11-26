@@ -30,8 +30,11 @@ public class Global {
     public static enum MEDIA_TYPE {
         PHOTO, VIDEO, AUDIO, TEXT;
     }
-    
-    //radio 
-    public static final String RZ_RADIO_URI = "http://icecast.xs4all.nl:8000/zamaneh";
+
+
+    // the following url is what is contained in the m3u link here:
+    // http://www.internet-radio.com/servers/tools/playlistgenerator/?u=http://uk1.internet-radio.com:8034/live.m3u&t=.m3u";
+    // we might need to download the m3u every time and use the contained url in case that changes
+    public static final String RZ_RADIO_URI = "http://uk1.internet-radio.com:8034/live";
 }
 
