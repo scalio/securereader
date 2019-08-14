@@ -1,60 +1,64 @@
-Dev Setup
+## Dev Setup
+
 Follow these steps to setup your dev environment:
 
-Checkout securereader git repo
+1. Checkout securereader git repo
+2. Init and update git submodules
 
-Init and update git submodules
+    git submodule update --init --recursive
 
-git submodule update --init --recursive
+3. Fix support library mismatch
 
-Fix support library mismatch
+    All subprojects must use the same version of the support library.
 
-ActionBarSherlock uses an outdated version of the support library. We must use the same version of the library in BigBuffalo and ABS.
+    **Command Line**
 
-Command Line
+        ./fix-support-library.sh
 
- ./fix-support-library.sh
-Ignore the rm: external/CacheWord/cachewordlib/libs/guava-r09.jar: No such file or directory error
+    **Manually**
 
-Manually
+    Copy `app/libs/android-support-v4.jar` to `external/supportlibrary/v7/appcompat/libs/android-support-v4.jar` and to `external/OnionKit/libnetcipher/libs/android-support-v4.jar`. 
 
-Copy app/libs/android-support-v4.jar to external/HoloEverywhere/contrib/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar and to external/CacheWord/cachewordlib/libs/android-support-v4.jar
+4. Build Project
 
-Build Project
+   **Using Eclipse**
 
-Using Eclipse
+    I recommend using a new workspace in Eclipse. I recommend using the root of
+    this repo.
+    
+    Run *Android SDK Manager* from [ADT-Eclipse](http://developer.android.com/sdk/index.html) and make sure that you have SDK Platform Api Level 16 installed. If not then install those and restart the eclipse environment.
 
-I recommend using a new workspace in Eclipse. I recommend using the root of this repo.
+    Import into Eclipse (using the *File -> Import -> Android -> "Existing Android Code Into Workspace"* option) the
+    following projects. Do not check "Copy projects into workspace".
 
-Run Android SDK Manager from ADT-Eclipse and make sure that you have SDK Platform Api Level 16 installed. If not then install those and restart the eclipse environment.
+        app/
+        external/OnionKit/libnetcipher
+        external/securereaderlibrary
+        external/bho/TibetanTextLibrary
+	external/supportlibrary/v7/appcompat
 
-Import into Eclipse (using the File -> Import -> Android -> "Existing Android Code Into Workspace" option) the projects in the following order. Do not check "Copy projects into workspace".
+    When importing app/ double click on the value "MainActivity" and change it
+    to "Secure Reader" under the New Project Name heading before finishing the
+    import.
 
-Note: The import order is crucial! (ps Order may not be crucial anymore)
 
- app/
- external/CacheWord/cachewordlib
- external/HoloEverywhere/contrib/ActionBarSherlock/actionbarsherlock
- external/HoloEverywhere/library
- external/OnionKit/libonionkit
- external/securereaderlibrary
- external/bho/TibetanTextLibrary
-When importing app/ double click on the value "MainActivity" and change it to "Secure Reader" under the New Project Name heading before finishing the import.
+   **Using command line**
 
-Using command line
+        ./setup-ant.sh
+        cd app/
+        ant clean debug
 
- ./setup-ant.sh
- cd app/
- ant clean debug
-Troubleshooting
-Eclipse complains about overlapping an existing project when importing
+### Troubleshooting
 
-Make sure the project isn't in your workspace, if it is delete it (right click -> delete)
-Close eclipse completely
-Open the directory you're importing and delete .project, .settings/, .classpath
-Restart eclipse, and import the project as an existing Android project
+**Eclipse complains about overlapping an existing project when importing**
+
+1. Make sure the project isn't in your workspace, if it is delete it (right click -> delete)
+2. Close eclipse completely
+2. Open the directory you're importing and delete `.project`, `.settings/`, `.classpath`
+3. Restart eclipse, and import the project as an existing Android project
+
 (sometimes an additional open/restart cycle is required to clear Eclipse's project cache)
 
-Invalid Project Description
+**Invalid Project Description**
 
 This is another occurrence of the previous problem, see above.
